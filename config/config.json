@@ -2,11 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-<<<<<<< Updated upstream
-    "database": "database_development",
-=======
     "database": "db_fancytodo",
->>>>>>> Stashed changes
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
