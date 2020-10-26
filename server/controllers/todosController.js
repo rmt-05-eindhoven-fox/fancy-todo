@@ -102,15 +102,15 @@ class TodoController {
             returning: true
         })
         .then( data => {
-            if(data[0] === 1){
+            if(data === 0){
                 throw{
-                    error: 'todo success to delete'
+                    error: `data id ke ${+ req.params.id} tidak ditemukan`
                 }
             }
-            res.status(200).json(data[1][0])
+            res.status(200).json('todo success to delete id ke-')
         })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(404).json(err)
         })
     }
 }
