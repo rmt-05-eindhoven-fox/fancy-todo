@@ -30,7 +30,7 @@ module.exports = class TodoController {
       }
       res.status(200).json(hasil)
     } catch (err) {
-      res.status(404).json(err.message)
+      res.status(404).json({error: err.message})
     }
   }
   static async updatePut(req, res) {
@@ -46,7 +46,7 @@ module.exports = class TodoController {
         return res.status(400).json(err.errors[0])
       }
       if(err.name === "Error") {
-        return res.status(404).json(err.message)
+        return res.status(404).json({error: err.message})
       }
       res.status(500).json(err)
     }
@@ -64,7 +64,7 @@ module.exports = class TodoController {
         return res.status(400).json(err.errors[0])
       }
       if(err.name === "Error") {
-        return res.status(404).json(err.message)
+        return res.status(404).json({error: err.message})
       }
       res.status(500).json(err)
     }
@@ -80,7 +80,7 @@ module.exports = class TodoController {
       res.status(200).json(deleted)
     } catch(err) {
       if(err.name === "Error") {
-        throw res.status(404).json(err.message)
+        throw res.status(404).json({error: err.message})
       }
       res.status(500).json(err)
     }
