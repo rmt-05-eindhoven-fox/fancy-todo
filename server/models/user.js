@@ -2,6 +2,11 @@
 const {
   Model
 } = require('sequelize');
+
+const {
+  encode
+} = require('../helpers/bcrypt')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -17,9 +22,34 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+
+      validate: {
+        isEmail: true,
+        notEmpty: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+
+      validate: {
+        notEmpty: true,
+
+        len: {
+          args: [4, 10]
+        }
+      }
+    }
   }, {
+    hooks: {
+      beforeCreate: (user) => {
+        user.password = encode(user.password)
+      },
+      afterCreate: (user) => {
+        delete user.password
+      }
+    },
     sequelize,
     modelName: 'User',
   });
