@@ -31,7 +31,7 @@ class Controller {
         if (data) {
           return res.status(200).json(data)
         }
-        res.status(404).json({ message: "Id not found" })
+        res.status(404).json({ error: "Id not found" })
       })
       .catch(err => {
         res.status(500).json(err.message)
@@ -46,7 +46,7 @@ class Controller {
         if (data[0] === 1) {
           return res.status(200).json(data[1][0])
         }
-        res.status(404).json({ message: "Id not found" })
+        res.status(404).json({ error: "Id not found" })
       })
       .catch(err => {
         if (err.name = "SequelizeValidationError") {
@@ -64,7 +64,7 @@ class Controller {
         if (data) {
           return res.status(200).json(data[1][0])
         }
-        res.status(404).json({ message: "Id not found" })
+        res.status(404).json({ error: "Id not found" })
       })
       .catch(err => {
         if (err.name = "SequelizeValidationError") {
@@ -80,7 +80,7 @@ class Controller {
         if (data) {
           return res.status(201).json({ message: "todo success to delete" })
         }
-        res.status(404).json({ message: "Id not found" })
+        res.status(404).json({ error: "Id not ferroround" })
       })
       .catch(err => {
         res.status(500).json(err.message)
