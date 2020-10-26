@@ -11,6 +11,12 @@ class Controller {
                 status,
                 due_date
             })
+            const currentTime = new Date()
+            if(due_date < currentTime){
+                throw {
+                    msg: `DATE SHOULD BE GREATER THAN TODAY`
+                }
+            }
             res.status(201).json(result)
         } catch (error) {
             res.status(500).json(error)
@@ -59,6 +65,12 @@ class Controller {
                 },
                 returning: true
             })
+            const currentTime = new Date()
+            if(due_date < currentTime){
+                throw {
+                    msg: `DATE SHOULD BE GREATER THAN TODAY`
+                }
+            }
             res.status(200).json(result[1][0])
         } catch (error) {
             res.status(404).json(error)
@@ -89,6 +101,8 @@ class Controller {
         const index = req.params.id
 
         try {
+            const data = await Todo
+            .findByPk(index)
             const result = await Todo
             .destroy({
                 where: {
@@ -96,7 +110,7 @@ class Controller {
                 },
                 returning: true
             })
-            res.status(200).json(result[1][0])
+            res.status(200).json(data)
         } catch (error) {
             res.status(404).json(error)
         }
