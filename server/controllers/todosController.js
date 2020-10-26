@@ -104,7 +104,7 @@ class TodoController {
         .then( data => {
             if(data[0] === 1){
                 throw{
-                    name: 'todo success to delete'
+                    error: 'todo success to delete'
                 }
             }
             res.status(200).json(data[1][0])
