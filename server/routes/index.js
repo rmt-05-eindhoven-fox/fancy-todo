@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const Controller = require('../controllers/controller')
 
-router.get('/', Controller.login)
+router.post('/', Controller.login)
+
+router.post('/register', Controller.register)
 
 router.post('/todos', Controller.todoAdd)
 
