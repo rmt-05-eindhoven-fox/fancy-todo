@@ -5,7 +5,7 @@ router.post('/add', ToDoController.add)
 router.get('/', ToDoController.findAll)
 router.get('/:id', ToDoController.findOne)
 router.put('/edit/:id', ToDoController.edit)
-router.patch('/edit/:id', ToDoController.editStatus)
+router.patch('/editStatus/:id', ToDoController.editStatus)
 router.delete('/delete/:id', ToDoController.deleted)
 
 module.exports = router

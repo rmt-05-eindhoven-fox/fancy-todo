@@ -23,9 +23,15 @@ class ToDoController {
   }
 
   static async add(req, res) {
-    const { title, description, status, due_date } = req.body
+    const data = {
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      due_date: req.body.due_date
+    }
+    console.log(data)
     try {
-      const add = await ToDo.Create({ title, description, status, due_date })
+      const add = await ToDo.create(data)
       res.status(201).json(add)
     }
     catch (err) {
@@ -37,10 +43,10 @@ class ToDoController {
     const id = +req.params.id
     const { title, description, status, due_date } = req.body
     try {
-      const edit = await ToDo.Update({ title, description, status, due_date }, {
-        where: { id }
+      const edit = await ToDo.update({ title, description, status, due_date }, {
+        where: { id }, returning: true
       })
-      res.status(200).json(edit)
+      res.status(200).json(edit[1][0])
     } catch (err) {
       res.status(500).json(err)
     }
@@ -50,12 +56,12 @@ class ToDoController {
     const id = +req.params.id
     const status = req.body.status
     try {
-      const editStatus = await ToDo.Update({ status }, {
+      const editStatus = await ToDo.update(status, {
         where: {
           id
-        }
+        }, returning: true
       })
-      res.status(200).json(editStatus)
+      res.status(200).json(editStatus[1][0])
     } catch (err) {
       res.status(500).json(err)
     }
@@ -65,7 +71,8 @@ class ToDoController {
     const id = +req.params.id
     try {
       const find = await ToDo.findOne({ where: { id } })
-      await ToDo.destroy({ where: { id } })
+      await ToDo.destroy({ where: { id } }
+      )
       res.status(200).json(find)
     } catch (err) {
       res.status(500).json(err)
