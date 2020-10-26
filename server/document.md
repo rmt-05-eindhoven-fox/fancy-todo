@@ -7,6 +7,10 @@ Fancy Todo is an application to manage your assets. This app has :
 
 ## RESTful endpoints
 
+### POST /users/register
+> register new user
+
+
 ### POST /todos
 
 > Create new todos
