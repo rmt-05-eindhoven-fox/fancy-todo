@@ -1,7 +1,8 @@
 //testing Bintang Wibawa
+require('dotenv').config()
 const express = require('express')
 const app = express()
-const PORT = 3000
+const PORT = +process.env.PORT
 const routes = require('./routes/index.js')
 
 app.use(express.json())
