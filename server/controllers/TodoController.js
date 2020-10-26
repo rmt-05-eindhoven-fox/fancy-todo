@@ -2,79 +2,79 @@ const { Todo } = require("../models/index");
 
 class TodoController {
 
-  static createTodo(req, res) {
-    const {title, description, status, due_date} = req.body;
-    let todoObj = {
-      title,
-      description,
-      status,
-      due_date
-    };
-    Todo.create(todoObj)
-    .then((todo) => {
+  static async createTodo(req, res) {
+    try {
+      const {title, description, status, due_date} = req.body;
+      let todoObj = {
+        title,
+        description,
+        status,
+        due_date
+      };
+      const todo = await Todo.create(todoObj);
       res.status(201).json(todo);
-    }).catch((err) => {
-      res.status(500);
-    });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  static readTodo(req, res) {
-    Todo.findAll({ order: [["id", "ASC"]] })
-    .then((todos) => {
+  static async readTodo(req, res) {
+    try {
+      const todos = await Todo.findAll({ order: [["id", "ASC"]] });
       res.status(200).json(todos);
-    }).catch((err) => {
-      res.status(500);
-    });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  static getTodoById(req, res) {
-    let id = +req.params.id;
-    Todo.findByPk(id)
-    .then((todo) => {
+  static async getTodoById(req, res) {
+    try {
+      let id = +req.params.id;
+      const todo = await Todo.findByPk(id);
       res.status(200).json(todo);
-    }).catch((err) => {
-      res.status(500);
-    });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  static updateTodoById(req, res) {
-    let id = +req.params.id;
-    const {title, description, status, due_date} = req.body;
-    let todoObj = {
-      title,
-      description,
-      status,
-      due_date
-    };
-    Todo.update(todoObj, { where: {id}, returning: true })
-    .then((todo) => {
+  static async updateTodoById(req, res) {
+    try {
+      let id = +req.params.id;
+      const {title, description, status, due_date} = req.body;
+      let todoObj = {
+        title,
+        description,
+        status,
+        due_date
+      };
+      const todo = await Todo.update(todoObj, { where: {id}, returning: true });
       res.status(200).json(todo[1][0]);
-    }).catch((err) => {
-      res.status(500);
-    });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  static updateStatusTodoById(req, res) {
-    let id = +req.params.id;
-    let status = req.body.status;
-    Todo.update({ status: status }, { where: {id}, returning: true })
-    .then((todo) => {
+  static async updateStatusTodoById(req, res) {
+    try {
+      let id = +req.params.id;
+      let status = req.body.status;
+      const todo = await Todo.update({ status: status }, { where: {id}, returning: true });
       res.status(200).json(todo[1][0]);
-    }).catch((err) => {
-      res.status(500);
-    });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  static deleteTodo(req, res) {
-    let id = +req.params.id;
-    Todo.destroy({ where: {id} })
-    .then((todo) => {
+  static async deleteTodo(req, res) {
+    try {
+      let id = +req.params.id;
+      const todo = await Todo.destroy({ where: {id} });
       res.status(200).json({
         msg: `Successfully delete a todo with Id ${id}!`
       });
-    }).catch((err) => {
-      res.status(500);
-    });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
 }
