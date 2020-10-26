@@ -18,10 +18,10 @@ const shouldCompress = (req, res) => {
    return compression.filter(req, res);
 };
 
-// app.use(compression({
-//    filter: shouldCompress,
-//    threshold: 0
-// }));
+app.use(compression({
+   filter: shouldCompress,
+   threshold: 0
+}));
 
 app.use('/', router)
 

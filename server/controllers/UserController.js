@@ -5,28 +5,6 @@ const {compareHash} = require('../helper/bycrypt')
 const {signToken} = require('../helper/jwt')
 
 class UserController {
-   // static register(req, res) {
-   //    const newUser = {
-   //       username: req.body.username,
-   //       email: req.body.email,
-   //       password: req.body.password
-   //    }
-
-   //    User.create(newUser)
-   //    .then(result => {
-   //       console.log(result);
-   //       // res.send(result)
-   //       // res.status(201).json({
-   //       //    id: result.id,
-   //       //    username: result.username,
-   //       //    email: result.email
-   //       // })
-   //    }).catch(err => {
-   //       res.send(err)
-   //       // res.status(500).json(err)
-   //    });
-   // }
-
    static async register(req, res) {
       try {
          const newUser = {
@@ -42,8 +20,16 @@ class UserController {
             username: user.username,
             email: user.email
          })
+
       } catch (err) {
-         res.status(500).json(err)
+         if(err.name === 'SequelizeValidationError') {
+            res.status(400).json({
+               message: err.errors[0].message
+            })
+         }
+         else {
+            res.status(500).json(err)
+         }
       }
    }
 
