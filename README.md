@@ -1,43 +1,305 @@
-# fancy-todo
+# FANCY TODOS #
 
-Buatlah aplikasi Todo menggunakan Client-server model dengan spesifikasi sebagai berikut:
-- API Documentation yang meliputi : URLs, HTTP method, request, response (success dan error case)
-- Membuat routes sesuai standar REST API
-- CRUD endpoints untuk Todo, minimal ada:
-    - title
-    - description
-    - status
-    - due_date (validasi, user tidak bisa menginput tanggal yg sudah lewat dari hari ini)
-- Register
-Model user di validasi. Email harus unique, harus type email, password juga di validasi misalnya minimal 6 karakter
-- Login menggunakan email & password
-- Membuat authentication dan authorization sehingga user hanya bisa melakukan CRUD terhadap todo-nya sendiri
-- Make it fancy! Tambahkan 1 fitur atau lebih menggunakan 3rd party API apapun yang akan menjadikan aplikasi todo kamu menjadi unik dan berbeda dari aplikasi todo biasa. Misal, saat menambahkan Todo , user akan mendapatkan emai mengenai Todo yg dia buat.
-- Social Login (Google/Twitter/Facebook/GitHub)
-- NO alert(); please!
+1. **CREATE TODOS**
 
+    * **URL**
 
-## Rocket 🚀
-Challengenya masih kurang? Coba kerjain ini!
-- Authenticated user bisa membuat project dan invite/add member ke project tersebut.
-- Todo yang ada di suatu project hanya bisa di read/write (CRUD) oleh project members.
-- 3rd Party API
+      `/todos/add`
 
-## Requirement Porto Fancy Todo
+    * **Method:**
 
-### Kompetensi Backend
-- REST API
-- API Documentation
-- Authentication & Authorization
-- PostgreSQL + Sequelize
+      `POST`
 
-### Kompetensi Client
-- jQuery
-- SPA (Single Page Application)
+    * **Data Params**
 
+      **Required:**
 
-## Deadline
-- Week 1 - Sabtu 18:00
+      - `title = [string]`
+      - `description = [string]`
+      - `status = [boolean]`
+      - `due_date = [date]`
 
-## Submission
-Fork dari organization, lalu open pull request dengan title NAMA LENGKAP KAMU (ex: Dimitri Wahyudiputra) dan assign ke buddy kamu. Tambahkan comment yang berisi environment variables yang dipakai (beserta valuenya), link deploy (jika ada), fitur tambahannya apa dan kendala saat mengerjakan.
+    * **Success Response:**
+
+      * **Code:** `201 CREATED` <br />
+        **Content:** 
+        ```json 
+        json { 
+          "id" : 1,
+          "title" : "ngoding",
+          "description" : "budak ngoding istiqomah",
+          "status" : false,
+          "due_date" : 2020-12-15
+        }
+        ```
+    
+    * **Error Response:**
+
+      * **Code:** `400 BAD REQUEST` <br />
+        **Content:** 
+        ```
+        { error : "Invalid Input" }
+        ```
+
+      OR
+
+      * **Code:** `500 INTERNAL SERVER ERROR` <br />
+        **Content:** 
+        ```
+        { error : "Server Error" }
+        ```
+
+2. **LIST TODOS**
+
+    * **URL**
+
+      `/todos`
+
+    * **Method:**
+
+      `GET`
+
+    * **Success Response:**
+
+      * **Code:** `200 OK` <br />
+        **Content:** 
+        ```json 
+        json [{ 
+          "id" : 1,
+          "title" : "ngoding",
+          "description" : "budak ngoding istiqomah",
+          "status" : false,
+          "due_date" : 2020-12-15
+        },{
+          "id" : 2,
+          "title" : "mandi",
+          "description" : "budak mandi istiqomah",
+          "status" : true,
+          "due_date" : 2020-10-25
+        }]
+        ```
+    
+    * **Error Response:**
+
+      * **Code:** `404 NOT FOUND` <br />
+        **Content:** 
+        ```json
+        { "error" : "Error Not Found" }
+        ```
+
+      OR
+
+      * **Code:** `500 INTERNAL SERVER ERROR` <br />
+        **Content:** 
+        ```json
+        { "error" : "Server Error" }
+        ```
+
+3. **LIST TODOS (ID)**
+
+    * **URL**
+
+      `/todos/:id`
+
+    * **Method:**
+
+      `GET`
+
+    *  **URL Params** 
+
+        **Required:**
+
+        - `id = [integer]`
+
+    * **Success Response:**
+
+      * **Code:** `200 OK` <br />
+        **Content:** 
+        ```json 
+        json {
+          "id" : 2,
+          "title" : "mandi",
+          "description" : "budak mandi istiqomah",
+          "status" : true,
+          "due_date" : 2020-10-25
+        }
+        ```
+    
+    * **Error Response:**
+
+      * **Code:** `404 NOT FOUND` <br />
+        **Content:** 
+        ```json
+        { "error" : "Error Not Found" }
+        ```
+
+      OR
+
+      * **Code:** `500 INTERNAL SERVER ERROR` <br />
+        **Content:** 
+        ```json
+        { "error" : "Server Error" }
+        ```
+
+4. **UPDATE TODOS**
+
+    * **URL**
+
+      `/todos/edit/:id`
+
+    * **Method:**
+
+      `PUT`
+      
+    *  **URL Params** 
+
+        **Required:**
+
+        - `id = [integer]`
+
+    * **Data Params**
+
+        **Required:**
+
+        - `title = [string]`
+        - `description = [string]`
+        - `status = [boolean]`
+        - `due_date = [date]`
+
+    * **Success Response:**
+
+      * **Code:** `200 OK` <br />
+        **Content:** 
+        ```json 
+        json { 
+          "id" : 1,
+          "title" : "ngopi",
+          "description" : "budak ngopi istiqomah",
+          "status" : false,
+          "due_date" : 2020-10-27
+        }
+        ```
+    
+    * **Error Response:**
+
+      * **Code:** `400 BAD REQUEST` <br />
+        **Content:** 
+        ```json
+        { "error" : "Validation Error" }
+        ```
+
+      OR
+
+      * **Code:** `404 NOT FOUND` <br />
+        **Content:** 
+        ```json
+        { "error" : "Error Not Found" }
+        ```
+
+      OR
+
+      * **Code:** `500 INTERNAL SERVER ERROR` <br />
+        **Content:** 
+        ```json
+        { "error" : "Server Error" }
+        ```
+
+5. **UPDATE TODOS (STATUS)**
+
+    * **URL**
+
+      `/todos/update/:id`
+
+    * **Method:**
+
+      `PATCH`
+      
+    *  **URL Params** 
+
+        **Required:**
+
+        - `id = [integer]`
+
+    * **Data Params**
+
+        **Required:**
+
+        - `status = [boolean]`
+
+    * **Success Response:**
+
+      * **Code:** `200 OK` <br />
+        **Content:** 
+        ```json 
+        json { 
+          "id" : 1,
+          "title" : "ngopi",
+          "description" : "budak ngopi istiqomah",
+          "status" : true,
+          "due_date" : 2020-10-27
+        }
+        ```
+    
+    * **Error Response:**
+
+      * **Code:** `400 BAD REQUEST` <br />
+        **Content:** 
+        ```json
+        { "error" : "Validation Error" }
+        ```
+
+      OR
+
+      * **Code:** `404 NOT FOUND` <br />
+        **Content:** 
+        ```json
+        { "error" : "Error Not Found" }
+        ```
+
+      OR
+
+      * **Code:** `500 INTERNAL SERVER ERROR` <br />
+        **Content:** 
+        ```json
+        { "error" : "Server Error" }
+        ```
+
+6. **DELETE TODOS**
+
+    * **URL**
+
+      `/todos/delete/:id`
+
+    * **Method:**
+
+      `DELETE`
+      
+    *  **URL Params** 
+
+        **Required:**
+
+        - `id = [integer]`
+
+    * **Success Response:**
+
+      * **Code:** `200 OK` <br />
+        **Content:** 
+        ```json 
+        { "message" : "ToDo Deleted Succesfully"}
+        ```
+    
+    * **Error Response:**
+
+      * **Code:** `404 NOT FOUND` <br />
+        **Content:** 
+        ```json
+        { "error" : "Error Not Found" }
+        ```
+
+      OR
+
+      * **Code:** `500 INTERNAL SERVER ERROR` <br />
+        **Content:** 
+        ```json
+        { "error" : "Server Error" }
+        ```
