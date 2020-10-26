@@ -11,13 +11,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
-    due_date: DataTypes.DATE
+    due_date: {
+      type: DataTypes.DATE,
+      validate:{
+        isDate: {
+          msg: `Must be a date`
+        },
+        validate(value) {
+          const now = new Date()
+          if (value < now) {
+            throw new Error(`Due date must be greater than now`)
+          } 
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Todo',
