@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         delete todo.dataValues.updatedAt;
       },
       afterUpdate: (todo, options) => {
-        console.log(todo);
+        // console.log(todo);
         delete todo.dataValues.createdAt;
         delete todo.dataValues.updatedAt;
       }
