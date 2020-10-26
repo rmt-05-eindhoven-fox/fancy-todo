@@ -1,43 +1,3 @@
-**Show ToDo**
-----
-  Return array of object with content of ToDo
-
-* **URL**
-
-  /todos
-
-* **Method**
-
-  `GET`
-
-* **URL Params**
-
-  None
-
-* **Success Response**
-  * **Code:** 200 OK<br />
-    **Content:**
-  ```
-     [
-        {
-            "id" : 1,
-            "title" : "Learn create API Documentation",
-            "description" : "Practice make perfect",
-            "due_date" : "2020-10-30"
-        },
-        {
-            "id" : 2,
-            "title" : "Learn Rest API",
-            "description" : "You can do it",
-            "due_date" : "2020-10-31"
-        }
-      ]
-  ```
-
-* **Error Response**
-  * **Code:** 500 INTERNAL SERVER ERROR
-----
-
 **Create ToDo**
 ----
   Create new ToDo object
@@ -78,6 +38,85 @@
 
 * **Error Response**
   * **Code:** 400 BAD REQUEST
+----
+
+**Read ToDo**
+----
+  Return array of object with content of ToDo
+
+* **URL**
+
+  /todos
+
+* **Method**
+
+  `GET`
+
+* **URL Params**
+
+  None
+
+* **Success Response**
+  * **Code:** 200 OK<br />
+    **Content:**
+  ```
+     [
+        {
+            "id" : 1,
+            "title" : "Fancy ToDo",
+            "description" : "Week 1 task",
+            "due_date" : "2020-10-30"
+        },
+        {
+            "id" : 2,
+            "title" : "Learn Rest API",
+            "description" : "You can do it",
+            "due_date" : "2020-10-31"
+        }
+      ]
+  ```
+
+* **Error Response**
+  * **Code:** 500 INTERNAL SERVER ERROR
+----
+
+**Read Specified ToDo**
+----
+Show ToDo object based by id
+
+* **URL**
+
+  /todos/:id
+
+* **Method**
+
+  `GET`
+
+* **URL Params**
+
+  **Required**
+
+  `id=[integer]`
+
+* **Data Params**
+
+  None
+
+* **Success Response**
+  * **Code:** 200 OK <br/>
+    **Content:**
+
+  ```
+    {
+        "id" : 1,
+        "title" : "Fancy ToDo",
+        "description" : "Week 1 task",
+        "due_date" : "2020-10-30"
+    }
+  ```
+
+* **Error Response**
+  * **Code:** 404 NOT FOUND
 ----
 
 **Update ToDo**
@@ -172,7 +211,7 @@ Update status attribute on ToDo object
 
 **Delete ToDo**
 ----
-Delete selected ToDo Object
+Delete selected ToDo Object by id
 
 * **URL**
 
