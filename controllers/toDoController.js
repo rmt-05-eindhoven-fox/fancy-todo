@@ -48,19 +48,6 @@ class TodoController {
         }
     }
 
-    static async delete(req,res) {
-        try {
-            let todo = await Todo.findByPk(req.params.id)
-                if(!todo) throw ({msg:'todo not found', code:404})
-
-                await todo.destroy()
-                await todo.save()
-                res.status(200).json({msg:'todo deleted'})
-        } catch (error) {
-            res.status(500).json(error)
-        }
-    }
-
     static async status(req,res) {
         try{
             const {status} = req.body
@@ -73,6 +60,20 @@ class TodoController {
                 todo.save()
                 res.status(200).json(todo.status)
             } 
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
+
+    static async delete(req,res) {
+        try {
+            let todo = await Todo.findByPk(req.params.id)
+
+            if(todo) {
+                todo.destroy()
+                todo.save()
+                res.status(200).json({msg: `todo has been deleted`})
+            }
         } catch (error) {
             res.status(500).json(error)
         }
