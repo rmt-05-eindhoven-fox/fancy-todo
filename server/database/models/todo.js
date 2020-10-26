@@ -2,6 +2,9 @@
 const {
    Model
 } = require('sequelize');
+
+const {checkIsAfter} = require('../../helper/date')
+
 module.exports = (sequelize, DataTypes) => {
    class Todo extends Model {
       /**
@@ -14,11 +17,39 @@ module.exports = (sequelize, DataTypes) => {
       }
    };
    Todo.init({
-      title: DataTypes.STRING,
-      description: DataTypes.STRING,
+      title: {
+         type: DataTypes.STRING,
+         validate: {
+           notEmpty: {
+             args: true,
+             msg: 'Title is required.'
+           }
+         }
+       },
+      description: {
+         type: DataTypes.STRING,
+         validate: {
+           notEmpty: {
+             args: true,
+             msg: 'Description is required.'
+           }
+         }
+       },
       status: DataTypes.STRING,
-      due_date: DataTypes.DATE
-   }, {
+      due_date: {
+         type: DataTypes.DATE,
+         validate: {
+            checkDate() {
+               if(checkIsAfter(this.due_date)) {
+                  throw new Error('Due date must be after today.')
+               }
+               else if(!checkIsAfter(this.due_date)){
+                  throw new Error('Due date must be after today.')
+               }
+            }
+         }
+       },
+   },{
       sequelize,
       modelName: 'Todo',
    });

@@ -24,7 +24,14 @@ class TodoController {
          
          res.status(201).json(createTodo)
       } catch (err) {
-         res.status(500).json(err)
+         if(err.name === 'SequelizeValidationError') {
+            res.status(400).json({
+               message: err.errors[0].message
+            })
+         }
+         else {
+            res.status(500).json(err)
+         }
       }
    }
 
