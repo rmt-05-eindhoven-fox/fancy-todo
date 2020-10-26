@@ -196,3 +196,52 @@ _Response (200)_
   "message": "todo success to delete"
 }
 ```
+
+### POST /register
+
+> Create new user
+
+_Parameters_
+```
+not needed
+```
+
+_Request Body_
+```
+{
+  "email": "sample@mail.com",
+  "password": "asdfgh"
+}
+```
+
+_Response (201 - Created)_
+```
+{
+  "id": 1,
+  "email": "sample@mail.com"
+}
+```
+
+### POST /login
+
+> Get access token based on user login data
+
+_Parameters_
+```
+not needed
+```
+
+_Request Body_
+```
+{
+  "email": "sample@mail.com",
+  "password": "asdfgh"
+}
+```
+
+_Response (200)_
+```
+{
+  "accessToken": "qiofioqhwhi1237189qiwhdihqi.gfiqg718716.asiqwfq27136"
+}
+```
