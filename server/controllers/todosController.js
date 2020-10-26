@@ -2,6 +2,25 @@ const { Todo } = require("../models/index.js")
 
 class TodoController {
 
+    static createTodo(req, res){
+        const { title, description, status, due_date} = req.body
+        Todo.create({
+            title,
+            description,
+            status,
+            due_date
+        },{
+            returning:true
+        })
+        .then(todo => {
+            res.status(201).json(todo)
+        })
+        .catch(err => {
+            res.status(400).json(err)
+        })
+    }
+
+
     static findAllTodo(req, res){
         Todo.findAll()
         .then( todo => {
