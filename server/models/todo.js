@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     status: DataTypes.BOOLEAN,
     due_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       validate: {
         isBefore: {
           args: dateFormat(new Date(), 1),
@@ -30,6 +30,20 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Todo',
+    hooks: {
+      beforeCreate: (todo, options) => {
+        todo.due_date = dateFormat(new Date(todo.due_date));
+      },
+      afterCreate: (todo, options) => {
+        delete todo.dataValues.createdAt;
+        delete todo.dataValues.updatedAt;
+      },
+      afterUpdate: (todo, options) => {
+        console.log(todo);
+        delete todo.dataValues.createdAt;
+        delete todo.dataValues.updatedAt;
+      }
+    }
   });
   return Todo;
 };

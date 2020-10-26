@@ -10,11 +10,12 @@ class TodoController {
         status,
         due_date
       });
+      // console.log(create);
       res.status(201).json(create);
     } catch (error) {
-      if (error.name = 'SequelizeValidationError') {
+      if (error.name === 'SequelizeValidationError') {
         res.status(400).json({
-          error: error.message
+          error: error.errors.map(err => err.message).join(' ')
         });
       } else {
         res.status(500).json({
@@ -26,7 +27,11 @@ class TodoController {
 
   static async findAll(req, res) {
     try {
-      const findAllTodos = await Todo.findAll();
+      const findAllTodos = await Todo.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      });
       res.status(200).json(findAllTodos);
     } catch (error) {
       res.status(500).json({
@@ -38,7 +43,11 @@ class TodoController {
   static async findTodo(req, res) {
     try {
       const id = +req.params.id;
-      const findTodo = await Todo.findByPk(id);
+      const findTodo = await Todo.findByPk(id, {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      });
 
       if (findTodo) {
         res.status(200).json(findTodo);
@@ -67,23 +76,24 @@ class TodoController {
       }, {
         where: {
           id
-        }
+        },
+        returning: true,
+        individualHooks: true
       });
 
-      [ updateAllKey ] = updateAllKey;
-
-      if (updateAllKey) {
-        res.status(200).json(updateAllKey);
+      if (updateAllKey[0]) {
+        res.status(200).json(updateAllKey[1][0]);
       } else {
+        // TODO handle case when req.body has same data as database
         throw {
           status: 404,
           msg: 'Error not found'
         };
       }
     } catch (error) {
-      if (error.name = 'SequelizeValidationError') {
+      if (error.name === 'SequelizeValidationError') {
         res.status(400).json({
-          error: error.message
+          error: error.errors.map(err => err.message).join(' ')
         });
       } else {
         res.status(error.status || 500).json({
@@ -97,22 +107,25 @@ class TodoController {
     try {
       const id = +req.params.id;
       const { status } = req.body;
-      let update = await Todo.update({ status }, { where: { id } });
+      let update = await Todo.update({ status }, { 
+        where: { id },
+        returning: true,
+        individualHooks: true 
+      });
 
-      [ update ] = update;
-
-      if (update) {
-        res.status(200).json(update)
+      if (update[0]) {
+        res.status(200).json(update[1][0]);
       } else {
+        // TODO handle case when req.body has same data as database
         throw {
           status: 404,
           msg: 'Error not found'
         };
       }
     } catch (error) {
-      if (error.name = 'SequelizeValidationError') {
+      if (error.name === 'SequelizeValidationError') {
         res.status(400).json({
-          error: error.message
+          error: error.errors.map(err => err.message).join(' ')
         });
       } else {
         res.status(error.status || 500).json({
@@ -125,7 +138,7 @@ class TodoController {
   static async deleteTodo(req, res) {
     try {
       const id = +req.params.id;
-      const todoDeleted = await Todo.destroy(id);
+      const todoDeleted = await Todo.destroy({ where : { id }});
 
       if (todoDeleted) {
         res.status(200).json({
