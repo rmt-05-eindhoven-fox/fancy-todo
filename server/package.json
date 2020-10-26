@@ -1,12 +1,20 @@
 {
-  "name": "server",
+  "name": "FancyTodo",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
+    "dev":"nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.4.1",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {},
+  "description": ""
 }
