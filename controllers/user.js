@@ -3,6 +3,7 @@ const { comparePassword } = require("../helpers/bcrypt")
 const { signToken } = require("../helpers/jwt")
 
 class UserController {
+    
     static async signup(req, res) {
         try {
             const payload = {
@@ -10,7 +11,8 @@ class UserController {
                 password: req.body.password,
                 username: req.body.username
             }
-            const user = await User.create(payload)
+
+            const user = await User.create(payload);
             
             res.status(201).json({
                 id: user.id,

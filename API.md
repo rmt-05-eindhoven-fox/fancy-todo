@@ -1,3 +1,48 @@
+**Sign Up**
+----
+  Create new User
+
+* **URL**
+
+  /signup
+
+* **Method:**
+  
+  `POST`
+  
+* **Data Params**
+
+  {
+    "email": STRING,
+    "password": STRING,
+    "username": STRING
+  }
+
+  example:
+  {
+    "email": sample@sample.com,
+    "password": test123,
+    "username": myusername
+  }
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ id : 1, email: example@example.com}`
+ 
+* **Error Response:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ error : "Invalid email/password" }`
+
+* **Sample Call:**
+
+  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
+
+* **Notes:**
+
+  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+
 
 **Login**
 ----
@@ -13,12 +58,10 @@
   
 * **Data Params**
 
-  [
-      {
-          "username": STRING,
-          "password": STRING
-      }
-  ]
+  {
+      "email": STRING,
+      "password": STRING
+  }
 
 * **Success Response:**
   
@@ -41,11 +84,6 @@
   <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
 
 
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 **Show Todos**
 ----
   Return json data about all todos
