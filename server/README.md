@@ -1,16 +1,61 @@
 # My Fancy Todo App Server
 My Fancy Todo App is an application to manage your todos. This app has : 
+* Error case response
 * RESTful endpoint for todo's CRUD operation
 * JSON formatted response
 
 &nbsp;
 
+## Errors
+
+| Code  | Name                  | Message               |
+| ----- | --------------------- | --------------------- |
+| 400   | Bad Request           | < Validation error >  |
+| 404   | Not Found             | Error not found       |
+| 500   | Internal Server Error | Internal server error |
+
+_Response_
+```
+{
+  "message": "error message here"
+}
+```
+
 ## RESTful endpoints
+### POST /todos
+
+> Create new todo
+
+_Parameters_
+```
+not needed
+```
+
+_Request Body_
+```
+{
+    "title": "Makan",
+    "description": "makan ayam goreng",
+    "due_date": "2020-10-26"
+}
+```
+
+_Response (201 - Created)_
+```
+{
+  "id": 1,
+  "title": "Makan",
+  "description": "makan ayam goreng",
+  "status": false,
+  "due_date": "2020-10-26"
+}
+```
+---
 ### GET /todos
 
 > Get all todos
 
-_Request Header_
+_Parameters_
 ```
 not needed
 ```
@@ -25,61 +70,129 @@ _Response (200)_
 [
   {
     "id": 1,
-    "name": "<asset name>",
-    "description": "<asset description>",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
+    "title": "Makan",
+    "description": "makan ayam goreng",
+    "status": false,
+    "due_date": "2020-10-26"
   },
   {
     "id": 2,
-    "name": "<asset name>",
-    "description": "<asset description>",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
-  }
+    "title": "Tidur",
+    "description": "tidur di kasur",
+    "status": false,
+    "due_date": "2020-10-26"
+  },
+  { ... },
+  { ... }
 ]
 ```
 
-_Response (400 - Bad Request)_
+### GET /todos/:id
+
+> Get specific todo based on unique id
+
+_Parameters_
 ```
 {
-  "message": "Invalid request"
+  "id": 1
 }
 ```
----
-### POST /assets
 
-> Create new asset
+_Request Body_
+```
+not needed
+```
 
-_Request Header_
+_Response (200)_
 ```
 {
-  "access_token": "<your access token>"
+  "id": 1,
+  "title": "Makan",
+  "description": "makan ayam goreng",
+  "status": false,
+  "due_date": "2020-10-26"
+}
+```
+### PUT /todos/:id
+
+> Update title, description, status, and due_date of specific todo based on unique id
+
+_Parameters_
+```
+{
+  "id": 1
 }
 ```
 
 _Request Body_
 ```
 {
-  "name": "<name to get insert into>",
-  "description": "<description to get insert into>"
+  "title": "Minum",
+  "description": "minum air putih",
+  "status": true,
+  "due_date": "2020-10-25"
 }
 ```
 
-_Response (201 - Created)_
+_Response (200)_
 ```
 {
-  "id": <given id by system>,
-  "name": "<posted name>",
-  "description": "<posted description>",
-  "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
+  "id": 1,
+  "title": "Minum",
+  "description": "minum air putih",
+  "status": true,
+  "due_date": "2020-10-25"
 }
 ```
 
-_Response (400 - Bad Request)_
+### PATCH /todos/:id
+
+> Update status of specific todo based on unique id
+
+_Parameters_
 ```
 {
-  "message": "Invalid requests"
+  "id": 1
+}
+```
+
+_Request Body_
+```
+{
+  "status": true
+}
+```
+
+_Response (200)_
+```
+{
+  "id": 1,
+  "title": "Makan",
+  "description": "makan ayam goreng",
+  "status": true,
+  "due_date": "2020-10-26"
+}
+```
+
+### DELETE /todos/:id
+
+> Delete specific todo based on unique id
+
+_Parameters_
+```
+{
+  "id": 1
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```
+{
+  "message": "todo success to delete"
 }
 ```
