@@ -66,7 +66,7 @@ class Controller {
                 title: todo[1][0].title,
                 description: todo[1][0].description,
                 status: todo[1][0].status,
-                due_date: new Date(todo[1][0].dues_date)
+                due_date: todo[1][0].dues_date
             });
         } catch (error) {
             if(error.name === "SequelizeValidationError"){
@@ -99,7 +99,7 @@ class Controller {
             } else if(error.name === "TypeError") {
                 res.status(404).json({error:"Not Found"})
             } else {
-                res.status(500).json({error})
+                res.status(500).json({error: error.message})
             }
         }
     }
