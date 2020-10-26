@@ -33,6 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {
+    hooks: {
+      beforeCreate(value) {
+        if (!value.status) {
+          value.status = `not done`
+        }
+      }
+    },
     sequelize,
     modelName: 'Todo',
   });
