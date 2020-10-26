@@ -2,6 +2,7 @@ const { Todo } = require('../models/index')
 
 class TodoController {
   static async createTodo(req, res) {
+    console.log(req.body);
     const { title, description, status, due_date } = req.body
     const rawTodo = {
       title,
@@ -16,8 +17,8 @@ class TodoController {
       if (error.name === "SequelizeValidationError") {
         const errors = error.errors.map(err => {
           return err.message
-        }).join(', ')
-        res.status(400).send(errors)
+        })
+        res.status(400).json(errors)
       } else {
         res.status(500).json(error)
       }
