@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Makan",
+    "description": "makan ayam goreng",
+    "status": false,
+    "due_date": "2020-10-26"
+  },
+  {
+    "title": "Tidur",
+    "description": "tidur di kasur",
+    "status": false,
+    "due_date": "2020-10-26"
+  },
+  {
+    "title": "Main",
+    "description": "main game",
+    "status": false,
+    "due_date": "2020-10-26"
+  }
+]
