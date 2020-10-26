@@ -19,8 +19,40 @@ module.exports = (sequelize, DataTypes) => {
       }
    };
    User.init({
-      username: DataTypes.STRING,
-      email: DataTypes.STRING,
+      username: {
+         type: DataTypes.STRING,
+         allowNull: false,
+         unique: true,
+         validate: {
+            notEmpty: {
+               args: true,
+               msg: "Username is required!"
+            },
+            is: {
+               args: /^[a-zA-Z0-9-_]+$/,
+               msg: "Username must contain only a combination of alphabets, numbers, and dashes/underscore!"
+            },
+            len: {
+               args: [6,32],
+               msg: `Useername must be between 6-32 characters.`
+            },
+         }
+      },
+      email: {
+         type: DataTypes.STRING,
+         allowNull: false,
+         unique: true,
+         validate: {
+            notEmpty: {
+               args: true,
+               msg: "Email is required!"
+            },
+            isEmail: {
+               args: true,
+               msg: "Not a valid email!"
+            },
+         }
+      },
       password: DataTypes.STRING
    }, {
       sequelize,
