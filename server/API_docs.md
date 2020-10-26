@@ -88,9 +88,9 @@
 
 ------
 
-**Add a ToDo task**
+**Get a ToDo task**
 ----
-  Get a ToDo task
+  Get a task from ToDo List
 
 * **URL**
 
@@ -224,9 +224,9 @@
 
 -------
 
-**Patch a ToDo task**
+**Delete a ToDo task**
 ----
-  Update one detail of a task from ToDo List
+  Delete a task from ToDo List
 
 * **URL**
 
@@ -255,5 +255,7 @@
 * **Error Response:**
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
+  OR
+    **Content:** `{message: "id not found"}`
 
 -------
