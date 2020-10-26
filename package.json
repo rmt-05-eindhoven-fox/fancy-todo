@@ -1,0 +1,25 @@
+{
+  "name": "fancy-todo",
+  "version": "1.0.0",
+  "description": "Buatlah aplikasi Todo menggunakan Client-server model dengan spesifikasi sebagai berikut:\r - API Documentation yang meliputi : URLs, HTTP method, request, response (success dan error case)\r - Membuat routes sesuai standar REST API\r - CRUD endpoints untuk Todo, minimal ada:\r     - title\r     - description\r     - status\r     - due_date (validasi, user tidak bisa menginput tanggal yg sudah lewat dari hari ini)\r - Register\r Model user di validasi. Email harus unique, harus type email, password juga di validasi misalnya minimal 6 karakter\r - Login menggunakan email & password\r - Membuat authentication dan authorization sehingga user hanya bisa melakukan CRUD terhadap todo-nya sendiri\r - Make it fancy! Tambahkan 1 fitur atau lebih menggunakan 3rd party API apapun yang akan menjadikan aplikasi todo kamu menjadi unik dan berbeda dari aplikasi todo biasa. Misal, saat menambahkan Todo , user akan mendapatkan emai mengenai Todo yg dia buat.\r - Social Login (Google/Twitter/Facebook/GitHub)\r - NO alert(); please!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayyasy/fancy-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayyasy/fancy-todo/issues"
+  },
+  "homepage": "https://github.com/mayyasy/fancy-todo#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.4.1",
+    "sequelize": "^6.3.5"
+  }
+}
