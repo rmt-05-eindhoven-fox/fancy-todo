@@ -1,0 +1,14 @@
+[
+   {
+      "title": "Todo Title",
+      "description": "Todo Description",
+      "status": "Todo status",
+      "due_date": "2020-10-26"
+   },
+   {
+      "title": "Todo Title 2",
+      "description": "Todo Description 2",
+      "status": "Todo status",
+      "due_date": "2020-10-30"
+   }
+]
