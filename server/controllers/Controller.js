@@ -1,5 +1,7 @@
-const { Todo } = require('../models')
+const { Todo, User } = require('../models')
 const {Op} = require('sequelize')
+const { comparePassword } = require('../helpers/bcrypt')
+const generateToken = require('../helpers/jwt')
 
 class Controller{
     
@@ -70,7 +72,6 @@ class Controller{
             const newTodo = await Todo.update({
                 title, description, status, due_date
             },{
-
                 where : { id },
                 returning : ['id', 'title', 'description', 'status', 'due_date']
             })
@@ -129,6 +130,64 @@ class Controller{
                     message : `Can't find ID`
                 })
 
+            }
+
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
+
+
+    // Register & Login //
+
+    static async postUserRegister(req, res){
+        try {
+            const { email, password } = req.body
+            
+            const newUser = await User.create({
+                email, password, createdAt : new Date(), updatedAt : new Date()
+            })
+
+            const output = {
+                id : newUser.id,
+                email : newUser.email
+            }
+
+            res.status(201).json(output)
+
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
+
+
+    static async postUserLogin(req, res){
+        try {
+            const { email, password } = req.body
+            
+            const user = await User.findOne({
+                where : { email }
+            })
+
+            if(!user){
+                //user doesn't exist
+                res.status(401).json({
+                    message : 'Username/password is wrong'
+                })
+            } else if (!comparePassword(password, user.password)){
+                //password is wrong
+                res.status(401).json({
+                    message : 'Username/password is wrong'
+                })
+            } else {
+                // password is right, generate token
+                const userToken = generateToken({
+                    id : user.id,
+                    email : user.email
+                })
+                res.status(200).json({
+                    token : userToken
+                })
             }
 
         } catch (error) {

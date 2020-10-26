@@ -4,43 +4,43 @@
 
 * **URL**
 
-  /todos
+  `/todos`
 
 * **Method:**
   
-    `POST` 
+  `POST` 
 
-*  **URL Params**
+* **URL Params**
 
-   None
+  None
 
 * **Data Params**
-```
-    {
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "status" : "Not Done",
-        "due_date" : "2020-10-30"
-    }
+```json
+  {
+    "title" : "Work on API Docs",
+    "description" : "API Docs for Fancy ToDos",
+    "status" : "Not Done",
+    "due_date" : "2020-10-30"
+  }
 ```
 
 * **Success Response:**
 
   * **Code:** 201 CREATED <br />
-**Content:** 
-```
+  **Content:** 
+  ```json
     {
-        "id" : 1,
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "due_date" : "2020-10-30"
+      "id" : 1,
+      "title" : "Work on API Docs",
+      "description" : "API Docs for Fancy ToDos",
+      "due_date" : "2020-10-30"
     }
-```
+  ```
  
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
-    <!-- **Content:** `{ error : "Log in" }` -->
+  <!-- **Content:** `{ error : "Log in" }` -->
 
 
 
@@ -52,42 +52,42 @@
 
 * **URL**
 
-  /todos
+  `/todos`
 
 * **Method:**
   
-    `GET` 
+  `GET` 
 
-*  **URL Params**
+* **URL Params**
 
-   None
+  None
 
 * **Data Params**
 
-   None
+  None
 
 
 * **Success Response:**
 
-  * **Code:** 200 OK<br />
-**Content:** 
-```
+  * **Code:** 200 OK<br/>
+  **Content:** 
+  ```json
     [
-        {
-            "id" : 1,
-            "title" : "Work on API Docs",
-            "description" : "API Docs for Fancy ToDos",
-            "due_date" : "2020-10-30"
-        },
-        {
-            "id" : 2,
-            "title" : "Learn Rest API",
-            "description" : "Go to restapitutorial.com",
-            "due_date" : "2020-10-31"
-        }
+      {
+        "id" : 1,
+        "title" : "Work on API Docs",
+        "description" : "API Docs for Fancy ToDos",
+        "due_date" : "2020-10-30"
+      },
+      {
+        "id" : 2,
+        "title" : "Learn Rest API",
+        "description" : "Go to restapitutorial.com",
+        "due_date" : "2020-10-31"
+      }
     ]
 
-```
+  ```
  
 * **Error Response:**
 
@@ -102,38 +102,38 @@
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
   
-    `GET` 
+  `GET` 
 
-*  **URL Params**
+* **URL Params**
 
-    id refers to id of ToDo object
+  id refers to id of ToDo object
 
-    **Required:**
- 
-   `id=[integer]`
+  **Required:**
+
+  `id=[integer]`
 
 * **Data Params**
 
-   None
+  None
 
 
 * **Success Response:**
 
   * **Code:** 200 OK <br />
-**Content:** 
-```    
+  **Content:** 
+  ```json    
     {
-        "id" : 1,
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "due_date" : "2020-10-30"
+      "id" : 1,
+      "title" : "Work on API Docs",
+      "description" : "API Docs for Fancy ToDos",
+      "due_date" : "2020-10-30"
     }
 
-```
+  ```
  
 * **Error Response:**
 
@@ -149,46 +149,46 @@
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
   
-    `PUT` 
+  `PUT` 
 
-*  **URL Params**
+* **URL Params**
 
-    id refers to id of ToDo object
+  id refers to id of ToDo object
 
-    **Required:**
- 
-   `id=[integer]`
+  **Required:**
+
+  `id=[integer]`
 
 * **Data Params**
 
-   ```
-    {
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "status" : "Not Done",
-        "due_date" : "2020-10-30"
-    }
-    ```
+  ```json
+  {
+    "title" : "Work on API Docs",
+    "description" : "API Docs for Fancy ToDos",
+    "status" : "Not Done",
+    "due_date" : "2020-10-30"
+  }
+  ```
 
 
 * **Success Response:**
 
   * **Code:** 200 OK<br />
-**Content:** 
-```    
+  **Content:** 
+  ```json   
     {
-        "id" : 1,
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "status" : "Not Done",
-        "due_date" : "2020-10-30"
+      "id" : 1,
+      "title" : "Work on API Docs",
+      "description" : "API Docs for Fancy ToDos",
+      "status" : "Not Done",
+      "due_date" : "2020-10-30"
     }
 
-```
+  ```
  
 * **Error Response:**
 
@@ -203,43 +203,43 @@
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
   
-    `PATCH` 
+  `PATCH` 
 
 *  **URL Params**
 
-    id refers to id of ToDo object
+  id refers to id of ToDo object
 
-    **Required:**
- 
-   `id=[integer]`
+  **Required:**
+
+  `id=[integer]`
 
 * **Data Params**
 
-   ```
-    {
-        "status" : "Done"
-    }
+   ```json
+  {
+    "status" : "Done"
+  }
     ```
 
 
 * **Success Response:**
 
   * **Code:** 200 OK <br />
-**Content:** 
-```    
+  **Content:** 
+  ```json    
     {
-        "id" : 1,
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "status" : "Done",
-        "due_date" : "2020-10-30"
+      "id" : 1,
+      "title" : "Work on API Docs",
+      "description" : "API Docs for Fancy ToDos",
+      "status" : "Done",
+      "due_date" : "2020-10-30"
     }
 
-```
+  ```
  
 * **Error Response:**
 
@@ -254,48 +254,48 @@
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
   
-    `DELETE` 
+  `DELETE` 
 
 *  **URL Params**
 
-    id refers to id of ToDo object
+  id refers to id of ToDo object
 
-    **Required:**
- 
-   `id=[integer]`
+  **Required:**
+
+  `id=[integer]`
 
 * **Data Params**
 
-   NONE
+  NONE
 
 
 * **Success Response:**
 
   * **Code:** 200 OK <br />
 
-**Content:** 
-```    
+  **Content:** 
+  ```json    
     {
-        "id" : 1,
-        "title" : "Work on API Docs",
-        "description" : "API Docs for Fancy ToDos",
-        "status" : "Done",
-        "due_date" : "2020-10-30"
+      "id" : 1,
+      "title" : "Work on API Docs",
+      "description" : "API Docs for Fancy ToDos",
+      "status" : "Done",
+      "due_date" : "2020-10-30"
     }
 
-```
-    OR
-**Content:** 
+  ```
+  **OR** <br><br>
+  **Content:** <br>
     `message : 'todo success to delete'`
 
  
 * **Error Response:**
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    <!-- **Content:** `{ error : "Log in" }` -->
+  <!-- **Content:** `{ error : "Log in" }` -->
 
 -------
