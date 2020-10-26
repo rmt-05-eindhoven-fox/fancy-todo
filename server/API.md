@@ -246,7 +246,7 @@ Delete selected ToDo Object by id
   ```
     OR
   ```
-    Message: "ToDo Deleted!"
+    message: "todo success to delete"
   ```
   
 * **Error Response**
