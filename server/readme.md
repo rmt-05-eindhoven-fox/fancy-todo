@@ -17,7 +17,7 @@
   {
       title: "Todo Title", 
       description: "Todo Description",  
-      due_date: "2020-10-26T05:29:38.084Z", 
+      due_date: "2020-10-26", 
   }
   ```
 
@@ -186,7 +186,7 @@
       title: "New Todo Title",
       status: "pending", 
       description: "New Todo Description",  
-      due_date: "2020-10-26T05:29:38.084Z", 
+      due_date: "2020-10-26", 
   }
   ```
 
