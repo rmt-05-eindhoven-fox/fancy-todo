@@ -14,7 +14,16 @@ class TodoController {
       const todo = await Todo.create(todoObj);
       res.status(201).json(todo);
     } catch (err) {
-      res.status(500).json(err);
+      if(err.name === "SequelizeValidationError") {
+        if(err.errors.length > 0) {
+          let errors = err.errors.map(error => {
+            return error.message;
+          });
+          res.status(400).json(errors);
+        }
+      } else {
+        res.status(500).json(err);
+      }
     }
   }
 
@@ -31,7 +40,11 @@ class TodoController {
     try {
       let id = +req.params.id;
       const todo = await Todo.findByPk(id);
-      res.status(200).json(todo);
+      if (!todo) {
+        res.status(404).json({ msg: `Error not found!`});
+      } else {
+        res.status(200).json(todo);
+      }
     } catch (err) {
       res.status(500).json(err);
     }
@@ -48,9 +61,22 @@ class TodoController {
         due_date
       };
       const todo = await Todo.update(todoObj, { where: {id}, returning: true });
-      res.status(200).json(todo[1][0]);
+      if (!todo[1][0]) {
+        res.status(404).json({ msg: `Error not found!`});
+      } else {
+        res.status(200).json(todo[1][0]);
+      }
     } catch (err) {
-      res.status(500).json(err);
+      if(err.name === "SequelizeValidationError") {
+        if(err.errors.length > 0) {
+          let errors = err.errors.map(error => {
+            return error.message;
+          });
+          res.status(400).json(errors);
+        }
+      } else {
+        res.status(500).json(err);
+      }
     }
   }
 
@@ -59,9 +85,22 @@ class TodoController {
       let id = +req.params.id;
       let status = req.body.status;
       const todo = await Todo.update({ status: status }, { where: {id}, returning: true });
-      res.status(200).json(todo[1][0]);
+      if (!todo[1][0]) {
+        res.status(404).json({ msg: `Error not found!`});
+      } else {
+        res.status(200).json(todo[1][0]);
+      }
     } catch (err) {
-      res.status(500).json(err);
+      if(err.name === "SequelizeValidationError") {
+        if(err.errors.length > 0) {
+          let errors = err.errors.map(error => {
+            return error.message;
+          });
+          res.status(400).json(errors);
+        }
+      } else {
+        res.status(500).json(err);
+      }
     }
   }
 
@@ -69,9 +108,13 @@ class TodoController {
     try {
       let id = +req.params.id;
       const todo = await Todo.destroy({ where: {id} });
-      res.status(200).json({
-        msg: `Successfully delete a todo with Id ${id}!`
-      });
+      if (!todo) {
+        res.status(404).json({ msg: `Error not found!`});
+      } else {
+        res.status(200).json({
+          msg: `Successfully delete a todo with Id ${id}!`
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
     }

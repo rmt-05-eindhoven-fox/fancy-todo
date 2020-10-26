@@ -17,7 +17,18 @@ class UserController {
         email: user.email
       });
     } catch (err) {
-      res.status(500).json(err);
+      if(err.name === "SequelizeValidationError") {
+        if(err.errors.length > 0) {
+          let errors = err.errors.map(error => {
+            return error.message;
+          });
+          res.status(400).json(errors);
+        }
+      } else if (err.name === "SequelizeUniqueConstraintError") {
+        res.status(400).json({ msg: `Email is already taken!`});
+      } else {
+        res.status(500).json(err);
+      }
     }
   }
 
@@ -45,7 +56,16 @@ class UserController {
         res.status(200).json({ access_token });
       }
     } catch (err) {
-      res.status(500).json(err);
+      if(err.name === "SequelizeValidationError") {
+        if(err.errors.length > 0) {
+          let errors = err.errors.map(error => {
+            return error.message;
+          });
+          res.status(400).json(errors);
+        }
+      } else {
+        res.status(500).json(err);
+      }
     }
   }
 

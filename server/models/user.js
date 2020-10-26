@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, ValidationError
 } = require('sequelize');
 
 const { hashPassword } = require("../helpers/bcrypt");
@@ -18,8 +18,35 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Email is required!`
+        },
+        isEmail: {
+          args: true,
+          msg: `Wrong/invalid email format!`
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Password is required!`
+        },
+        len: {
+          args: [6, 255],
+          msg: `Password length minimum 6 characters!`
+        }
+      }
+    }
   }, {
     hooks: {
       beforeCreate(instance, options) {
