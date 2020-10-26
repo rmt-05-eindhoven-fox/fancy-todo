@@ -18,7 +18,10 @@ class Controller {
         res.status(201).json(data)
       })
       .catch(err => {
-        res.status(400).json(err.message)
+        if (err.name = "SequelizeValidationError") {
+          return res.status(400).json(err.message)
+        }
+        res.status(500).json(err.message)
       })
   }
 
@@ -28,10 +31,10 @@ class Controller {
         if (data) {
           return res.status(200).json(data)
         }
-        res.status(404).json(err.message)
+        res.status(404).json({ message: "Id not found" })
       })
       .catch(err => {
-        res.status(404).json(err.message)
+        res.status(500).json(err.message)
       })
   }
 
@@ -40,10 +43,16 @@ class Controller {
 
     Todo.update({ title, description, status, due_date }, { where: { id: req.params.id }, returning: true })
       .then(data => {
-        res.status(201).json(data[1][0])
+        if (data[0] === 1) {
+          return res.status(200).json(data[1][0])
+        }
+        res.status(404).json({ message: "Id not found" })
       })
       .catch(err => {
-        res.status(400).json(err.message)
+        if (err.name = "SequelizeValidationError") {
+          return res.status(400).json(err.message)
+        }
+        res.status(500).json(err.message)
       })
   }
 
@@ -52,20 +61,29 @@ class Controller {
 
     Todo.update({ status }, { where: { id: req.params.id }, returning: true })
       .then(data => {
-        res.status(201).json(data[1][0])
+        if (data) {
+          return res.status(200).json(data[1][0])
+        }
+        res.status(404).json({ message: "Id not found" })
       })
       .catch(err => {
-        res.status(400).json(err.message)
+        if (err.name = "SequelizeValidationError") {
+          return res.status(400).json(err.message)
+        }
+        res.status(500).json(err.message)
       })
   }
 
   static deleteTodoById(req, res) {
     Todo.destroy({ where: { id: req.params.id } })
       .then(data => {
-        res.status(201).json(data)
+        if (data) {
+          return res.status(201).json({ message: "todo success to delete" })
+        }
+        res.status(404).json({ message: "Id not found" })
       })
       .catch(err => {
-        res.status(400).json(err.message)
+        res.status(500).json(err.message)
       })
   }
 
