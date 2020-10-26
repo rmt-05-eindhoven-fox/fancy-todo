@@ -17,20 +17,21 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     status: DataTypes.STRING,
-    due_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        isDate: {
-          args: true,
-          msg: "input valid date!"
-        },
-        isAfter: {
-          args: new Date(),
-          msg: "Don't make a plan in the past!"
-        }
-      }
-    } 
+    due_date: DataTypes.DATE
+    // due_date: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    //   validate: {
+    //     isDate: {
+    //       args: true,
+    //       msg: "input valid date!"
+    //     },
+    //     isAfter: {
+    //       args: new Date(),
+    //       msg: "Don't make a plan in the past!"
+    //     }
+    //   }
+    // } 
   }, {
     sequelize,
     modelName: 'Todo',
