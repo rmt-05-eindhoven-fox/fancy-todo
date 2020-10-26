@@ -17,7 +17,7 @@ My Fancy Todo App is an application to manage your todos. This app has :
 _Response_
 ```
 {
-  "message": "error message here"
+  "error": "error message here"
 }
 ```
 
