@@ -64,13 +64,13 @@ class TodoController {
         .then(data => {
             if(data[0] !== 1){
                 throw{
-                    name: 'update failed'
+                    error: `data id ke ${+ req.params.id} tidak ditemukan`
                 }
             }
             res.status(200).json(data[1][0])
         })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(404).json(err)
         })
     }
     static updateStatus(req,res) {

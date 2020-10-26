@@ -10,13 +10,27 @@ return all available todo on server
 
   `POST`
 
+***Data Params***
+
+`title=[string]`,
+`description=[string]`,
+`status=[Boolean]`,
+`due_date=[date]`,
+
 ***success Response:***
 
     Code: 201
-    RESPONSE : 
-    [
-    object of new todo 
-    ]
+    CONTENT : 
+    {
+    "id": 4,
+    "title": "Bangun Malam",
+    "description": "belajar",
+    "status": false,
+    "due_date": "2020-10-28T00:00:00.000Z",
+    "updatedAt": "2020-10-26T14:50:04.305Z",
+    "createdAt": "2020-10-26T14:50:04.305Z"
+    }
+
 
 ***Error Response:***
 
@@ -41,7 +55,7 @@ return all available todo on server
 ***success Response:***
 
     Code: 200
-    RESPONSE : 
+    CONTENT : 
     [
     object of all available todo on server 
     ]
@@ -68,7 +82,7 @@ return todo's data with coresponding id
 ***success Response:***
 
     Code: 200
-    RESPONSE : 
+    CONTENT : 
     [
     object of todo's data with coresponding id
     ]
@@ -107,16 +121,22 @@ return updated todo
 ***success Response:***
 
     Code: 200
-    RESPONSE : 
+    CONTENT : 
     {
-        updated One Todo's data
+    "id": 4,
+    "title": "Bangun Malam",
+    "description": "tahajud",
+    "status": false,
+    "due_date": "2020-10-28T00:00:00.000Z",
+    "updatedAt": "2020-10-26T14:50:04.305Z",
+    "createdAt": "2020-10-26T14:50:04.305Z"
     }
 
 ***Error Response:***
 
     Code: 500 INTERNAL SERVER ERROR
     OR
-    404 NOT FO
+    404 NOT FOUND
     OR UND
     400 VALIDATION ERROR
 
@@ -148,9 +168,17 @@ return updated Todo
 ***success Response:***
 
     Code: 200
-    RESPONSE : 
+    CONTENT : 
     {
-        "status": "new status",
+        
+    "id": 4,
+    "title": "Bangun Malam",
+    "description": "tahajud",
+    "status": true,
+    "due_date": "2020-10-28T00:00:00.000Z",
+    "updatedAt": "2020-10-26T14:50:04.305Z",
+    "createdAt": "2020-10-26T14:50:04.305Z"
+
         
     }
 
@@ -188,9 +216,9 @@ return deleted todo
 ***success Response:***
 
     Code: 200
-    RESPONSE : 
+    CONTENT : 
     {
-        deleted data todo
+        todo success to delete
         
     }
 
@@ -199,7 +227,7 @@ return deleted todo
     Code: 500 INTERNAL SERVER ERROR
     or 
     404 NOT FOUND
-
+    Content: { error: `delete gagal. data id ke ${+ req.params.id} tidak ditemukan`}
 
    
 

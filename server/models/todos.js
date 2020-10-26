@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+
+// const{ } =require('../helper/bcrypt.js')
+
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -26,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
 
           if (pickedDate < todaysDate === true) {
             throw new Error("input tanggal error");
+          } else {
+            return date 
           }
         }
       }
