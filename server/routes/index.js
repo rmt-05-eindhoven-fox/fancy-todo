@@ -1,12 +1,11 @@
 const router = require('express').Router();
+const Controller = require('../controllers/TodoController')
 
-router.get('/todos', (req, res) => {
-    res.status(200).json([{
-        title: 'NgeGym',
-        description: 'fitness',
-        status: 'Undone',
-        due_date: 1234
-    }])
-})
+router.post('/todos', Controller.create)
+router.get('/todos', Controller.showTodos)
+
+router.get('/todos/:id', Controller.showTodo)
+
+
 
 module.exports = router
