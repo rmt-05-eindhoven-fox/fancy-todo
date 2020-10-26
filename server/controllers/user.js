@@ -19,7 +19,7 @@ class UserController{
             })
             .catch((err) => {
                 res.status(401).json({
-                    err: err
+                    msg: "invalid requests"
                 })
             })
     }
