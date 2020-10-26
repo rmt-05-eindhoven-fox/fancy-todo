@@ -13,9 +13,9 @@ class Controller {
             })
             const currentTime = new Date()
             if(due_date < currentTime){
-                throw {
-                    msg: `DATE SHOULD BE GREATER THAN TODAY`
-                }
+                res.status(400).json({
+                    msg: 'DATE SHOULD BE GREATER THAN TODAY'
+                })
             }
             res.status(201).json(result)
         } catch (error) {
@@ -67,9 +67,9 @@ class Controller {
             })
             const currentTime = new Date()
             if(due_date < currentTime){
-                throw {
+                res.status(400).json({
                     msg: `DATE SHOULD BE GREATER THAN TODAY`
-                }
+                })
             }
             res.status(200).json(result[1][0])
         } catch (error) {
