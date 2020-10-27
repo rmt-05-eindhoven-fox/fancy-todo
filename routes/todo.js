@@ -1,6 +1,8 @@
+const router = require("express").Router()
+const authentication = require("../middlewares/authentication")
 const TodoController = require("../controllers/todo")
 
-const router = require("express").Router()
+router.use(authentication)
 
 router.get("/", TodoController.showTodos)
 router.post("/", TodoController.createTodo)

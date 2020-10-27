@@ -6,6 +6,13 @@ signToken = (payload) => {
     return token;
 }
 
+verifyToken = (token) => {
+    const decoded = jwt.verify(token, process.env.SECRET)
+
+    return decoded
+}
+
 module.exports = {
-    signToken
+    signToken,
+    verifyToken
 }
