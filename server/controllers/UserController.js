@@ -1,28 +1,22 @@
+const createError = require('http-errors');
 const { match } = require('../helper/bycript');
 const { generateToken } = require('../helper/jwt');
 const { User } = require('../models');
 
 class UserController {
 
-  static register(req, res) {
+  static register(req, res, next) {
     const { username, email, password } = req.body;
     const input = { username, email, password };
     User.create(input)
       .then((user) => {
         res.status(200).json(user);
       }).catch((err) => {
-        if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
-          const errors = err.errors.map(error => {
-            return error.message;
-          })
-          res.status(400).json(errors)
-        } else {
-          res.status(500).json(err.stack)
-        }
-      }); 
+        next(err);
+      });
   }
 
-  static login(req, res) {
+  static login(req, res, next) {
     const { username, password } = req.body;
     // res.status(200).json({ username, password })
     User.findOne({
@@ -30,11 +24,11 @@ class UserController {
     })
       .then((user) => {
         if (!user) {
-          res.status(401).json({ message: 'Wrong Username / Password ' })
+          next(createError(401, 'Wrong Username / Password '));
         } else {
           const status = match(password, user.password);
           if (!status) {
-            res.status(401).json({ message: 'Wrong Username / Password ' })
+            next(createError(401, 'Wrong Username / Password '));
           } else {
             const { id, username, email } = user;
             const jwt = generateToken({
@@ -44,14 +38,7 @@ class UserController {
           }
         }
       }).catch((err) => {
-        if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
-          const errors = err.errors.map(error => {
-            return error.message;
-          })
-          res.status(400).json(errors)
-        } else {
-          res.status(500).json(err.stack)
-        }
+        next(err);
       });
   }
 }

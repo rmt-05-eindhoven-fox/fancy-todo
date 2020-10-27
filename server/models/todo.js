@@ -11,8 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User)
     }
   };
+
   Todo.init({
     title: {
       type: DataTypes.STRING,
@@ -54,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     validate: {
       dueDateCheck() {
         let yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); 
+        yesterday.setDate(yesterday.getDate() - 1);
         if (Date.parse(this.due_date) < yesterday) {
           throw new ValidationError('Due date cannot be set to last date!');
         }

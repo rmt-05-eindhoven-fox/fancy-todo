@@ -5,6 +5,11 @@ function generateToken(payloads) {
   return token;
 }
 
+function verivyToken(accessTOken) {
+  const decoded = jwt.verify(accessTOken, process.env.PRIVATE_KEY);
+  return decoded;
+}
+
 module.exports = {
-  generateToken
+  generateToken, verivyToken
 };

@@ -1,3 +1,4 @@
+const auth = require('../middleware/authentication');
 const todoRouter = require('./todoRouter');
 const userRouter = require('./userRouter');
 
@@ -9,7 +10,8 @@ router.get('/', (req, res) => {
   })
 })
 
-router.use('/todos', todoRouter);
 router.use('/users', userRouter);
+router.use(auth); 
+router.use('/todos', todoRouter);
 
 module.exports = router;

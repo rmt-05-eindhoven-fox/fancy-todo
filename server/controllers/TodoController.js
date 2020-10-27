@@ -1,50 +1,43 @@
-const { Todo } = require('../models');
+const createError = require('http-errors');
+const { Todo, User } = require('../models');
 
 class TodoController {
 
-  static index(req, res) {
-    Todo.findAll()
+  static index(req, res, next) {
+    Todo.findAll({
+      where: { UserId: req.logedInUser.id }
+    })
       .then((todos) => {
         res.status(200).json(todos)
       }).catch((err) => {
-        res.status(500).json(err.stack);
+        next(err)
       });
   }
 
-  static store(req, res) {
+  static store(req, res, next) {
+    const UserId = req.logedInUser.id;
     const { title, description, due_date } = req.body;
-    const input = { title, description, due_date };
-    // res.status(200).json(input)
+    const input = { title, description, due_date, UserId };
+
     Todo.create(input)
       .then((todo) => {
         res.status(200).json(todo);
       }).catch((err) => {
-        if (err.name === 'SequelizeValidationError' || 'SequelizeUniqueConstraintError') {
-          const errors = err.errors.map(el => {
-            return el.message;
-          })
-          res.status(400).json(errors);
-        } else {
-          res.status(500).json(err.stack)
-        }
+        next(err);
       });
   }
 
-  static show(req, res) {
+  static show(req, res, next) {
     const { id } = req.params;
     Todo.findByPk(id)
       .then((todo) => {
-        if (!todo) {
-          res.status(404).json({ error: 'Data not found' })
-        } else {
-          res.status(200).json(todo);
-        }
+        res.status(200).json(todo);
       }).catch((err) => {
-        res.send(500).json(err.stack);
+        next(err);
       });
   }
 
-  static update(req, res) {
+  static update(req, res, next) {
     const { id } = req.params;
     const { title, description, status, due_date } = req.body;
     const input = { title, description, status, due_date };
@@ -53,24 +46,13 @@ class TodoController {
       returning: true
     })
       .then((todo) => {
-        if (todo[0] > 0) {
-          res.status(200).json(todo[1][0]);
-        } else {
-          res.status(404).json({ error: 'Data not found' })
-        }
+        res.status(200).json(todo[1][0]);
       }).catch((err) => {
-        if (err.name === 'SequelizeValidationError') {
-          const errors = err.errors.map(el => {
-            return el.message;
-          })
-          res.status(400).json(errors);
-        } else {
-          res.status(500).json(err.stack)
-        }
+        next(err);
       });
   }
 
-  static patch(req, res) {
+  static patch(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;
     const input = { status };
@@ -79,34 +61,19 @@ class TodoController {
       returning: true
     })
       .then((todo) => {
-        if (todo[0] > 0) {
-          res.status(200).json(todo[1][0])
-        } else {
-          res.status(404).json({ error: 'Data not found' })
-        }
+        res.status(200).json(todo[1][0]);
       }).catch((err) => {
-        if (err.name === 'SequelizeValidationError') {
-          const errors = err.errors.map(el => {
-            return el.message;
-          })
-          res.status(400).json(errors);
-        } else {
-          res.status(500).json(err.stack)
-        }
+        next(err);
       });
   }
 
-  static destroy(req, res) {
+  static destroy(req, res, next) {
     const { id } = req.params;
     Todo.destroy({ where: { id } })
       .then((result) => {
-        if (result > 0) {
-          res.status(200).json({ message: 'Todo success to delete!' })
-        } else {
-          res.status(404).json({ error: 'Data not found' })
-        }
+        res.status(200).json({ message: 'Todo success to delete!' });
       }).catch((err) => {
-        res.status(500).json(err.stack)
+        next(err);
       });
   }
 
