@@ -2,11 +2,16 @@ const {Todo} = require("../models");
 
 class todoController{
     static async viewAll(request, response){
+        const userId = request.loggedInUser.id
         try{
-            const data = await Todo.findAll()   
+            const data = await Todo.findAll({
+                where: {
+                    id: userId
+                }
+            })   
             response.status(201).json(data)
         }catch (error){
-            response.status(500).json(err)
+            response.status(500).json(error);
         }
     }
 
@@ -25,7 +30,8 @@ class todoController{
             title: request.body.title,
             description: request.body.description, 
             status: request.body.status, 
-            due_date: request.body.due_date 
+            due_date: request.body.due_date
+            UserId: request.loggedInUser.id 
         }
         try{
             const data = await Todo.create(newData)
@@ -34,10 +40,10 @@ class todoController{
                 "title": data.title,
                 "description": data.description,
                 "status": data.status,
-                "due_date": data.due_date
+                "due_date": data.due_date,
+                "UserId": data.UserId
             }
             response.status(201).json(result);
-        
         }catch(error){
             response.status(500).json(error);
         }
