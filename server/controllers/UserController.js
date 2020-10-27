@@ -3,7 +3,7 @@ const { checkPassword } = require('../helpers/bcryptjs')
 const { signToken } = require('../helpers/jwt')
 
 class UserController {
-  static register(req, res) {
+  static register(req, res, next) {
     const { email, password } = req.body
     const payload = {
       email,
@@ -11,51 +11,36 @@ class UserController {
     }
     User.create(payload)
     .then(data => {
-      console.log(data);
-      res.status(201).send(data)
+      res.status(201).json({email: data.email, id: data.id})
     })
     .catch(error => {
-      if (error.name === "SequelizeValidationError") {
-        const errors = error.errors.map(err => {
-          return err.message
-        }).join(', ')
-        res.status(400).send(errors)
-      } else {
-        res.status(500).json(error)
-      }
+      next(error)
     })
   }
 
-  static login(req, res) {
+  static login(req, res, next) {
     const { email, password } = req.body
     const payload = {
       email,
       password
     }
     const options = {
-      where: {
-        email: email
-      }
+      where: { email: email }
     }
-
     User.findOne(options)
     .then(user => {
       if (!user) {
-        res.status(401).json({
-          message: 'email/password is wrong! not found'
-        })
+        throw { msg: 'email/password is wrong!', status: 400 }
       } else if (!checkPassword(payload.password, user.password)) {
-        res.status(401).json({
-          message: 'email/password is wrong!'
-        })
+        throw { msg: 'email/password is wrong!', status: 400 }
       }
       else {
-        const accessToken = signToken({ email: user.email })
-        res.status(200).json({ accessToken })
+        const accessToken = signToken({ email: user.email, id: user.id })
+        res.status(200).json({ accesstoken: accessToken })
       }
     })
     .catch(err => {
-      res.status(500).json(err)
+      next(err)
     })
   }
 }

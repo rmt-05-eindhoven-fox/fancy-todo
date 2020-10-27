@@ -170,7 +170,7 @@
 
 * **Method:**
   
-  `PATCh`
+  `PATCH`
 
 * **Data Params**
 

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User, { foreignKey: 'userId' })
     }
   };
   Todo.init({
@@ -54,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Cannot insert passed date!'
         }
       }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,

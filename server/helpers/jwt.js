@@ -5,4 +5,9 @@ function signToken(payload) {
   return token
 }
 
-module.exports = { signToken }
+function decodeToken(token) {
+  const decoded = jwt.verify(token, process.env.SECRET)
+  return decoded
+}
+
+module.exports = { signToken , decodeToken }
