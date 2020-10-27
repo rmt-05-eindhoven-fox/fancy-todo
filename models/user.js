@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         passwordLength(value) {
           if (value.length < 6 || value.length > 12) {
-            throw new Error (`Password must be longer than 6 digit, and less than 12`)
+            throw new Error (`Password must be longer than 5 digit, and less than 12`)
           }
         }
       }
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         usernameLength(value) {
           if (value.length < 4 || value.length > 12) {
-            throw new Error (`Username must be longer than 4 digit, and less than 12`)
+            throw new Error (`Username must be longer than 3 digit, and less than 12`)
           }
         }
       }

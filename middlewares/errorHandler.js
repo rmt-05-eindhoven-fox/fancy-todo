@@ -15,6 +15,10 @@ async function errorHandler (err, req, res, next) {
             status = 400
             message = err.errors[0].message
             break;
+        case "SequelizeDatabaseError":
+            status = 400
+            message = err.message
+            break;
         default:
             status = 500
             message = err.name || `Internal Server Error`

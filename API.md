@@ -12,10 +12,12 @@
   
 * **Data Params**
 
+  **Required:**
+  
   {
-    "email": STRING,
-    "password": STRING,
-    "username": STRING
+    "email": STRING, // must be email type
+    "password": STRING, // must be longer than 5 digit and less than 12
+    "username": STRING // must be longer than 3 digit and less than 12
   }
 
   example:
@@ -32,56 +34,51 @@
  
 * **Error Response:**
 
-  * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ error : "Invalid email/password" }`
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message : "email must be unique" }`
+    message can be various depends on the validation
 
-* **Sample Call:**
+  OR
 
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Internal Server Error" }`
 
 
 **Login**
 ----
-  <_Additional information about your API call. Try to use verbs that match both request type (fetching vs modifying) and plurality (one vs multiple)._>
+  Sign in to the app
 
 * **URL**
 
-  /login/
+  /login
 
 * **Method:**
 
-  `GET`
+  `POST`
   
 * **Data Params**
 
+  **Required:**
+  
   {
       "email": STRING,
       "password": STRING
   }
 
 * **Success Response:**
-  
-  <_What should the status code be on success and is there any returned data? This is useful when people need to to know what their callbacks should expect!_>
 
   * **Code:** 200 <br />
-    **Content:** `{ id : 12 }`
+    **Content:** `{ access_token : "<jsonwebtoken>" }`
  
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ error : "Invalid email/password" }`
+    **Content:** `{ message : "Invalid email/password" }`
 
-* **Sample Call:**
+  OR
 
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Internal Server Error" }`
 
 
 **Show Todos**
@@ -99,31 +96,23 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: <DATE> }`
+    **Content:** `{ todos: [] }`
  
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ error : "You need to login first" }`
+    **Content:** `{ message : "Authentication failed" }`
     
   OR
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Todos not found" }`
+    **Content:** `{ message : "Todos not found" }`
 
   OR
 
-  * **Code:** 422 UNPROCESSABLE ENTRY <br />
-    **Content:** `{ error : "Email Invalid" }`
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Internal Server Error" }`
 
-* **Sample Call:**
-
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
 
 **Create Todo**
 ----
@@ -139,6 +128,8 @@
   
 * **Data Params**
 
+  **Required:**
+  
   {
     "title": STRING,
     "description": STRING,
@@ -149,27 +140,23 @@
 * **Success Response:**
 
   * **Code:** 201 <br />
-    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE }`
+    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE, UserId: INTEGER, createdAt: DATE, updatedAt: DATE }`
  
 * **Error Response:**
 
-  <_Most endpoints will have many ways they can fail. From unauthorized access, to wrongful parameters etc. All of those should be liste d here. It might seem repetitive, but it helps prevent assumptions from being made where they should be._>
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Authentication failed" }`
+    
+  OR
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "SequelizeValidationError" }`
+    **Content:** `{ message : "Todo.status cannot be null" }`
+    message can be various depends on the validation
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "" }`
-
-* **Sample Call:**
-
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+    **Content:** `{ message : "Internal Server Error" }`
 
 
 **Show Todo**
@@ -181,8 +168,6 @@
   /todos/:id
 
 * **Method:**
-  
-  <_The request type_>
 
   `GET`
   
@@ -195,25 +180,29 @@
 * **Success Response:**
   
   * **Code:** 200 <br />
-    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE }`
+    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE, createdAt: DATE, updatedAt: DATE, UserId: INTEGER }`
  
 * **Error Response:**
 
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Authentication failed" }`
+    
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Not Authorized" }`
+    this happen when user doesn't have right to see the todo
+    
+  OR
+
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Todos not found" }`
+    **Content:** `{ message : "Todo not found" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "" }`
+    **Content:** `{ message : "Internal Server Error" }`
 
-* **Sample Call:**
-
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
 
 **Edit Todo**
 ----
@@ -235,6 +224,8 @@
 
 * **Data Params**
 
+  **Required:**
+
   {
     "title": STRING,
     "description": STRING,
@@ -245,30 +236,35 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE }`
+    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE, createdAt: DATE, updatedAt: DATE, UserId: INTEGER }`
  
 * **Error Response:**
 
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Authentication failed" }`
+    
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Not Authorized" }`
+    this happen when user doesn't have right to edit the todo
+    
+  OR
+
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "SequelizeValidationError" }`
+    **Content:** `{ message : "Todo.status cannot be null" }`
+    message can be various depends on the validation
 
   OR
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Todos not found" }`
+    **Content:** `{ message : "Todo not found" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "" }`
+    **Content:** `{ message : "Internal Server Error" }`
 
-* **Sample Call:**
-
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
 
 **Edit Todo Status**
 ----
@@ -290,6 +286,8 @@
 
 * **Data Params**
 
+  **Required:**
+
   {
     "status": STRING
   }
@@ -297,30 +295,35 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE }`
+    **Content:** `{ id : INTEGER, title: STRING, description: STRING, status: STRING, due_date: DATE, createdAt: DATE, updatedAt: DATE, UserId: INTEGER }`
  
 * **Error Response:**
 
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Authentication failed" }`
+    
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Not Authorized" }`
+    this happen when user doesn't have right to edit the todo
+    
+  OR
+
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "SequelizeValidationError" }`
+    **Content:** `{ message : "Todo.status cannot be null" }`
+    message can be various depends on the validation
 
   OR
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Todos not found" }`
+    **Content:** `{ message : "Todo not found" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "" }`
+    **Content:** `{ message : "Internal Server Error" }`
 
-* **Sample Call:**
-
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
 
 **Delete Todo**
 ----
@@ -343,22 +346,25 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{message: 'todo success to delete'}`
+    **Content:** `{message: '<todo title> success to delete'}`
  
 * **Error Response:**
 
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Authentication failed" }`
+    
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ message : "Not Authorized" }`
+    this happen when user doesn't have right to edit the todo
+    
+  OR
+
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Todos not found" }`
+    **Content:** `{ message : "Todos not found" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "" }`
-
-* **Sample Call:**
-
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
-
-* **Notes:**
-
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+    **Content:** `{ message : "Internal Server Error" }`

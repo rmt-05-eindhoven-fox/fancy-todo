@@ -15,11 +15,21 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Todo.init({
-    title: DataTypes.STRING, // char 255
-    description: DataTypes.STRING,
-    status: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }, 
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     due_date: {
       type: DataTypes.DATE,
+      allowNull: false,
       validate:{
         isDate: {
           msg: `Must be a date`
