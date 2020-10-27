@@ -7,7 +7,8 @@ class Controller {
                 title: req.body.title,
                 description: req.body.description,
                 status: req.body.status,
-                due_date: req.body.due_date
+                due_date: req.body.due_date,
+                UserId: req.loggedIn.id
             }
             let todo = await Todo.create(payload);
             res.status(201).json({
@@ -28,7 +29,7 @@ class Controller {
 
     static async showTodos(req, res){
         try {
-            let data = await Todo.findAll();
+            let data = await Todo.findAll({where:{UserId:req.loggedIn.id}});
             res.status(200).json(data)
         } catch (error) {
             res.status(500).json({error:error.message})
