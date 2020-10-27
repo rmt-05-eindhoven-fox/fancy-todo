@@ -5,11 +5,13 @@ class TodoController {
   static async createTodo(req, res) {
     try {
       const { title, description, status, due_date } = req.body;
+      const UserId = +req.userLoggedIn.id;
       let todoObj = {
         title,
         description,
         status,
-        due_date
+        due_date,
+        UserId
       };
       const todo = await Todo.create(todoObj);
       res.status(201).json(todo);
@@ -29,7 +31,8 @@ class TodoController {
 
   static async readTodo(req, res) {
     try {
-      const todos = await Todo.findAll({ order: [["id", "ASC"]] });
+      const UserId = +req.userLoggedIn.id;
+      const todos = await Todo.findAll({ where: { UserId } ,order: [["id", "ASC"]] });
       res.status(200).json(todos);
     } catch (err) {
       res.status(500).json(err);
