@@ -26,20 +26,9 @@ class TodoController {
 
   static async create(req, res, next) {
     try {
-      const {
-        title,
-        description,
-        status,
-        due_date
-      } = req.body
+      const { title, description, status, due_date } = req.body
 
-      const todoObj = {
-        title,
-        description,
-        status,
-        due_date,
-        UserId: req.userData.id
-      }
+      const todoObj = { title, description, status, due_date, UserId: req.userData.id }
 
       const todo = await Todo.create(todoObj, {
         individualHooks: true

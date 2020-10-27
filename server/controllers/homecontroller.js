@@ -11,18 +11,11 @@ class HomeController {
 
   static async register(req, res, next) {
     try {
-      const {
-        email,
-        password
-      } = req.body
+      const { email, password } = req.body
 
-      const userObj = {
-        email,
-        password
-      }
+      const userObj = { email, password }
       const user = await User.create(userObj, {
-        individualHooks: true
-      })
+        individualHooks: true })
       res.status(201).json({
         id:user.id,
         email:user.email,
@@ -35,10 +28,7 @@ class HomeController {
 
   static async login(req, res, next) {
     try {
-      const {
-        email,
-        password
-      } = req.body
+      const { email, password } = req.body
       const user = await User.findOne({
         where: { email }
       })
