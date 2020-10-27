@@ -1,10 +1,14 @@
-const express = require('express')
-const app = express()
-const port = 3000;
-const todoRoutes = require('./routes')
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const port = process.env.PORT;
+const routes = require("./routes/");
 
-app.use ('/todos', todoRoutes)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(port, ()=> {
-console.log(`connected to http://localhost:${port}/` )
-})
+app.use("/", routes);
+
+app.listen(port, () => {
+	console.log(`connected to http://localhost:${port}/`);
+});

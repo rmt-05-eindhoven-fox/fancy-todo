@@ -1,25 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const todoController = require("../controllers/todoController");
+const userController = require("../controllers/userController");
 
 
 //create
-router.post("/", todoController.addTodo);
+router.post("/todos", todoController.addTodo);
 //read
-router.get("/", todoController.showTodo)
-router.get("/:id", todoController.detailTodo);
-
+router.get("/todos", todoController.showTodo);
+router.get("/todos/:id", todoController.detailTodo);
 //update
-// router.put("/:id", todoController.update);
-
+router.put("/todos/:id", todoController.update);
 //status
-// router.patch("/:id", todoController.update);
-
+router.patch("/todos/:id", todoController.status);
 //delete
-// router.delete("/:id", todoController.delete);
-
-
-// router.get("/register", todoController.register);
-// router.get("/login", todoController.login);
+router.delete("/todos/:id", todoController.delete);
+//register & login
+router.post("/user/register", userController.register);
+router.post("/user/login", userController.login);
 
 module.exports = router;
+    

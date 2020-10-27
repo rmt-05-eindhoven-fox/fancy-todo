@@ -35,14 +35,31 @@ class TodoController {
 			due_date: req.body.due_date,
 		};
 
+		console.log(req.body)
+
 		Todo.create(newTodo)
 			.then((data) => {
-				res.status(201).json({ data });
+				res.status(201).json(data);
 			})
 			.catch((err) => {
 				res.status(500).json.error;
 			});
 	}
+
+	// static async addTodo(req, res) {
+	// 	const { title, description, status, due_date } = req.body;
+	// 	try {
+	// 		const newTodo = await Todo.create({
+	// 			title,
+	// 			description,
+	// 			status,
+	// 			due_date,
+	// 		});
+	// 		res.status(201).json(newTodo);
+	// 	} catch (error) {
+	// 		res.status(500).json(error);
+	// 	}
+	// }
 
 	static update(req, res) {
 		let params = {
@@ -51,47 +68,53 @@ class TodoController {
 			status: req.body.status,
 			due_date: req.body.due_date,
 		};
+		console.log(params);
 
-		Cast.update(params, { 
-			where: 
-			{ id: req.params.id } 
+		Todo.update(params, {
+			where: { id: req.params.id }	
+			// returning: true,
 		})
 			.then((data) => {
-				res.status(200).json
+				console.log("");
+				res.status(200).json(data);
 			})
 			.catch((err) => {
-				res.status(500);
+				console.log("");
+				res.status(500).json(err);
 			});
 	}
 
-	static status(req,res) {
+	static status(req, res) {
 		let params = {
 			status: req.body.status,
 		};
 
 		Todo.update(params, {
 			where: {
-				status = req.params.status
-			}
-		})
+				id: req.params.id}
+			})
+			.then((data) => {
+				console.log("");
+				res.status(200).json(data);
+			})
+			.catch((err) => {
+				console.log("");
+				res.status(500).json(err);
+			})
 
 	}
 
 	static delete(req, res) {
 		Todo.destroy({
-			where: {id: req.params.id },
+			where: { id: req.params.id },
 		})
 			.then((data) => {
-				res.status(200).json;
+				res.status(200).json(data);
 			})
 			.catch((err) => {
-				res.status(500).json;
+				res.status(500).json(err);
 			});
 	}
-
-	static register(req, res) {}
-
-	static login(req, res) {}
 }
 
 module.exports = TodoController;
