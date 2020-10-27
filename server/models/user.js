@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
+  const {hashPassword} = require('../helpers/bcrypt')
   class User extends Model {
     /**
      * Helper method for defining associations.
@@ -23,5 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.addHook("beforeCreate", (instance, options) => {
+    instance.password = hashPassword(instance.password);
+  })
   return User;
 };

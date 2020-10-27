@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const Controller = require('../controllers/TodoController')
+const UserRoutes = require('./user')
+
+router.use(UserRoutes);
 
 router.post('/todos', Controller.create)
 router.get('/todos', Controller.showTodos)
