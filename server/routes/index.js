@@ -4,10 +4,10 @@ const todoController = require("../controllers/todoController");
 
 
 //create
-// router.post("/", todoController.add);
+router.post("/", todoController.addTodo);
 //read
-router.get("/", todoController.show)
-router.get("/:id", todoController.detail);
+router.get("/", todoController.showTodo)
+router.get("/:id", todoController.detailTodo);
 
 //update
 // router.put("/:id", todoController.update);
