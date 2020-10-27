@@ -42,14 +42,14 @@
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "..." }`
+    **Content:** `{ msg : "Title is required!, The due date cannot be before today's date!" }`
 
   OR
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Id doesn't exists!" }`
+    **Content:** `{ msg : "Error not found!" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "Internal server error!" }`
+    **Content:** `{ msg : "Internal server error!" }`

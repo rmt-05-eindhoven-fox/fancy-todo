@@ -4,7 +4,7 @@ const { signToken } = require("../helpers/jwt");
 
 class UserController {
 
-  static async register(req, res) {
+  static async register(req, res, next) {
     try {
       const {email, password} = req.body;
       const payload = {
@@ -17,22 +17,11 @@ class UserController {
         email: user.email
       });
     } catch (err) {
-      if(err.name === "SequelizeValidationError") {
-        if(err.errors.length > 0) {
-          let errors = err.errors.map(error => {
-            return error.message;
-          });
-          res.status(400).json(errors);
-        }
-      } else if (err.name === "SequelizeUniqueConstraintError") {
-        res.status(400).json({ msg: `Email is already taken!`});
-      } else {
-        res.status(500).json(err);
-      }
+      next(err);
     }
   }
 
-  static async login(req, res) {
+  static async login(req, res, next) {
     try {
       const {email, password} = req.body;
       const payload = {
@@ -42,11 +31,11 @@ class UserController {
       const user = await User.findOne({ where: {email: payload.email} });
       if (!user) {
         res.status(401).json({
-          msg: `Invalid email/password!`
+          msg: `Invalid email or password!`
         });
       } else if (!comparePassword(payload.password, user.password)) {
         res.status(401).json({
-          msg: `Invalid email/password!`
+          msg: `Invalid email or password!`
         });
       } else {
         const access_token = signToken({
@@ -56,16 +45,7 @@ class UserController {
         res.status(200).json({ access_token });
       }
     } catch (err) {
-      if(err.name === "SequelizeValidationError") {
-        if(err.errors.length > 0) {
-          let errors = err.errors.map(error => {
-            return error.message;
-          });
-          res.status(400).json(errors);
-        }
-      } else {
-        res.status(500).json(err);
-      }
+      next(err);
     }
   }
 

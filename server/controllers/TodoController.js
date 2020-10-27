@@ -2,7 +2,7 @@ const { Todo } = require("../models/index");
 
 class TodoController {
 
-  static async createTodo(req, res) {
+  static async createTodo(req, res, next) {
     try {
       const { title, description, status, due_date } = req.body;
       const UserId = +req.userLoggedIn.id;
@@ -16,44 +16,31 @@ class TodoController {
       const todo = await Todo.create(todoObj);
       res.status(201).json(todo);
     } catch (err) {
-      if(err.name === "SequelizeValidationError") {
-        if(err.errors.length > 0) {
-          let errors = err.errors.map(error => {
-            return error.message;
-          });
-          res.status(400).json(errors);
-        }
-      } else {
-        res.status(500).json(err);
-      }
+      next(err);
     }
   }
 
-  static async readTodo(req, res) {
+  static async readTodo(req, res, next) {
     try {
       const UserId = +req.userLoggedIn.id;
       const todos = await Todo.findAll({ where: { UserId } ,order: [["id", "ASC"]] });
       res.status(200).json(todos);
     } catch (err) {
-      res.status(500).json(err);
+      next(err);
     }
   }
 
-  static async getTodoById(req, res) {
+  static async getTodoById(req, res, next) {
     try {
       let id = +req.params.id;
       const todo = await Todo.findByPk(id);
-      if (!todo) {
-        res.status(404).json({ msg: `Error not found!`});
-      } else {
-        res.status(200).json(todo);
-      }
+      res.status(200).json(todo);
     } catch (err) {
-      res.status(500).json(err);
+      next(err);
     }
   }
 
-  static async updateTodoById(req, res) {
+  static async updateTodoById(req, res, next) {
     try {
       let id = +req.params.id;
       const { title, description, status, due_date } = req.body;
@@ -64,62 +51,32 @@ class TodoController {
         due_date
       };
       const todo = await Todo.update(todoObj, { where: {id}, returning: true });
-      if (!todo[1][0]) {
-        res.status(404).json({ msg: `Error not found!`});
-      } else {
-        res.status(200).json(todo[1][0]);
-      }
+      res.status(200).json(todo[1][0]);
     } catch (err) {
-      if(err.name === "SequelizeValidationError") {
-        if(err.errors.length > 0) {
-          let errors = err.errors.map(error => {
-            return error.message;
-          });
-          res.status(400).json(errors);
-        }
-      } else {
-        res.status(500).json(err);
-      }
+      next(err);
     }
   }
 
-  static async updateStatusTodoById(req, res) {
+  static async updateStatusTodoById(req, res, next) {
     try {
       let id = +req.params.id;
       let status = req.body.status;
       const todo = await Todo.update({ status: status }, { where: {id}, returning: true });
-      if (!todo[1][0]) {
-        res.status(404).json({ msg: `Error not found!`});
-      } else {
-        res.status(200).json(todo[1][0]);
-      }
+      res.status(200).json(todo[1][0]);
     } catch (err) {
-      if(err.name === "SequelizeValidationError") {
-        if(err.errors.length > 0) {
-          let errors = err.errors.map(error => {
-            return error.message;
-          });
-          res.status(400).json(errors);
-        }
-      } else {
-        res.status(500).json(err);
-      }
+      next(err);
     }
   }
 
-  static async deleteTodo(req, res) {
+  static async deleteTodo(req, res, next) {
     try {
       let id = +req.params.id;
       const todo = await Todo.destroy({ where: {id} });
-      if (!todo) {
-        res.status(404).json({ msg: `Error not found!`});
-      } else {
-        res.status(200).json({
-          msg: `Successfully delete a todo with Id ${id}!`
-        });
-      }
+      res.status(200).json({
+        msg: `Successfully delete a todo!`
+      });
     } catch (err) {
-      res.status(500).json(err);
+      next(err);
     }
   }
 

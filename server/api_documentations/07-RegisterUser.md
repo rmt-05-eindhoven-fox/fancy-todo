@@ -33,9 +33,9 @@
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "..." }`
+    **Content:** `{ msg : "Email is required!, Wrong email format!, Password length minimum 6 characters!" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "Internal server error!" }`
+    **Content:** `{ msg : "Internal server error!" }`

@@ -10,9 +10,9 @@
   
   `POST`
   
-*  **URL Params**
+* **URL Params**
 
-   None
+  None
 
 * **Data Params**
 
@@ -39,9 +39,9 @@
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "..." }`
+    **Content:** `{ msg : "Title is required!, The due date cannot be before today's date!" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "Internal server error!" }`
+    **Content:** `{ msg : "Internal server error!" }`

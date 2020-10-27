@@ -32,9 +32,9 @@
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "..." }`
+    **Content:** `{ msg : "Invalid email or password!" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "Internal server error!" }`
+    **Content:** `{ msg : "Internal server error!" }`

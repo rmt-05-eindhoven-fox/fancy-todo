@@ -39,14 +39,14 @@
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ error : "..." }`
+    **Content:** `{ msg : "Status is required!" }`
 
   OR
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Id doesn't exists!" }`
+    **Content:** `{ msg : "Error not found!" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "Internal server error!" }`
+    **Content:** `{ msg : "Internal server error!" }`

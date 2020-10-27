@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isEmail: {
           args: true,
-          msg: `Wrong/invalid email format!`
+          msg: `Wrong email format!`
         }
       }
     },

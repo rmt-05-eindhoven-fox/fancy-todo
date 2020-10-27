@@ -24,14 +24,14 @@
 
   * **Code:** 200 OK <br />
     **Content:**
-    `{ msg: 'Successfully delete a todo with Id 4!' }`
+    `{ msg : 'Successfully delete a todo!' }`
  
 * **Error Response:**
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Id doesn't exists!" }`
+    **Content:** `{ msg : "Error not found!" }`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{ error : "Internal server error!" }`
+    **Content:** `{ msg : "Internal server error!" }`

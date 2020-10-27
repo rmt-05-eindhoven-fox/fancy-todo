@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDate: {
           args: true,
-          msg: `Wrong/invalid date format YYYY-MM-DD!`
+          msg: `Wrong date format YYYY-MM-DD!`
         },
         isAfter: {
           args: `${new Date()}`,

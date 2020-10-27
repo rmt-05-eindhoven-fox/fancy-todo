@@ -37,4 +37,4 @@
 * **Error Response:**
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "Id doesn't exists!" }`
+    **Content:** `{ msg : "Error not found!" }`
