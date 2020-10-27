@@ -19,7 +19,6 @@
       {
         "title": "Fancy Todo",
         "decription": "Week 1 task",
-        "status": "Unfinished",
         "due_date": "2020-10-30"
       }
   ```
@@ -32,7 +31,10 @@
         "id": "1",
         "title": "Fancy Todo",
         "decription": "Week 1 task",
-        "due_date": "2020-10-30"
+        "due_date": "2020-10-30",
+        "userId": 18,
+        "createdAt": "2020-10-27T09:30:59.051Z",
+        "updatedAt": "2020-10-27T09:30:59.051Z"
       }
   ```
 
@@ -65,13 +67,21 @@
             "id" : 1,
             "title" : "Fancy ToDo",
             "description" : "Week 1 task",
-            "due_date" : "2020-10-30"
+            "status": "Unfinished",
+            "due_date": "2020-10-28T00:00:00.000Z",
+            "userId": 18,
+            "createdAt": "2020-10-27T09:30:59.051Z",
+            "updatedAt": "2020-10-27T09:30:59.051Z"
         },
         {
             "id" : 2,
             "title" : "Learn Rest API",
             "description" : "You can do it",
-            "due_date" : "2020-10-31"
+            "status": "Unfinished",
+            "due_date": "2020-10-28T00:00:00.000Z",
+            "userId": 18,
+            "createdAt": "2020-10-27T09:30:59.051Z",
+            "updatedAt": "2020-10-27T09:30:59.051Z"
         }
       ]
   ```
@@ -111,7 +121,11 @@ Show ToDo object based by id
         "id" : 1,
         "title" : "Fancy ToDo",
         "description" : "Week 1 task",
-        "due_date" : "2020-10-30"
+        "status": "Unfinished",
+        "due_date": "2020-10-28T00:00:00.000Z",
+        "userId": 18,
+        "createdAt": "2020-10-27T09:30:59.051Z",
+        "updatedAt": "2020-10-27T09:30:59.051Z"
     }
   ```
 
@@ -142,7 +156,6 @@ Update ToDo object
     {
       "title": "Fancy Todo",
       "decription": "Week 1 task",
-      "status": "Unfinished",
       "due_date": "2020-10-30"
     }
   ```
@@ -158,7 +171,10 @@ Update ToDo object
       "title": "Fancy Todo App",
       "decription": "Week 1 task",
       "status": "Unfinished",
-      "due_date": "2020-10-30"
+      "due_date": "2020-10-28T00:00:00.000Z",
+      "userId": 18,
+      "createdAt": "2020-10-27T09:30:59.051Z",
+      "updatedAt": "2020-10-27T09:30:59.051Z"
     }
   ```
 
@@ -241,7 +257,10 @@ Delete selected ToDo Object by id
       "title": "Fancy Todo App",
       "decription": "Week 1 task",
       "status": "Finished",
-      "due_date": "2020-10-30"
+      "due_date": "2020-10-28T00:00:00.000Z",
+      "userId": 18,
+      "createdAt": "2020-10-27T09:30:59.051Z",
+      "updatedAt": "2020-10-27T09:30:59.051Z"
     }
   ```
     OR
