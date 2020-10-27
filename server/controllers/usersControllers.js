@@ -1,9 +1,9 @@
 const {User} = require('../models/index');
 const {comparePass} = require('../helpers/bcryptjs');
-const generateToken = require('../helpers/jwt');
+const {generateToken} = require('../helpers/jwt');
 
 class UsersController {
-    static async register(req, res) {
+    static async register(req, res, next) {
         try {
             const { email, password } = req.body;
             const payload = await User.create({
@@ -15,12 +15,10 @@ class UsersController {
                 email: payload.email
             });
         } catch (err) {
-            res.status(400).json({
-                err: 'Internal server error'
-            });
+            next(err)
         }
     }
-    static async login(req, res) {
+    static async login(req, res, next) {
         try {
             const {email, password} = req.body;
             const user = await User.findOne({
@@ -28,11 +26,11 @@ class UsersController {
             });
             if (!user) {
                 res.status(401).json({
-                    message: `Email/Password is wrong`
+                    msg: `Invalid Email/Password`
                 });
             } else if(!comparePass(password, user.password)) {
                 res.status(401).json({
-                    message: `Password is wrong`
+                    msg: `Invalid Email/Password`
                 });
             } else {
                 const access_token = generateToken({
@@ -42,9 +40,7 @@ class UsersController {
                 res.status(200).json({access_token});
             }
         } catch (err) {
-            res.status(400).json({
-                err: 'Internal server error'
-            });
+            next(err)
         }
     }
 }

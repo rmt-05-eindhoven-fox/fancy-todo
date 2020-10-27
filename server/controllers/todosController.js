@@ -1,53 +1,47 @@
 const {Todo} = require('../models/index');
 
 class TodosController {
-    static async addTodos(req, res) {
+    static async addTodos(req, res, next) {
         try {
-            const { title, description, status, due_date } = req.body
+            const { title, description, status, due_date } = req.body;
+            const UserId = +req.loggedInUser.id;
             const newTodo = await Todo.create({
                 title,
                 description,
                 status,
-                due_date
+                due_date,
+                UserId
             });
             res.status(201).json(newTodo);
         } catch (err) {
-            if (err.name === 'SequelizeValidationError') {
-                if (err.errors.length > 0) {
-                    let errors = err.errors.map(error => {
-                        return error.message
-                    });
-                    res.status(400).json({errors});
-                }
-            } else {
-                res.status(500).json({
-                    err: 'Internal server error'
-                });
-            }
+            next(err);
         }
     }
-    static async list(req, res) {
+    static async list(req, res, next) {
         try {
-            const todos = await Todo.findAll();
+            const UserId = +req.loggedInUser.id;
+            const todos = await Todo.findAll({
+                where: {UserId}
+            });
             res.status(200).json(todos);
         } catch (err) {
-            res.status(500).json({
-                err: 'Internal server error'
-            });
+            next(err)
         }
     }
-    static async findTodos(req, res) {
+    static async findTodos(req, res, next) {
         try {
             let id = req.params.id;
             const todo = await Todo.findByPk(id);
-            res.status(200).json(todo);
+            if (!todo) {
+                throw {name: 'NotFound'}
+            } else {
+                res.status(200).json(todo);
+            }
         } catch (err) {
-            res.status(404).json({
-                err: 'Error Not Found'
-            });
+            next(err)
         }
     }
-    static async updateTodos(req, res) {
+    static async updateTodos(req, res, next) {
         try {
             let id = req.params.id;
             const { title, description, status, due_date } = req.body;
@@ -60,23 +54,16 @@ class TodosController {
                 where: {id},
                 returning: true
             });
-            res.status(201).json(updateTodo[1][0]);
-        } catch (err) {
-            if (err.name === 'SequelizeValidationError') {
-                if (err.errors.length > 0) {
-                    let errors = err.errors.map(error => {
-                        return error.message;
-                    });
-                    res.status(400).json({errors});
-                }
+            if (updateTodo[0] === 0) {
+                throw {name: 'NotFound'}
             } else {
-                res.status(500).json({
-                    err: 'Internal server error'
-                });
+                res.status(201).json(updateTodo[1][0]);
             }
+        } catch (err) {
+            next(err)
         }
     }
-    static async updateStatusTodos(req, res) {
+    static async updateStatusTodos(req, res, next) {
         try {
             let id = req.params.id;
             const {status} = req.body;
@@ -86,44 +73,30 @@ class TodosController {
                 where: {id},
                 returning: true
             });
-            res.status(201).json(updateTodo[1][0]);
-        } catch (err) {
-            if (err.name === 'SequelizeValidationError') {
-                if (err.errors.length > 0) {
-                    let errors = err.errors.map(error => {
-                        return error.message;
-                    });
-                    res.status(400).json({errors});
-                }
+            if (updateTodo[0] === 0) {
+                throw {name: 'NotFound'}
             } else {
-                res.status(500).json({
-                    err: 'Internal server error'
-                });
+                res.status(201).json(updateTodo[1][0]);
             }
+        } catch (err) {
+            next(err)
         }
     }
-    static async deleteTodos(req, res) {
+    static async deleteTodos(req, res, next) {
         try {
             let id = req.params.id;
             const todo = await Todo.destroy({
                 where: {id}
             });
-            res.status(200).json({
-                message: 'Task Deleted Successfully'
-            });
-        } catch (err) {
-            if (err.name === 'SequelizeValidationError') {
-                if (err.errors.length > 0) {
-                    let errors = err.errors.map(error => {
-                        return error.message
-                    });
-                    res.status(400).json({errors})
-                }
+            if (!todo) {
+                throw {name: 'NotFound'}
             } else {
-                res.status(500).json({
-                    err: 'Internal server error'
+                res.status(200).json({
+                    message: 'Task Deleted Successfully'
                 });
             }
+        } catch (err) {
+            next(err)
         }
     }
     
