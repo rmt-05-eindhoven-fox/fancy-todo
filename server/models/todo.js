@@ -52,6 +52,22 @@ module.exports = (sequelize, DataTypes) => {
         isDate: {
           args: true,
           msg: "Input date must be date"
+        },
+        customValidator(value){
+          let input = new Date(value)
+          if(input.getFullYear() - new Date().getFullYear() < 0){
+            throw new Error('Date cannot last year')
+          }
+          else if(input.getFullYear() - new Date().getFullYear() === 0){
+            if(input.getMonth() - new Date().getMonth() < 0){
+              throw new Error('Date cannot last month')
+            }
+            else if(input.getMonth() - new Date().getMonth() === 0){
+              if(input.getDate() - new Date().getDate() < 0){
+                throw new Error('Date cannot yesterday and must be greater than today')
+              }
+            }
+          }
         }
       }
     },

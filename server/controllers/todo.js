@@ -2,12 +2,12 @@ const { Todo } = require('../models')
 
 class TodoController{
     static post(req, res, next){
-        const { title, description, status, due_date } = req.body
+        const { title, description, due_date } = req.body
         const userId = req.loggedInUser.id
         Todo.create({
             title,
             description,
-            status,
+            status: false,
             due_date,
             UserId: userId
         })
