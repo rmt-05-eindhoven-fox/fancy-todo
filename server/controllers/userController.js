@@ -21,8 +21,6 @@ class UserController {
         })
       } catch (error) {
         next(error)
-        // console.log(error)
-        // res.status(500).json(error)
       }
     }
   
@@ -59,7 +57,6 @@ class UserController {
         }
       } catch (error) {
         next(error)
-        // res.status(500).json(error)
       }
     }
 }

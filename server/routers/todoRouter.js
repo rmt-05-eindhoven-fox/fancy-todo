@@ -7,10 +7,9 @@ router.use(authentication)
 router.get('/', TodoController.showTodos)
 router.post('/', TodoController.addTodo)
 
-router.put('/:id', TodoController.updateTodo)
-router.patch('/:id', TodoController.patchTodo)
-
 router.get('/:id', authorization, TodoController.getOneTodo)
+router.put('/:id', authorization, TodoController.updateTodo)
+router.patch('/:id', authorization, TodoController.patchTodo)
 router.delete('/:id', authorization, TodoController.deleteTodo)
 
 module.exports = router;

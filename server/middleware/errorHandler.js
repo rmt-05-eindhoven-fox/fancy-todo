@@ -1,11 +1,6 @@
 function errorHandler(err, req, res, next) {
   let status = err.status || 500
-  let msg = err.message || 'Internal Server Error'
-
-  // if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
-  //   status = 400
-  //   msg = err.errors[0].message
-  // }
+  let msg = ''
 
   switch(err.name) {
     case 'SequelizeValidationError':
@@ -17,7 +12,10 @@ function errorHandler(err, req, res, next) {
       msg = err.errors[0].message
       break;
     default:
-      console.log(err)
+
+      msg += err.msg
+      status = err.status
+      break;
   }
   res.status(status).json({msg})
 }

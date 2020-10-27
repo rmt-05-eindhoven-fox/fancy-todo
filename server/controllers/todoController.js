@@ -19,7 +19,6 @@ class TodoController {
       res.status(200).json(todos)
     } catch (error) {
       next(error)
-      // res.status(500).json(error)
     }
   }
 
@@ -42,7 +41,6 @@ class TodoController {
       res.status(201).json(addTask)
     } catch (error) {
       next(error)
-      // res.status(400).json(error)
     }
   }
 
@@ -59,8 +57,8 @@ class TodoController {
       })
       res.status(200).json(task)
     } catch (error) {
+      console.log(error)
       next(error)
-      // res.status(404).json(error)
     }
   }
 
@@ -77,7 +75,7 @@ class TodoController {
       })
       res.status(200).json(update[1][0])
     } catch(error) {
-      res.status(400).json(error)
+      next(error)
     }
   }
 
@@ -95,7 +93,6 @@ class TodoController {
       res.status(200).json(patch[1][0])
     } catch (error) {
       next(error)
-      // res.status(404).json(error)
     }
   }
 
@@ -111,26 +108,7 @@ class TodoController {
       })
     } catch (error) {
       next(error)
-      // res.status(500).json(error)
     }
-  }
-
-
-  // POST
-
-  static deletePost(req, res) {
-    const {id} = req.params
-    Post.destroy({
-      where: {id}
-    })
-    .then(data => {
-      res.status(200).json({
-        msg: 'post deleted successfully'
-      })
-    })
-    .catch(error => {
-      res.status(500).json(error)
-    })
   }
 }
 
