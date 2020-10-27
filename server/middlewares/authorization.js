@@ -5,7 +5,7 @@ async function authorization(req, res, next) {
     let id = +req.params.id;
     const todo = await Todo.findByPk(id);
     if (!todo) {
-      throw { msg: `Data is not found!`, status: 404 };
+      throw { msg: `Error not found!`, status: 404 };
     } else if (todo.UserId === req.userLoggedIn.id) {
       next();
     } else {
