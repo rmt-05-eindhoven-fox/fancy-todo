@@ -6,8 +6,8 @@ const controller = require("../controllers/todoController")
 router.post('/todos', controller.CreateTodo)
 router.get('/todos', controller.GetTodo)
 router.get('/todos/:id', controller.GetTodoById)
-router.put('/todos/:id', controller.UpdateTodoById)
-router.delete('/todos/:id', controller.DeleteTodoById)
-router.patch('/todos/:id', controller.PatchTodoById)
+router.put('/todos/:id', authorization, controller.UpdateTodoById)
+router.delete('/todos/:id', authorization, controller.DeleteTodoById)
+router.patch('/todos/:id', authorization, controller.PatchTodoById)
 
 module.exports = router;

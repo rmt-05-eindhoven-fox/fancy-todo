@@ -1,14 +1,16 @@
 const model = require("../models/index").Todo
 
 class TodoController{
-    static CreateTodo(req, res){
+    static CreateTodo(req, res, next){
         try {
             const data = req.body;
+            const userId = req.loggedInUser.id
             const todo = {
-                title : data.title,
+                title: data.title,
                 description: data.description,
-                status:  data.status,
-                due_date:  data.due_date,
+                status: data.status,
+                due_date: data.due_date,
+                UserId: userId,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }
@@ -21,16 +23,13 @@ class TodoController{
               })
             }
          } catch (err) {
-           res.status(500).json({
-             'status': 'ERROR',
-             'messages': err.message,
-             'data': {},
-           })
-         }        
-    }
+          next(err)
+        }
+      }
     
-    static GetTodo(req, res){
-      model.findAll()
+    static GetTodo(req, res, next){
+      const userId = req.loggedInUser.id
+      model.findAll({where : {UserId: userId}})
         .then(data=>
             res.status(200).json({
               'status': 'OK',
@@ -38,60 +37,39 @@ class TodoController{
               'data': data,
             })          
           )
-        .catch(err=>
-          res.status(500).json({
-            'status': 'ERROR',
-            'messages': err.message,
-          })
-        )
-    }
+        .catch(err=>{
+            next(err)
+        })
+      }
 
-    static GetTodoById(req, res){
-      model.findOne({
-        where:{
-          id:req.params.id
-        }
-      })
+    static GetTodoById(req, res, next){
+      model.findOne({where:{id:req.params.id}})
         .then(data=>{
-          if(!data){
-            res.status(404).json({
-              'status': 'ERROR',
-              'messages': 'User Not Found'
-            })            
-          }
-          res.status(200).json({
+          if(data)
+            res.status(200).json({
             'status': 'OK',
             'messages': 'Success get Todo',
             'data': data,
           })          
-        }
-        )
-        .catch(err=>
-          res.status(500).json({
-            'status': 'ERROR',
-            'messages': err.message,
-          })
-        )
-    }
+        })
+        .catch(err=>{
+          next(err)
+        })
+      }
 
-    static UpdateTodoById(req, res){
+    static UpdateTodoById(req, res, next){
       const data = req.body;
       const todo = {
           title : data.title,
           description: data.description,
-          status:  data.status,
-          due_date:  data.due_date,
+          status: data.status,
+          due_date: data.due_date,
           updatedAt: new Date()
       }
 
       model.findByPk(req.params.id)
         .then(data=>{
-          if(!data){
-            res.status(404).json({
-              'status': 'ERROR',
-              'messages': 'User Not Found'
-            })            
-          }
+          if(data)
           data.update(todo)
             .then(data=>{
               res.status(200).json({
@@ -100,26 +78,16 @@ class TodoController{
                 'data':todo
               })  
             })
-        }
-        )
-        .catch(err=>
-          res.status(500).json({
-            'status': 'ERROR',
-            'messages': err.message,
           })
-        )
-    }
+        .catch(err=>{
+          next(err)
+        })
+       }
 
-
-    static DeleteTodoById(req, res){
+    static DeleteTodoById(req, res, next){
       model.findByPk(req.params.id)
         .then(data=>{
-          if(!data){
-            res.status(404).json({
-              'status': 'ERROR',
-              'messages': 'User Not Found'
-            })            
-          }
+          if(data)
           data.destroy()
             .then(data=>{
               res.status(200).json({
@@ -127,17 +95,13 @@ class TodoController{
                 'messages': 'todo success to delete'               
               })  
             })
-        }
-        )
-        .catch(err=>
-          res.status(500).json({
-            'status': 'ERROR',
-            'messages': err.message,
           })
-        )
-    }
+        .catch(err=>{
+          next(err)
+        })
+      }
 
-    static PatchTodoById(req, res){
+    static PatchTodoById(req, res, next){
       const data = req.body;
       const todo = {
           status:  data.status,
@@ -146,12 +110,7 @@ class TodoController{
 
       model.findByPk(req.params.id)
         .then(data=>{
-          if(!data){
-            res.status(404).json({
-              'status': 'ERROR',
-              'messages': 'User Not Found'
-            })            
-          }
+          if(data)
           data.update(todo)
             .then(data=>{
               res.status(200).json({
@@ -160,15 +119,11 @@ class TodoController{
                 'data':todo
               })  
             })
-        }
-        )
-        .catch(err=>
-          res.status(500).json({
-            'status': 'ERROR',
-            'messages': err.message,
           })
-        )
-    }
-}
+        .catch(err=>{
+          next(err)
+        })
+       }
+      }
 
 module.exports = TodoController;

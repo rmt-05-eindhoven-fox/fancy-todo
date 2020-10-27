@@ -1,10 +1,9 @@
 const user = require('../models/index').User
 const bcrypt = require('bcryptjs')
-const jwt = require('../helper/jwt')
-const generateToken = require('../helper/jwt')
+const generateToken = require('../helper/jwt').generateToken
 
 class UserController{
-    static register(req, res){
+    static register(req, res, next){
         const { email, password } = req.body
         user.create({
             email,
@@ -18,15 +17,11 @@ class UserController{
                 })
               })
             .catch((err) => {
-                console.log(err)
-                res.status(401).json({
-                    'status': 'OK',
-                    'messages': err
-                  })
+                next(err)
               })
             }
 
-    static login(req, res){
+    static login(req, res, next){
         const { email, password } = req.body
         user.findOne({
             where: { email }
@@ -47,7 +42,7 @@ class UserController{
                 }
               })
             .catch((err) => {
-                res.status(400).json({ err: err.msg || "invalid requests" })
+                next(err)
             })
           }
        }
