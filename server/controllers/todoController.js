@@ -3,14 +3,13 @@ const todo = require("../models/todo");
 
 class TodoController {
 	static async showTodo(req, res) {
-		const userId = req.loggedInUser.id;
+		const UserId = req.loggedInUser.id;
 		try {
 			const todos = await Todo.findAll({
 				where: {
-					userId,
+					UserId,
 				},
 			});
-
 			res.status(200).json(todos);
 		} catch (error) {
 			res.status(500).json.error;
@@ -39,7 +38,6 @@ class TodoController {
 			description: req.body.description,
 			status: req.body.status,
 			due_date: req.body.due_date,
-	
 		};
 		const UserId = req.loggedInUser.id;
 
@@ -55,20 +53,6 @@ class TodoController {
 				res.status(500).json({ error });
 			});
 	}
-	// static async addTodo(req, res) {
-	// 	const { title, description, status, due_date } = req.body;
-	// 	try {
-	// 		const newTodo = await Todo.create({
-	// 			title,
-	// 			description,
-	// 			status,
-	// 			due_date,
-	// 		});
-	// 		res.status(201).json(newTodo);
-	// 	} catch (error) {
-	// 		res.status(500).json(error);
-	// 	}
-	// }
 
 	static update(req, res) {
 		let params = {
