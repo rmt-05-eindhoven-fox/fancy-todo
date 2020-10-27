@@ -5,8 +5,9 @@ function hashToken(payload){
     return token;
 }
 
-function verifyToken(payload, key){
-    return jwt.verify(token, process.env.SECRET);
+function verifyToken(token){
+    const decoded = jwt.verify(token, process.env.SECRET);
+    return decoded;
 }
 
 module.exports = {hashToken, verifyToken}
