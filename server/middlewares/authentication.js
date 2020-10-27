@@ -18,12 +18,12 @@ function authentication(req, res, next){
             }
         })
         .then(user => {
-            // console.log(user)
+         
             if(!user){
                 throw {msg: "user not found"}
             } else {
                 req.loggedInUser = decoded
-                // console.log(req.loggedInUser)
+                
                 next()
             }
         })

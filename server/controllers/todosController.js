@@ -3,12 +3,14 @@ const { Todo } = require("../models/index.js")
 class TodoController {
 
     static createTodo(req, res){
-        const { title, description, status, due_date} = req.body
+        const { title, description, status, due_date } = req.body
+        const UserId = req.loggedInUser.id
         Todo.create({
             title,
             description,
             status,
-            due_date
+            due_date,
+            UserId
         },{
             returning:true
         })
@@ -23,9 +25,8 @@ class TodoController {
 
     static findAllTodo(req, res){
         const userId = req.loggedInUser.id
-        console.log(userId)
         Todo.findAll({
-            where: userId
+            where: {UserId: userId}
         })
         .then( todo => {
             res.status(200).json(todo)
@@ -35,7 +36,7 @@ class TodoController {
         })
     }
 
-    static getTOdoById(req, res){
+    static getTodoById(req, res){
         Todo.findOne({
             where: {
                 id: +req.params.id

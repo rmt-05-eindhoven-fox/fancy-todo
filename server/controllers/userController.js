@@ -17,7 +17,12 @@ class UserController {
             })
         })
         .catch(err => {
-            res.status(500).json(err)
+            const message = err.errors[0].message
+            if(message) {
+                res.status(400).json({error: message})
+            } else {
+                res.status(500).json(err)
+            }
         })
     }
 
