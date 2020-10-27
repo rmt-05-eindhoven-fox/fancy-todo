@@ -1,41 +1,42 @@
 const {Todo} = require('../database/models')
 
 class TodoController {
-   static async getAllTodos(req, res) {
+   static async getAllTodos(req, res, next) {
+      const UserId = req.loggedInUser.id
+
       try {
-         const todos = await Todo.findAll()
+         const todos = await Todo.findAll({
+            where: {
+               UserId
+            }
+         })
 
          res.status(200).json(todos)
       } catch (err) {
-         res.status(500).json(err)
+         next(err)
+         // res.status(500).json(err)
       }
    }
    
-   static async createTodo(req, res) {
+   static async createTodo(req, res, next) {
       try {
          const newTodo = {
             title: req.body.title,
             description: req.body.description,
             status:req.body.status,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            UserId: req.loggedInUser.id
          }
 
          const createTodo = await Todo.create(newTodo)
          
          res.status(201).json(createTodo)
       } catch (err) {
-         if(err.name === 'SequelizeValidationError') {
-            res.status(400).json({
-               message: err.errors[0].message
-            })
-         }
-         else {
-            res.status(500).json(err)
-         }
+         next(err)
       }
    }
 
-   static async getTodoById(req, res) {
+   static async getTodoById(req, res, next) {
       try {
          const id = +req.params.id
 
@@ -50,11 +51,12 @@ class TodoController {
             res.status(200).json(findTodo)
          }
       } catch (err) {
-         res.status(500).json(err)
+         next(err)
+         // res.status(500).json(err)
       }
    }
 
-   static async editTodoById(req, res) {
+   static async editTodoById(req, res, next) {
       try {
          const id = +req.params.id
          
@@ -75,11 +77,12 @@ class TodoController {
 
          res.status(200).json(editTodo[1][0])
       } catch (err) {
-         res.status(500).json(err)
+         next(err)
+         // res.status(500).json(err)
       }
    }
 
-   static async editTodoStatusById(req, res) {
+   static async editTodoStatusById(req, res, next) {
       try {
          const id = +req.params.id
          
@@ -97,11 +100,12 @@ class TodoController {
 
          res.status(200).json(editStatus[1][0])
       } catch (err) {
-         res.status(500).json(err)
+         next(err)
+         // res.status(500).json(err)
       }
    }
 
-   static async deleteTodoById(req, res) {
+   static async deleteTodoById(req, res, next) {
       try {
          const id = req.params.id
 
@@ -115,7 +119,8 @@ class TodoController {
             message: "todo successfully deleted"
          })
       } catch (err) {
-         res.status(500).json(err)
+         next(err)
+         // res.status(500).json(err)
       }
    }
 }

@@ -15,45 +15,51 @@ module.exports = (sequelize, DataTypes) => {
        * The `models/index` file will call this method automatically.
        */
       static associate(models) {
-         // define association here
+         User.hasMany(models.Todo, {foreignKey: 'UserId'})
       }
    };
    User.init({
+      // Discord username optional
       username: {
          type: DataTypes.STRING,
-         allowNull: false,
          unique: true,
          validate: {
-            notEmpty: {
-               args: true,
-               msg: "Username is required!"
-            },
             is: {
-               args: /^[a-zA-Z0-9-_]+$/,
-               msg: "Username must contain only a combination of alphabets, numbers, and dashes/underscore!"
-            },
-            len: {
-               args: [6,32],
-               msg: `Useername must be between 6-32 characters.`
+               args: /^((.+?)#\d{4})/,
+               // args: /<(.*)#(\d{4})>/g,
+               msg: "Please provide valid Discord Username i.e. John#1234"
             },
          }
       },
       email: {
          type: DataTypes.STRING,
          allowNull: false,
-         unique: true,
          validate: {
-            notEmpty: {
-               args: true,
-               msg: "Email is required!"
-            },
+            // validasi is email masih bocor
             isEmail: {
                args: true,
                msg: "Not a valid email!"
             },
+            notNull: {
+               args: true,
+               msg: 'Email is required.'
+            },
+         },
+         unique: {
+            args: true,
+            msg: 'Email already in use!'
+         },
+      },
+      password: {
+         type: DataTypes.STRING,
+         allowNull: false,
+         validate: {
+            notNull: {
+               args: true,
+               msg: 'Password is required.'
+            }
          }
       },
-      password: DataTypes.STRING
    }, {
       sequelize,
       modelName: 'User',

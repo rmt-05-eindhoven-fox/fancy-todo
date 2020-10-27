@@ -15,14 +15,15 @@ module.exports = (sequelize, DataTypes) => {
        * The `models/index` file will call this method automatically.
        */
       static associate(models) {
-         // define association here
+         Todo.belongsTo(models.User, {foreignKey: 'UserId'})
       }
    };
    Todo.init({
       title: {
          type: DataTypes.STRING,
+         allowNull: false,
          validate: {
-            notEmpty: {
+            notNull: {
                args: true,
                msg: 'Title is required.'
             }
@@ -30,8 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: {
          type: DataTypes.STRING,
+         allowNull: false,
          validate: {
-            notEmpty: {
+            notNull: {
                args: true,
                msg: 'Description is required.'
             }
@@ -40,8 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       status: DataTypes.STRING,
       due_date: {
          type: DataTypes.DATE,
+         allowNull: false,
          validate: {
-            notEmpty: {
+            notNull: {
                args: true,
                msg: 'Due date is required.'
             },
@@ -64,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
          //    }
          // }
       },
+      UserId: DataTypes.INTEGER
    }, {
       sequelize,
       modelName: 'Todo',
