@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const todosRouter = require("./routes/todosRouter");
+const routes = require("./routes/index");
 const port = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/todos", todosRouter);
+app.use(routes);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
