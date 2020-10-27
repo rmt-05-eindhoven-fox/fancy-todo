@@ -5,7 +5,7 @@ async function authorization (req, res, next){
         const { id } = req.params;
         let todo = await Todo.findByPk(id);
         if(!todo){
-            throw { message: "Post not found", status: 404 }
+            throw { message: "Post Not found", status: 404 }
         } else if (todo.UserId === req.loggedIn.id){
             next();
         } else {
@@ -14,7 +14,7 @@ async function authorization (req, res, next){
     } catch (error){
         let status = error.status || 500;
         let message = error.message || "Internal Server Error"
-        res.status(status).json({error:message});
+        next({message, status: 404});
     }
 }
 

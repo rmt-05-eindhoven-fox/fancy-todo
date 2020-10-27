@@ -3,7 +3,7 @@ const { hashPassword, checkPassword } = require('../helpers/bcrypt');
 const { hashToken } = require('../helpers/jws');
 
 class Controller {
-    static async register (req, res){
+    static async register (req, res, next){
         try {
             const payload = {
                 username: req.body.username,
@@ -17,11 +17,11 @@ class Controller {
                 email: user.email
             })
         } catch (err){
-            res.status(500).json(err)
+            next(err)
         }
     }
 
-    static async login (req, res){
+    static async login (req, res, next){
         try {
             const payload = {
                 username: req.body.username,
@@ -29,15 +29,15 @@ class Controller {
             }
             let user = await User.findOne({where:{username: payload.username}});
             if(!user){
-                res.status(401).json({error:"Wrong username/password"})
+                next({message:"Wrong username/password", status: 401})
             } else if(!checkPassword(payload.password, user.password)) {
-                res.status(401).json({error:"Wrong username/password"});
+                next({message:"Wrong username/password", status: 401});
             } else {
                 let token = hashToken({id: user.id, email: user.email})
                 res.status(200).json({token})
             }
         } catch (err){
-            res.status(500).json(err);
+            next(err);
         }
     }
 }
