@@ -1,4 +1,7 @@
-const {User, Todo} = require('../database/models')
+const {
+   User,
+   Todo
+} = require('../database/models')
 
 const getUserId = (discordUsername) => {
    return User.findOne({
@@ -16,4 +19,28 @@ const getAllTodos = (UserId) => {
       }
    })
 }
-module.exports = {getUserId, getAllTodos}
+
+const markDone = (todoId) => {
+   const id = todoId
+
+   const editedStatus = {
+      status: 'done'
+   }
+
+   return Todo.update(editedStatus, {
+      where: {
+         id: id
+      },
+      returning: true
+   })
+}
+
+const createTodo = (newTodo) => {
+   return Todo.create(newTodo)
+}
+module.exports = {
+   getUserId,
+   getAllTodos,
+   markDone,
+   createTodo
+}
