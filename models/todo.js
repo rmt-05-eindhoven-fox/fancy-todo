@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Todo.init({
-    title: DataTypes.STRING,
+    title: DataTypes.STRING, // char 255
     description: DataTypes.STRING,
-    status: DataTypes.BOOLEAN,
+    status: DataTypes.STRING,
     due_date: {
       type: DataTypes.DATE,
       validate:{
@@ -34,11 +34,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     hooks: {
-      beforeCreate(value) {
-        if (!value.status) {
-          value.status = `not done`
-        }
-      }
+      // beforeCreate(value) {
+      //   if (!value.status) {
+      //     value.status = `not done`
+      //   }
+      // }
     },
     sequelize,
     modelName: 'Todo',
