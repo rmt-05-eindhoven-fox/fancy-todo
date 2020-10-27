@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Todo, {foreignKey: 'userId'})
     }
   };
   User.init({
@@ -36,10 +37,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          args: true,
           msg: 'Password is required'
+        },
+        notNull: {
+          msg: 'Password is required'
+        },
+        isShort(value) {
+          if(value.length < 5) {
+            throw new Error('Password minimal 5 characters')
+          }
         }
       }
+      
     }
   }, {
     sequelize,

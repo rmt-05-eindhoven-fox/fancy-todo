@@ -292,3 +292,85 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ error : "Server is busy" }`
+
+
+**REGISTER**
+----
+    register user
+
+* **URL**
+
+    /register
+
+* **Method:**
+  
+    `POST`
+
+*  **URL Params**
+
+    **Required:**
+ 
+    not needed
+
+* **Data Params**
+
+    `email=[string]`,
+    `password=[string]`
+
+* **Success Response:**
+
+  * **Code:** 201 CREATED <br />
+    **Content:** 
+    `{
+    "id": 14,
+    "email": "suma@gmail.com"
+    }`
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ error : ['Please use email format', 'Email is required', 'Password is required', 'Password minimal 5 characters'] }`
+
+    OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ error : "Server is busy" }`
+
+
+**LOGIN**
+----
+    login user
+
+* **URL**
+
+    /login
+
+* **Method:**
+  
+    `POST`
+
+*  **URL Params**
+
+    **Required:**
+ 
+    not needed
+
+* **Data Params**
+
+    `email=[string]`,
+    `password=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+    **Content:** `access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJkZWRlQGdtYWlsLmNvbSIsImlhdCI6MTYwMzgwOTA3MH0.ZOvOmP8v4sPgbE5sAxM2jeNPNPi9hr-UTllXyYaPw9A`
+ 
+* **Error Response:**
+
+  * **Code:** 401 BAD REQUEST <br />
+    **Content:** `{ error : 'Wrong email/password' }`
+
+    OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ error : "Server is busy" }`
