@@ -20,8 +20,11 @@ module.exports = function(err,req,res,next){
         console.log(err)
         break;
     }
+  } else {
+    
+    res.status(status).json({ error : msg })
+
   }
 
 
-  res.status(status).json({ error : msg })
 }
