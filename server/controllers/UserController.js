@@ -6,6 +6,7 @@ const {signToken} = require('../helper/jwt')
 
 class UserController {
    static async register(req, res) {
+      // TODO: if user register with discord username send message to that user 
       try {
          const newUser = {
             username: req.body.username,

@@ -29,3 +29,9 @@ app.use('/', router)
 app.listen(port, () => {
    console.log(`Server started on http://localhost:${port}`);
 })
+
+/* PERSONAL NOTES
+to run the server + bot
+
+npm start
+*/

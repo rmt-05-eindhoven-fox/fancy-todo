@@ -21,27 +21,18 @@ module.exports = (sequelize, DataTypes) => {
    User.init({
       username: {
          type: DataTypes.STRING,
-         allowNull: false,
          unique: true,
          validate: {
-            notEmpty: {
-               args: true,
-               msg: "Username is required!"
-            },
             is: {
-               args: /^[a-zA-Z0-9-_]+$/,
-               msg: "Username must contain only a combination of alphabets, numbers, and dashes/underscore!"
-            },
-            len: {
-               args: [6,32],
-               msg: `Useername must be between 6-32 characters.`
+               args: /^((.+?)#\d{4})/,
+               // args: /<(.*)#(\d{4})>/g,
+               msg: "Please provide valid Discord Username i.e. John#1234"
             },
          }
       },
       email: {
          type: DataTypes.STRING,
          allowNull: false,
-         unique: true,
          validate: {
             notEmpty: {
                args: true,
@@ -51,7 +42,11 @@ module.exports = (sequelize, DataTypes) => {
                args: true,
                msg: "Not a valid email!"
             },
-         }
+         },
+         unique: {
+            args: true,
+            msg: 'Email already in use!'
+         },
       },
       password: DataTypes.STRING
    }, {
