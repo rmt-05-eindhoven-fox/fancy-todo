@@ -1,4 +1,5 @@
-const model = require("../models/index").todo
+const model = require("../models/index").Todo
+
 class TodoController{
     static CreateTodo(req, res){
         try {

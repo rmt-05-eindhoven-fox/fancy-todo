@@ -23,7 +23,7 @@ module.exports = {
       title: 'Watching',
       description: 'nonton naruto',
       status: 'false',
-      due_date: "2020-10-26",
+      due_date: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
