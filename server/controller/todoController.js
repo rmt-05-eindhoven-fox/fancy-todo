@@ -1,45 +1,49 @@
 const { Todo } = require("../models")
 
 class TodoController {
-  static async todoAdd(req,res){
+  static async todoAdd(req,res,next){
+    const userId = req.loggedInUser.id
     try{
       const data = {
         title:req.body.title,
         description:req.body.description,
-        status:req.body.status,
-        due_date:req.body.due_date
+        due_date:req.body.due_date,
+        UserId:userId
       }
       const todo = await Todo.create(data,{returning:true})
 
       res.status(201).json(todo)
     }
     catch(error){
-      res.status(500).json(error)
+      next(error)
     }
   }
 
-  static async todoShow(req,res){
+  static async todoShow(req,res,next){
     try {
-      const todo = await Todo.findAll()
+      const userId = req.loggedInUser.id
+      const todo = await Todo.findAll({
+        where:{UserId:userId}
+      })
 
       res.status(200).json(todo)
     } catch (error) {
-      res.status(500).json(error)
+      next(error)
     }
   }
 
-  static async todoShowById(req,res){
+  static async todoShowById(req,res,next){
     try {
       const id = +req.params.id
       const todo = await Todo.findByPk(id)
 
       res.status(200).json(todo)
     } catch (error) {
-      res.status(500).json(error)
+      next(error)
     }
   }
   
-  static async todoUpdate(req,res){
+  static async todoUpdate(req,res,next){
     try {
       const id = +req.params.id
       const data = {
@@ -57,11 +61,11 @@ class TodoController {
 
       res.status(200).json(todo[1][0])
     } catch (error) {
-      res.status(500).json(error)
+      next(error)
     }
   }
 
-  static async todoUpdateStatus(req,res){
+  static async todoUpdateStatus(req,res,next){
     try{
       const id = +req.params.id
       const data = {
@@ -76,21 +80,19 @@ class TodoController {
       res.status(200).json(todo[1][0])
     }
     catch(error){
-      res.status(500).json(error)
+      next(error)
     }
   }
 
-  static async todoDelete(req,res){
+  static async todoDelete(req,res,next){
     try {
       const id = +req.params.id
-      const todo = await Todo.destroy({
-        where:{id},
-        returning:true
-      })
-
-      res.status(200).json(todo[1][0])
+      const todo = await Todo.findByPk(id)
+      todo.destroy()
+      todo.save()
+      res.status(200).json(todo)
     } catch (error) {
-      res.status(500).json(error)
+      next(error)
     }
   }
     
