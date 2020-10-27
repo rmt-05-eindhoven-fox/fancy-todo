@@ -104,7 +104,7 @@ class TodoController {
       if (result === 0) {
         throw { msg: 'todo not found', status: 404 }
       } else {
-        res.status(200).send({ message: 'todo success to delete' })
+        res.status(200).json({ message: 'todo success to delete' })
       }
     } catch (error) {
       next(error)

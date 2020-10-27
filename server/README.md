@@ -1,221 +1,369 @@
 # Fancy Todo
+My Assets App is an application to manage your assets. This app has : 
+* RESTful endpoint for asset's CRUD operation
+* JSON formatted response
 
-**CREATE TODO**
-----
-  create new ToDo to server
+&nbsp;
 
-* **URL**
+## RESTful endpoints
+### POST /todos
 
-  /todos
+> Create new todo
 
-* **Method:**
-  
-  `POST`
+_Request Header_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
 
-* **Data Params**
+_Request Body_
+```
+{
+  "title": "menanam padi",
+  "description": "di halaman belakang",
+  "status": "not done",
+  "due_date": "2020-11-02"
+}
+```
 
+_Response (201 - Created)_
+```
+{
+  "id": 1,
+  "title": "menanam padi",
+  "description": "di halaman belakang",
+  "status": "not done",
+  "due_date": "2020-11-02"
+  "createdAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z",
+}
+```
+_Response (400 - Internal server error)_
+```
+{
+  "errors": "Title is required!, Description is required!, Status is required!,
+             Please insert a valid date!, Cannot insert passed date!"
+}
+```
+
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
+---
+### GET /todos
+
+> Get all todos
+
+_Request Header_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```
+[
   {
-    "id": 5,
-    "title": "mencuci sepatu",
-    "description": "mencuci sepatu olahraga",
-    "status": "not done"
-  }
-
-* **Success Response:**
-
-  * **Code:** 201 <br />
-    **Content:** `{
-    "id": 5,
-    "title": "mencuci sepatu",
-    "description": "mencuci sepatu olahraga",
-    "status": "not done",
-    "due_date": "2020-11-11T00:00:00.000Z",
-    "updatedAt": "2020-10-26T17:23:51.737Z",
-    "createdAt": "2020-10-26T17:23:51.737Z"
-    }`
- 
-* **Error Response:**
-
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `[
-    "Title is required!",
-    "Cannot insert passed date!"
-  ]`
-
-**GET ALL TODO**
-----
-  return all ToDos on server
-
-* **URL**
-
-  /todos
-
-* **Method:**
-  
-  `GET`
-  
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `[
-    {
-        "id": 3,
-        "title": "Makan bareng Minjuu",
-        "description": "makannya di monas",
-        "status": "not done",
-        "due_date": "2020-11-23T00:00:00.000Z",
-        "createdAt": "2020-10-26T12:00:21.870Z",
-        "updatedAt": "2020-10-26T12:00:21.870Z"
-    },
-    {
-        "id": 1,
-        "title": "menanam padi",
-        "description": "di halaman belakang",
-        "status": "done",
-        "due_date": "2020-11-02T00:00:00.000Z",
-        "createdAt": "2020-10-26T11:58:58.019Z",
-        "updatedAt": "2020-10-26T14:40:11.087Z"
-    }
-]`
- 
-* **Error Response:**
-
-  * **Code:** 500 UNAUTHORIZED <br />
-    **Content:** `____________`
-
-**GET TODO**
-----
-  return a specific Todo by id
-
-* **URL**
-
-  /todos/:id
-
-* **Method:**
-  
-  `GET`
-
-*  **URL Params**
-
-  req.params.id
-  
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `
-    {
-        "id": 3,
-        "title": "Makan bareng Minjuu",
-        "description": "makannya di monas",
-        "status": "not done",
-        "due_date": "2020-11-23T00:00:00.000Z",
-        "createdAt": "2020-10-26T12:00:21.870Z",
-        "updatedAt": "2020-10-26T12:00:21.870Z"
-    }`
- 
-* **Error Response:**
-
-  * **Code:** 500 UNAUTHORIZED <br />
-    **Content:** `____________`
-
-**UPDATE TODO**
-----
-  update every attribute in specific ToDo item
-
-* **URL**
-
-  /todos/:id
-
-* **Method:**
-  
-  `PUT`
-
-* **Data Params**
-
+    "id": 2,
+    "title": "bermain game",
+    "description": "mobile lejen",
+    "status": "undone",
+    "due_date": "2020-10-29T00:00:00.000Z",
+    "userId": 4,
+    "createdAt": "2020-10-27T04:25:39.378Z",
+    "updatedAt": "2020-10-27T09:43:19.354Z"
+  },
   {
-    "id": 5,
-    "title": "mencuci sepatu",
-    "description": "mencuci sepatu olahraga",
-    "status": "not done"
+    "id": 6,
+    "title": "menanam ubi",
+    "description": "di halaman belakang",
+    "status": "undone",
+    "due_date": "2020-12-03T00:00:00.000Z",
+    "userId": 4,
+    "createdAt": "2020-10-27T07:42:54.553Z",
+    "updatedAt": "2020-10-27T09:43:36.773Z"
   }
+]
+```
 
-* **Success Response:**
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
+---
+### GET /todos:id
 
-  * **Code:** 200 <br />
-    **Content:** `{
-    "id": 5,
-    "title": "mencuci sepatu",
-    "description": "mencuci sepatu olahraga",
-    "status": "not done",
-    "due_date": "2020-11-11T00:00:00.000Z",
-    "updatedAt": "2020-10-26T17:23:51.737Z",
-    "createdAt": "2020-10-26T17:23:51.737Z"
-    }`
- 
-* **Error Response:**
+> Get a specific todo by id
 
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `[
-    "Title is required!",
-    "Cannot insert passed date!"
-  ]`
+_Request Header_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
 
-  **EDIT STATUS TODO**
-----
-  edit status attributes in specific Todo by id
+_Request Params_
+```
+{
+  "id": "<your id>"
+}
+```
 
-* **URL**
+_Response (200)_
+```
+{
+  "id": 2,
+  "title": "bermain game",
+  "description": "mobile lejen",
+  "status": "undone",
+  "due_date": "2020-10-29T00:00:00.000Z",
+  "userId": 4,
+  "createdAt": "2020-10-27T04:25:39.378Z",
+  "updatedAt": "2020-10-27T09:43:19.354Z"
+}
+```
 
-  /todos/:id
+_Response (404 - Not Found)_
+```
+{
+  "errors": "todo not found"
+}
+```
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
+### PUT /todos:id
 
-* **Method:**
-  
-  `PATCH`
+> Update one of an existing todo in tables
 
-* **Data Params**
+_Request Header_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
+_Request Params_
+```
+{
+  "id": "<your id>"
+}
+```
+_Request Body_
+```
+{
+  "title": "olahraga",
+  "description": "lifting dumbbell",
+  "status": "done",
+  "due_date": "2020-12-22"
+}
+```
 
-  {
-    "status": "not done"
-  }
+_Response (200 - OK)_
+```
+{
+  "id": 1,
+  "title": "olahraga",
+  "description": "lifting dumbbell",
+  "status": "done",
+  "due_date": "2020-12-22"
+  "createdAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z"
+}
+```
+_Response (400 - Internal server error)_
+```
+{
+  "errors": "Title is required!, Description is required!, Status is required!,
+             Please insert a valid date!, Cannot insert passed date!"
+}
+```
+_Response (404 - Not Found)_
+```
+{
+  "errors": "todo not found"
+}
+```
 
-* **Success Response:**
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
 
-  * **Code:** 200 <br />
-    **Content:** `{
-    "id": 5,
-    "title": "mencuci sepatu",
-    "description": "mencuci sepatu olahraga",
-    "status": "not done",
-    "due_date": "2020-11-11T00:00:00.000Z",
-    "updatedAt": "2020-10-26T17:23:51.737Z",
-    "createdAt": "2020-10-26T17:23:51.737Z"
-    }`
- 
-* **Error Response:**
+### PATCH /todos:id
 
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `[
-    "Status is required!"
-  ]`
+> Update status attribute in one of an existing todo in tables
 
-   **DELETE TODO**
-----
-  delete a row of Todo by id
+_Request Header_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
+_Request Params_
+```
+{
+  "id": "<your id>"
+}
+```
+_Request Body_
+```
+{
+  "status": "undone"
+}
+```
 
-* **URL**
+_Response (200 - OK)_
+```
+{
+  "id": 1,
+  "title": "olahraga",
+  "description": "lifting dumbbell",
+  "status": "done",
+  "due_date": "2020-12-22"
+  "createdAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z"
+}
+```
+_Response (400 - Internal server error)_
+```
+{
+  "errors": "Status is required!"
+}
+```
+_Response (404 - Not Found)_
+```
+{
+  "errors": "todo not found"
+}
+```
 
-  /todos/:id
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
+### DELETE /todos:id
 
-* **Method:**
-  
-  `DELETE`
+> Delete one of an existing todo by id
 
-* **Success Response:**
+_Request Header_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
 
-  * **Code:** 200 <br />
-    **Content:** `todo success to delete`
- 
-* **Error Response:**
+_Request Params_
+```
+{
+  "id": "<your id>"
+}
+```
 
-  * **Code:** 404 NOT FOUND <br />
-    **Content:** `not found`
+_Response (200)_
+```
+{
+  "message": "todo success to delete"
+}
+```
+
+_Response (404 - Not Found)_
+```
+{
+  "errors": "todo not found"
+}
+```
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
+### POST /register
+
+> Create a new user
+
+_Request Header_
+```
+not needed
+```
+_Request Body_
+```
+{
+  "email": "franku@gmail.com",
+  "password": "qweqwe",
+}
+```
+
+_Response (200 - OK)_
+```
+{
+  "id": 1,
+  "email": "franku@gmail.com"
+}
+```
+_Response (400 - Internal server error)_
+```
+{
+  "errors": "Insert a valid Email!, Password min. 5 characters!, Password may
+             not contain space!, Password must be unique!"
+}
+```
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
+### POST /login
+
+> Create a new user
+
+_Request Header_
+```
+not needed
+```
+_Request Body_
+```
+{
+  "email": "franku@gmail.com",
+  "password": "qweqwe",
+}
+```
+
+_Response (200 - OK)_
+```
+{
+  "accesstoken": "<your access token>"
+}
+```
+_Response (400 - Internal server error)_
+```
+{
+  "errors": "email/password is wrong!"
+}
+```
+_Response (500 - Internal server error)_
+```
+{
+  "errors": "internal server error"
+}
+```
