@@ -4,7 +4,7 @@ const { User } = require('../models');
 
 class UserController {
 
-  static signup(req, res) {
+  static register(req, res) {
     const { username, email, password } = req.body;
     const input = { username, email, password };
     User.create(input)
@@ -19,11 +19,10 @@ class UserController {
         } else {
           res.status(500).json(err.stack)
         }
-      });
-
+      }); 
   }
 
-  static signin(req, res) {
+  static login(req, res) {
     const { username, password } = req.body;
     // res.status(200).json({ username, password })
     User.findOne({
@@ -37,12 +36,13 @@ class UserController {
           if (!status) {
             res.status(401).json({ message: 'Wrong Username / Password ' })
           } else {
-            delete user.dataValues.password;
-            const jwt = generateToken(user);
+            const { id, username, email } = user;
+            const jwt = generateToken({
+              id, username, email
+            });
             res.status(200).json({ accessToken: jwt });
           }
         }
-
       }).catch((err) => {
         if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
           const errors = err.errors.map(error => {

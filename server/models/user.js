@@ -71,7 +71,9 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       afterCreate(user) {
-        delete user.dataValues["password"];//delete field password
+        delete user.dataValues["password"];
+        delete user.dataValues["createdAt"];
+        delete user.dataValues["updatedAt"];
       }
     },
     modelName: 'User',
