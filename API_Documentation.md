@@ -1,3 +1,5 @@
+# TODO
+
 **Add new ToDo**
 ----
   Create new ToDo Object
@@ -209,7 +211,7 @@
   
   `PATCH` 
 
-*  **URL Params**
+* **URL Params**
 
   id refers to id of ToDo object
 
@@ -260,7 +262,7 @@
   
   `DELETE` 
 
-*  **URL Params**
+* **URL Params**
 
   id refers to id of ToDo object
 
@@ -291,6 +293,110 @@
   **OR** <br><br>
   **Content:** <br>
     `message : 'todo success to delete'`
+
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+  <!-- **Content:** `{ error : "Log in" }` -->
+
+-------
+
+# USER
+
+**Register User**
+----
+  Create a new user in the database
+
+* **URL**
+
+  `/register`
+
+* **Method:**
+  
+  `POST` 
+
+* **URL Params**
+
+  NONE
+
+* **Data Params**
+
+  ```json
+    {
+      "email" : "user@mail.com",
+      "password" : "userPassword"
+    }
+
+  ```
+
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json    
+    {
+      "id" : 1,
+      "email" : "user@mail.com"
+    }
+
+  ```
+  **OR** <br><br>
+  **Content:** <br>
+    `message : 'Account Successfully Created'`
+
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+  <!-- **Content:** `{ error : "Log in" }` -->
+
+-------
+
+**Login User**
+----
+  Registered User login
+
+* **URL**
+
+  `/login`
+
+* **Method:**
+  
+  `POST` 
+
+* **URL Params**
+
+  NONE
+
+* **Data Params**
+
+  ```json
+    {
+      "email" : "user@mail.com",
+      "password" : "userPassword"
+    }
+
+  ```
+
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json    
+    {
+      "id" : 1,
+      "email" : "user@mail.com"
+    }
+
+  ```
+  **OR** <br><br>
+  **Content:** <br>
+    `message : 'Account Successfully Created'`
 
  
 * **Error Response:**
