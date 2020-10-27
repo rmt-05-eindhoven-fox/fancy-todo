@@ -1,4 +1,4 @@
-const { json } = require("sequelize")
+
 const { Todo } = require("../models/index")
 
 class TodoController {
