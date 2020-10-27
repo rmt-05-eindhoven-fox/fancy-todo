@@ -5,6 +5,6 @@ module.exports = class JWT {
     return jwt.sign(data, process.env.VERIFYSIGNATURE)
   }
   static compare(data) {
-
+    return jwt.verify(data, process.env.VERIFYSIGNATURE)
   }
 }

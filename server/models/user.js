@@ -12,14 +12,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Todo, { foreignKey: "userFK" })
     }
   };
   User.init({
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: "Not a valid email"
+        }
+      }
+    },
     password: DataTypes.STRING
   }, {
     hooks: {
       beforeCreate(instance, option) {
+        if(instance.password.length < 6) throw new Error('Minimal password length is 6')
         instance.password = Bcrypt.salt(instance.password)
       }
     },

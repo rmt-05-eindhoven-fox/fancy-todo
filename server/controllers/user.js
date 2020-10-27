@@ -5,9 +5,11 @@ const JWT = require('../helpers/jwt')
 module.exports = class UserController {
   static async register(req, res) {
     try {
-      let created = await User.create(req.body, { returning: true })
+      let { email, password } = req.body
+      let created = await User.create({email, password}, { returning: true })
       res.status(201).json({ id: created.id, email: created.email })
     } catch (err) {
+      if(err.message === "Minimal password length is 6") res.status(400).json(err.message)
       res.status(400).json(err)
     }
   }

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User, { foreignKey: 'userFK' })
     }
   };
   Todo.init({
@@ -23,21 +24,22 @@ module.exports = (sequelize, DataTypes) => {
         tanggal(value) {
           let input = new Date(value)
           if(input.getFullYear() - new Date().getFullYear() < 0) {
-            throw new Error('Date must to greater than today')
+            throw new Error('Date must to greater than now')
           } 
           else if(input.getFullYear() - new Date().getFullYear() === 0) {
             if(input.getMonth() - new Date().getMonth() < 0) {
-              throw new Error('Date must to greater than today')
+              throw new Error('Date must to greater than now')
             }
             else if(input.getMonth() - new Date().getMonth() === 0) {
               if(input.getDate() - new Date().getDate() < 0) {
-                throw new Error('Date must to greater than today')
+                throw new Error('Date must to greater than now')
               }
             }
           }
         }
       }
-    } 
+    },
+    userFK: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',
