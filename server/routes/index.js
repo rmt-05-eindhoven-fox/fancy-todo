@@ -3,6 +3,7 @@
 const router = require('express').Router()
 const HomeController = require('../controllers/homecontroller')
 const todoRouter = require('./todo')
+const WeatherRoutes = require('./WeatherRoute')
 
 
 
@@ -12,7 +13,7 @@ router.post('/login', HomeController.login)
 
 
 router.use('/todos', todoRouter)
-
+router.use('/weathers',WeatherRoutes)
 
 
 module.exports = router

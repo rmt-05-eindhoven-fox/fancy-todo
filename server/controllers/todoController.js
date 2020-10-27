@@ -1,39 +1,38 @@
 const { Todo, User } = require('../models/index')
 
 class TodoController {
-  static async findAll(req, res, next) {
-    try {
-      let list = await Todo.findAll({
-        where: {
-          UserId: req.userData.id
-        }
+
+  static findAll(req, res, next) {
+    Todo.findAll({
+      where: { 
+        UserId: req.userData.id 
+      }
+    })
+      .then((todos) => {
+        res.status(200).json(todos)
+      }).catch((err) => {
+        next(err)
       })
-      list = list.map(todo => {
-        return {
-          id: todo.id,
-          title: todo.title,
-          description: todo.description,
-          status: todo.status,
-          due_date: todo.due_date,
-          UserId: todo.UserId
-        }
-      })
-      res.status(200).json({ list })
-    } catch (err) {
-      next(err)
-    }
   }
 
-  static async create(req, res, next) {
-    try {
-      const { title, description, status, due_date } = req.body
+  static create (req, res, next) {
+    const { 
+      title, 
+      description, 
+      status,
+      due_date 
+    } = req.body
+    const todoObj = { 
+      title, 
+      description, 
+      status,
+      due_date, 
+      UserId: req.userData.id 
+    }
 
-      const todoObj = { title, description, status, due_date, UserId: req.userData.id }
-
-      const todo = await Todo.create(todoObj, {
-        individualHooks: true
-      })
-        res.status(201).json ({
+    Todo.create(todoObj)
+      .then((todo) => {
+        res.status(201).json({
           id: todo.id,
           title: todo.title,
           description: todo.description,
@@ -41,37 +40,36 @@ class TodoController {
           due_date: todo.due_date,
           UserId: todo.UserId
         })
-    } catch (err) {
-      next(err)
-    }
-  }
-
-  static async findId(req, res, next) {
-    try {
-      const { id } = req.params
-      const todo = await Todo.findByPk(id)
-
-      if(!todo) throw {
-        message: 'Error not found', statusCode: 404
-      }
-      res.status(200).json({
-        id: todo.id,
-        title: todo.title,
-        description: todo.description,
-        status: todo.status,
-        due_date: todo.due_date
+      }).catch((err) => {
+        next(err)
       })
-    } catch(err) {
-      next(err)
-    }
   }
 
-  static async update(req, res, next) {
-    try {
-      const { id } = req.params
-      const { title, description, status, due_date } = req.body
-      const todo = await Todo.findByPk(id)
+  static findId(req, res, next) {
+    const { id } = req.params
+    Todo.findByPk(id)
+      .then((todo) => {
+        if(!todo) throw {
+          message: 'Error not found', statusCode: 404
+        }
+        res.status(200).json({
+          id: todo.id,
+          title: todo.title,
+          description: todo.description,
+          status: todo.status,
+          due_date: todo.due_date
+        })
+      }).catch((err) => {
+        next(err)
+      })
+  }
 
+  static update(req, res, next) {
+    const { id } = req.params
+    const { title, description, status, due_date } = req.body
+    
+    Todo.findByPk(id)
+    .then((todo) => {
       if(!todo) throw {
         message: 'Error not found', statusCode: 404
       }
@@ -80,7 +78,7 @@ class TodoController {
       todo.status = status
       todo.due_date = due_date
 
-      await todo.save()
+      todo.save()
       res.status(200).json({
         id: todo.id,
         title: todo.title,
@@ -88,51 +86,49 @@ class TodoController {
         status: todo.status,
         due_date: todo.due_date
       })
-    } catch(err) {
-      next(err)
-    }
-  }
-
-  static async status(req, res, next) {
-    try{
-      const { id } = req.params
-      const { status } = req.body
-
-      const todo = await Todo.findByPk(id)
-
-      if(!todo) throw {
-        message: 'Error not found', statusCode: 404
-      }
-
-      todo.status = status
-      await todo.save()
-
-      res.status(200).json({
-        id: todo.id,
-        title: todo.title,
-        description: todo.description,
-        status: todo.status,
-        due_date: todo.due_date
+      }).catch((err) => {
+        next(err)
       })
-
-    } catch(err) {
-      next(err)
-    }
   }
 
-  static async delete(req, res, next) {
-    try {
-      const { id } = req.params
-      const todo = await Todo.findByPk(id)
+  static status (req, res, next) {
+    const { id } = req.params
+    const { status } = req.body
+    Todo.findByPk(id)
+      .then((todo) => {
+        if(!todo) throw {
+          message: 'Error not found', statusCode: 404
+        }
+  
+        todo.status = status
+         todo.save()
+  
+        res.status(200).json({
+          id: todo.id,
+          title: todo.title,
+          description: todo.description,
+          status: todo.status,
+          due_date: todo.due_date
+        })
+      }).catch((err) => {
+        next(err)
+      })
+  }
+
+  static delete(req, res, next) {
+    const { id } = req.params
+    Todo.findByPk(id)
+    .then((todo) => {
       if(!todo) throw {
         message: 'Error not found'
       }
       todo.destroy()
       res.status(200).json({ message: 'Successfully deleted!'})
-    } catch(err) {
-      next(err)
-    }
+      }).catch((err) => {
+        next(err)
+      })
   }
+
 }
 
 module.exports = TodoController

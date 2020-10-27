@@ -57,13 +57,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {
+    hooks: {
+      beforeCreate(user) {
+        user.password = hashPassword(user.password)
+      }
+    }, 
     sequelize,
     modelName: 'User',
   });
-
-  User.beforeCreate((user, options) => {
-    user.password = hashPassword(user.password)
-  })
-
   return User;
 };

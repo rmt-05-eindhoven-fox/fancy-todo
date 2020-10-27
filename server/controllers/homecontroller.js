@@ -9,30 +9,28 @@ class HomeController {
     })
   }
 
-  static async register(req, res, next) {
-    try {
+  static register(req, res, next) {
       const { email, password } = req.body
-
       const userObj = { email, password }
-      const user = await User.create(userObj, {
-        individualHooks: true })
-      res.status(201).json({
-        id:user.id,
-        email:user.email,
-        msg:'Register success!'
+       User.create(userObj)
+       .then((user) => {
+        res.status(201).json({
+          id:user.id,
+          email:user.email,
+          msg:'Register success!'
+        })
+      }).catch((err) => {
+        next(err)
       })
-    } catch (err) {
-      next(err)
-    }
   }
 
-  static async login(req, res, next) {
-    try {
+  static login(req, res, next) {
+    
       const { email, password } = req.body
-      const user = await User.findOne({
+      User.findOne({
         where: { email }
       })
-
+      .then((user) => {
       if(!user) throw { 
         message: 'Incorrect email or password',
         statusCode: 400
@@ -49,11 +47,11 @@ class HomeController {
       })
 
       res.status(200).json({ token })
-  } catch (err) {
-    next(err)
-   }
+    }).catch((err) => {
+      next(err)
+    })
   }
-
 }
+
 
 module.exports = HomeController

@@ -1,25 +1,26 @@
 const { User } = require('../models/index')
 const { verifyToken } = require('../helpers/jwt')
 
-const authentication = async (req, res, next) => {
-  try{
-    let { token } = req.headers
+function authentication (req, res, next) {
+    const { token } = req.headers
     let decoded = verifyToken(token)
-    const user = await User.findOne({
+     User.findOne({
       where: {
         email:decoded.email
       }
     })
-
-    if(!user) throw {
-      msg:'Authentication Failed!'
-    }
-
-    req.userData = decoded
-    next()
-  } catch(err) {
-    next(err)
+.then(user => {
+  if(!user) throw {
+    msg:'Authentication Failed!'
   }
+
+  req.userData = decoded
+  next()
+
+})
+  .catch(err => {
+    next(err)
+  })
 }
 
 module.exports = authentication
