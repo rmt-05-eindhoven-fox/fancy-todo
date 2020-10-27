@@ -1,12 +1,9 @@
 const express = require("express")
 const router = express.Router()
-const Controller = require("../controllers")
+const todoRouter = require("./todos")
+const userRouter = require("./users")
 
-router.get("/", Controller.getTodo)
-router.post("/", Controller.postTodo)
-router.get("/:id", Controller.getTodoById)
-router.put("/:id", Controller.putTodoById)
-router.patch("/:id", Controller.patchTodoById)
-router.delete("/:id", Controller.deleteTodoById)
+router.use("/todos", todoRouter)
+router.use("/", userRouter)
 
 module.exports = router
