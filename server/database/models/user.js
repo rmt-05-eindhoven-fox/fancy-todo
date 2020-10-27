@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       }
    };
    User.init({
+      // Discord username optional
       username: {
          type: DataTypes.STRING,
          unique: true,
@@ -34,13 +35,14 @@ module.exports = (sequelize, DataTypes) => {
          type: DataTypes.STRING,
          allowNull: false,
          validate: {
-            notEmpty: {
-               args: true,
-               msg: "Email is required!"
-            },
+            // validasi is email masih bocor
             isEmail: {
                args: true,
                msg: "Not a valid email!"
+            },
+            notNull: {
+               args: true,
+               msg: 'Email is required.'
             },
          },
          unique: {
@@ -48,7 +50,16 @@ module.exports = (sequelize, DataTypes) => {
             msg: 'Email already in use!'
          },
       },
-      password: DataTypes.STRING
+      password: {
+         type: DataTypes.STRING,
+         allowNull: false,
+         validate: {
+            notNull: {
+               args: true,
+               msg: 'Password is required.'
+            }
+         }
+      },
    }, {
       sequelize,
       modelName: 'User',

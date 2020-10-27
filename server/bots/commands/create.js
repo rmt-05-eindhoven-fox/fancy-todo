@@ -38,7 +38,8 @@ module.exports = {
                   .then(done => {
                      let successMessage = new bot.MessageEmbed()
                         .setColor('#403b3b')
-                        .setTitle('Successfully created Todo with following details')
+                        .setTitle(`Successfully created Todo with following details`)
+                        .setDescription(`for ${msg.author}`)
                         .addFields(
                            { name: ' [title] ', value: `${newTodo.title}` },
                            { name: ' [description] ', value: `${newTodo.description}` },

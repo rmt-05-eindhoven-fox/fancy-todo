@@ -5,6 +5,8 @@ const express = require('express')
 const router = require('./routers')
 const app = express()
 const port = process.env.PORT || 8080
+const errorHandler = require('./middlewares/errorHandler')
+
 
 app.use(express.urlencoded({
    extended: true
@@ -25,6 +27,7 @@ app.use(compression({
 }));
 
 app.use('/', router)
+app.use(errorHandler)
 
 app.listen(port, () => {
    console.log(`Server started on http://localhost:${port}`);
