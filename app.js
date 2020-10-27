@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const router = require('./server/routers/index')
 
@@ -7,8 +9,8 @@ const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.use('/todos', router)
+app.use(router)
 
 app.listen(port, () => {
-  console.log(`http://localhost:${port}/todos`)
+  console.log(`http://localhost:${port}`)
 })
