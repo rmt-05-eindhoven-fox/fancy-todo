@@ -38,7 +38,7 @@ class Controller {
 
     static async showTodo(req, res){
         try {
-            let data = await Todo.findByPk(req.params.id);
+            let data = await Todo.findOne({where:{id: req.params.id, UserId: req.loggedIn.id}})
             if(data){
                 res.status(200).json(data)
             } else {
