@@ -16,6 +16,8 @@
 
 * **Data Params**
 
+  **Required:**
+
   `title=[string]`,
   `description=[string]`,
   `status=[string]`,

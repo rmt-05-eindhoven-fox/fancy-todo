@@ -12,9 +12,13 @@
   
 *  **URL Params**
 
-  `id=[integer]`
+   **Required:**
+   
+   `id=[integer]`
 
 * **Data Params**
+
+  **Required:**
    
   `title=[string]`,
   `description=[string]`,

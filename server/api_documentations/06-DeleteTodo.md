@@ -12,7 +12,9 @@
   
 *  **URL Params**
 
-  `id=[integer]`
+   **Required:**
+
+   `id=[integer]`
 
 * **Data Params**
    
