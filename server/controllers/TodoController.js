@@ -2,8 +2,14 @@ const {Todo} = require('../database/models')
 
 class TodoController {
    static async getAllTodos(req, res) {
+      const UserId = req.loggedInUser.id
+
       try {
-         const todos = await Todo.findAll()
+         const todos = await Todo.findAll({
+            where: {
+               UserId
+            }
+         })
 
          res.status(200).json(todos)
       } catch (err) {
@@ -17,7 +23,8 @@ class TodoController {
             title: req.body.title,
             description: req.body.description,
             status:req.body.status,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            UserId: req.loggedInUser.id
          }
 
          const createTodo = await Todo.create(newTodo)

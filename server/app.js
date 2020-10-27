@@ -9,6 +9,7 @@ const port = process.env.PORT || 8080
 app.use(express.urlencoded({
    extended: true
 }))
+app.use(express.json())
 
 const shouldCompress = (req, res) => {
    if (req.headers['x-no-compression']) {
