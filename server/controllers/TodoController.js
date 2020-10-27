@@ -9,17 +9,14 @@ class Controller {
                 status: req.body.status,
                 due_date: req.body.due_date
             }
-
             let todo = await Todo.create(payload);
-
             res.status(201).json({
                 id: todo.id,
                 title: todo.title,
                 description: todo.description,
                 status: todo.status,
-                due_date: todo.dues_date
+                due_date: todo.due_date
             });
-            
         } catch (error) {
             if(error.name === "SequelizeValidationError"){
                 res.status(400).json({error: error.message})

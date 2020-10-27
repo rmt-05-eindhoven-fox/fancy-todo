@@ -35,6 +35,14 @@ module.exports = (sequelize, DataTypes) => {
     due_date: {
       type: DataTypes.DATE,
       validate:{
+        notEmpty: true,
+        isDate: true,
+        checkDate(value){
+          let now = new Date();
+          if(value <= now){
+            throw new Error("Due date needs to be greater than today")
+          }
+        }
       }
     }
   }, {
