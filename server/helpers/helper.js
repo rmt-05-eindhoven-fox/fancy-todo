@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 class Helper {
   static hashpassword(password) {
-    const salt = bcrypt.genSaltSync(10);
+    const salt = bcrypt.genSaltSync(process.env.SALT);
     const hash = bcrypt.hashSync(password, salt);
     return hash;
   }
@@ -13,7 +13,7 @@ class Helper {
   }
 
   static signToken(payload) {
-    const token = jwt.sign(payload, "enigmatic");
+    const token = jwt.sign(payload, process.env.SECRET);
     return token;
   }
 }
