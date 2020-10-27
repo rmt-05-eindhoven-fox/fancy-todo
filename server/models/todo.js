@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
@@ -49,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Please input a valid date'
         }
       }
-    }
+    }, 
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',
