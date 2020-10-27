@@ -13,20 +13,30 @@ class ToDoController {
   // POST /todos
   static createTodo(req, res) {
     const { title, description, status, due_date } = req.body
-    console.log({ title, description, status, due_date })
+    const UserId = req.loggedInUser.id
     Todo
-      .create({ title, description, status, due_date })
+      .create({ title, description, status, due_date, UserId })
       .then(data => {
         res.status(201).json(data)
       })
       .catch(err => {
-        res.status(500).json(err)
+        if (err.name === 'SequelizeValidationError') {
+          let errors = err.errors.map(el => el.message)
+          res.status(400).json(errors.join(', '))
+        } else {
+          res.status(500).json(err)
+        }
       })
   }
   // GET /todos
   static findAll(req, res) {
+    const UserId = req.loggedInUser.id
     Todo
-      .findAll()
+      .findAll({
+        where: {
+          UserId: UserId
+        }
+      })
       .then(data => {
         res.status(200).json(data)
       })
@@ -36,8 +46,14 @@ class ToDoController {
   }
   // GET /todos/:id
   static findOneTodo(req, res) {
+    const UserId = req.loggedInUser.id
     Todo
-      .findByPk(req.params.id)
+      .findOne({
+        where: {
+          id: req.params.id,
+          UserId: UserId
+        }
+      })
       .then(data => {
         res.status(200).json(data)
       })
@@ -47,13 +63,15 @@ class ToDoController {
   }
   // PUT /todos/:id
   static updateTodo(req, res) {
+    const UserId = req.loggedInUser.id
     const { title, description, status, due_date } = req.body
     Todo
       .update({
         title, description, status, due_date 
       }, {
         where: {
-          id: req.params.id
+          id: req.params.id,
+          UserId: UserId
         },
         returning: true
       })
@@ -69,13 +87,15 @@ class ToDoController {
   }
   // PATCH /todos/:id
   static updateTodoStatus(req, res) {
+    const UserId = req.loggedInUser.id
     const { status } = req.body
     Todo
       .update({
         status
       }, {
         where: {
-          id: req.params.id
+          id: req.params.id,
+          UserId: UserId
         },
         returning: true
       })
@@ -91,10 +111,12 @@ class ToDoController {
   }
   // DELETE /todos/:id
   static deleteTodo(req, res) {
+    const UserId = req.loggedInUser.id
     Todo
       .destroy({
         where: {
-          id: req.params.id
+          id: req.params.id,
+          UserId: UserId
         }
       })
       .then(data => {
