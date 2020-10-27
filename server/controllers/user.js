@@ -2,7 +2,7 @@ const { User } = require('../models/')
 const { Bcrypt, JsonWebToken } = require('../helpers/helper')
 
 class UserController {
-  static async register(req, res) {
+  static async register(req, res, next) {
     try {
       const payload = {
         email: req.body.email,
@@ -14,11 +14,12 @@ class UserController {
         email: register.email
       })
     } catch (err) {
-      res.status(500).json(err)
+      err.status = 400
+      next(err)
     }
   }
 
-  static async login(req, res) {
+  static async login(req, res, next) {
     try {
       const payload = {
         email: req.body.email,
@@ -29,24 +30,15 @@ class UserController {
         where: { email: payload.email }
       })
 
-      if (!user) {
-        res.status(401).json({
-          msg: 'Wrong Email or Password'
-        })
-      } else if (!Bcrypt.comparePassword(payload.password, user.password)) {
-        console.log(payload.password)
-        res.status(401).json({
-          msg: 'Wrong Email or Password'
-        })
-      } else {
-        const token = JsonWebToken.signToken({
-          id: user.id,
-          email: user.email
-        })
-        res.status(200).json({ token })
-      }
+      const token = JsonWebToken.signToken({
+        id: user.id,
+        email: user.email
+      })
+
+      res.status(200).json({ token })
     } catch (err) {
-      res.status(500).json(err)
+      err.status = 401
+      next(err)
     }
   }
 }

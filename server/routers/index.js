@@ -2,14 +2,17 @@ const router = require('express').Router()
 const UserController = require('../controllers/user')
 const ToDoController = require('../controllers/todo')
 const authentication = require('../middlewares/authentication')
+const authorization = require('../middlewares/authorization')
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
-router.post('/todos', authentication, ToDoController.add)
-router.get('/todos', authentication, ToDoController.findAll)
-router.get('/todos/:id', authentication, ToDoController.findOne)
-router.put('/todos/:id', authentication, ToDoController.edit)
-router.patch('/todos/:id', authentication, ToDoController.editStatus)
-router.delete('/todos/:id', authentication, ToDoController.deleted)
+router.use(authentication)
+router.post('/todos', ToDoController.add)
+router.get('/todos', ToDoController.findAll)
+
+router.get('/todos/:id', authorization, ToDoController.findOne)
+router.put('/todos/:id', authorization, ToDoController.edit)
+router.patch('/todos/:id', authorization, ToDoController.editStatus)
+router.delete('/todos/:id', authorization, ToDoController.deleted)
 
 module.exports = router

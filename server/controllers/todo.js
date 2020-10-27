@@ -1,32 +1,34 @@
-const { ToDo } = require('../models')
+const { ToDo } = require('../models/')
 
 class ToDoController {
 
-  static async findAll(req, res) {
+  static async findAll(req, res, next) {
     const UserId = +req.loginCredential.id
     try {
       const list = await ToDo.findAll({
         where: { UserId }
       })
+
       res.status(200).json(list)
     }
     catch (err) {
-      res.status(500).json(err)
+      next(err)
     }
   }
 
-  static async findOne(req, res) {
+  static async findOne(req, res, next) {
     const UserId = +req.loginCredential.id
     const id = req.params.id
     try {
       let find = await ToDo.findOne({ where: { id, UserId } })
+
       res.status(200).json(find)
     } catch (err) {
-      res.status(500).json(err)
+      next(err)
     }
   }
 
-  static async add(req, res) {
+  static async add(req, res, next) {
     const data = {
       title: req.body.title,
       description: req.body.description,
@@ -34,7 +36,6 @@ class ToDoController {
       due_date: req.body.due_date,
       UserId: +req.loginCredential.id
     }
-    console.log(data)
 
     try {
       const add = await ToDo.create(data)
@@ -42,11 +43,11 @@ class ToDoController {
       res.status(201).json(add)
     }
     catch (err) {
-      res.status(500).send(err)
+      next(err)
     }
   }
 
-  static async edit(req, res) {
+  static async edit(req, res, next) {
     const id = req.params.id
     const UserId = +req.loginCredential.id
     const { title, description, status, due_date } = req.body
@@ -56,11 +57,11 @@ class ToDoController {
       })
       res.status(200).json(edit[1][0])
     } catch (err) {
-      res.status(500).json(err)
+      next(err)
     }
   }
 
-  static async editStatus(req, res) {
+  static async editStatus(req, res, next) {
     const UserId = +req.loginCredential.id
     const id = req.params.id
     const status = req.body.status
@@ -74,20 +75,20 @@ class ToDoController {
       console.log(editStatus)
       res.status(200).json(editStatus[1][0])
     } catch (err) {
-      res.status(500).json(err)
+      next(err)
     }
   }
 
-  static async deleted(req, res) {
+  static async deleted(req, res, next) {
     const UserId = +req.loginCredential.id
     const id = req.params.id
     try {
       const find = await ToDo.findOne({ where: { id } })
       await ToDo.destroy({ where: { id, UserId } }
       )
-      res.status(200).json(find)
+      res.status(200).json({ msg: 'ToDO deleted Succesfully' })
     } catch (err) {
-      res.status(500).json(err)
+      next(err)
     }
   }
 }
