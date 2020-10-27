@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
@@ -54,10 +54,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDate: {
           args: true,
-          msh: "plase fill due date with date format (YYYY-MM-DD)"
+          msh: "plase fill due date with date format"
         }
       }
-    }
+    },
+    UserId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Todo',
