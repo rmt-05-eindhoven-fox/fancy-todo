@@ -22,7 +22,11 @@ class TodoController {
 
 
     static findAllTodo(req, res){
-        Todo.findAll()
+        const userId = req.loggedInUser.id
+        console.log(userId)
+        Todo.findAll({
+            where: userId
+        })
         .then( todo => {
             res.status(200).json(todo)
         })

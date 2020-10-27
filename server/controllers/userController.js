@@ -26,7 +26,7 @@ class UserController {
             email: req.body.email,
             password: req.body.password
         }
-        console.log(playload)
+        
         User.findOne({
             where: {
                 email: playload.email

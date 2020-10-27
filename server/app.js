@@ -1,10 +1,14 @@
-const express = require("express")
-const route = require('./routes/index.js')
-const PORT = 5000
-const app = express()
+require("dotenv").config();
 
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
-app.use(route)
+const express = require("express");
+const route = require('./routes/index.js');
+const PORT = process.env.PORT;
+const app = express();
 
-app.listen(PORT)
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+app.use(route);
+
+app.listen(PORT, () => {
+    console.log('listening on http://localhost:',PORT)
+});
