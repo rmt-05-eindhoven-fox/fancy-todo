@@ -1,6 +1,6 @@
 const { User } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
-const { signToken }  = require("../helpers/jwt");
+const { signToken } = require("../helpers/jwt");
 
 class UserController {
 	static async register(req, res) {
@@ -9,6 +9,7 @@ class UserController {
 				email: req.body.email,
 				password: req.body.password,
 			};
+
 			const user = await User.create(params);
 			console.log(user);
 			res.status(201).json({
@@ -18,14 +19,13 @@ class UserController {
 		} catch (err) {
 			res.status(500).json(err);
 		}
-  }
-  
+	}
 
 	static async login(req, res) {
 		try {
 			const params = {
 				email: req.body.email,
-				password: req.body.password
+				password: req.body.password,
 			};
 
 			const user = await User.findOne({
@@ -33,7 +33,7 @@ class UserController {
 					email: params.email,
 				},
 			});
-      console.log(user)
+			console.log(user);
 			if (!user) {
 				res.status(401).json({
 					message: "wrong email/password",

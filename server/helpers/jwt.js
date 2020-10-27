@@ -5,4 +5,10 @@ function signToken(params){
     return token;
 }
 
-module.exports = { signToken }; 
+function verifyToken(token){
+    const decoded = jwt.verify(token, process.env.XXX)
+    return decoded;
+
+}
+
+module.exports = { signToken,verifyToken }; 

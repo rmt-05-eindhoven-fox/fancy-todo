@@ -3,8 +3,14 @@ const todo = require("../models/todo");
 
 class TodoController {
 	static async showTodo(req, res) {
+		const userId = req.loggedInUser.id;
 		try {
-			const todos = await Todo.findAll();
+			const todos = await Todo.findAll({
+				where: {
+					userId,
+				},
+			});
+
 			res.status(200).json(todos);
 		} catch (error) {
 			res.status(500).json.error;
@@ -33,19 +39,22 @@ class TodoController {
 			description: req.body.description,
 			status: req.body.status,
 			due_date: req.body.due_date,
+	
 		};
+		const UserId = req.loggedInUser.id;
 
-		console.log(req.body)
+		console.log(newTodo);
+		console.log(UserId, "UserId nih");
 
-		Todo.create(newTodo)
+		Todo.create({ ...newTodo, UserId })
 			.then((data) => {
 				res.status(201).json(data);
 			})
 			.catch((err) => {
-				res.status(500).json.error;
+				const error = err.errors[0].messege || "Internal Server Error";
+				res.status(500).json({ error });
 			});
 	}
-
 	// static async addTodo(req, res) {
 	// 	const { title, description, status, due_date } = req.body;
 	// 	try {
@@ -71,7 +80,7 @@ class TodoController {
 		console.log(params);
 
 		Todo.update(params, {
-			where: { id: req.params.id }	
+			where: { id: req.params.id },
 			// returning: true,
 		})
 			.then((data) => {
@@ -91,8 +100,9 @@ class TodoController {
 
 		Todo.update(params, {
 			where: {
-				id: req.params.id}
-			})
+				id: req.params.id,
+			},
+		})
 			.then((data) => {
 				console.log("");
 				res.status(200).json(data);
@@ -100,8 +110,7 @@ class TodoController {
 			.catch((err) => {
 				console.log("");
 				res.status(500).json(err);
-			})
-
+			});
 	}
 
 	static delete(req, res) {
