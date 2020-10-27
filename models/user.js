@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       isEmail: true,
-      unique: true,
       allowNull: false,
       validate: {
         isEmail: {
@@ -41,7 +40,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
       validate: {
         usernameLength(value) {

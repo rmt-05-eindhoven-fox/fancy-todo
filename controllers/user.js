@@ -4,7 +4,7 @@ const { signToken } = require("../helpers/jwt")
 
 class UserController {
     
-    static async signup(req, res) {
+    static async signup(req, res, next) {
         try {
             const payload = {
                 email: req.body.email,
@@ -19,13 +19,17 @@ class UserController {
                 email: user.email
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json(err)
+            next(err)
         } 
     }
 
-    static async signin(req, res) {
+    static async signin(req, res, next) {
         try {
+            if (!req.body.email) {
+                throw {message: `Please input the email`, status: 401}
+            } else if(!req.body.password) {
+                throw {message: `Please input the password`, status: 401}
+            }
             const payload = {
                 email : req.body.email,
                 password : req.body.password
@@ -38,13 +42,11 @@ class UserController {
             })
 
             if (!user) {
-                res.status(401).json({
-                    message: `Invalid email/password`
-                })
+                throw {message: `Invalid email/password`, status: 401}
+
             } else if (!comparePassword(payload.password, user.password)) {
-                res.status(401).json({
-                    message: `Invalid email/password`
-                })
+                throw {message: `Invalid email/password`, status: 401}
+
             } else {
                 const access_token = signToken({
                     id: user.id,
@@ -56,7 +58,7 @@ class UserController {
                 })
             }
         } catch(err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }
