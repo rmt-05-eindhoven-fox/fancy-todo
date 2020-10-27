@@ -1,7 +1,7 @@
 const { verifyToken } = require('../helpers/token');
 const { User, Todo } = require('../models');
 
-const authentication = async (req, res, next) => {
+const authentication = (req, res, next) => {
   const accessToken = req.headers.access_token;
   const verifiedData = verifyToken(accessToken);
   try {

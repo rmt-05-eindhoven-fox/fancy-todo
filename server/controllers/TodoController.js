@@ -4,11 +4,10 @@ class TodoController {
   static async create(req, res, next) {
     const UserId = +req.user.id; 
     try {
-      const { title, description, status, due_date } = req.body;
+      const { title, description, due_date } = req.body;
       const create = await Todo.create({
         title,
         description,
-        status,
         due_date,
         UserId
       });
@@ -20,10 +19,14 @@ class TodoController {
   }
 
   static async findAll(req, res, next) {
+    const UserId = +req.user.id;
     try {
       const findAllTodos = await Todo.findAll({
         attributes: {
           exclude: ['createdAt', 'updatedAt']
+        },
+        where: {
+          UserId
         }
       });
       res.status(200).json(findAllTodos);
