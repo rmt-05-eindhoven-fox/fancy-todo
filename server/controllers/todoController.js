@@ -6,10 +6,11 @@ class TodoController {
 
   //#region getTodo
   static async getTodo(req, res) {
+    const userId = req.loggedInUser.id
     try {
       const todos = await Todo.findAll({
-        attributes: {
-          exclude: ['createdAt', 'updatedAt']
+        where: {
+          userId
         }
       })
       res.status(200).json(todos)
@@ -41,6 +42,7 @@ class TodoController {
 
   //#region postTodo
   static async postTodo(req, res) {
+    const userId = +req.loggedInUser.id
     const {
       title,
       description,
@@ -54,6 +56,7 @@ class TodoController {
         description,
         status,
         due_date,
+        userId
       })
 
       const resultTodo = {
@@ -61,9 +64,9 @@ class TodoController {
         title: newTodo.title,
         description: newTodo.description,
         status: newTodo.status,
-        due_date: newTodo.due_date
+        due_date: newTodo.due_date,
+        userId: newTodo.userId
       }
-
       res.status(201).json(resultTodo)
     } catch (error) {
       console.log(error)

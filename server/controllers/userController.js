@@ -4,7 +4,9 @@ const {
 const {
   comparePassword
 } = require('../helpers/bcrypt')
-const generateToken = require('../helpers/jwt')
+const {
+  generateToken
+} = require('../helpers/jwt')
 
 class UserController {
 
@@ -66,6 +68,7 @@ class UserController {
       }
 
     } catch (error) {
+      console.log(error);
       res.status(500).json(error)
     }
   }
