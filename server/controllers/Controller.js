@@ -1,4 +1,4 @@
-const { Todo, User } = require('../models')
+const { Todo } = require('../models/')
 const {Op} = require('sequelize')
 
 
@@ -6,7 +6,7 @@ class Controller{
     
     // 💈=== GET ===💈 //
 
-    static async getTodos(req, res, next){
+    static async getTodos(req, res, next) {
         try {
             const { userId } = req.loggedInUser
 
@@ -25,7 +25,7 @@ class Controller{
         }
     }
 
-    static async getOneTodo(req, res, next){
+    static async getOneTodo(req, res, next) {
         const { userId } = req.loggedInUser
         const id = +req.params.id
         try {
@@ -46,7 +46,7 @@ class Controller{
 
     // 💈=== POST ===💈 //
 
-    static async postNewTodo(req, res, next){
+    static async postNewTodo(req, res, next) {
         const { userId } = req.loggedInUser
         const { title, description, status, due_date } = req.body
 
@@ -78,7 +78,7 @@ class Controller{
 
     // 💈=== PUT ===💈 //
 
-    static async putUpdatedTodo(req, res, next){
+    static async putUpdatedTodo(req, res, next) {
         const id = +req.params.id
         const { title, description, status, due_date } = req.body
 
@@ -98,7 +98,7 @@ class Controller{
     }
     // 💈=== PATCH ===💈 //
 
-    static async patchTodoStatus(req, res, next){
+    static async patchTodoStatus(req, res, next) {
         const id = +req.params.id
         const { status } = req.body
 
@@ -127,7 +127,7 @@ class Controller{
 
     // 💈=== DELETE ===💈 //
 
-    static async deleteTodo(req, res, next){
+    static async deleteTodo(req, res, next) {
         const id = +req.params.id
 
         try {

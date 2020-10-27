@@ -1,7 +1,7 @@
 module.exports = function(err,req,res,next){
   let status = err.status || 500
   let msg = err.message || 'Internal Server Error'
-  
+
   if(err.name){
       switch (err.name) {
       case 'SequelizeValidationError':
@@ -20,11 +20,10 @@ module.exports = function(err,req,res,next){
         console.log(err)
         break;
     }
-  } else {
-    
-    res.status(status).json({ error : msg })
-
   }
+
+  
+  res.status(status).json({ error : msg })
 
 
 }

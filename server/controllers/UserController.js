@@ -1,10 +1,10 @@
 const { User, Todo } = require ('../models')
 const { comparePassword } = require('../helpers/bcrypt')
-const {generateToken} = require('../helpers/jwt')
+const { generateToken } = require('../helpers/jwt')
 
 class UserController{
    // Register & Login //
-  static async postUserRegister(req, res, next){
+  static async postUserRegister(req, res, next) {
   try {
     const { email, password } = req.body
     
@@ -25,7 +25,7 @@ class UserController{
   }
 
 
-  static async postUserLogin(req, res, next){
+  static async postUserLogin(req, res, next) {
     try {
       const { email, password } = req.body
       

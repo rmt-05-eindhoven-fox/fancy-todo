@@ -6,7 +6,7 @@ const authentication = require('../middlewares/authentication')
 const authorization = require('../middlewares/authorization')
 
 router.get('/testMovie', MovieController.getPopularTv)
-// router.get('/timoTweets', MovieController.getTimoTweets)
+// router.get('/timoTweets', MovieController.getTimoTweets) // testing Twitter API
 
 router.post('/register', UserController.postUserRegister)
 router.post('/login', UserController.postUserLogin)
@@ -17,9 +17,8 @@ router.get('/todos', Controller.getTodos)
 router.post('/todos', Controller.postNewTodo)
 
 
-router.put('/todos/:id', Controller.putUpdatedTodo)
-router.patch('/todos/:id', Controller.patchTodoStatus)
-
+router.put('/todos/:id', authorization, Controller.putUpdatedTodo)
+router.patch('/todos/:id', authorization, Controller.patchTodoStatus)
 router.get('/todos/:id', authorization,Controller.getOneTodo)
 router.delete('/todos/:id', authorization, Controller.deleteTodo)
 
