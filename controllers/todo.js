@@ -4,10 +4,9 @@ class TodoController {
 
     static async showTodos (req, res) {
         try {
-            const userId = null
             const todos = await Todo.findAll({
                 where: {
-                    UserId: userId
+                    UserId: req.User.id
                 }
             })
             res.status(200).json({
@@ -24,7 +23,8 @@ class TodoController {
                 title: req.body.title,
                 description: req.body.description,
                 status: req.body.status,
-                due_date: req.body.due_date
+                due_date: req.body.due_date,
+                UserId: req.User.id
             }
             const todo = await Todo.create(newTodo)
             res.status(201).json({todo})
