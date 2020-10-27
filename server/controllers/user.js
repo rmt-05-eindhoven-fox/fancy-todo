@@ -1,10 +1,9 @@
 const { User } = require('../models/index')
 const bcrypt = require('bcryptjs')
-const jwt = require('../helper/jwt')
-const generateToken = require('../helper/jwt')
+const { generateToken } = require('../helper/jwt')
 
 class UserController{
-    static register(req, res){
+    static register(req, res, next){
         const { email, password } = req.body
         User.create({
             email,
@@ -14,28 +13,26 @@ class UserController{
                 res.status(201).json({
                     id: dataUser.id,
                     email: dataUser.email,
-                    msg: "register succes"
+                    msg: "register success"
                 })
             })
             .catch((err) => {
-                res.status(401).json({
-                    msg: "invalid requests"
-                })
+                next(err)
             })
     }
 
-    static login(req, res){
+    static login(req, res, next){
         const { email, password } = req.body
         User.findOne({
             where: { email }
         })
             .then((dataUser) => {
                 if(!dataUser){
-                    throw { msg: "invalide email or password "}
+                    throw { msg: "invalid email or password "}
                 }
                 const samePassword = bcrypt.compareSync(password, dataUser.password)
                 if(!samePassword) {
-                    throw { msg: "invalide email or password "}
+                    throw { msg: "invalid email or password "}
                 }else{
                     let payload = {
                         id: dataUser.id, email: dataUser.email
@@ -46,7 +43,7 @@ class UserController{
 
             })
             .catch((err) => {
-                res.status(400).json({ err: err.msg || "invalid requests" })
+                next(err)
             })
     }
 }

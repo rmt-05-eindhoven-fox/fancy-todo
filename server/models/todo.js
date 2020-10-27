@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User, { foreignKey: 'UserId'})
     }
   };
   Todo.init({
@@ -41,7 +42,20 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    due_date: DataTypes.DATE
+    due_date: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "date is required"
+        },
+        isDate: {
+          args: true,
+          msg: "Input date must be date"
+        }
+      }
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',
