@@ -44,15 +44,16 @@ class TodoController {
     const {
       title,
       description,
-      due_date
+      status,
+      due_date,
     } = req.body
+
     try {
       const newTodo = await Todo.create({
         title,
         description,
         status,
         due_date,
-        userId
       })
 
       const resultTodo = {
@@ -60,12 +61,12 @@ class TodoController {
         title: newTodo.title,
         description: newTodo.description,
         status: newTodo.status,
-        due_date: newTodo.due_date,
-        userId: +userId
+        due_date: newTodo.due_date
       }
 
       res.status(201).json(resultTodo)
     } catch (error) {
+      console.log(error)
       res.status(400).json(error)
     }
   }
@@ -155,7 +156,7 @@ class TodoController {
 
       } else {
         res.status(404).json({
-          message: `Can't find ID`
+          message: `can't find id`
         })
 
       }

@@ -28,6 +28,7 @@ class UserController {
       res.status(201).json(output)
 
     } catch (error) {
+      console.log(error);
       res.status(500).json(error)
     }
   }

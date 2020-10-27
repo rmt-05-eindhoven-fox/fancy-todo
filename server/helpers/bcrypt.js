@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 
 function encode(password) {
   const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(password, process.env.SALT);
+  const hash = bcrypt.hashSync(password, salt);
 
   return hash
 }
