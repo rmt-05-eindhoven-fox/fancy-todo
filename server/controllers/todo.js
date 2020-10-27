@@ -1,42 +1,46 @@
-const { Todo } = require("../models");
+const { Todo, User } = require("../models");
 
 class TodoController {
-	static async create(req, res) {
+	static async create(req, res, next) {
 		const { title, description, status, due_date } = req.body
+		const UserId = req.loggedIn
+		
 		try {
 			const newTodo = await Todo.create({
-				title, description, status, due_date
+				title, description, status, due_date, UserId
 			})
 			res.status(201).json(newTodo)
 		} catch (err) {
-			res.status(400).json(err.message)
+			next(err)
 		}
 	}
 
-  static async showAll(req, res) {
+  static async showAll(req, res, next) {
+		const UserId = req.loggedIn
+
 		try {
 			const todos = await Todo.findAll()
 			res.status(200).json(todos)
 		} catch (err) {
-			res.status(500).json(err)
+			next(err)
 		}
 	}
 
-	static async findById (req, res) {
+	static async findById (req, res, next) {
 		const id = +req.params.id
 		try {
 			const todo = await Todo.findByPk(id)
 			if (todo) {
 				res.status(200).json(todo)
 			} else {
-				res.status(404).json({ message: 'ERROR NOT FOUND'})
+				throw { msg: 'NOT FOUND', status: 404 }
 			}
 		} catch (err) {
-			res.status(500).json(`err`)
+			next(err)
 		}
 	}
 
-	static async updateOne (req, res) {
+	static async updateOne (req, res, next) {
 		const id = +req.params.id
 		const { title, description, status, due_date } = req.body
 		try {
@@ -47,14 +51,14 @@ class TodoController {
 				}, { where: { id }})
 				res.status(200).json(req.body)
 			} else {
-				res.status(404).json({ message: 'ERROR NOT FOUND'})
+				throw { msg: 'NOT FOUND', status: 404 }
 			}
 		} catch (err) {
-			res.status(400).json(err.message)
+			next(err)
 		}
 	}
 
-	static async updateStatus (req, res) {
+	static async updateStatus (req, res, next) {
 		const id = +req.params.id
 		const { status } = req.body
 		try {
@@ -63,14 +67,14 @@ class TodoController {
 				await Todo.update({ status }, { where: { id } })
 				res.status(200).json(req.body)
 			} else {
-				res.status(404).json({ message: 'ERROR NOT FOUND'})
+				throw { msg: 'NOT FOUND', status: 404 }
 			}	
 		} catch (err) {
-			res.status(500).json(err)
+			next(err)
 		}
 	}
 
-	static async delete (req, res) {
+	static async delete (req, res, next) {
 		const id = +req.params.id
 		try {
 			const todo = await Todo.findByPk(id)
@@ -78,10 +82,10 @@ class TodoController {
 				await Todo.destroy({ where: { id } })
 				res.status(200).json({ message: 'todo success to delete'})
 			} else {
-				res.status(404).json({ message: 'ERROR NOT FOUND'})
+				throw { msg: 'NOT FOUND', status: 404 }
 			}
 		} catch (err) {
-			res.status(500).json(err)
+			next(err)
 		}
 	}
 }
