@@ -9,7 +9,7 @@
   "test": {
     "username": "postgres",
     "password": "admin",
-    "database": "fancytodo_test",
+    "database": "fancytodo",
     "host": "localhost",
     "dialect": "postgres"
   },

@@ -2,11 +2,16 @@ const { Todo } = require('../models')
 
 class TodoController {
     static async findAll (req,res) {
-        //console.log(`masuk sini`)
+        const userId = req.loggedInUser.id
         try {
-            const todos = await Todo.findAll()
+            const todos = await Todo.findAll({
+                where: {
+                    userId
+                }
+            })
             //console.log(todos)
             res.status(200).json(todos)
+            console.log(userId, 'INI USER')
         } catch (error) {
             res.status(500).json(error)
             //console.log(error)
@@ -15,8 +20,11 @@ class TodoController {
 
     static async create(req,res) {
         const { title, description, status, due_date} = req.body
+        const userId = req.loggedInUser.id
+        // console.log(title, description, status, due_date)
+        // console.log(userId, 'ini userid')
         try {
-            const newTodo = await Todo.create({title, description, status, due_date})
+            const newTodo = await Todo.create({title, description, status, due_date, userId})
             res.status(201).json(newTodo)
         } catch (error) {
             res.status(500).json(error)
@@ -70,8 +78,8 @@ class TodoController {
             let todo = await Todo.findByPk(req.params.id)
 
             if(todo) {
-                todo.destroy()
-                todo.save()
+                await todo.destroy()
+                await todo.save()
                 res.status(200).json({msg: `todo has been deleted`})
             }
         } catch (error) {

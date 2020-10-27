@@ -10,13 +10,14 @@ class UserController {
                 email: req.body.email,
                 password: req.body.password
             }
-
+            //console.log(process.env.SALT)
             const user = await User.create(payload)
             res.status(201).json({
                 id: user.id,
                 email: user.email
             })
         } catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     }
