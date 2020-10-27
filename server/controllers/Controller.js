@@ -1,119 +1,127 @@
 const { Todo } = require('../models')
 
 class Controller {
-    static async createTodo(req, res) {
+    static createTodo(req, res, next) {
         const { title, description, status, due_date } = req.body
-        try {
-            const result = await Todo
-            .create({
-                title,
-                description,
-                status,
-                due_date
+        Todo
+        .create({
+            title,
+            description,
+            status,
+            due_date,
+            UserId: +req.isSignedIn.userId
             })
-            const currentTime = new Date()
-            if(due_date < currentTime){
-                res.status(400).json({
-                    msg: 'DATE SHOULD BE GREATER THAN TODAY'
-                })
-            }
+        .then(result => {
             res.status(201).json(result)
-        } catch (error) {
-            res.status(500).json(error)
-        }
+        })
+        .catch(err => {
+            next(err);
+        })
     }
 
-    static async readTodo(req, res) {
-        try {
-            const result = await Todo
-            .findAll()
+    static readTodo(req, res, next) {
+        const userId = +req.isSignedIn.userId
+        console.log(userId)
+        Todo
+        .findAll({
+            where: {
+                UserId: userId
+            }
+        })
+        .then(result => {
             res.status(200).json(result)
-        } catch (error) {
-            res.status(500).json(error)
-        }
+        })
+        .catch(err => {
+            next(err)
+        })
     }
 
-    static async searchTodoById(req, res) {
-        const index = req.params.id
+    static searchTodoByUserId(req, res, next) {
+        const userId = req.isSignedIn.userId
+        const id = req.params.id
 
-        try {
-            const result = await Todo
-            .findByPk({
+        Todo
+        .findAll({
+            where: {
+                id,
+                UserId: userId
+            }
+        })
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch (err => {
+            next(err)   
+        })
+    }
+
+    static updateTodo(req, res, next) {
+        const index = req.params.id
+        const UserId = req.isSignedIn.userId
+        const { title, description, status, due_date } = req.body
+
+        Todo
+        .update({
+            title,
+            description,
+            status,
+            due_date,
+            UserId
+        }, {
+            where: {
+                id: index
+            },
+            returning: true
+        })
+        .then(result => {
+            console.log('berhasil')
+            res.status(200).json(result[1][0])
+        })
+        .catch (err => {
+            next(err)
+        })
+    }
+
+    static changeStatus(req, res, next) {
+        const index = req.params.id
+        const { status } = req.body
+        Todo
+        .update({
+            status
+        }, {
+            where: {
+            id: index
+            },
+            returning: true
+        })
+        .then(result => {
+            res.status(200).json(result[1][0])
+        })
+        .catch (err => {
+            next(err)
+        })
+    }
+
+    static deleteTodo(req, res, next) {
+        const index = req.params.id
+        let data = ''
+
+        Todo
+        .findByPk(index)
+        .then(result => {
+            data = result
+            return Todo.destroy({
                 where: {
                     id: index
                 }
             })
-            res.status(200).json(result)
-        } catch (error) {
-            res.status(404).json(error)   
-        }
-    }
-
-    static async updateTodo(req, res) {
-        const index = req.params.id
-        const { title,description, status, due_date } = req.body
-
-        try {
-            const result = await Todo.update({
-                title,
-                description,
-                status,
-                due_date
-            }, {
-                where: {
-                    id: index
-                },
-                returning: true
-            })
-            const currentTime = new Date()
-            if(due_date < currentTime){
-                res.status(400).json({
-                    msg: `DATE SHOULD BE GREATER THAN TODAY`
-                })
-            }
-            res.status(200).json(result[1][0])
-        } catch (error) {
-            res.status(404).json(error)
-        }
-    }
-
-    static async changeStatus(req, res) {
-        const index = req.params.id
-        const { status } = req.body
-
-        try {
-            const result = await Todo
-            .update({
-                status
-            }, {
-                where: {
-                    id: index
-                },
-                returning: true
-            })
-            res.status(200).json(result[1][0])
-        } catch (error) {
-            res.status(404).json(error)
-        }
-    }
-
-    static async deleteTodo(req, res) {
-        const index = req.params.id
-
-        try {
-            const data = await Todo
-            .findByPk(index)
-            const result = await Todo
-            .destroy({
-                where: {
-                    id: index
-                },
-                returning: true
-            })
+        })
+        .then(result => {
             res.status(200).json(data)
-        } catch (error) {
-            res.status(404).json(error)
-        }
+        })
+        .catch(err => {
+            next(err)
+        })
     }
 }
 

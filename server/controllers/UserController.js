@@ -1,58 +1,55 @@
-const { User } = require('../models')
+const { User, Todo } = require('../models')
 const { validatingPassword } = require('../helpers/bcrypt')
-const generateToken = require('../helpers/jwt')
+const { generateToken } = require('../helpers/jwt')
 
 class UserController {
-    static async signup(req, res) {
+    static signup(req, res, next) {
         const { email, password } = req.body
 
-        try {
-            const result = User
-            .create()
-            res.status(201).json({
-                id: result.id,
-                email: result.email
+        User
+        .create({ 
+            email, 
+            password,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }, {
+            returning: true
             })
-        } catch (error) {
-            res.status(500).json(error)
-        }
+        .then(result => {
+            console.log('masih masuk sini')
+            res.status(201).json({email})
+        })
+        .catch(err => {
+            console.log('masuk sini')
+            next(err)
+        })
     }
     
-    static async signin(req, res) {
+    static signin(req, res, next) {
         const { email, password } = req.body
-
-        try {
-            const result = await User.findOne({
-                where: {
-                    email
-                }
-            })
-
+        User
+        .findOne({
+            where: {
+                email: email
+            }
+        })
+        .then(result => {
             if(!result){
-                res.status(401).json({
-                    msg: 'Wrong email/password'
-                })
+                throw { msg: `Wrong email/password`, status: 401 }
             } else if(!validatingPassword(password, result.password)){
-                res.status(401).json({
-                    msg: 'Wrong email/password'
-                })
+                throw { msg: `Wrong email/password`, status: 401 }
             } else {
                 const access_token = generateToken({
-                    email
-                })
+                    userId: result.id,
+                    email: result.email
+            })
                 res.status(200).json({access_token})
             }
-        } catch (error) {
-            if(error.name === "Sequelize Validation Error"){
-                let message = []
-                error.errors.forEach(el => {
-                    message.push(el.message)
-                })
-                res.status(400).json(message.join(', \n'))
-            } else{
-                res.status(500).json(error)
-            }
-        }
+        })
+        .catch (err => {
+            console.log(err)
+            next(err)
+        })
     }
 }
 

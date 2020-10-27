@@ -10,14 +10,59 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    status: DataTypes.BOOLEAN,
-    due_date: DataTypes.STRING
+    title:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'title should not be empty'
+        },
+        notNull: {
+          args: true,
+          msg: 'title should not be empty'
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'description should not be empty'
+        }
+      }
+    },
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'status should not be empty'
+        }
+      }
+    },
+    due_date: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'due_date should not be empty'
+        },
+        isValid(value){
+          const currentTime = new Date()
+          const schedule = new Date(value)
+          if((schedule - currentTime) < 0){
+            throw new Error('Should be greater than current time')
+          }
+        }
+      }
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',
