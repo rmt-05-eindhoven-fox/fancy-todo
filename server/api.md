@@ -1,4 +1,4 @@
-`Fancy Todo Project Week 1. Simple web application of manage Your Todo List. This app has :`
+<!-- `Fancy Todo Project Week 1. Simple web application of manage Your Todo List. This app has :`
 > - Register
 > - Login
 > - Login with Google
@@ -11,8 +11,6 @@
 > - SECRET=
 > - CLIENT_ID=
 ---
-`link deploy:`
-> - _optional_
 ---
 `Fancy Todo Guides:`
 > - Log In - this button automatically guide you to our main page
@@ -301,4 +299,4 @@ _Response (200)_
 {
   message: "data id 9 has been done"
 }
-```
+``` -->
