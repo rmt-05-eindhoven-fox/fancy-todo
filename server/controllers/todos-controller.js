@@ -1,84 +1,70 @@
 'use strict'
 
-const { Todo } = require('../models')
+const { Todo } = require('../models');
 
 class TodosController {
-  static async getTodos(req, res){
+  static async getTodos(req, res, next){
+    const userId = req.loggedInUser.id;
     try {
-      const data = await Todo.findAll()
+      const data = await Todo.findAll({
+        where: {
+          UserId: userId
+        }
+      })
       res.status(200).json(data);
     } catch (err) {
-      res.status(500).json(err);
+      next(err);
     }
   }
 
-  static async postTodos(req, res){
+  static async postTodos(req, res, next){
     let objparam = {
-      title: '',
-      description: 'aapa aja boleh3',
-      status:'Ongoing',
+      title: req.body.title,
+      description: req.body.description,
+      status: 'Uncompleted',
       due_date: new Date(),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      UserId: req.loggedInUser.id
     }
     try {
       const data = await Todo.create(objparam, { returning: true })
       res.status(201).json(data);
     } catch (err) {
-      if(err.name === 'SequelizeValidationError'){
-        res.status(400).json(err);  
-      }
-      else{
-        res.status(500).json(error)
-      }
+      let error = err.errors[0];
+      next(error);
     }
   }
 
-  static async getTodosbyId(req,res){
+  static async getTodosbyId(req, res, next){
     let idparams = req.params.id;
     try{
       const data = await Todo.findByPk(idparams);
-      if(!data){
-        res.status(404).json('not found');
-      } else{
-        res.status(200).json(data);
-      }
+      res.status(200).json(data);
     } catch(err) {
-      res.status(500).json(err);
+      next(err);
     }
   }
 
-  static async putTodos(req, res){
+  static async putTodos(req, res, next){
     let idparams = req.params.id;
     let objparam = {
-      title: 'todos4',
-      description: 'aapa aja boleh3',
-      status:'',
-      due_date: new Date(),
-      createdAt: new Date(),
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      due_date: req.body.due_date,
       updatedAt: new Date()
     }
     try{
       const data = await Todo.update(objparam, {
         where: { id: idparams }
       });
-      if(!data[0]){
-        res.status(404).json('not found');
-      }
-      else{
-        res.status(200).json(data);
-      }
+      res.status(200).json(data);
     } catch(err){
-      if(err.name === 'SequelizeValidationError'){
-        res.status(400).json(err);  
-      }
-      else {
-        res.status(500).json(err);
-      }
+      let error = err.errors[0];
+      next(error)
     }
   }
 
-  static async patchTodos(req, res){
+  static async patchTodos(req, res, next){
     let idparams = req.params.id;
     let objparam = {
       status: 'completed'
@@ -87,34 +73,20 @@ class TodosController {
       const data = await Todo.update(objparam, {
         where: { id: idparams }
       })
-      if(!data[0]){
-        res.status(404).json('not found');
-      }
-      else{
-        res.status(200).json(data);
-      }
+      res.status(200).json(data);
     } catch(err){
-      if(err.name === 'SequelizeValidationError'){
-        res.status(400).json(err);  
-      }
-      else{
-        res.status(500).json(err);
-      }
+      let error = err.errors[0];
+      next(error);
     }
   }
 
-  static async deleteTodos(req, res){
+  static async deleteTodos(req, res, next){
     let idparams = req.params.id;
     try {
       const data = await Todo.destroy({ where: { id: idparams }});
-      if(!data){
-        res.status(404).json(data)
-      }
-      else {
-        res.status(200).json(data);
-      }
+      res.status(200).json('Todo Success to delete!');
     } catch (err) {
-      res.status(500).json(err);
+      next(err);
     }
   }
 }
