@@ -9,8 +9,6 @@ router.get('/', TodoController.view)
 
 router.post('/', TodoController.add)
 
-// router.use(authorization)
-
 router.get('/:id', authorization, TodoController.viewOne)
 
 router.put('/:id', authorization, TodoController.updatePut)

@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, ValidationError
 } = require('sequelize');
 const Bcrypt = require('../helpers/bcrypt')
 module.exports = (sequelize, DataTypes) => {
@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     email: {
       type: DataTypes.STRING,
+      unique: true,
       validate: {
         isEmail: {
           args: true,
@@ -25,11 +26,18 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    password: DataTypes.STRING
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: 6,
+          msg: 'Password length minimum 6'
+        }
+      }
+    }
   }, {
     hooks: {
       beforeCreate(instance, option) {
-        if(instance.password.length < 6) throw new Error('Minimal password length is 6')
         instance.password = Bcrypt.salt(instance.password)
       }
     },

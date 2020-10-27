@@ -7,8 +7,8 @@ module.exports = (req, res, next) => {
   Todo.findByPk(todoId)
     .then(data => {
       console.log(data)
-      if(!data) res.status(404).json({ error: 'Todo not found'})
+      if(!data) next({ msg: 'Todo not found', status: 404})
       else if(data.userFK === id) next()
-      else res.status(401).json({ error: 'You are not authorized'})
+      else next({ msg: 'You are forbidden to do this', status: 401})
     })
 }
