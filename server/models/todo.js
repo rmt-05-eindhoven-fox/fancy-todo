@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User);
     }
   };
   Todo.init({
@@ -26,6 +27,15 @@ module.exports = (sequelize, DataTypes) => {
           msg: `Date must be before or equals to today's date`
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     }
   }, {
     sequelize,

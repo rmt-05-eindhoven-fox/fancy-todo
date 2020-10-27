@@ -1,10 +1,21 @@
 const jwt = require('jsonwebtoken');
 
-const token = (payload) => {
-  const token = jwt.sign(payload, 'batak');
+const loginToken = (payload) => {
+  const token = jwt.sign(payload, process.env.SECRET);
   return token;
 }
 
+const verifyToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    return decoded;
+  } catch (error) {
+    // console.log(error);
+    return null;    
+  }
+}
+
 module.exports = {
-  token
+  loginToken,
+  verifyToken
 }

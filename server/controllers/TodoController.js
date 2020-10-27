@@ -1,31 +1,25 @@
 const { Todo } = require('../models');
 
 class TodoController {
-  static async create(req, res) {
+  static async create(req, res, next) {
+    const UserId = +req.user.id; 
     try {
       const { title, description, status, due_date } = req.body;
       const create = await Todo.create({
         title,
         description,
         status,
-        due_date
+        due_date,
+        UserId
       });
       // console.log(create);
       res.status(201).json(create);
     } catch (error) {
-      if (error.name === 'SequelizeValidationError') {
-        res.status(400).json({
-          error: error.errors.map(err => err.message).join(' ')
-        });
-      } else {
-        res.status(500).json({
-          error: 'Internal server error'
-        });
-      }
+      next(error);
     }
   }
 
-  static async findAll(req, res) {
+  static async findAll(req, res, next) {
     try {
       const findAllTodos = await Todo.findAll({
         attributes: {
@@ -34,13 +28,11 @@ class TodoController {
       });
       res.status(200).json(findAllTodos);
     } catch (error) {
-      res.status(500).json({
-        error: 'Internal server error'
-      });
+      next(error);
     }
   }
 
-  static async findTodo(req, res) {
+  static async findTodo(req, res, next) {
     try {
       const id = +req.params.id;
       const findTodo = await Todo.findByPk(id, {
@@ -53,18 +45,15 @@ class TodoController {
         res.status(200).json(findTodo);
       } else {
         throw {
-          status: 404,
-          msg: 'Error not found'
+          name: 'NotFound'
         };
       }
     } catch (error) {
-      res.status(error.status || 500).json({
-        error: error.msg || 'Internal server error'
-      });
+      next(error);
     }
   }
 
-  static async updateTodo(req, res) {
+  static async updateTodo(req, res, next) {
     try {
       const id = +req.params.id;
       const { title, description, status, due_date } = req.body;
@@ -80,30 +69,22 @@ class TodoController {
         returning: true,
         individualHooks: true
       });
-
-      if (updateAllKey[0]) {
+      console.log(updateAllKey);
+      if (updateAllKey[1].length > 0) {
         res.status(200).json(updateAllKey[1][0]);
       } else {
         // TODO handle case when req.body has same data as database
+        // ! DONE
         throw {
-          status: 404,
-          msg: 'Error not found'
+          name: 'NotFound'
         };
       }
     } catch (error) {
-      if (error.name === 'SequelizeValidationError') {
-        res.status(400).json({
-          error: error.errors.map(err => err.message).join(' ')
-        });
-      } else {
-        res.status(error.status || 500).json({
-          error: error.msg || 'Internal server error'
-        });
-      }
+      next(error);
     }
   }
 
-  static async patchTodo(req, res) {
+  static async patchTodo(req, res, next) {
     try {
       const id = +req.params.id;
       const { status } = req.body;
@@ -113,29 +94,21 @@ class TodoController {
         individualHooks: true 
       });
 
-      if (update[0]) {
+      if (update[1].length > 0) {
         res.status(200).json(update[1][0]);
       } else {
         // TODO handle case when req.body has same data as database
+        // ! DONE
         throw {
-          status: 404,
-          msg: 'Error not found'
+          name: 'NotFound'
         };
       }
     } catch (error) {
-      if (error.name === 'SequelizeValidationError') {
-        res.status(400).json({
-          error: error.errors.map(err => err.message).join(' ')
-        });
-      } else {
-        res.status(error.status || 500).json({
-          error: error.msg || 'Internal server error'
-        });
-      }
+      next(error);
     }
   }
 
-  static async deleteTodo(req, res) {
+  static async deleteTodo(req, res, next) {
     try {
       const id = +req.params.id;
       const todoDeleted = await Todo.destroy({ where : { id }});
@@ -146,14 +119,11 @@ class TodoController {
         });
       } else {
         throw {
-          status: 404,
-          msg: 'Error not found'
+          name: 'NotFound'
         };
       }
     } catch (error) {
-      res.status(error.status || 500).json({
-        error: error.msg || 'Internal server error'
-      });
+      next(error);
     }
   }
 }

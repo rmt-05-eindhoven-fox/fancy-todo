@@ -224,7 +224,7 @@ _Response (201 - Created)_
 
 ### POST /login
 
-> Get access token based on user login data
+> Create access token based on user login data
 
 _Parameters_
 ```
@@ -242,6 +242,6 @@ _Request Body_
 _Response (200)_
 ```
 {
-  "accessToken": "qiofioqhwhi1237189qiwhdihqi.gfiqg718716.asiqwfq27136"
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
 }
 ```

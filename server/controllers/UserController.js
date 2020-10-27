@@ -1,9 +1,9 @@
 const { User } = require('../models');
 const { comparePassword } = require('../helpers/hash');
-const { token } = require('../helpers/token');
+const { loginToken } = require('../helpers/token');
 
 class UserController {
-  static async register(req, res) {
+  static async register(req, res, next) {
     try {
       const { email, password } = req.body;
       const user = await User.create({
@@ -16,43 +16,43 @@ class UserController {
         email: user.email
       });
     } catch (error) {
-      res.status(400).json({
-        error: 'Internal server error'
-      });
+      next(error);
+      // res.status(400).json({
+      //   error: 'Internal server error'
+      // });
+      // ??? gimana
     }
 
   }
 
-  static async login(req, res) {
+  static async login(req, res, next) {
     try {
       const { email, password } = req.body;
-      const user = user.findOne({
+      // console.log(email, password);
+      const user = await User.findOne({
         where: {
-          email
+          email: email
         }
       });
-
+      
       if (!user) {
         throw {
-          status: 400,
-          msg: 'Invalid username or password'
+          name: 'InvalidUserPassword'
         }
       } else if (!comparePassword(password, user.password)) {
         throw {
-          status: 400,
-          msg: 'Invalid username or password'
+          name: 'InvalidUserPassword'
         }
       } else {
-        const accessToken = token({
+        const accessToken = loginToken({
           id: user.id,
           email
         });
         res.status(200).json({ accessToken });
       }
     } catch (error) {
-      res.status(error.status || 500).json({
-        error: error.msg || 'Internal server error'
-      })
+      // console.log(error.message);
+      next(error);
     }
   }
 }
