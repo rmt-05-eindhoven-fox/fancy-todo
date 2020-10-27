@@ -17,13 +17,57 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Todo.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    status: DataTypes.STRING,
-    due_date: DataTypes.DATE,
+    title: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Title is required!'
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Description is required!'
+        },
+      }
+    },
+    status: {
+      type: DataTypes.STRING
+    },
+    due_date: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "due date is required, cannot be empty!"
+        },
+        isDate: {
+          args: true,
+          msg: 'due date mus valid date!'
+        }
+      }
+    },
     userId: DataTypes.INTEGER
   }, {
     sequelize,
+    validate: {
+      dueDateCheck() {
+        let yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        if (Date.parse(this.due_date) < yesterday) {
+          throw new ValidationError('Date must be valid!');
+        }
+      }
+    },
+    hooks: {
+      beforeCreate(todos) {
+        todos.status = 'Unfinished';
+      }
+    },
     modelName: 'Todo',
   });
   return Todo;
