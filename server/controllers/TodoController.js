@@ -1,5 +1,7 @@
 const createError = require('http-errors');
+const { getHoliday } = require('../helper/holiday');
 const { Todo, User } = require('../models');
+const axios = require('axios');
 
 class TodoController {
 
@@ -74,6 +76,30 @@ class TodoController {
         res.status(200).json({ message: 'Todo success to delete!' });
       }).catch((err) => {
         next(err);
+      });
+  }
+
+  static holiday(req, res, next) {
+    axios({
+      method: 'get',
+      url: `${process.env.HOLIDAY_URL}/holidays`,
+      params: {
+        api_key: process.env.HOLIDAY_API_KEY,
+        country: 'ID',
+        year: new Date().getFullYear()
+      }
+    })
+      .then((response) => {
+        const { data } = response 
+        const holidays = [];
+        data.response.holidays.forEach(holiday => {
+          if (holiday.type[0] !== 'Season' && holiday.type[0] !== 'Hinduism') {
+            holidays.push(holiday)
+          }
+        })
+        res.status(200).json(holidays) 
+      }).catch(err => {
+        next(err)
       });
   }
 

@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
   next(createError(404,'Sorry, an error has occured, Requested page not found!'));
 });
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log('App listening on http://localhost:' + port);
