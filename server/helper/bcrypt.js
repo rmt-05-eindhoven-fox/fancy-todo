@@ -12,7 +12,7 @@ function comparePassword(password, hash){
     return bcrypt.compareSync(password, hash)
 }
 
-module.exports = (
+module.exports = {
     hashPassword,
     comparePassword
-)
+}

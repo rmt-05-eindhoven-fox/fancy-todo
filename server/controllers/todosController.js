@@ -104,7 +104,7 @@ class TodoController {
         .then( data => {
             if(data === 0){
                 throw{
-                    error: `data id ke ${+ req.params.id} tidak ditemukan`
+                    error: `delete gagal. data id ke ${+ req.params.id} tidak ditemukan`
                 }
             }
             res.status(200).json('todo success to delete id ke-')
