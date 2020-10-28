@@ -39,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate(instance, option) {
         instance.password = Bcrypt.salt(instance.password)
+      },
+      beforeValidate(data, option) {
+        data.email = data.email.toLowerCase()
       }
     },
     sequelize,

@@ -1,5 +1,6 @@
 module.exports = (err, req, res, next) => {
-  
+  err.msg = err.msg || 'Internal server error'
+  err.status = err.status || 500
   res.status(err.status).json({errorMessage: err.msg})
   // if(err.name === "SequelizeValidationError") {
   //   return res.status(400).json(err.errors[0])
