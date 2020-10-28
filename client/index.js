@@ -92,6 +92,7 @@ getAllTodos = () => {
 
 editTodoForm = (id) => {
    $("#todos").hide()
+   $("#edit-todo-form").empty()
    $("#edit-todo-form").show()
    const token = localStorage.getItem("token")
    $.ajax({
@@ -136,31 +137,28 @@ editTodoForm = (id) => {
    })
 }
 
-// editTodoPost = (id) => {
-//    const token = localStorage.getItem("token")
+editTodoPost = (id) => {
+   const token = localStorage.getItem("token")
 
-//    $.ajax({
-//       type: "POST",
-//       url: server + "/todos",
-//       headers: {
-//          token
-//       },
-//       data: {
-//          title: `${$("#todo-title").val()}`,
-//          description: `${$("#todo-description").val()}`,
-//          due_date: `${$("#todo-due_date").val()}`
-//       }
-//    }).done(res => {
-//       $("#todo-list").empty()
-//       $("#todo-description").val("")
-//       $("#todo-due_date").val("")
-//       $("#todo-title").val("")
-//       getAllTodos()
-//    })
-//    .fail(err => {
-//       console.log(err);
-//    })
-// }
+   $.ajax({
+      type: "PUT",
+      url: server + `/todos/${id}`,
+      headers: {
+         token
+      },
+      data: {
+         title: `${$("#edit-todo-title").val()}`,
+         description: `${$("#edit-todo-description").val()}`,
+         due_date: `${$("#edit-todo-due_date").val()}`
+      }
+   }).done(res => {
+      $("#todo-list").empty()
+      getAllTodos()
+   })
+   .fail(err => {
+      console.log(err);
+   })
+}
 
 deleteTodo = (id) => {
    const token = localStorage.getItem("token")
