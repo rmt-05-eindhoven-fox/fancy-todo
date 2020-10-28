@@ -5,7 +5,7 @@ const errorHandler = require('../middlewares/errorHandler')
 
 
 route.post('/register', userController.register)
-route.post('/login', userController.login, errorHandler)
+route.post('/login', userController.login)
 
 route.use('/todos', todoRoute)
 module.exports = route
