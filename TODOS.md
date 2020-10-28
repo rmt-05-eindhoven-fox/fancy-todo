@@ -32,7 +32,7 @@ Returns json dataset which contain all todos.
 
 ## **Add One Todo**
 
-Returns json dataset which contain all todos.
+Add one todo.
 
 - **URL**
 
@@ -69,7 +69,7 @@ Returns json dataset which contain all todos.
 
 ## **Show Specific Todo**
 
-Returns json dataset which contain all todos.
+Returns specific todo by id.
 
 - **URL**
 
@@ -101,7 +101,7 @@ Returns json dataset which contain all todos.
 
 ## **UPDATE Specific Todo (All Key:Value)**
 
-Returns json dataset which contain all todos.
+Update todo by id [update all key:value].
 
 - **URL**
 
@@ -143,7 +143,7 @@ Returns json dataset which contain all todos.
 
 ## **UPDATE Specific Todo (Certain Key:Value)**
 
-Returns json dataset which contain all todos.
+Update todo by id [update certain key:value].
 
 - **URL**
 
@@ -185,7 +185,7 @@ Returns json dataset which contain all todos.
 
 ## **DELETE Specific Todo**
 
-Returns json dataset which contain all todos.
+Delete certain to do [by:id]
 
 - **URL**
 
