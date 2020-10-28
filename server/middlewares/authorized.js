@@ -18,9 +18,10 @@ function authorization(req, res, next){
         }
     })
     .catch( err => {
-        const status = err.status || 500
-        const msg = err.message || "internal server error"
-        res.status(status).json({error : msg})
+        // const status = err.status || 500
+        // const msg = err.message || "internal server error"
+        // res.status(status).json({error : msg})
+        next(err)
     })
 }
 

@@ -69,13 +69,13 @@ class TodoController {
         .then(data => {
             if(data[0] !== 1){
                 throw{
-                    error: `data id ke ${+ req.params.id} tidak ditemukan`
+                    error: `nothing to update`
                 }
             }
             res.status(200).json(data[1][0])
         })
         .catch(err => {
-            res.status(404).json(err)
+            res.status(500).json(err)
         })
     }
     static updateStatus(req,res) {
@@ -99,7 +99,7 @@ class TodoController {
             res.status(500).json(err)
         })
     }
-    static deleteTodo(req, res){
+    static deleteTodo(req, res, next){
         Todo.destroy({
             where: {
                 id: +req.params.id
@@ -107,15 +107,15 @@ class TodoController {
             returning: true
         })
         .then( data => {
-            if(data === 0){
-                throw{
-                    error: `delete gagal. data id ke ${+ req.params.id} tidak ditemukan`
-                }
-            }
-            res.status(200).json('todo success to delete id ke-')
+            // if(data === 0){
+            //     throw{
+            //         error: `data id ke ${+ req.params.id} tidak ditemukan`
+            //     }
+            // }
+            res.status(200).json('todo success to delete')
         })
         .catch(err => {
-            res.status(404).json(err)
+            next(err)
         })
     }
 }
