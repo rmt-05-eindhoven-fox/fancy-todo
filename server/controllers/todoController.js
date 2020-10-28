@@ -98,11 +98,14 @@ class TodoController {
 	}
 
 	static delete(req, res) {
+	
 		Todo.destroy({
 			where: { id: req.params.id },
 		})
 			.then((data) => {
-				res.status(200).json(data);
+				res.status(200).json({
+					messege: 'post delete succesfully'
+				});
 			})
 			.catch((err) => {
 				res.status(500).json(err);
