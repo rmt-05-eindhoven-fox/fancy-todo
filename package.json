@@ -18,8 +18,12 @@
   },
   "homepage": "https://github.com/mayyasy/fancy-todo#readme",
   "dependencies": {
+    "axios": "^0.21.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "email-verifier": "^0.4.1",
     "express": "^4.17.1",
+    "googleapis": "^61.0.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.4.1",
     "sequelize": "^6.3.5"

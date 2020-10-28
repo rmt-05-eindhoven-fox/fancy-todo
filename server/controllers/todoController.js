@@ -57,7 +57,6 @@ class TodoController {
       })
       res.status(200).json(task)
     } catch (error) {
-      console.log(error)
       next(error)
     }
   }

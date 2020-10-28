@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 
+const verifyEmail = require('../helpers/emailVerifier')
 const { hashPassword, comparePassword} = require('../helpers/bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
@@ -45,6 +46,13 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate(user) {
         user.password = hashPassword(user.password)
+      },
+      afterValidate = async (user) => {
+        try {
+          await verifyEmail(user.email)
+        }catch(error) {
+          throw error
+        }
       }
     },
 
