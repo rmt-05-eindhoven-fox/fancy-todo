@@ -14,18 +14,13 @@ Create new User
 
   **Required:**
 
-  { <br />
-  "email": STRING, // must be email type <br />
-  "password": STRING, // must be longer than 5 digit and less than 12<br />
-  "username": STRING // must be longer than 3 digit and less than 12<br />
-  }
-
-  example: <br />
+  ```
   {
-  "email": sample@sample.com,
-  "password": test123,
-  "username": myusername
+    "email": STRING, // must be email type
+    "password": STRING, // must be longer than 5 digit and less than 12
+    "username": STRING // must be longer than 3 digit and less than 12
   }
+  ```
 
 - **Success Response:**
 
@@ -59,10 +54,12 @@ Sign in to the app
 
   **Required:**
 
+```
   {
-  "email": STRING,
-  "password": STRING
+    "email": STRING,
+    "password": STRING
   }
+```
 
 - **Success Response:**
 
@@ -127,12 +124,14 @@ Create new Todo
 
   **Required:**
 
+```
   {
-  "title": STRING,
-  "description": STRING,
-  "status": STRING,
-  "due_date": DATE
+    "title": STRING,
+    "description": STRING,
+    "status": STRING,
+    "due_date": DATE
   }
+```
 
 - **Success Response:**
 
@@ -221,12 +220,14 @@ Change the value of todo
 
   **Required:**
 
+```
   {
-  "title": STRING,
-  "description": STRING,
-  "status": STRING,
-  "due_date": DATE
+    "title": STRING,
+    "description": STRING,
+    "status": STRING,
+    "due_date": DATE
   }
+```
 
 - **Success Response:**
 
@@ -282,9 +283,11 @@ Change the status of todo
 
   **Required:**
 
+```
   {
-  "status": STRING
+    "status": STRING
   }
+```
 
 - **Success Response:**
 
