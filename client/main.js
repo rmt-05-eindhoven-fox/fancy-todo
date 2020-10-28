@@ -9,7 +9,7 @@ $(document).ready(function() {
 })
 
 
-function signUp(event) {
+function register(event) {
   event.preventDefault()
   let email = $("#register-email").val();
   let password = $("#register-password").val();
@@ -93,24 +93,6 @@ function goToRegister() {
 }
 
 
-function onSignIn(googleUser) {
-  var tokenGoogle = googleUser.getAuthResponse().id_token;
-
-  $.ajax({
-    url: baseUrl + '/googleSign',
-    method: 'POST',
-    data: {
-      tokenGoogle
-    }
-  })
-  .done(data => {
-    localStorage.setItem("token", data.token)
-    checkLogin()
-  })
-  .fail(err => {
-    console.log(err)
-  })
-}
 
 
 function logout() {
