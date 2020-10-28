@@ -2,7 +2,7 @@ const Helper = require("../helpers/helper");
 const { User } = require("../models");
 
 class UserController {
-  static register(req, res) {
+  static register(req, res, next) {
     const { email, password } = req.body;
 
     User.create({
@@ -13,11 +13,11 @@ class UserController {
         res.status(201).json({ id: data.id, email: data.email });
       })
       .catch((err) => {
-        res.status(500).json({ error: "Internal Server Error" });
+        next(err);
       });
   }
 
-  static login(req, res) {
+  static login(req, res, next) {
     const { email, password } = req.body;
 
     User.findOne({
@@ -27,9 +27,9 @@ class UserController {
     })
       .then((data) => {
         if (data == null)
-          res.status(401).json({ error: "Wrong email or password" });
+          throw { message: "Wrong email or password", status: 401 };
         else if (!Helper.comparePassword(password, data.password))
-          res.status(401).json({ error: "Wrong email or password" });
+          throw { message: "Wrong email or password", status: 401 };
         else {
           const accessToken = Helper.signToken({
             id: data.id,
@@ -39,7 +39,7 @@ class UserController {
         }
       })
       .catch((err) => {
-        res.status(500).json(err);
+        next(err);
       });
   }
 }

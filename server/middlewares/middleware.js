@@ -21,9 +21,7 @@ class Middleware {
           }
         })
         .catch((err) => {
-          const status = err.status || 500;
-          const msg = err.msg || "Internal Server Error";
-          res.status(status).json({ error: msg });
+          next(err);
         });
     }
   }
@@ -38,10 +36,28 @@ class Middleware {
         else throw { message: "Not Authorized", status: 401 };
       })
       .catch((err) => {
-        const status = err.status || 500;
-        const message = err.message || "Internal Server Error";
-        res.status(status).json({ error: message });
+        next(err);
       });
+  }
+
+  static errorHandler(err, req, res, next) {
+    // console.log("sukses masuk");
+    // for (const x in err) console.log(err[x]);
+    let status = err.status || 500;
+    let message = err.message || "Internal Server Error";
+    if (err.name === "SequelizeValidationError") {
+      status = 400;
+      message = "";
+      err.errors.forEach((eachErrorMsg, index) => {
+        if (index === 0) message += `${eachErrorMsg.message}`;
+        else if (index >= 1) message += `, ${eachErrorMsg.message}`;
+      });
+    } else if (err.message === "invalid token") {
+      status = 401;
+      message = "Not Authorized";
+    }
+
+    res.status(status).json(message);
   }
 }
 
