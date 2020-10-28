@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate(user) {
         user.password = hashPassword(user.password)
       },
-      afterValidate = async (user) => {
+      afterValidate: async (user) => {
         try {
           await verifyEmail(user.email)
         }catch(error) {
