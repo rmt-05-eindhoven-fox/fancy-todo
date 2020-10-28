@@ -9,9 +9,8 @@ class userController{
                 email: request.body.email,
                 password: request.body.password
             }
-
             const user = await User.create(payload);
-
+            console.log("user bisa create");
             response.status(201).json({
                 id: user.id,
                 email: user.email
@@ -35,7 +34,7 @@ class userController{
                 }
             });
 
-            if(!user){
+            if (!user) {
                 response.status(401).json({
                     message: 'Wrong email/password!'
                 });
@@ -43,7 +42,7 @@ class userController{
                 response.status(401).json({
                     message: 'Wrong email/password!'
                 })
-            }else {
+            } else {
                 const access_token = loginToken({
                     id: user.id,
                     email: user.email

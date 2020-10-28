@@ -1,38 +1,47 @@
 const {Todo} = require("../models");
 
 class todoController{
-    static async viewAll(request, response){
-        const userId = request.loggedInUser.id
-        try{
+    static async viewAll(request, response) {
+        try {
+            const userId = request.loggedInUser.id
             const data = await Todo.findAll({
                 where: {
-                    id: userId
+                    UserId: userId
                 }
             })   
             response.status(201).json(data)
-        }catch (error){
+        } catch (error) {
             response.status(500).json(error);
         }
     }
 
-    static async viewById(request, response){
+    static async viewById(request, response) {
         try {
-			const id = +request.params.id;
-			const todo = await Todo.findByPk(id)
+            const userId = request.loggedInUser.id
+			const todoId = +request.params.id;
+			const todo = await Todo.findByPk({
+                where: {
+                    UserId: userId,
+                    id: todoId
+                }
+            })
 			response.status(200).json(todo);
-		} catch (err) {
-			response.status(404).json(err);
+		} catch (error) {
+			response.status(404).json(error);
 		}
     }
 
-    static async create(request, response){
+    static async create(request, response) {
         const newData = { 
             title: request.body.title,
             description: request.body.description, 
             status: request.body.status, 
-            due_date: request.body.due_date
+            due_date: request.body.due_date,
             UserId: request.loggedInUser.id 
         }
+
+        console.log(newData);
+
         try{
             const data = await Todo.create(newData)
             const result = {
@@ -49,38 +58,49 @@ class todoController{
         }
     }
 
-    static async updateAll(request, response){
+    static async updateAll(request, response) {
         try {
-			const id = +request.params.id;
+            const userId = request.loggedInUser.id
+			const todoId = +request.params.id;
 			const newData = { 
                 title: request.body.title, 
                 description: request.body.description, 
                 status: request.body.status, 
                 due_date: request.body.due_date 
             }
-			const updateTodo = await Todo.update(newData, { where: { id }, returning: true })
+			const updateTodo = await Todo.update(newData, { 
+                where: 
+                    { UserId: userId, id: todoId },
+                    returning: true 
+            })
 			response.status(200).json(updateTodo[1][0])
 		} catch (err) {
 			response.status(404).json(err)
 		}
     }
 
-    static async updateStatus(request, response){
+    static async updateStatus(request, response) {
         try {
-			const id = +request.params.id;
+            const userId = request.loggedInUser.id
+			const todoId = +request.params.id;
 			const newData = { status: request.body.status }
-			const updateTodo = await Todo.update(newData, { where: { id }, returning: true })
+			const updateTodo = await Todo.update(newData, { 
+                where: 
+                    { UserId: userId, id: todoId},
+                    returning: true 
+            })
 			response.status(200).json(updateTodo[1][0])
 		} catch (err) {
 			response.status(404).json(err)
 		}
     }
 
-    static async delete(request, response){
+    static async delete(request, response) {
         try {
-			const id = +request.params.id;
+			const todoId = +request.params.id;
 			const deleteTodo = await Todo.destroy({
-				where: { id }, returning: true
+                where: { id: todoId }, 
+                returning: true
 			})
 			response.status(200).json({msg: "todo deleted successfully"})
 		} catch (err) {
