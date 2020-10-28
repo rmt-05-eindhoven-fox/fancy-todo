@@ -4,7 +4,7 @@ function authorization (req, res, next) {
     let { id } = req.params
     Todo.findByPk(id)
 
-    .then(user => {
+    .then(todo => {
       if(!todo) throw {
         message:'Error not found', statusCode:404
       }

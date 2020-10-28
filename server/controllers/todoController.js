@@ -8,8 +8,8 @@ class TodoController {
         UserId: req.userData.id 
       }
     })
-      .then((todos) => {
-        res.status(200).json(todos)
+      .then((todo) => {
+        res.status(200).json(todo)
       }).catch((err) => {
         next(err)
       })
