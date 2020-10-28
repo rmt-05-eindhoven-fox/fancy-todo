@@ -1,0 +1,14 @@
+.homepage {
+  background-color: #383838 !important;
+  color: #ffffff;
+  min-height: 400px;
+}
+
+h1 {
+  margin-top: 20px;
+  margin-left: 60px;
+}
+
+li {
+  margin-left: 50px;
+}
