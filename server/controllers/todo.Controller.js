@@ -1,31 +1,44 @@
 const { ToDo } = require("../models/index")
 class TodoController {
 
-    static async create(req, res) {
-        const { title, description, status, due_date } = req.body
-        const id = req.loggedInUser.id
+    static async create(req, res, next) {
         try {
-            let todo = await ToDo.create({ title, description, status, due_date, UserId:id })
-
+            const { title, description, status, due_date } = req.body
+            const id = req.loggedInUser.id
+            let todo = await ToDo.create({ title, description, status, due_date, UserId: id })
             res.status(201).json(todo)
         } catch (err) {
             console.log(err, '>>>> ERROR Create')
-            res.status(500).json(err)
+            next(err)
         }
     }
 
-    static async findAll(req, res) {
+
+
+    static async findAll(req, res, next) {
         try {
             let todo = await ToDo.findAll()
             res.status(200).json(todo)
         } catch (err) {
             console.log(err, '>>> ERROR FIND ALL')
-            res.status(500).json(err)
+            next(err)
         }
 
     }
 
-    static async updateAll(req, res) {
+
+    static async findById(req, res, next) {
+        try {
+            const { id } = req.params
+            let todo = await ToDo.findByPk(id)
+            res.status(200).json(todo)
+        } catch (err) {
+            console.log(err, ">>> ERROR FIND BY ID");
+            next(err)
+        }
+    }
+
+    static async updateAll(req, res, next) {
         try {
             let { title, description, status, due_date } = req.body
             console.log(req.body, ">>> req body")
@@ -35,38 +48,38 @@ class TodoController {
             res.status(200).json(todo)
         } catch (err) {
             console.log(err, '>>> ERROR DATA UPDATE')
-            res.status(500).json(err)
+            next(err)
         }
     }
 
-    static async updateStatus(req, res) { 
-        try { 
-            let {status} = req.body
-            let todo = await ToDo.findOne({where :{id: req.params.id}})
+    static async updateStatus(req, res, next) {
+        try {
+            let { status } = req.body
+            let todo = await ToDo.findOne({ where: { id: req.params.id } })
             console.log(todo)
-            if(todo) { 
+            if (todo) {
                 todo.status = status
                 todo.save()
                 res.status(200).json(todo)
-            } else { 
+            } else {
                 res.status(404)
             }
-        } catch(err) { 
+        } catch (err) {
             console.log(err, '>>> ERROR DATA UPDATE')
-            res.status(500).json(err)
+            next(err)
         }
     }
 
-    static async delete(req, res) {
+    static async delete(req, res, next) {
         try {
             const { id } = req.params
-            let todo = ToDo.destroy({
-                where: { id }
+            let todo = await ToDo.destroy({
+                where: { id }, returning : true
             })
-            res.status(200).json(todo)
+            res.status(200).json({msg: "todo success to delete"})
         } catch (err) {
             console.log(err, '>>> ERROR DATA DELETE')
-            res.status(500).json(err)
+            next(err)
         }
     }
 

@@ -4,6 +4,7 @@ const authorization = require("../middleware/authorization.middleware")
 
 router.post("/", todoController.create)
 router.get("/", todoController.findAll)
+router.get("/:id", todoController.findById)
 router.put("/:id", authorization,todoController.updateAll)
 router.patch("/:id", authorization,todoController.updateStatus)
 router.delete("/:id", authorization,todoController.delete)

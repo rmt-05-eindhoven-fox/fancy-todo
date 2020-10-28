@@ -10,20 +10,22 @@ class userController {
                 password: req.body.password
             }
             const user = await User.create(payload)
+            console.log(user)
             res.status(201).json({
                 id: user.id,
-                email: user.email, 
-                msg: "register success"
+                email: user.email,
+                name: "register success"
             })
 
+
         } catch (err) {
-            // console.log(err, "<<<< ERROR REGISTER")
+            console.log(err, "<<<< ERROR REGISTER")
             // res.status(500).json(err)
             next(err)
         }
     }
 
-    static async login(req, res) {
+    static async login(req, res, next) {
         try {
             const payload = {
                 email: req.body.email,
@@ -36,23 +38,25 @@ class userController {
             });
 
             if (!user) {
-                res.status(401).json({
-                    message: "wrong email/password"
-                })
+                throw {name : "wrong email/password"}
+                // res.status(401).json({
+                //     message: "wrong email/password"
+                // })
             } else if (!comparePassword(payload.password, user.password)) {
                 res.status(401).json({
-                    message: "wrong email/password"
+                    name: "wrong email/password"
                 })
             } else {
                 const access_token = signToken({
                     id: user.id,
                     email: user.email
                 })
-                res.status(200).json(access_token)
+                res.status(200).json({access_token})
             }
         } catch (err) {
             console.log("<<<ERROR USER", err)
-            res.status(500).json(err)
+            next(err)
+            // res.status(500).json(err)
         }
     }
 }

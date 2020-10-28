@@ -5,7 +5,7 @@ async function authenctication(req, res, next) {
     try {
         const { token } = req.headers
         if (!token) {
-            throw { msg: "Authentication failed", status: 401 }
+            throw { name: "Authentication failed"}
         } else {
             let decoded = verifyToken(token)
             const user = await User.findOne({
@@ -15,7 +15,7 @@ async function authenctication(req, res, next) {
             })
             console.log(user, "<<< user");
             if (!user) {
-                throw { msg: "Authentication failed", status: 401 }
+                throw { name: "Authentication failed"}
             } else { 
                 console.log(req.loggedInUser, "<<<<< loggedInUser")
                 req.loggedInUser  = decoded;
@@ -24,8 +24,9 @@ async function authenctication(req, res, next) {
             }
         }
     } catch (err) {
-        console.log(err, "<<<< ERROR AUTHENTICATION")
-        res.status(err.status).json({err : err.msg})
+        next(err)
+        // console.log(err, "<<<< ERROR AUTHENTICATION")
+        // res.status(err.status).json({err : err.msg})
     }
 }
 

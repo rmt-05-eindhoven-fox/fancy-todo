@@ -7,14 +7,14 @@ async function authorization(req, res, next) {
         const todo = await ToDo.findByPk(id)
         console.log(todo, "<<< ini todo");
         if (!todo) {
-            throw { msg: "ToDo Not Found", status: 404 }
-        } else if (++todo.UserId === ++req.loggedInUser.id) {
+            throw { name: "NotFound"}
+        } else if (todo.UserId == req.loggedInUser.id) {
             next()
         } else {
-            throw { msg: "Not authorized", status: 401 }
+            throw { name: "Notauthorized" }
         }
     } catch (err) {
-        res.status(500).json(err.msg)
+        next(err)
     }
 }
 

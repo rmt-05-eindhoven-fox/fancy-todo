@@ -15,13 +15,51 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   ToDo.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    status: DataTypes.BOOLEAN,
-    due_date: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'ToDo',
-  });
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Title is required"
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Description is required"
+        }
+      }
+    },
+    status: {
+      type: DataTypes.BOOLEAN
+    },
+    due_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Due date is required"
+        }
+      }
+    },
+    UserId: DataTypes.INTEGER
+  }
+    , {
+      sequelize,
+      validate: {
+        customDate() {
+          if (this.due_date < new Date(' +UTC')) {
+            throw new Error("Due date should not in the past time")
+          }
+        }
+      },
+      modelName: 'ToDo',
+    });
   return ToDo;
 };

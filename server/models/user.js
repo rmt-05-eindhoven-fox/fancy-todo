@@ -14,26 +14,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.ToDo, {foreignKey: "UserId"})
+      User.hasMany(models.ToDo)
     }
   };
   User.init({
-    email:{ 
-      type : DataTypes.STRING,
-      validate : { 
-        isEmail : { 
-          args : true, 
-          msg : "Email harus sesuai pola"
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args : true,
+          msg: "Email is required"
+        },
+        isEmail: {
+          args: true,
+          msg: "Should be in email format"
         }
       }
     },
-    password: { 
-      type : DataTypes.STRING, 
-      allowNull : false,
-      validate : {
-        len : [5, 20], 
-        msg : "Password minimal 5 character"
-       }
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args : true,
+          msg: "Password is required"
+        },
+        len: {
+          args: [6],
+          msg: "Password minimum length is 6 characters"
+        }
+      }
     },
   }, {
     hooks: {
