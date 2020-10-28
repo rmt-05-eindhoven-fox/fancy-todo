@@ -1,27 +1,45 @@
-**1. Create Todos**
+<style>
+summary h1, summary h2{ display: inline-block; }
+</style>
+# **API Documentation** Fancy Todo
+
+## Todos
 ----
+<details><summary><strong><b><h2>1. Create Todos</h2></b></strong></summary> 
+  
   Post/Create new todo.
 
 * **URL**
 
-  /todos
+  `/todos`
 
 
 * **Method:**
 
   `POST`
 
-* **Data Params**
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accessToken" 
+    }
+  ```
 
-  ```javascript
+* **Data Params**
+  
+  *data*
+
+  ```js
   {
-      title: "Todo Title", 
-      description: "Todo Description",  
-      due_date: "2020-10-26", 
+    title: "Todo Title", 
+    description: "Todo Description",  
+    due_date: "2020-10-26", 
   }
   ```
 
-* **Success Response:**
+* **Success Response**
 
   * **Code:** 201 <br />
     **Content:** 
@@ -42,7 +60,11 @@
   * **Code:** 400 BAD  REQUEST <br />
     **Content:** 
     ```javascript
-    { error : ["Title is required", "Description is required", ...] }
+    [
+      { "message": "Title is require, cannot be empty!" },
+      { "message": "due date is required, cannot be empty!" },
+      { "message": "due date mus valid date!" }
+    ]
     ```
 
   OR
@@ -50,29 +72,32 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     ```javascript
-    { error : "Something error at server" }
-    ```
-  
-  OR
+    { error : "Something error message from server" }
+    ``` 
+    
+</details>
+ 
+<details>
+<summary><strong><b><h2>2. Get All Todos</h2></b></strong></summary>  
 
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** 
-    ```javascript
-    { error : "Something error at server" }
-    ```
-  
-
-**2. Get All Todos**
-----
   Get all todos data.
 
 * **URL**
 
-  /todos
+  `/todos`
 
 * **Method:**
 
   `GET`
+
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accessToken" 
+    }
+  ```
 
 * **Success Response:**
 
@@ -107,16 +132,18 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     ```javascript
-    { error : "Something error at server" }
+    { error : "Something error message from server" }
     ```
+</details>
 
-**3. Get Todo by ID**
-----
+<details>
+<summary><strong><b><h2>3. Get Todo by ID</h2></b></strong></summary>  
+
   Get todos data by id.
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
 
@@ -127,6 +154,15 @@
    **Required:**
  
    `id=[integer]`
+
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accessToken" 
+    }
+  ```
 
 * **Success Response:**
 
@@ -149,7 +185,7 @@
   * **Code:** 404 NOT FOUND <br />
     **Content:** 
     ```javascript
-    { error : "Data not found!" }
+    { error : "Todo ID Not Found!" }
     ```
   
   OR
@@ -157,17 +193,19 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     ```javascript
-    { error : "Something error at server" }
+    { error : "Something error message from server" }
     ```
-    ```
+    
+</details>
 
-**4. Update Todo by ID**
-----
-  Get todos data by id.
+<details>
+<summary><strong><b><h2>4. Update Todo by ID</h2></b></strong></summary>  
+
+  Update todos data by id.
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
 
@@ -179,14 +217,27 @@
  
    `id=[integer]`
 
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accessToken" 
+    }
+  ```
+
 * **Data Params**
+
+  ***required***
+    token: <accessToken>
+  *accesstoken**
 
   ```javascript
   {
-      title: "New Todo Title",
-      status: "pending", 
-      description: "New Todo Description",  
-      due_date: "2020-10-26", 
+    title: "New Todo Title",
+    status: "pending", 
+    description: "New Todo Description",  
+    due_date: "2020-10-26", 
   }
   ```
 
@@ -211,7 +262,11 @@
   * **Code:** 400 BAD  REQUEST <br />
     **Content:** 
     ```javascript
-    { error : ["Title is required", "Description is required", ...] }
+    [
+      { "message": "Title is require, cannot be empty!" },
+      { "message": "due date is required, cannot be empty!" },
+      { "message": "due date mus valid date!" }
+    ]
     ```
   
   OR
@@ -219,7 +274,7 @@
   * **Code:** 404 NOT FOUND <br />
     **Content:** 
     ```javascript
-    { error : "Data not found!" }
+    { error : "Todo ID Not Found!" }
     ```
   
   OR
@@ -227,16 +282,18 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     ```javascript
-    { error : "Something error at server" }
+    { error : "Something error message from server" }
     ```
+</details>
 
-**5. Update Todo Status by ID**
-----
-  Get todos data by id.
+<details>
+<summary><strong><b><h2>5. Update Todo Status by ID</h2></b></strong></summary>  
+
+ Update todo status by id.
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
 
@@ -248,11 +305,24 @@
  
    `id=[integer]`
 
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accessToken" 
+    }
+  ```
+
 * **Data Params**
+
+  ***required***
+    token: <accessToken>
+  *accesstoken**
 
   ```javascript
   { 
-      status: "finished"
+    status: "finished"
   }
   ```
 
@@ -277,7 +347,9 @@
   * **Code:** 400 BAD  REQUEST <br />
     **Content:** 
     ```javascript
-    { error : ["Title is required", "Description is required", ...] }
+    [ 
+      { "message": " Status is required, cannot be null!" } 
+    ]
     ``` 
   
   OR
@@ -285,7 +357,7 @@
   * **Code:** 404 NOT FOUND <br />
     **Content:** 
     ```javascript
-    { error : "Data not found!" }
+    { error : "Todo ID Not Found!" }
     ```
   
   OR
@@ -293,26 +365,37 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     ```javascript
-    { error : "Something error at server" }
+    { error : "Something error message from server" }
     ```
+</details>
 
-**6. Delete Todo by ID**
-----
-  Get todos data by id.
+<details>
+<summary><strong><b><h2>6. Delete Todo by ID</h2></b></strong></summary>  
+
+  Delete todos data by id.
 
 * **URL**
 
-  /todos/:id
+  `/todos/:id`
 
 * **Method:**
 
-  `PATCH`
+  `DELETE`
 
 * **URL Params**
 
    **Required:**
  
    `id=[integer]` 
+
+* **URL Headers**
+  
+  **required**
+  ```js
+  {
+    accesstoken: "accessToken" 
+  }
+  ```
 
 * **Success Response:**
 
@@ -329,7 +412,7 @@
   * **Code:** 404 NOT FOUND <br />
     **Content:** 
     ```javascript
-    { error : "Data not found!" }
+    { error : "Todo ID Not Found!" }
     ```
   
   OR
@@ -337,6 +420,135 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** 
     ```javascript
-    { error : "Something error at server" }
+    { error : "Something error message from server" }
+    ```
+</details>
+
+<hr>
+<br>
+
+## User
+----
+<details>
+<summary><strong><b><h2>1. Register</h2></b></strong></summary>  
+  
+  Register new user.
+
+* **URL**
+
+  `/users/register`
+
+
+* **Method:**
+
+  `POST` 
+
+* **Data Params**
+  
+  *data*
+
+  ```js
+  {
+      username: "user94", 
+      email: "user_mail@todo.com",  
+      password: "user password", 
+  }
+  ```
+
+* **Success Response**
+
+  * **Code:** 201 <br />
+    **Content:** 
+    ```javascript
+    {
+      "id": 1,
+      "username": "user94",
+      "email": "user_mail@todo.com"
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD  REQUEST <br />
+    **Content:** 
+    ```javascript
+    {
+      "message": "Email already registered"
+    }
+
+    // OR
+
+    [
+      { "message": "Username is requiere, can't be empty!" },
+      { "message": "Username minimal 6 character" },
+      { "message": "Email is requiere, can't be empty!" },
+      { "message": "Email must be valid an email address!" },
+      { "message": "Password is requiere, can't be empty!" },
+      { "message": "Password minimal 8 character" }
+    ]
     ```
 
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    { error : "Something error message from server" }
+    ``` 
+  
+</details>
+
+<details>
+<summary><strong><b><h2>2. Login</h2></b></strong></summary>  
+  
+  Login user.
+
+* **URL**
+
+  `/users/login`
+
+
+* **Method:**
+
+  `POST` 
+
+* **Data Params**
+  
+  *data*
+
+  ```js
+  {
+    username: "user94",  
+    password: "user password", 
+  }
+  ```
+
+* **Success Response**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      accessToken : "eyJhbGciOiJIUzI1NiJ9. xxxx "
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD  REQUEST <br />
+    **Content:** 
+    ```javascript
+    {
+      message: "Wrong Username / Password "
+    } 
+    ```
+
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    { error : "Something error message from server" }
+    ``` 
+  
+</details>

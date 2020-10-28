@@ -7,12 +7,12 @@ function todoAuthorize(req, res, next) {
     if (!todo) {
       next(createError(404, 'Todo ID Not Found!'));
     } else if (todo.UserId == req.logedInUser.id) {
-      next()
+      next();
     } else {
       next(createError(401, 'Not authorized!'));
     }
   }).catch((err) => {
-    next(err)
+    next(err);
   });
 }
 
