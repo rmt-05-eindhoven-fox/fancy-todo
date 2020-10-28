@@ -1,16 +1,14 @@
-function errorHandle(err, req, res, next){
+module.exports = function (err, req, res, next){
 
-    let status = 500
-    let messege = err.massage 
+    // let status = 500
+    let message = err.message || 'internal server error'
 
     if(err.name === 'SequelizeValidationError'){
         status = 400
-        messege = err.errors[0].massage
+        message = err.errors[0].message
     }
-    res.status(status).json({
-        messege
+    res.status(err.status).json({
+        message
     })
-
 }
 
-module.exports = errorHandle

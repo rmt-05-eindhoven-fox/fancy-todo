@@ -2,7 +2,7 @@ const { Todo } = require("../models/index.js")
 
 class TodoController {
 
-    static createTodo(req, res){
+    static createTodo(req, res, next){
         const { title, description, status, due_date } = req.body
         const UserId = req.loggedInUser.id
         Todo.create({
@@ -18,12 +18,12 @@ class TodoController {
             res.status(201).json(todo)
         })
         .catch(err => {
-            res.status(400).json(err)
+            next(err)
         })
     }
 
 
-    static findAllTodo(req, res){
+    static findAllTodo(req, res, next){
         const userId = req.loggedInUser.id
         Todo.findAll({
             where: {UserId: userId}
@@ -32,11 +32,11 @@ class TodoController {
             res.status(200).json(todo)
         })
         .catch(err => {
-            res.status(500).json(err)
+            next(err)
         })
     }
 
-    static getTodoById(req, res){
+    static getTodoById(req, res, next){
         Todo.findOne({
             where: {
                 id: +req.params.id
@@ -47,11 +47,11 @@ class TodoController {
             res.status(200).json(todo)
         })
         .catch(err => {
-            res.status(404).json(err)
+            next(err)
         })
     }
 
-    static updateTodo(req, res){
+    static updateTodo(req, res, next){
         const { title, description, status, due_date} = req.body
         Todo.update({
             title,
@@ -75,10 +75,11 @@ class TodoController {
             res.status(200).json(data[1][0])
         })
         .catch(err => {
-            res.status(500).json(err)
+            // res.status(500).json(err)
+            next(err)
         })
     }
-    static updateStatus(req,res) {
+    static updateStatus(req,res,next) {
         Todo.update({
             status : req.body.status
         }, {
@@ -90,13 +91,14 @@ class TodoController {
         .then(data => {
             if(data[0] !== 1){
                 throw{
-                    name: 'update failed'
+                    name: 'update failed', status:400
                 }
             }
             res.status(201).json(data[1][0])
         })
         .catch(err => {
-            res.status(500).json(err)
+            // res.status(500).json(err)
+            next(err)
         })
     }
     static deleteTodo(req, res, next){
@@ -107,14 +109,11 @@ class TodoController {
             returning: true
         })
         .then( data => {
-            // if(data === 0){
-            //     throw{
-            //         error: `data id ke ${+ req.params.id} tidak ditemukan`
-            //     }
-            // }
+            
             res.status(200).json('todo success to delete')
         })
         .catch(err => {
+            // res.status(404).json(err)
             next(err)
         })
     }
