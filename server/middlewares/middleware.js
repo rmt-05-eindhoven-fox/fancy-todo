@@ -54,7 +54,7 @@ class Middleware {
       });
     } else if (err.message === "invalid token") {
       status = 401;
-      message = "Not Authorized";
+      message = "Not Authorizeled";
     }
 
     res.status(status).json(message);
