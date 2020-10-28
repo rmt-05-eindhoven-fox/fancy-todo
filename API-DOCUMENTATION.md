@@ -132,3 +132,39 @@ Content: { error : "not found" }
 OR
 Code: 500 INTERNAL SERVER ERROR
 Content: { error : "internal server error"}
+
+## REGISTER USER
+Register user
+## URL:
+/register
+## Method:
+POST
+## Data Params
+none
+## Success Response:
+Code: 201 CREATED
+Content: { id : 2, email : 'apaja@email.com' }
+## Error Response:
+Code: 400 BAD REQUEST
+Content: { error : "validation not empty" }
+OR
+Code: 500 INTERNAL SERVER ERROR
+Content: { error : "internal server error"}
+
+## LOGIN USER
+Login user
+## URL:
+/login
+## Method:
+POST
+## Data Params
+none
+## Success Response:
+Code: 200 CREATED
+Content: { token }
+## Error Response:
+Code: 400 BAD REQUEST
+Content: { error : "validation not empty" }
+OR
+Code: 500 INTERNAL SERVER ERROR
+Content: { error : "internal server error"}
