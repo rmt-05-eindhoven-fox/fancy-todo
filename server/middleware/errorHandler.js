@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
       error = 'Error Not Found';
       break;
     case 'Error':
-      if (err.message === 'Please use different email') {
+      if (err.message === 'Please try different email') {
         status = 400;
         error = err.message;
         break;

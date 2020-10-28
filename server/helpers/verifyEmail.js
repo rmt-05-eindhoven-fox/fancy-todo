@@ -7,10 +7,9 @@ const emailVerifier = email => {
     verifier.verify(email, (err, data) => {
       if (err) reject(err);
       else {
-        // console.log(typeof data.smtpCheck, 'in verifierrrrrrrrrrrrrrrrrrrrrrr')
-        if (data.smtpCheck === 'false') {
-          // console.log('smtp falseeeeeeeeeeeee')
-          reject(new Error('Please use different email'))
+        // console.log(data);
+        if (data.smtpCheck === 'false' || data.disposableCheck === 'true') {
+          reject(new Error('Please try different email'))
         }
         else {
           resolve(data)
