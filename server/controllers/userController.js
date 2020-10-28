@@ -4,7 +4,7 @@ const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 
 class UserController {
-    static async register (req,res) {
+    static async register (req,res, next) {
         try {
             const payload = {
                 email: req.body.email,
@@ -17,12 +17,11 @@ class UserController {
                 email: user.email
             })
         } catch (error) {
-            console.log(error)
-            res.status(500).json(error)
+            next(error)
         }
     }
 
-    static async login (req,res) {
+    static async login (req,res, next) {
         try {
             const payload = {
                 email: req.body.email,
@@ -50,7 +49,7 @@ class UserController {
                 res.status(200).json({tokenAcces})
             }
         } catch (error) {
-            res.status(500).json(error)
+            next(error)
         }
     }
 }
