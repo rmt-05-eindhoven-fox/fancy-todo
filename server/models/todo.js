@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+
+
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -36,18 +38,26 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     status: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        isIn: {
+          args: [
+            ['Unfinished', 'Finished']
+          ],
+          msg: `Select 'Unfinished' or 'Finished'`
+        }
+      }
     },
     due_date: {
       type: DataTypes.DATE,
       validate: {
         notEmpty: {
           args: true,
-          msg: "due date is required, cannot be empty!"
+          msg: "Due date is required, cannot be empty!"
         },
         isDate: {
           args: true,
-          msg: 'due date mus valid date!'
+          msg: 'Due date must valid date!'
         }
       }
     },
@@ -59,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
         let yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         if (Date.parse(this.due_date) < yesterday) {
-          throw new ValidationError('Date must be valid!');
+          throw new Error('Date must be valid!');
         }
       }
     },

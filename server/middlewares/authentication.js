@@ -34,7 +34,7 @@ async function authectication(req, res, next) {
     }
   } catch (error) {
     const status = error.status || 500
-    const msg = err.msg || 'Internal Server Error'
+    const msg = error.msg || 'Internal Server Error'
     res.status(status).json({
       error: msg
     })

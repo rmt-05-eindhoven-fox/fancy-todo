@@ -10,7 +10,7 @@ async function authorization(req, res, next) {
     const data = await Todo.findByPk(id)
     if (!data) {
       throw {
-        msg: 'Post not found',
+        msg: 'Todo not found',
         status: 404
       }
     } else if (data.userId === req.loggedInUser.id) {

@@ -6,7 +6,7 @@ const {
 class TodoController {
 
   //#region getTodo
-  static async getTodo(req, res) {
+  static async getTodo(req, res, next) {
     const userId = req.loggedInUser.id
     try {
       const todos = await Todo.findAll({
@@ -35,14 +35,14 @@ class TodoController {
 
       res.status(200).json(todos)
     } catch (error) {
-      res.status(404).json(error)
+      next(error)
     }
   }
   //#endregion
 
 
   //#region postTodo
-  static async postTodo(req, res) {
+  static async postTodo(req, res, next) {
     const userId = +req.loggedInUser.id
     const {
       title,
@@ -70,15 +70,14 @@ class TodoController {
       }
       res.status(201).json(resultTodo)
     } catch (error) {
-      console.log(error)
-      res.status(400).json(error)
+      next(error)
     }
   }
   //#endregion
 
 
   //#region updateTodo
-  static async updateTodo(req, res) {
+  static async updateTodo(req, res, next) {
     const id = +req.params.id
     const {
       title,
@@ -103,14 +102,14 @@ class TodoController {
       res.status(200).json(newTodo[1][0])
 
     } catch (error) {
-      res.status(400).json(error)
+      next(error)
     }
   }
   //#endregion
 
 
   //#region statusTodo
-  static async statusTodo(req, res) {
+  static async statusTodo(req, res, next) {
     const id = +req.params.id
     const {
       status
@@ -128,7 +127,6 @@ class TodoController {
 
       if (newTodo[0] > 0) {
         res.status(200).json(newTodo[1][0])
-
       } else {
         res.status(404).json({
           message: `Error not found`
@@ -136,14 +134,14 @@ class TodoController {
       }
 
     } catch (error) {
-      res.status(404).json(error)
+      next(error)
     }
   }
   //#endregion
 
 
   //#region deleteTodo
-  static async deleteTodo(req, res) {
+  static async deleteTodo(req, res, next) {
     const id = +req.params.id
 
     try {
@@ -155,18 +153,18 @@ class TodoController {
 
       if (deleted > 0) {
         res.status(200).json({
-          message: 'todo success to delete'
+          message: 'Todo is succesfully deleted!'
         })
 
       } else {
         res.status(404).json({
-          message: `can't find id`
+          message: `Todo not found!`
         })
 
       }
 
     } catch (error) {
-      res.status(500).json(error)
+      next(error)
     }
   }
   //#endregion

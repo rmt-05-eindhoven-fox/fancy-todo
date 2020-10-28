@@ -10,7 +10,7 @@ const {
 
 class UserController {
 
-  static async postRegister(req, res) {
+  static async postRegister(req, res, next) {
     try {
       const {
         email,
@@ -30,13 +30,12 @@ class UserController {
       res.status(201).json(output)
 
     } catch (error) {
-      console.log(error);
-      res.status(500).json(error)
+      next(error)
     }
   }
 
 
-  static async postLogin(req, res) {
+  static async postLogin(req, res, next) {
     try {
       const {
         email,
@@ -68,8 +67,7 @@ class UserController {
       }
 
     } catch (error) {
-      console.log(error);
-      res.status(500).json(error)
+      next(error)
     }
   }
 

@@ -17,9 +17,10 @@
 
   ```
       {
-        "title": "Fancy Todo",
-        "decription": "Week 1 task",
-        "due_date": "2020-10-30"
+        "title": "Learn Jquery is easy",
+        "decription": "You can do it",
+        "status": "Unfinished",
+        "due_date": "2020-10-28"
       }
   ```
 
@@ -28,18 +29,21 @@
     **Content:**
   ```
       {
-        "id": "1",
-        "title": "Fancy Todo",
-        "decription": "Week 1 task",
-        "due_date": "2020-10-30",
-        "userId": 18,
-        "createdAt": "2020-10-27T09:30:59.051Z",
-        "updatedAt": "2020-10-27T09:30:59.051Z"
+        "id": 5,
+        "title": "Learn Jquery is easy",
+        "description": "You can do it",
+        "status": "Unfinished",
+        "due_date": "2020-10-28T00:00:00.000Z",
+        "userId": 1
       }
   ```
 
 * **Error Response**
-  * **Code:** 400 BAD REQUEST
+  * **Code:** 400 BAD REQUEST <br/>
+    **Content:**
+  ```
+  message: "Title is required!"
+  ```
 ----
 
 **Read ToDo**
@@ -64,25 +68,25 @@
   ```
      [
         {
-            "id" : 1,
-            "title" : "Fancy ToDo",
-            "description" : "Week 1 task",
-            "status": "Unfinished",
-            "due_date": "2020-10-28T00:00:00.000Z",
-            "userId": 18,
-            "createdAt": "2020-10-27T09:30:59.051Z",
-            "updatedAt": "2020-10-27T09:30:59.051Z"
+          "id": 1,
+          "title": "Fancy Todo App",
+          "description": "Well Played",
+          "status": "Unfinished",
+          "due_date": "2020-10-28T00:00:00.000Z",
+          "userId": 1,
+          "createdAt": "2020-10-28T14:40:43.245Z",
+          "updatedAt": "2020-10-28T14:40:43.245Z"
         },
         {
-            "id" : 2,
-            "title" : "Learn Rest API",
-            "description" : "You can do it",
-            "status": "Unfinished",
-            "due_date": "2020-10-28T00:00:00.000Z",
-            "userId": 18,
-            "createdAt": "2020-10-27T09:30:59.051Z",
-            "updatedAt": "2020-10-27T09:30:59.051Z"
-        }
+          "id": 2,
+          "title": "Fancy Todo App 2",
+          "description": "Well Played",
+          "status": "Unfinished",
+          "due_date": "2020-10-28T00:00:00.000Z",
+          "userId": 1,
+          "createdAt": "2020-10-28T15:02:14.564Z",
+          "updatedAt": "2020-10-28T15:02:14.564Z"
+        },
       ]
   ```
 
@@ -118,19 +122,21 @@ Show ToDo object based by id
 
   ```
     {
-        "id" : 1,
-        "title" : "Fancy ToDo",
-        "description" : "Week 1 task",
-        "status": "Unfinished",
-        "due_date": "2020-10-28T00:00:00.000Z",
-        "userId": 18,
-        "createdAt": "2020-10-27T09:30:59.051Z",
-        "updatedAt": "2020-10-27T09:30:59.051Z"
+      "id": 4,
+      "title": "Hacktiv8 Bootcamp",
+      "description": "Space News",
+      "status": "Unfinished",
+      "due_date": "2020-10-28T00:00:00.000Z",
+      "userId": 1
     }
   ```
 
 * **Error Response**
-  * **Code:** 404 NOT FOUND
+  * **Code:** 404 NOT FOUND <br/>
+    **Content:**
+  ```
+  "error": "Todo not found"
+  ```
 ----
 
 **Update ToDo**
@@ -154,8 +160,9 @@ Update ToDo object
 
   ```
     {
-      "title": "Fancy Todo",
+      "title": "Fancy Todo App",
       "decription": "Week 1 task",
+      "status": "Finished"
       "due_date": "2020-10-30"
     }
   ```
@@ -169,10 +176,10 @@ Update ToDo object
     {
       "id" : "1"
       "title": "Fancy Todo App",
-      "decription": "Week 1 task",
-      "status": "Unfinished",
-      "due_date": "2020-10-28T00:00:00.000Z",
-      "userId": 18,
+      "decription": "Well Played",
+      "status": "Finished",
+      "due_date": "2020-10-30T00:00:00.000Z",
+      "userId": 1,
       "createdAt": "2020-10-27T09:30:59.051Z",
       "updatedAt": "2020-10-27T09:30:59.051Z"
     }
@@ -180,7 +187,11 @@ Update ToDo object
 
 * **Error Response**
 
-  **Code:** 404 NOT FOUND
+  **Code:** 404 NOT FOUND <br/>
+  **Content:**
+  ```
+  "error": "Todo not found"
+  ```
 ---
 
 **Update Status ToDo**
@@ -222,7 +233,11 @@ Update status attribute on ToDo object
   ```  
 
 * **Error Response**
-  * **Code:** 404 NOT FOUND
+  * **Code:** 404 NOT FOUND <br/>
+    **Content:** 
+  ```
+   "error": "Todo not found"
+  ```
 ----
 
 **Delete ToDo**
@@ -265,8 +280,16 @@ Delete selected ToDo Object by id
   ```
     OR
   ```
-    message: "todo success to delete"
+    message: "Todo is succesfully deleted!"
   ```
   
 * **Error Response**
-  * **Code:** 500 INTERNAL SERVER ERROR
+  * **Code:** 500 INTERNAL SERVER ERROR <br/>
+
+    OR
+
+  * **Code:** 404 NOT FOUND <br/>
+      **Content:** 
+  ```
+    "error": "Todo not found"
+  ```
