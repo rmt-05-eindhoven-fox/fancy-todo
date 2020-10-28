@@ -48,10 +48,13 @@ login = (event) => {
 logout = () => {
    $("#homepage").hide()
    $("#login").show()
+   $("#todo-list").empty()
    localStorage.removeItem("token")
 }
 
 getAllTodos = () => {
+   $("#todos").show()
+   $("#edit-todo-form").hide()
    const token = localStorage.getItem("token")
    $.ajax({
       type: "GET",
@@ -73,7 +76,7 @@ getAllTodos = () => {
                <h5 class="card-title">${todo.title}</h5>
                <h6 class="card-subtitle mb-2 text-muted">${formatDate(todo.due_date)}</h6>
                <p class="card-text">${todo.description}</p>
-               <button id="btn-edit" type="button" class="btn btn-outline-warning">Edit</button>
+               <button id="btn-edit" type="button" class="btn btn-outline-warning" onclick="editTodoForm(${todo.id})" >Edit</button>
                <button id="btn-delete" type="button" class="btn btn-outline-danger" onclick="deleteTodo(${todo.id})">Delete</button>
                <button id="btn-done" type="button" class="btn btn-outline-success" onclick="markAsDone(${todo.id})">Mark As Done</button>
             </div>
@@ -86,6 +89,78 @@ getAllTodos = () => {
       console.log(err);
    })
 }
+
+editTodoForm = (id) => {
+   $("#todos").hide()
+   $("#edit-todo-form").show()
+   const token = localStorage.getItem("token")
+   $.ajax({
+      type: "GET",
+      url: server + `/todos/${id}`,
+      headers: {
+         token
+      },
+   }).done(res => {
+      console.log(res);
+      $("#edit-todo-form").append(`
+         <div class="card card-body">
+            <h1 style="text-align: center;">Edit Todo</h1>
+            
+            <form id="create-todo-form">
+            <div class="form-group">
+               <label for="todo-title">Todo Title</label>
+               <input type="text" id="edit-todo-title" name="title" class="form-control" value="${res.title}"
+                  placeholder="Todo Title" />
+            </div>
+
+            <div class="form-group">
+               <label for="todo-description">Todo Description</label>
+               <input type="text" id="edit-todo-description" name="description" class="form-control" value="${res.description}"
+                  placeholder="Todo Description" />
+            </div>
+
+            <div class="form-group">
+               <label for="todo-due_date">Todo Title</label>
+               <input type="date" id="edit-todo-due_date" name="due_date" class="form-control" value="${formatDate(res.due_date)}"/>
+            </div>
+            
+            <button id="btn-edit" type="button" class="btn btn-outline-warning" onclick="editTodoPost(${res.id})" >Edit</button>
+            <button id="btn-delete" type="button" class="btn btn-outline-success" onclick="backToHome()">Cancel</button>
+
+         </form>
+         </div>
+      `);
+   })
+   .fail(err => {
+      console.log(err);
+   })
+}
+
+// editTodoPost = (id) => {
+//    const token = localStorage.getItem("token")
+
+//    $.ajax({
+//       type: "POST",
+//       url: server + "/todos",
+//       headers: {
+//          token
+//       },
+//       data: {
+//          title: `${$("#todo-title").val()}`,
+//          description: `${$("#todo-description").val()}`,
+//          due_date: `${$("#todo-due_date").val()}`
+//       }
+//    }).done(res => {
+//       $("#todo-list").empty()
+//       $("#todo-description").val("")
+//       $("#todo-due_date").val("")
+//       $("#todo-title").val("")
+//       getAllTodos()
+//    })
+//    .fail(err => {
+//       console.log(err);
+//    })
+// }
 
 deleteTodo = (id) => {
    const token = localStorage.getItem("token")
@@ -165,4 +240,10 @@ formatDate = (date) => {
        day = '0' + day;
 
    return [year, month, day].join('-');
+}
+
+backToHome = () => {
+   $("#todo-list").empty()
+   $("#edit-todo-form").empty()
+   getAllTodos()
 }
