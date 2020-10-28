@@ -1,7 +1,8 @@
 'use strict';
 const {
-  Model
+  Model, ValidationError
 } = require('sequelize');
+const emailVerifier = require('../helpers/verifyEmail');
 const { hashPassword } = require('../helpers/hash');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -18,13 +19,16 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     email: {
       type: DataTypes.STRING,
+      unique: {
+        msg: `You already have an account`
+      },
       validate: {
         notEmpty: {
           msg: `Email is required`
         },
         isEmail: {
           msg: `Email must be in example@mail.com format`
-        }
+        }        
       }
     },
     password: {
@@ -34,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: `Password is required`
         },
         len: {
-          args: [5],
+          args: [6],
           msg: `Password must be more than 5 character`
         }
       }
@@ -45,6 +49,14 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: (user) => {
         user.password = hashPassword(user.password);
+      },
+      afterValidate: async (user) => {
+        try {
+          await emailVerifier(user.email);
+        } catch (error) {
+          // console.log(error);
+          throw error;
+        }
       }
     }
   });

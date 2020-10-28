@@ -10,7 +10,7 @@ My Fancy Todo App is an application to manage your todos. This app has :
 
 | Code  | Name                  | Message               |
 | ----- | --------------------- | --------------------- |
-| 400   | Bad Request           | < Validation error >  |
+| 400   | Bad Request           | < Validation error > or Invalid Email or Password  |
 | 404   | Not Found             | Error not found       |
 | 500   | Internal Server Error | Internal server error |
 

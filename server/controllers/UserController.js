@@ -16,6 +16,7 @@ class UserController {
         email: user.email
       });
     } catch (error) {
+      // console.log(error.name);
       next(error);
       // res.status(400).json({
       //   error: 'Internal server error'

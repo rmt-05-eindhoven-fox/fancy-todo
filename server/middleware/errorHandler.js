@@ -5,12 +5,13 @@ const errorHandler = (err, req, res, next) => {
   
   switch (name) {
     case 'SequelizeValidationError':
+    case 'SequelizeUniqueConstraintError':
       status = 400;
-      error = err.errors.map(el => el.message).join(' ');
+      error = err.errors.map(el => el.message).join(',');
       break;
     case 'InvalidUserPassword':
       status = 400;
-      error = 'Invalid Username or Password';
+      error = 'Invalid Email or Password';
       break;
     case 'AuthenticationFailed':
       status = 401;
@@ -24,6 +25,12 @@ const errorHandler = (err, req, res, next) => {
       status = 404;
       error = 'Error Not Found';
       break;
+    case 'Error':
+      if (err.message === 'Please use different email') {
+        status = 400;
+        error = err.message;
+        break;
+      }
     default:
       status = 500;
       error = 'Internal server error';
