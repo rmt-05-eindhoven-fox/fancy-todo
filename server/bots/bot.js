@@ -32,7 +32,6 @@ client.on('guildMemberAdd', member => {
    channel.send(message)
 })
 
-
 const commandFiles = fs.readdirSync('./bots/commands').filter(file => file.endsWith('.js'))
 
 for (const file of commandFiles) {

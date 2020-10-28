@@ -1,4 +1,5 @@
 const {Todo} = require('../database/models')
+const {dateFormat} = require('../helper/date')
 
 class TodoController {
    static async getAllTodos(req, res, next) {
@@ -7,7 +8,8 @@ class TodoController {
       try {
          const todos = await Todo.findAll({
             where: {
-               UserId
+               UserId,
+               status: 'not done' // default
             }
          })
 
@@ -23,7 +25,7 @@ class TodoController {
          const newTodo = {
             title: req.body.title,
             description: req.body.description,
-            status:req.body.status,
+            status: 'not done',
             due_date: req.body.due_date,
             UserId: req.loggedInUser.id
          }
@@ -63,7 +65,7 @@ class TodoController {
          const editedTodo = {
             title: req.body.title,
             description: req.body.description,
-            status:req.body.status,
+            status: 'not done',
             due_date: req.body.due_date
          }
 

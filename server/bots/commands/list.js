@@ -8,7 +8,7 @@ module.exports = {
       const username = msg.author.tag
       const emoji = `:partying_face: :partying_face: :partying_face: `
 
-      let messageTemplate = `Your current todo(s) are \n\n`
+      let messageTemplate = `Showing your latest 5 Todo(s) \n\n`
       getUserId(username)
          .then(res => {
             return getAllTodos(res.id)
@@ -21,7 +21,7 @@ module.exports = {
                         messageTemplate += `**Todo ID**: ${el.dataValues.id}\n**Title**: ${el.dataValues.title}\n**Description**: ${el.dataValues.description}\n**Status**: ${el.dataValues.status}\n**Deadline**: ${el.dataValues.due_date}\n\n`
                      });
    
-                     msg.reply(`${messageTemplate}`)
+                     msg.reply(`${messageTemplate}\nP.S. Discord only support maximum of 2000 characters each message.`)
                   }
                })
          })
