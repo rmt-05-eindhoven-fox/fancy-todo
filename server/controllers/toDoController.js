@@ -10,7 +10,7 @@ class TodoController {
                 }
             })
             //console.log(todos)
-            res.status(200).json(todos)
+            res.status(200).json({todos:todos[0]})
             console.log(userId, 'INI USER')
         } catch (error) {
             next(error)
@@ -23,8 +23,8 @@ class TodoController {
         // console.log(title, description, status, due_date)
         // console.log(userId, 'ini userid')
         try {
-            const newTodo = await Todo.create({title, description, status, due_date, userId})
-            res.status(201).json(newTodo)
+            const todo = await Todo.create({title, description, status, due_date, userId})
+            res.status(201).json({todo: newTodo[0]})
         } catch (error) {
             next(error)
         }
@@ -33,7 +33,7 @@ class TodoController {
     static async findById(req,res, next) {
         try {
             const todo = await Todo.findByPk(req.params.id)
-            res.status(200).json({todo})
+            res.status(200).json({todo: todo[0]})
         } catch (error) {
             next(error)
         }
@@ -43,12 +43,12 @@ class TodoController {
         try {
             const {title, description, status, due_date} = req.body
             //console.log(req.body)
-            const edit = await Todo.update({title, description,status,due_date}, {
+            const todo = await Todo.update({title, description,status,due_date}, {
                 where: {
                     id: req.params.id
                 }
             })
-            res.status(200).json(edit)
+            res.status(200).json({todo: todo[0]})
             //console.log(edit)
         } catch (error) {
             next(error)
@@ -65,7 +65,7 @@ class TodoController {
             if (todo) {
                 todo.status = status 
                 todo.save()
-                res.status(200).json(todo.status)
+                res.status(200).json({todo:todo.status})
             } 
         } catch (error) {
             next(error)

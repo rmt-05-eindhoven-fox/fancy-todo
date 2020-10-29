@@ -1,8 +1,3 @@
-// $(".btn-click").on("click", function() {
-//     console.log("button terclick")
-//     $(".e").hide()
-// })
-
 const SERVER = "http://localhost:3000"
 
 $(document).ready(function () {
@@ -43,6 +38,7 @@ function login(e) {
         $("#content").show()
         $("#email").val("")
         $("#password").val("")
+        //showTodos()
     }).fail(err => {
         console.log(err)
     })
@@ -54,7 +50,7 @@ function logout() {
     localStorage.removeItem('token')
 }
 
-function showTodos () {
+function showTodos() {
     const token = localStorage.getItem("token")
     $.ajax({
         method: "GET",
@@ -63,8 +59,15 @@ function showTodos () {
             token: token
         }
     }).done(response => {
-        console.log(response)
+        const todos = response.todos
+        $("#content").append(`
+                <p>Error Handler</p>
+                <p>Has to do it tonight</p>
+                <p>on progress</p>
+                <p>2020-10-29T00:00:00.000Z</p>
+        `)
+        console.log(todos)
     }).fail(err => {
         console.log(err)
     })
-}
+} 
