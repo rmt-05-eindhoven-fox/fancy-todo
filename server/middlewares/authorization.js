@@ -2,6 +2,7 @@ const { Todo } = require('../models/index')
 
 async function authorization(req, res, next) {
     const id = +req.params.id
+    // console.log(data.userId, req.loggedInUser.id)
     try {
         const dataTodo = await Todo.findByPk(id)
         if(!dataTodo) {
