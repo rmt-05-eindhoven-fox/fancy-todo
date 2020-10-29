@@ -2,7 +2,7 @@ const { User } = require('../models/index')
 const bcrypt = require('bcryptjs')
 const { generateToken } = require('../helper/jwt')
 const {OAuth2Client} = require('google-auth-library');
-const { use } = require('../router/user');
+
 class UserController{
     static loginGoogle(req, res, next){
         const { google_token } = req.body

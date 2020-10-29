@@ -32,7 +32,12 @@ function onSignIn(googleUser) {
             google_token
         }
     }).done(response => {
-        console.log(response)
+        const token = google_token
+        console.log(token)
+        localStorage.setItem("token", token)
+        $("#login").hide()
+        $("#create").show()
+        read()
     }).fail(err => {
         console.log(err)
     })
@@ -42,7 +47,7 @@ function destroy(){
         method: "DELETE",
         url: SERVER + "/todos",
         headers: {
-            token: token
+            token: localStorage.getItem("token")
         }
     }).done(response => {
         console.log(response)
@@ -79,6 +84,10 @@ function read(event){
         const dataTodo = response.dataTodo
         dataTodo.forEach(elemen => {
             const date = new Date(elemen.due_date)
+            const day = date.getDate()
+            const month = date.getMonth()
+            const year = date.getFullYear()
+            const ddate = `${day}/${month}/${year}`
             $("#todolist").append(`
                 <table class="table table-dark">
                     <thead>
@@ -95,7 +104,7 @@ function read(event){
                             <td>${elemen.title}</td>
                             <td>${elemen.description}</td>
                             <td>${elemen.status}</td>
-                            <td>${date}</td>
+                            <td>${ddate}</td>
                             <td><a onclick="edit()" class="btn btn-primary">Edit</a></td>
                             <td><a onclick="destroy()" class="btn btn-primary">Delete</a></td>
                             </tr>
@@ -112,7 +121,6 @@ function read(event){
 
 function edit(event){
     $("#edit").show()
-    event.preventDefault()
     const title = $("#edit-title").val()
     const description = $("#edit-description").val()
     const status = $("#edit-status").val()
@@ -122,7 +130,7 @@ function edit(event){
         method: "PUT",
         url: SERVER + "/todos",
         headers: {
-            token: token
+            token: localStorage.getItem("token")
         },
         data: {
             title,
@@ -213,7 +221,7 @@ function logout(){
     $("#create").hide()
     $("#login").show()
     $("#register").show()
-    localStorage.removeItem("token")
+    localStorage.clear()
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
