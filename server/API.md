@@ -14,13 +14,13 @@ Create new User
 
   **Required:**
 
-  ```
+```
   {
     "email": STRING, // must be email type
     "password": STRING, // must be longer than 5 digit and less than 12
     "username": STRING // must be longer than 3 digit and less than 12
   }
-  ```
+```
 
 - **Success Response:**
 
