@@ -7,8 +7,10 @@ $(document).ready(function (){
         $("#create").show()
         $("#logout").show()
         $("#register").hide()
+        $("#read").show()
         read()
     }else{
+        $("#read").hide()
         $("#register").show()
         $("#logout").hide()
         $("#login").show()
@@ -43,28 +45,28 @@ function read(event){
         }
     }).done(response => {
         const dataTodo = response.dataTodo
-        $("#todolist").append(`
-        <div class="col-4" >
-            <table border="2">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Due Date</th>
-                    </tr>
-                </thead
-                <tbody>
-                    <tr>
-                        <td>${dataTodo.title}</td>
-                        <td>${dataTodo.description}</td>
-                        <td>${dataTodo.status} ? "Done" : "On Going"</td>
-                        <td>${dataTodo.due_date}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        `)
+        dataTodo.forEach(elemen => {
+            $("#todolist").append(`
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${elemen.title}</td>
+                            <td>${elemen.description}</td>
+                            <td>${elemen.status}</td>
+                            <td>${elemen.due_date}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `)
+        })
         console.log(dataTodo)
     }).fail(err => {
         console.log(err)
