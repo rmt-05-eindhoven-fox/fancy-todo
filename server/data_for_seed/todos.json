@@ -1,0 +1,20 @@
+[
+  {
+      "title": "lecture 2",
+      "description": "lecture ",
+      "status": "unchecked",
+      "due_date": "2020-10-28",
+      "UserId": 1,
+      "createdAt": "2020-10-27",
+      "updatedAt": "2020-10-27"
+  },
+  {
+      "title": "lecture 3",
+      "description": "rabu ",
+      "status": "unchecked",
+      "due_date": "2020-10-28",
+      "UserId": 1,
+      "createdAt": "2020-10-27",
+      "updatedAt": "2020-10-27"
+  }
+]

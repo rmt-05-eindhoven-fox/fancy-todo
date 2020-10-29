@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        args: true,
+        msg: 'Email address already in use!'
+      },
       validate: {
         isEmail: {
           args: true,
@@ -31,6 +34,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: 'Please enter your email.'
+        },
+        isUnique: async function(value, next) {
+          let found = await User.findOne({
+            where: {
+              email: value
+            }
+          })
+          if (found) {
+            next({msg: 'Email used!'})
+          } else {
+            next()
+          }
         }
       }
     },
@@ -46,11 +61,20 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+
+    }
+    // indexes: [
+    //   {
+    //     unique: true,
+    //     fields: ['email']
+    //   }
+    // ]
   });
 
   User.beforeCreate((inst, opt) => {
     inst.password = hashPassword(inst.password)
-  }) 
+  })
   
   return User;
 };

@@ -26,7 +26,7 @@ class UserController {
     // if (!email || !password) {
     //   throw (`email:(${email}), password:(${password})`)
     // }
-    console.log({ email, password })
+    // console.log({ email, password })
     User
       .create({
       email, password 
@@ -34,12 +34,22 @@ class UserController {
       .then(data => {
         let { id, email } = data
         res.status(201).json({ id, email })        
+        return User.findAll()
+      })
+      .then(data => {
+        data = data.map(el => {
+          return {
+            email: el.email,
+            password: el.email
+          }
+        })
       })
       .catch(err => {
         res.status(500).json(err)
       })
   }
-  static async login(req, res) {
+  
+  static async login(req, res, next) {
     try {
       let {email, password} = req.body
       const user = await User.findOne({
@@ -49,12 +59,20 @@ class UserController {
       })
 
       if (!user) {
-        res.status(401).json({
-          message: `Wrong email/password!`
+        // res.status(401).json({
+        //   message: `Wrong email/password!`
+        // })
+        next({
+          name: `Wrong email/password!`,
+          status: 401
         })
       } else if (!comparePassword(password, user.password)) {
-        res.status(401).json({
-          message: 'Wrong email/password!'
+        // res.status(401).json({
+        //   message: 'Wrong email/password!'
+        // })
+        next({
+          name: `Wrong email/password!`,
+          status: 401
         })
       } else {
         const access_token = signToken({
@@ -67,7 +85,8 @@ class UserController {
         })
       }
     } catch (error) {
-      res.status(500).json(error)
+      // res.status(500).json(error)
+      next(error)
     }
   }
 
