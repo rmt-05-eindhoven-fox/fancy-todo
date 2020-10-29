@@ -51,6 +51,42 @@ class HomeController {
       next(err)
     })
   }
+  
+  static googleLogin(req, res, next) {
+    const { google_access_token } = req.body
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+    let email = ''
+    client.verifyIdToken({
+      idToken: google_access_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    })
+    .then(ticket => {
+      let payload = ticket.getPayload()
+      email = payload.email
+      return User.findOne({ where: { email: payload.email }})
+    })
+    .then(user => {
+      if(user){
+        return user
+      } else {
+        var userObj = {
+          email,
+          password: 'randomaja'
+        }
+        return User.create(userObj)
+      }
+    })
+    .then(dataUser => {
+      let token = generateToken({
+        id: user.id, 
+        email: user.email,
+      })
+      return res.status(200).json({ token })
+    })
+    .catch(err => {
+      next(err)
+    })
+  }
 }
 
 
