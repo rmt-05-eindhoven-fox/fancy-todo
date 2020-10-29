@@ -2,6 +2,7 @@ const { User } = require('../models')
 
 const {comparePassword} = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
+const {OAuth2Client} = require('google-auth-library');
 
 class UserController {
 
@@ -59,6 +60,41 @@ class UserController {
         next(error)
       }
     }
+
+    // incomplete, continue later
+
+    // static googleLogin(req, res, next) {
+    //   let {google_access_token} = req.body
+    //   let email;
+
+    //   const client = new OAuth2Client(process.env.CLIENT_ID);
+    //   async function verify() {
+    //     const ticket = await client.verifyIdToken({
+    //         idToken: google_access_token,
+    //         audience: process.env.CLIENT_ID,
+    //     });
+    //     const payload = ticket.getPayload();
+    //     email = payload.email
+    //     const user = await User.findOne({
+    //       where: {
+    //         email: payload.email
+    //       }
+    //     })
+
+    //     if (user) {
+
+    //     } else {
+    //       var userObj = {
+    //         email,
+    //         password: 
+    //       }
+    //       return User.create(userObj)
+    //     }
+    //     // const userid = payload['sub'];
+    //     // console.log(payload)
+    //   }
+    //   verify().catch(console.error);
+    // }
 }
 
 module.exports = UserController

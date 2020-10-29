@@ -18,8 +18,8 @@ $(document).ready(() => {
     $("#home").show()
     $("#login").hide()
     $("#register").hide()
+    $("#errors").hide()
     getTodo()
-    // showAllTodos()
   } else {
     $("#home").hide()
     $("#login").show()
@@ -76,11 +76,39 @@ function login(event) {
     $("#login-email").val("")
     $("#login-password").val("")
     getTodo()
-    // showAllTodos()
 
   }).fail(err => {
     console.log(err)
   })
+}
+
+function onSignIn(googleUser) {
+  // var profile = googleUser.getBasicProfile();
+  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  // console.log('Name: ' + profile.getName());
+  // console.log('Image URL: ' + profile.getImageUrl());
+  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  var google_access_token = googleUser.getAuthResponse().id_token;
+  console.log(google_access_token)
+
+  $.ajax({
+    method: "POST",
+    url: SERVER + "/googleLogin",
+    data: {
+      google_access_token
+    }
+  }).done(response => {
+    console.log(response)
+  }).fail(err => {
+    console.log(err)
+  })
+}
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
 }
 
 function logout() {
@@ -99,7 +127,7 @@ function getTodo() {
     }
   }).done(response => {
     let todo;
-
+    $("#todo").empty()
     for (let i= 0; i< response.length; i++) {
       let todo = response[i]
       let due_date = new Date(response[i].due_date.toString().slice(0, 10)).toDateString()
@@ -107,12 +135,12 @@ function getTodo() {
       $("#todo").append(`
 
       <div class="col my-2 p-3 card">
-      <p><strong>Title</strong>: ${todo.title}</p>
-      <p><strong>Description</strong>: ${todo.description}</p>
-      <p><strong>Status</strong>: ${todo.status}</p>
-      <p><strong>Due date</strong>: ${due_date}</p>
-      <hr/>
-      <div class="d-flex justify-content-between">
+        <p><strong>Title</strong>: ${todo.title}</p>
+        <p><strong>Description</strong>: ${todo.description}</p>
+        <p><strong>Status</strong>: ${todo.status}</p>
+        <p><strong>Due date</strong>: ${due_date}</p>
+        <hr/>
+      <div class="d-flex justify-content-center">
       <button class="btn text-danger" onclick="deleteTodo(${todo.id})">Delete task</button>
       </div>
       
@@ -133,7 +161,8 @@ function addTodo(event) {
   const description= $("#todo-description").val()
   const status= $("#todo-status").val()
   const due_date= $("#todo-due_date").val()
-
+  let errors = []
+  $("#errors").empty()
 
   $.ajax({
     method: "POST",
@@ -148,15 +177,18 @@ function addTodo(event) {
       due_date
     }
   }).done(response => {
-    // console.log(response)
-    $("#home").show()
+    getTodo()
+    console.log(response)
   }).fail(err => {
-    console.log(err)
+    errors.push(err.responseJSON.msg)
+    $("#errors").append(
+      errors
+    )
+    $("#errors").show()
   })
 }
 
 function deleteTodo(id) {
-  // event.preventDefault()
   const token = localStorage.getItem("token")
 
   $.ajax({
@@ -166,5 +198,10 @@ function deleteTodo(id) {
     headers: {
       token
     }
+  }).done(response => {
+    console.log(response)
+    getTodo()
+  }).fail(err => {
+    console.log(err)
   })
 }
