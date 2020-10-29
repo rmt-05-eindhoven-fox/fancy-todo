@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="752137312998-32qn14oqmktc37hllv7hvdb0sntu9nkj.apps.googleusercontent.com">
   <title>Fancy To Do</title>
   <link href="https://fonts.googleapis.com/css?family=Alata" rel='stylesheet'>
   <embed src="assets/UK female welcome__preview.mp3" autostart="true" loop="true"
@@ -28,32 +29,29 @@
 
  <!--Login-->
 <body style="background-color: #f5f4f8;">
-  <section id="login-page" class="container-fluid" style="height: 100vh">
-   
-    <div class="d-flex align-items-center justify-content-center" style="height: 100vh">
-        <div class="shadow-lg bg-white rounded p-4" style="width: 20rem;">
-          <div class="d-flex align-items-center justify-content-center" >
-            <img src="https://media.giphy.com/media/xUOwG8l3u3IF5awt9u/giphy.gif" style="max-width: 30%" alt="todo" class="img-fluid">
-        </div>
-
-        <h2 class="text-center mb-3">Log In</h1>
+  <section id="login-page" class="container-fluid" style="height: 10vh">
+    <br>
+    <div class="d-flex row" >
+      <img class="w-50" src="https://media.giphy.com/media/xUOwG8l3u3IF5awt9u/giphy.gif" alt="login-page" style="margin:50px;">
+        <div class="p-5 bg-light shadow" style="width: 30%; height: 90%; border-radius: 40px;">
+        <h2 class="text-center mb-3">Welcome</h2>
         <form id="login-form" onsubmit="login(event)">
         <div class="form-group">
-          <label for="login-email">Email Address</label>
+          <label for="login-email"><i class="far fa-envelope"></i> Email Address</label>
           <input type="email" class="form-control" id="login-email" placeholder="Your email">
         </div>
         <div class="form-group">
           <div class="form-group">
-            <label for="login-password">Password</label>
+            <label for="login-password"><i class="fas fa-lock"></i> Password</label>
             <input type="password" class="form-control" id="login-password" placeholder="Your password">
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          <button type="submit" class="btn btn-primary btn-block"> <i class="fas fa-sign-in-alt"></i> Log In</button>
         </form>
-        <p class="mt-3 ">Don't have an account?<br>  <span onclick="goToRegister()" role="button" class="text-primary">Register</span></p>
+        <p class="mt-3 "> <i class="fas fa-user-circle"></i> No account?<br> Just <span onclick="goToRegister()" role="button" class="text-primary">Register</span> Here! <i class="fas fa-arrow-left"></i></p>
         <hr>
-        <p class="mt-3">Or, use another account:</p>
+        <p class="mt-3">You can also try:</p>
         <div class="g-signin2 text-center" data-onsuccess="onSignIn"></div>
-        <div class="row d-flex justify-content-center bg-light mt-3 shadow">
+        <div class="row d-flex justify-content-center bg-light mt-1 shadow">
           <div class="col-md-12 text-center text-muted mt-2">
         <p>Copyright &copy; 2020 by <a href="https://github.com/dewijoanne">Joanne</a></p>
       </div>
@@ -65,32 +63,31 @@
 
  <!--Register-->
         
-        <section id="register-page" class="container-fluid" style="height: 100vh">
-          <div class="d-flex align-items-center justify-content-center" style="height: 100vh">
-            <div class="shadow-lg bg-white rounded p-4" style="width: 20rem;">
-              <div class="d-flex align-items-center justify-content-center" >
-                <img src="https://media.giphy.com/media/xUOwG8l3u3IF5awt9u/giphy.gif" style="max-width: 30%" alt="todo" class="img-fluid">
-            </div>
-              <h2 class="text-center mb-3">Register</h1>
+        <section id="register-page" class="container-fluid" style="height: 10vh">
+          <br>
+          <div class="d-flex row" >
+              <img class="w-50" src="https://media.giphy.com/media/xUOwG8l3u3IF5awt9u/giphy.gif" alt="login-page" style="margin:50px;">
+                <div class="p-5 bg-light shadow" style="width: 30%; height: 90%; border-radius: 40px;">
+            <h2 class="text-center mb-3">Welcome</h2>
               <form onsubmit="register(event)">
                 <div class="form-group">
-                  <label for="register-email">Email Address</label>
+                  <label for="register-email"><i class="far fa-envelope"></i> Email Address</label>
                   <input type="email" class="form-control" id="register-email" placeholder="Your email">
                 </div>
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="register-password">Password</label>
+                    <label for="register-password"> <i class="fas fa-lock"></i> Password</label>
                     <input type="password" class="form-control" id="register-password" placeholder="Your password">
                   </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary btn-block">Register</button>
+                  <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Register</button>
                 </div>
               </form>
-              <p class="mt-3 ">Already have an account?<br> <span onclick="goToLogin()" role="button" class="text-primary">Login</span></p>
+              <p class="mt-3 "><i class="fas fa-user-circle"></i> Have an account? <br> Just <span onclick="goToLogin()" role="button" class="text-primary">Login</span> Here! <i class="fas fa-arrow-left"></i></p>
               <hr>
-              <p class="mt-3">Or, use another account:</p>
+              <p class="mt-3">You can also try:</p>
               <div class="g-signin2 text-center" data-onsuccess="onSignIn"></div>
-              <div class="row d-flex justify-content-center bg-light mt-3 shadow">
+              <div class="row d-flex justify-content-center bg-light mt-1 shadow">
                 <div class="col-md-12 text-center text-muted mt-2">
               <p>Copyright &copy; 2020 by <a href="https://github.com/dewijoanne">Joanne</a></p>
             </div>
@@ -100,9 +97,133 @@
       </div>
     </section>
 
-
-
+     <!--Home Page-->
+     <section id="home-page" class="bg-light" style="height: 100vh; overflow-y: auto;">
+      <nav class="navbar shadow navbar-light bg-light">
+        <a class="navbar-brand"> <i class="fas fa-home"></i> Home</a>
+        <button onclick="logout()" class="btn btn-danger"style="position:absolute; right: 10px; top:10px;"> <i class="fas fa-sign-out-alt"></i> Logout</button>
+      </nav>
       
+      <div class="container d-flex justify-content-center pt-5 flex-w rap">
+        
+          <div class="align-items-center d-flex flex-column text-align-center">
+            <h5 id="location"></h5>
+          <div id="icon" class="d-flex align-items-center">
+          </div>         
+          <h5 id="temperature"></h5>
+          <h5 id="wind"></h5> 
+          <br>
+          <img class="w-50" src="assets/undraw_online_organizer_ofxm.svg" alt="todo" class="img-fluid mt-5">
+          </div>
+          
+        </div>
+        <div class="d-flex flex-column align-items-center text-align-center">
+        <br>
+          <b>Your To Do List</b>
+          <br>
+          <button onclick="toAddPage()" type="button" class="btn btn-primary float-right btn-sm"><i class="fas fa-list-alt"></i> Add Task</button>
+        </h4>
+      </div>
+        <div class="d-flex row justify-content-center">
+        <div class="flex-grow-3 float-left" style="margin:20px;">
+          <br><br>
+          <h3>Not Done</h3>
+          <div id="unfinished">
+          </div>
+        </div>
+        <br>
+        <div class="flex-grow-3 float-right" style="margin:20px;">
+          <br><br>
+          <h3>Done</h3>
+          <div id="finished">
+          </div>
+        <ul id="container-todo" class="list-unstyled">
+          
+        </div>
+      </ul>
+      
+        
+      </div>
+
+     
+
+    </section>
+
+
+    <!--Add Task-->
+
+    <section class="container" id="add-page">
+      <div class="row justify-content-center mt-1">
+        <div class="p-4 bg-light shadow" style="width: 30%; height: 60%; border-radius: 40px;">
+          <img src="assets/undraw_Timeline_re_aw6g.svg" alt="todo" class="img-fluid mt-5">
+          <h3 class="mb-1"><i class="fas fa-tasks"></i> Add Your Task</h1>
+          <form onsubmit="addTask(event)">
+            <br>
+            <div class="form-group">
+              <label for="add-title">Title</label>
+              <input type="text" class="form-control" id="add-title" placeholder="Enter a Nice Title">
+            </div>
+            <div class="form-group">
+              <label for="add-description">Description</label>
+              <input type="text" class="form-control" id="add-description" placeholder="Enter a Cool Description">
+            </div>
+            <div class="form-group">
+              <label for="add-due">Due Date</label>
+              <input type="date" class="form-control" id="add-due">
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary text-center"><i class="fas fa-clipboard-check"></i> Add Your Task</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    
+      <!--Edit Task-->
+      <section class="container" id="edit-page">
+        <div class="row justify-content-center mt-5">
+          <div class="p-4 bg-light shadow" style="width: 30%; height: 60%; border-radius: 40px;">
+            <img src="assets/undraw_completed_steps_yurw.svg" alt="todo" class="img-fluid mt-5">
+          <h3 class="mb-1"> <i class="fas fa-tasks"></i>  Edit Your Task</h1>
+          <form onsubmit="updateTodo(event)">
+
+            <div class="form-group">
+              <label for="edit-title">Title</label>
+              <input type="text" class="form-control" id="edit-title" placeholder="Edit Your Title">
+            </div>
+
+            <div class="form-group">
+              <label for="edit-description">Description</label>
+              <input type="text" class="form-control" id="edit-description" placeholder="Edit Your Description">
+            </div>
+
+            <div class="form-group">
+              <label for="edit-due">Due Date</label>
+              <input type="date" class="form-control" id="edit-due">
+            </div>
+    
+            <div class="form-group">
+              <label for="edit-status">Status</label>
+              <select id="edit-status" class="custom-select custom-select">
+                <option value="not finished">Not Finished</option>
+                <option value="finished">Finished</option>
+              </select>
+            </div>
+    
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-primary text-center"><i class="fas fa-clipboard-check"></i> Update Your Task</button>
+              <button onclick="hideEditForm(event)" class="btn btn-danger" >Cancel</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+      </section>
+    </div>
+  </section>
+
+
+        <script src="https://kit.fontawesome.com/040ee6886e.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
