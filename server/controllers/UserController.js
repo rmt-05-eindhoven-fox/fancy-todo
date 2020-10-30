@@ -71,6 +71,56 @@ class UserController {
          res.status(500).json(err)
       }
    }
+
+   static async getUserInfo(req, res, next) {
+      const id = req.loggedInUser.id
+      
+      try {
+         const userInfo = await User.findOne({
+            where: {
+               id
+            }
+         })
+         res.status(200).json({
+            id: userInfo.id,
+            username: userInfo.username,
+            email: userInfo.email
+         })
+      } catch (err) {
+         console.log(err);
+         // res.status(500).json(err)
+      }
+   }
+
+   static async editUserInfo(req, res, next) {
+      try {
+         const id = +req.params.id
+         
+         const editedUser = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+         }
+
+         const editUser = await User.update(editedUser, {
+            where: 
+            {
+               id: id
+            },
+            returning: true
+         })
+         const sentToUser = {
+            id: editUser[1][0].id,
+            username: editUser[1][0].username,
+            email: editUser[1][0].email
+         }
+         res.status(200).json(sentToUser)
+         // console.log(editUser);
+      } catch (err) {
+         next(err)
+         // res.status(500).json(err)
+      }
+   }
 }
 
 module.exports = UserController

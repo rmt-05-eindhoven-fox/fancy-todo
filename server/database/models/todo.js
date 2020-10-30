@@ -55,17 +55,6 @@ module.exports = (sequelize, DataTypes) => {
                } 
              }
          }
-         // validate: {
-         //    checkDate() {
-         //       if(checkIsAfter(this.due_date) === true) {
-         //          return this.due_date
-         //       }
-
-         //       if(checkIsAfter(this.due_date) === false){
-         //          throw new Error('Due date must be after today.')
-         //       }
-         //    }
-         // }
       },
       UserId: DataTypes.INTEGER
    }, {
