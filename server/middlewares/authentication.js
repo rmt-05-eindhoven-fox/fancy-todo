@@ -1,18 +1,18 @@
-const verifyToken = require('../helper/jwt').verifyToken
-const user = require('../models/index').User
+const verifyToken = require('../helpers/jwt').verifyToken
+const user = require('../models/index').user
 
 async function authentication(req, res, next) {
     let { token } = req.headers
     try {
         if(!token){
-            throw { msg: "authentication failed"}
+            throw { message: "authentication failed"}
         }
         else{
             let decoded = verifyToken(token)
             let dataUser = await user.findOne({
                 where: { email: decoded.email }
-            })
-            if(!dataUser) throw { msg: "authentication failed"}
+            })            
+            if(!dataUser) throw { message: "authentication failed"}
             else{
                 req.loggedInUser = decoded
                 next()

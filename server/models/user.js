@@ -4,7 +4,7 @@ const {
 } = require('sequelize');
 const bcrypt = require('bcryptjs')
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class user extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Todo, { foreignKey: 'UserId'})
+      user.hasMany(models.project_member, { foreignKey: 'user_id'})
+      user.hasMany(models.todo, { foreignKey: 'creator_id'})
     }
   };
-  User.init({
+  user.init({
     email: {
       type: DataTypes.STRING,
+      unique:true,
       validate: {
         isEmail: {
           args: true,
@@ -40,12 +42,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
   });
-  User.beforeCreate((instance, option) => {
+  user.beforeCreate((instance, option) => {
     const salt = bcrypt.genSaltSync(10)
     const hash = bcrypt.hashSync(instance.password, salt)
     instance.password = hash
   })
-  return User;
+  return user;
 }; 

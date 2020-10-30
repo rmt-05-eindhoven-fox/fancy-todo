@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Todo extends Model {
+  class todo extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,14 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Todo.belongsTo(models.User, { foreignKey: 'UserId'})
+      todo.belongsTo(models.user, { foreignKey: 'creator_id'})
     }
   };
-  Todo.init({
+  todo.init({
     title: {
       type: DataTypes.STRING,
+      allowNull:false,
       validate: {
         notEmpty: {
+          args: true,
+          msg: "Title is required"
+        },
+        notNull: {
           args: true,
           msg: "Title is required"
         }
@@ -26,26 +31,46 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
+      allowNull:false,
       validate: {
         notEmpty: {
+          args: true,
+          msg: "Description is required"
+        },
+        notNull: {
           args: true,
           msg: "Description is required"
         }
       }
     },
     status: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.ENUM,
+      allowNull:false,
+      values: ['New', 'Inprogress','Done'],
       validate: {
         notEmpty: {
           args: true,
           msg: "Status is required"
+        },
+        notNull: {
+          args: true,
+          msg: "Status is required"
+        },
+        isIn:{
+          args:[['New', 'Inprogress','Done']],
+          msg:"todo status should be New, Inprogress or Done "
         }
       }
     },
     due_date: {
       type: DataTypes.DATE,
+      allowNull:false,
       validate: {
         notEmpty: {
+          args: true,
+          msg: "date is required"
+        },
+        notNull: {
           args: true,
           msg: "date is required"
         },
@@ -71,10 +96,24 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    UserId: DataTypes.INTEGER
+    creator_id: DataTypes.INTEGER,
+    project_id: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Project Id is required"
+        },
+        notNull: {
+          args: true,
+          msg: "Project Id is required"
+        }
+      }
+    }
   }, {
     sequelize,
-    modelName: 'Todo',
+    modelName: 'todo',
   });
-  return Todo;
+  return todo;
 }; 

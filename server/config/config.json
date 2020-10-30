@@ -3,21 +3,21 @@
     "username": "postgres",
     "password": "17101997",
     "database": "todo",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "17101997",
     "database": "todo",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "postgres",
+    "password": "17101997",
+    "database": "todo",
+    "host": "localhost",
+    "dialect": "postgres"
   }
 }
