@@ -1,14 +1,12 @@
 const SERVER = `http://localhost:3000`
 $(document).ready(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if(token){
-        $("#register").hide();
-        $("#login").hide();
-        $("#landing").show();
+        afterLogin();
     } else {
         $("#login").show();
         $("#register").hide();
-        $("#landing").hide();
+        $("#main").hide();
     }
 })
 
@@ -32,9 +30,6 @@ function onSignIn(googleUser) {
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    $("#landing").show();
-    $("#login").hide();
-
 }
 
 function signOut() {
@@ -57,10 +52,14 @@ function register(e){
     })
     .done(response => {
         console.log(response)
-        $("#register").hide();
-        $("#login").show();
+        afterRegister(e);
     })
     .fail(err => alert(err.statusText))
+}
+
+function afterRegister(e){
+    $("#register").hide();
+    $("#login").show();
 }
 
 function login(e){
@@ -75,31 +74,79 @@ function login(e){
     })
     .done(response => {
         console.log(response)
-        localStorage.setItem("token", response.token)
-        $("#login").hide();
-        $("#landing").show();
+        localStorage.setItem("access_token", response.token)
+        afterLogin()
     })
     .fail(err => alert(err.statusText))
 }
 
+function afterLogin(){
+    $("#register").hide();
+    $("#login").hide();
+    $("#main").show();
+    showTodos();
+}
+
 function logout(e){
-    localStorage.removeItem("token");
-    $("login").show();
+    localStorage.removeItem("access_token");
+    console.log('p');
+    $("#login").show();
+    $("#main").hide();
     signOut();
 }
 
 function showTodos(){
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem("access_token");
     $.ajax({
         method: "GET",
         url: `${SERVER}/todos`,
         headers: {token}
     })
-    .done(response => console.log(response))
+    .done(response => {
+        $("#todo-list").empty();
+        $("#done-list").empty();
+
+        console.log(response);
+        response.forEach((el) => {
+            if(el.status === "undone"){
+                $("#todo-list").append(`
+                            <tr>
+                                <td> 
+                                    <div class="card">
+                                        <div class="card-body">
+                                          <h5 class="card-title">${el.title}</h5>
+                                          <p class="card-text">${el.description}</p>
+                                          <a href="#" class="btn btn-warning">Edit Todo</a>
+                                          <a href="#" class="btn btn-primary">Mark as done</a>
+                                          <a href="#" class="btn btn-danger">Delete Todo</a>
+                                        </div>
+                                    </div>
+                                    <!-- <h5 class="card-title">Belajar React</h5>
+                                    <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p> -->
+                                </td>
+                            </tr>
+                `)
+            } else {
+                $("#done-list").append(`
+                            <tr>
+                                <td> 
+                                    <div class="card">
+                                        <div class="card-body">
+                                          <h5 class="card-title">${el.title}</h5>
+                                          <p class="card-text">${el.description}</p>
+                                          <a href="#" class="btn btn-warning">Undo</a>
+                                          <a href="#" class="btn btn-danger">Delete Todo</a>
+                                        </div>
+                                    </div>
+                                    <!-- <h5 class="card-title">Belajar React</h5>
+                                    <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p> -->
+                                </td>
+                            </tr>
+                `)
+            }
+        })
+        
+    })
     .fail(err => console.log(err));
     console.log(token);
 }
-
-$("#showtodos").on("click", () => {
-    showTodos();
-})
