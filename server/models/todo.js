@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     status: DataTypes.STRING,
     due_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       validate: {
         isValidDate(value) {
           const dateNow = new Date()

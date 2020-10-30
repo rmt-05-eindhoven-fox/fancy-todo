@@ -1,0 +1,49 @@
+body {
+  background-image: url('https://www.westenddiy.co.uk/ekmps/shops/ab2451/images/holden-decor-willow-navy-twig-98880-wallpaper-roll-or-sample-a4-sample-36907-p.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #143d59;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #133a53;
+}
+
+.col-4 {
+  padding: 50px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .45);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+}
+
+.listTodo{
+  padding: 50px;
+  border-radius: 10px;
+  width: 1000px;
+  background: rgba(255, 255, 255, .45);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+}
+
+.form-check-label {
+  font-size: larger;
+  font-weight: 600;
+}

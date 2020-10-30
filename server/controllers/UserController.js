@@ -1,6 +1,7 @@
 const { User } = require("../models")
 const { comparePassword } = require("../helpers/bcrypt")
 const { signToken } = require("../helpers/jwt")
+const { OAuth2Client } = require('google-auth-library');
 
 class UserController {
   static postRegister(req, res, next) {
@@ -43,6 +44,42 @@ class UserController {
       })
       .catch(err => {
         next(err)
+      })
+  }
+  static googleLogin(req, res, next) {
+    const { id_token } = req.body
+    let client = new OAuth2Client(process.env.CLIENT_ID)
+    let email = ""
+    let name = ""
+
+    client.verifyIdToken({
+      idToken: id_token,
+      access_token: process.env.CLIENT_ID
+    })
+      .then(ticket => {
+        let payload = ticket.getPayload()
+        email = payload.email
+        name = payload.name
+        return User.findOne({ where: { email: payload.email } })
+      })
+      .then(user => {
+        if (user) {
+          return user
+        } else {
+          let userObj = {
+            name,
+            email,
+            password: 'randomaja'
+          }
+          return User.create(userObj)
+        }
+      })
+      .then(dataUser => {
+        let access_token = signToken({ id: dataUser.id, email: dataUser.email })
+        return res.status(200).json({ access_token })
+      })
+      .catch(err => {
+        res.status(401).json(err.message)
       })
   }
 }

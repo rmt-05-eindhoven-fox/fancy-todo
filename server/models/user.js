@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isValid(value) {
           if (value.length < 8) {
-            throw new Error('Use 8 characters or more')
+            throw new Error('Password atleast 8 characters or more')
           }
         }
       }
