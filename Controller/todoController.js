@@ -6,7 +6,7 @@ class Controller {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            due_date: req.body.due_status,
+            due_date: new Date(req.body.due_date),
             UserId: req.loginUser.id
         };
 
@@ -50,7 +50,8 @@ class Controller {
                 },
                 where: {
                     UserId: userId
-                }
+                },
+                order: [ ['due_date', 'ASC'] ]
             });
 
             res.status(200).json(todos);
@@ -87,7 +88,7 @@ class Controller {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            due_date: req.body.due_status
+            due_date: new Date(req.body.due_date)
         }
 
         try {
@@ -97,7 +98,8 @@ class Controller {
                 },
                 where: {
                     id: idParams
-                }
+                },
+                returning: ['id', 'title', 'description', 'status', 'due_date']
             });
             if (todos[0] === 0) {
                 throw { message: 'not found', status: 404 }
@@ -105,7 +107,7 @@ class Controller {
             else {
                 res.status(200).json(todos[1][0]);
             }
-        } catch (err) {
+        } catch (err) {console.log('masuk err');
             next(err);
         }
     }
