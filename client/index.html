@@ -77,13 +77,77 @@
     <!-- landing -->
     <div id="landing">
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="col-md-12">
-                        <form onsubmit="logout(event)">
-                            <button id="logout-btn">Logout</button>
-                        </form>
+                        <h2 class="text-center">Landing Page</h2>
                     </div>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-center">
+                <div class="col-sm-6 mb-3">
+                    <table class="table table-hover c_table theme-color table-responsive-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                              <th colspan="3" class="text-center">
+                                  Todo
+                              </th>
+                            </tr>
+                        </thead>
+                        <tbody id="playlist-song-list" class="song-list">
+                             <tr>
+                                <!-- <td>
+                                <a class="play-audio" href="#"
+                                    data-datac="http://cdn-preview-0.deezer.com/stream/c-031987fe3205fe94c0d92b625be00a47-2.mp3"><button
+                                    class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
+                                </td> -->
+                                <td> 
+                                    <div class="card">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Belajar React</h5>
+                                          <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p>
+                                          <a href="#" class="btn btn-warning">Edit Todo</a>
+                                          <a href="#" class="btn btn-primary">Mark as done</a>
+                                          <a href="#" class="btn btn-danger">Delete Todo</a>
+                                        </div>
+                                    </div>
+                                    <!-- <h5 class="card-title">Belajar React</h5>
+                                    <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p> -->
+                                </td>
+                                <!-- <td>Kekeyi</td>
+                                <td class="float-right">
+                                <button onclick="deleteSong(event)" class="btn btn-default btn-sm"><i
+                                    class="zmdi zmdi-delete"></i></button>
+                                </td> -->
+                            </tr>
+                            <tr>
+                                <!-- <td>
+                                <a class="play-audio" href="#"
+                                    data-datac="http://cdn-preview-0.deezer.com/stream/c-031987fe3205fe94c0d92b625be00a47-2.mp3"><button
+                                    class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
+                                </td> -->
+                                <td> 
+                                    <div class="card">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Belajar Vue</h5>
+                                          <p class="card-text">Lecture Vue.js hari Rabu jam 3 sore</p>
+                                          <a href="#" class="btn btn-warning">Edit Todo</a>
+                                          <a href="#" class="btn btn-primary">Mark as done</a>
+                                          <a href="#" class="btn btn-danger">Delete Todo</a>
+                                        </div>
+                                    </div>
+                                    <!-- <h5 class="card-title">Belajar Vue</h5>
+                                    <p class="card-text">Lecture Vue.js hari Rabu jam 3 sore</p> -->
+                                </td>
+                                <!-- <td>Kekeyi</td>
+                                <td class="float-right">
+                                <button onclick="deleteSong(event)" class="btn btn-default btn-sm"><i
+                                    class="zmdi zmdi-delete"></i></button>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
