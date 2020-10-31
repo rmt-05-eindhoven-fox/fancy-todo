@@ -39,7 +39,7 @@ module.exports = class TodoController {
       if(hasil[0] === 0) throw { msg: 'Todo not found', status: 404}
       res.status(200).json(hasil[1][0])
     } catch(err) {
-      next(err)
+      next({ msg: err.errors[0].message, status: 400 })
     }
   }
   static async patch(req, res, next) {

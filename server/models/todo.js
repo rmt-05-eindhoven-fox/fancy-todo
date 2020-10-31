@@ -15,12 +15,33 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Todo.init({
-    title: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "Title is required"
+        },
+        notIn: {
+          args: [[true, false]],
+          msg: "Wrong title input"
+        },
+        notEmpty: {
+          args: true,
+          msg: "Title is required"
+        }
+      }
+    },
     description: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
     due_date: {
       type: DataTypes.DATE,
       validate: {
+        isDate: {
+          args: false,
+          msg: "Wrong date input"
+        },
         tanggal(value) {
           let input = new Date(value)
           if(input.getFullYear() - new Date().getFullYear() < 0) {
@@ -41,6 +62,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     userFK: DataTypes.INTEGER
   }, {
+    hooks: {
+      beforeCreate(data) {
+        data.status = false
+      }
+    },
     sequelize,
     modelName: 'Todo',
   });

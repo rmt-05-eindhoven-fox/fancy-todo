@@ -30,7 +30,6 @@ module.exports = class UserController {
         }
       }
     } catch (err) {
-      console.log('lewat sini \r\n\r\n',12414134153);
       next(err)
     }
   }
