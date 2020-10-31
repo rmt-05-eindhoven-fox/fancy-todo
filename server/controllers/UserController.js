@@ -75,6 +75,10 @@ class UserController {
       next(err)
     })
   }
+
+  static verifyToken(req, res, next) {
+    res.status(200).json({ token: 'valid' });
+  }
 }
 
 module.exports = UserController;

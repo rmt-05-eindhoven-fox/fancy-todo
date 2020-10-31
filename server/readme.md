@@ -552,3 +552,55 @@ summary h1, summary h2{ display: inline-block; }
     ``` 
   
 </details>
+
+<details>
+<summary><strong><b><h2>3. Verify Token</h2></b></strong></summary>  
+  
+  Verify Token User.
+
+* **URL**
+
+  `/users/verifytoken`
+
+* **Method:**
+
+  `POST` 
+
+* **URL Headers**
+  
+  **required**
+  ```js
+  {
+    accesstoken: "accesstoken" 
+  }
+  ```
+
+* **Success Response**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      token : "valid"
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** 
+    ```javascript
+    {
+      message: "Authentication failed!"
+    } 
+    ```
+
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    { error : "Something error message from server" }
+    ``` 
+  
+</details>
