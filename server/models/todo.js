@@ -34,14 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     status: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          args: true,
-          msg: 'Status is required, cannot be null!'
-        }
-      }
+      type: DataTypes.STRING
     },
 
     due_date: {

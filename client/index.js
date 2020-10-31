@@ -1,5 +1,7 @@
 
 const base_url = 'http://localhost:3000';
+let accesstoken = ''
+
 $(document).ready(() => {
   // $('#page-authetication').show();
   verifyToken();
@@ -60,7 +62,7 @@ function prosesRegister(input) {
         title: 'Register Succesfully!',
         text: 'Please Login first!',
         icon: 'success',
-        onClose: () => {
+        willClose: () => {
           clearRegisterValue()
           showLogin()
         }
@@ -68,7 +70,7 @@ function prosesRegister(input) {
     })
     .fail(err => {
       let message = checkError(err);
-      Swal.fire('Register Failed!', message, 'error')
+      Swal.fire('Failed Add Todo!', message, 'error')
     })
 }
 
@@ -116,7 +118,7 @@ function login(e) {
         title: 'Access Granted!',
         text: 'Welcome, enjoy plan your task!',
         icon: 'success',
-        onClose: () => {
+        willClose: () => {
           afterLogin()
           clearLogin()
         }
@@ -144,6 +146,9 @@ function clearLogin() {
 }
 
 function afterLogin() {
+  const currentDate = new Date().toISOString().slice(0, 10);
+  accesstoken = localStorage.getItem('accesstoken');
+  $('#todo-due_date').attr('min', currentDate);
   $('#page-authetication').hide();
   $('#form-login').hide();
   $('#form-register').hide();
@@ -175,7 +180,6 @@ function onSignIn(googleUser) {
       google_access_token
     }
   }).done(response => {
-    console.log(response)
     saveUserInfo(response)
     afterLogin()
   }).fail(err => {
@@ -222,7 +226,105 @@ function destroyUserInfo() {
   localStorage.clear();
 }
 
+function showAddTodo(e) {
+  e.preventDefault();
+  $('#defaultModalLabel').text('Add Todo')
+  $('#add-todo').show()
+  $('#edit-todo').hide()
+  $('#modalTodo').modal('toggle');
+}
+
+function showEditTodo(e, todoId) {
+  e.preventDefault()
+  $('#defaultModalLabel').text('Edit Todo')
+  $('#edit-todo-id').val(todoId)
+  $('#add-todo').hide()
+  $('#edit-todo').show()
+  $('#modalTodo').modal('toggle');
+}
+
 function addTodo(e) {
   e.preventDefault();
-  alert('clicked')
+  const title = $('#add-todo-title').val()
+  const description = $('#add-todo-description').val()
+  const due_date = $('#add-todo-due_date').val()
+  const input = {
+    title,
+    description,
+    due_date
+  }
+  $.ajax({
+    method: "POST",
+    url: base_url + "/todos",
+    data: input,
+    headers: {
+      accesstoken
+    }
+  })
+    .done(response => {
+      Swal.fire({
+        title: 'Succesfully Add Todo!',
+        text: '',
+        icon: 'success',
+        willClose: () => {
+          afterAddTodo()
+        }
+      })
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Register Failed!', message, 'error')
+    })
+}
+
+function editTodo(e, todoId) {
+  e.preventDefault();
+  const id = $('#edit-todo-id').val()
+  const title = $('#edit-todo-title').val()
+  const description = $('#edit-todo-description').val()
+  const due_date = $('#edit-todo-due_date').val()
+  const status = $('input[name="edit-todo-status"]:checked').val();
+
+  const input = {
+    title,
+    description,
+    status,
+    due_date
+  }
+  $.ajax({
+    method: "PUT",
+    url: base_url + `/todos/${id}`,
+    data: input,
+    headers: {
+      accesstoken
+    }
+  })
+    .done(response => {
+      console.log(response)
+      Swal.fire({
+        title: 'Succesfully Edit Todo!',
+        text: ``,
+        icon: 'success',
+        willClose: () => {
+          afterAddTodo()
+        }
+      })
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Register Failed!', message, 'error')
+    })
+}
+
+function afterAddTodo() {
+  $('#add-todo-title').val('')
+  $('#add-todo-description').val('')
+  $('#add-todo-due_date').val('')
+}
+
+function afterEditTodo() {
+  $('#edit-todo-title').val('')
+  $('#edit-todo-description').val('')
+  $('#edit-todo-due_date').val('')
+  $('#modalTodo').modal('hide');
 }

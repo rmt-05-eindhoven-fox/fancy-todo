@@ -91,7 +91,7 @@
                     <div class="icon-circle bg-blue"><i class="zmdi zmdi-account"></i></div>
                     <div class="menu-info">
                       <h4>Shutdown my Computer</h4>
-                      <p><i class="zmdi zmdi-time"></i> 14 mins ago </p>
+                      <p><i class="zmdi zmdi-time"></i> due today </p>
                     </div>
                   </a>
                 </li>
@@ -177,7 +177,7 @@
           <div class="col-lg-5 col-md-6 col-sm-12">
             <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i
                 class="zmdi zmdi-arrow-right"></i></button>
-            <button class="btn btn-success btn-icon float-right" data-toggle="modal" data-target="#addTodo"
+            <button class="btn btn-success btn-icon float-right" data-toggle="modal" onclick="showAddTodo(event)"
               data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-plus"></i></button>
           </div>
         </div>
@@ -190,10 +190,6 @@
             <div class="card">
               <div class="header">
                 <h2><strong>Missed</strong> Todo</h2>
-                <!-- <ul class="header-dropdown">
-                  <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addTodo"><i
-                        class="icon-plus"></i></a></li>
-                </ul> -->
               </div>
               <div class="body taskboard planned_task">
                 <div class="dd">
@@ -212,7 +208,7 @@
                               <i class="zmdi zmdi-time"></i> 28 Jan
                             </span>
                           </li>
-                          <li class="ml-3 bd-highlight action">
+                          <li class="ml-3 bd-highlight action" onclick="showEditTodo(event, 1)">
                             <a href="javascript:void(0);" class="text-muted">
                               <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
                             </a>
@@ -435,38 +431,84 @@
   </div>
 
   <!-- todo: Add New Todo -->
-  <div class="modal fade" id="addTodo" tabindex="-1" role="dialog">
+  <div class="modal fade" id="modalTodo" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <section class="content">
         <div class="modal-content card card-inside-title body">
           <div class="modal-header">
-            <h6 class="title" id="defaultModalLabel">Add New Todo</h6>
+            <h6 class="title" id="defaultModalLabel"></h6>
           </div>
-          <form onsubmit="addTodo(event)">
+          <form onsubmit="addTodo(event)" id="add-todo" style="display: none;">
             <div class="modal-body">
               <div class="row clearfix">
                 <div class="col-12">
                   <div class="form-group">
-                    <input type="text" id="todo-title" class="form-control" maxlength="20" placeholder="Title.."
+                    <input type="text" id="add-todo-title" class="form-control" maxlength="20" placeholder="Title.."
                       required>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-group">
-                    <textarea type="text" id="todo-description" class="form-control" style="height: 100px;"
+                    <textarea type="text" id="add-todo-description" class="form-control" style="height: 100px;"
                       maxlength="255" placeholder="Description.."></textarea>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-group">
-                    <input type="date" id="todo-due_date" class="form-control" min="2020-10-31" required>
+                    <input type="date" id="add-todo-due_date" class="form-control" required>
                   </div>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">Add Todo</button>
-              <button class="btn btn-raised btn-secondary btn-round waves-effect" data-dismiss="modal">Cancel</button>
+              <button class="btn btn-raised btn-secondary btn-round waves-effect" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+          <form onsubmit="editTodo(event)" id="edit-todo">
+            <div class="modal-body">
+              <div class="row clearfix">
+                <input type="hidden" id="edit-todo-id" class="form-control" maxlength="20" placeholder="Title.."
+                  required readonly>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="text" id="edit-todo-title" class="form-control" maxlength="20" placeholder="Title.."
+                      required>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <textarea type="text" id="edit-todo-description" class="form-control" style="height: 100px;"
+                      maxlength="255" placeholder="Description.."></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="date" id="edit-todo-due_date" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-12">
+
+                  <div class="form-group">
+                    <label for="">Status</label>
+                    <div class="float-right">
+                      <div class="radio inlineblock m-r-20">
+                        <input type="radio" name="edit-todo-status" id="pending" class="with-gap" value="pending">
+                        <label for="pending">Pending</label>
+                      </div>
+                      <div class="radio inlineblock">
+                        <input type="radio" name="edit-todo-status" id="finished" class="with-gap" value="finished"
+                          checked="">
+                        <label for="finished">Finished</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">Update Todo</button>
+              <button class="btn btn-raised btn-secondary btn-round waves-effect" data-dismiss="modal">Close</button>
             </div>
           </form>
         </div>
