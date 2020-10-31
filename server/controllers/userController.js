@@ -1,6 +1,7 @@
 const { User } = require("../models/index.js")
 const { comparePassword } = require('../helper/bcrypt.js')
 const { signToken } = require("../helper/jwt.js")
+const { OAuth2Client } = require('google-auth-library')
 
 
 class UserController {
@@ -17,12 +18,6 @@ class UserController {
             })
         })
         .catch(err => {
-            // const message = err.errors[0].message
-            // if(message) {
-            //     res.status(400).json({error: message})
-            // } else {
-            //     res.status(500).json(err)
-            // }
             next(err)
         })
     }
@@ -62,6 +57,54 @@ class UserController {
         })
     }
 
+  static googleLogin(req, res, next) {
+    let { google_access_token } = req.body
+    const client = new OAuth2Client('73778169427-l80ckpaf02m9lofa9uat9k7sdd0dum43.apps.googleusercontent.com')
+    let email = '';
+    // let first_name;
+    // let last_name;
+
+    client.verifyIdToken({
+      idToken: google_access_token,
+      audience: '73778169427-l80ckpaf02m9lofa9uat9k7sdd0dum43.apps.googleusercontent.com'
+    })
+      .then(tiket => {
+        let payload = tiket.getPayload();
+        // first_name = payload.given_name;
+        // last_name = payload.family_name;
+        email = payload.email;
+        return User.findOne({ 
+            where: { 
+                email: payload.email 
+            } 
+        })
+      })
+      .then(user => {
+        if (user) {
+          //gnerateToken
+          return user
+        } else {
+          let userObj = {
+            email,
+            password: 'random'
+          }
+          return User.create(userObj)
+        }
+        
+      })
+      .then(dataUser => {
+        let access_token = signToken({
+            id: dataUser.id, 
+            email: dataUser.email 
+        })
+        return res.status(200).json({
+            access_token
+        })
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
 }
 
-module.exports = UserController
+  module.exports = UserController

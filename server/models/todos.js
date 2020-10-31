@@ -33,8 +33,36 @@ module.exports = (sequelize, DataTypes) => {
       }
 
     },
-    description: DataTypes.STRING,
-    status: DataTypes.BOOLEAN,
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'descrition is a required field'
+        },
+        notNull: {
+          args: true,
+          msg: 'descrition is a required field'
+        }
+      }
+
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'status is a required field'
+        },
+        notNull: {
+          args: true,
+          msg: 'status is a required field'
+        }
+      }
+
+    },
     due_date: {
       type:DataTypes.DATE,
       validate: {
@@ -47,7 +75,11 @@ module.exports = (sequelize, DataTypes) => {
           } else {
             return date 
           }
-        }
+        },
+        notEmpty: {
+          args: true,
+          msg: 'descrition is a required field'
+        },
       }
     }
   }, {
