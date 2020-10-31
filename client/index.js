@@ -26,10 +26,22 @@ function pageManager(value){
 
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    // console.log('Name: ' + profile.getName());
+    // console.log('Image URL: ' + profile.getImageUrl());
+    // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    var google_access_token = googleUser.getAuthResponse().id_token;
+    $.ajax({
+        method: "POST",
+        url: `${SERVER}/googleLogin`,
+        data: {google_access_token}
+    })
+    .done(response => {
+        console.log(response);
+        localStorage.setItem("access_token", response.token)
+        afterLogin()
+    })
+    .fail(err => console.log(err));
 }
 
 function signOut() {
@@ -54,7 +66,7 @@ function register(e){
         console.log(response)
         afterRegister(e);
     })
-    .fail(err => alert(err.statusText))
+    .fail(err => console.log(err.statusText))
 }
 
 function afterRegister(e){
@@ -77,7 +89,7 @@ function login(e){
         localStorage.setItem("access_token", response.token)
         afterLogin()
     })
-    .fail(err => alert(err.statusText))
+    .fail(err => console.log(err.statusText))
 }
 
 function afterLogin(){
@@ -194,7 +206,7 @@ function addTodo(e){
         headers: {access_token}
     })
     .done(response => { console.log(response); $(`#AddTodoForm`).modal('hide'); showTodos()})
-    .fail(err => alert(err.responseJSON.error));
+    .fail(err => console.log(err.responseJSON.error));
 }
 
 function deleteTodo(id){
@@ -205,7 +217,7 @@ function deleteTodo(id){
         headers: {access_token}
     })
     .done(response => {showTodos()})
-    .fail(err => alert(err.responseJSON.error));
+    .fail(err => console.log(err.responseJSON.error));
 }
 
 function markAsDone(id){
@@ -217,7 +229,7 @@ function markAsDone(id){
         data: {status: "done"}
     })
     .done(response => {showTodos()})
-    .fail(err => alert(err.responseJSON.error));
+    .fail(err => console.log(err.responseJSON.error));
 }
 
 function undo(id){
@@ -229,7 +241,7 @@ function undo(id){
         data: {status: "undone"}
     })
     .done(response => {showTodos()})
-    .fail(err => alert(err.responseJSON.error));
+    .fail(err => console.log(err.responseJSON.error));
 }
 
 function editTodo(id, e){
@@ -250,5 +262,5 @@ function editTodo(id, e){
         showTodos();
         $(`#editTodoForm${id}`).modal('hide');
     })
-    .fail(err => alert(err.responseJSON.error));
+    .fail(err => console.log(err.responseJSON.error));
 }
