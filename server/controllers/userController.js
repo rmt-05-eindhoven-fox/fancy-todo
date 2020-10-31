@@ -1,6 +1,7 @@
 const { User } = require('../models/')
 const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
+const {OAuth2Client} = require('google-auth-library');
 
 class UserController {
   // static async register(req, res) {
@@ -105,6 +106,55 @@ class UserController {
   //       res.status(500).json(err)
   //     })
   // }
+
+  static googleLogin(req, res, next) {
+    // verify token
+    // dapetin token dari client
+    let {id_token} = req.body
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    let email = ''
+    // verify google token berdasarkan client id
+    client.verifyIdToken({
+      idToken: id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    })
+      .then(tiket => {
+      const payload = tiket.getPayload();
+      // console.log(tiket)
+      // console.log(payload)
+      // balikin token seperti login biasa agar saat login pakai google user tetap lolos authentication server
+      email = payload.email
+      return User.findOne({
+        where: {
+          email: payload.email
+        }
+      })
+    })
+      .then(user => {
+        if (user) {
+          return user
+        } else {
+          let userObj = {
+            email,
+            password: 'randomaja'
+          }
+          return User.create(userObj)
+        }
+      })
+      .then(dataUser => {
+        // console.log(dataUser)
+        const access_token = signToken({
+          id: dataUser.id,
+          email: dataUser.email
+        })
+        res.status(200).json({access_token})
+      })
+      .catch(err => {
+      console.log(err)
+    })
+  }
 }
 
 module.exports = UserController
