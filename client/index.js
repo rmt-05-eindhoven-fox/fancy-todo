@@ -34,7 +34,6 @@ function login(event){
     }).done(response => {
         localStorage.setItem("token", response.token)
         $("#login").hide()
-        // $("#register").hide()
         $("#login-email").val("")
         $("#login-password").val("")
         $("#read").show()
@@ -47,7 +46,6 @@ function login(event){
 }
 function onSignIn(googleUser) {
     const google_token = googleUser.getAuthResponse().id_token;
-    // console.log(google_token)
     $.ajax({
         method: "POST",
         url: SERVER + "/users/loginGoogle",
@@ -58,7 +56,6 @@ function onSignIn(googleUser) {
         console.log(response, 'adsfdasdf')
         localStorage.setItem("token", response.token)
         $("#login").hide()
-        // $("#register").hide()
         $("#login-email").val("")
         $("#login-password").val("")
         $("#read").show()
@@ -120,7 +117,6 @@ function opentaddtodo(){
     $("#create").show()
     $("#read").hide()
     $("#logout").hide()
-    // read()
 }
 function hideadd(){
     $("#create").hide()
@@ -141,7 +137,6 @@ function read(){ // nampilin todo list
             token: token
         }
     }).done(response => {
-        // $("#read").empty()
         const dataTodo = response.dataTodo
         dataTodo.forEach(elemen => {
             const date = new Date(elemen.due_date)
@@ -164,7 +159,6 @@ function read(){ // nampilin todo list
                             
                             `)
                         })
-                        // $("#edit").hide()
                         console.log(dataTodo)
                     }).fail(err => {
         console.log(err.responseJSON.errors)
@@ -174,7 +168,6 @@ function read(){ // nampilin todo list
 function editShow(id){
     $("#edit").show()
     $("#logout").hide()
-    // $("#signOut").hide()
     $("#read").hide()
     $.ajax({
         method: "GET",
@@ -185,22 +178,17 @@ function editShow(id){
     }).done(response => {
         console.log(response)
         const dataTodo = response.dataTodo
-        // const date = formatDate(dataTodo.due_date)
-        // dataTodo.forEach(elemen => {
-            let date = new Date(dataTodo.due_date)
-            let day = date.getDate()
-            if(day < 10){
-                day = `0${day}`
-            }
-            console.log(day, 'ini day')
-            let month = date.getMonth() + 1
-            if(month < 10){
-                month = `0${month}`
-            }
-            console.log(month, 'ini month')
-            let year = date.getFullYear()
-            let ddate = `${year}-${month}-${day}`
-            // console.log(ddate, 'inid dafa')
+        let date = new Date(dataTodo.due_date)
+        let day = date.getDate()
+        if(day < 10){
+            day = `0${day}`
+        }
+        let month = date.getMonth() + 1
+        if(month < 10){
+            month = `0${month}`
+        }
+        let year = date.getFullYear()
+        let ddate = `${year}-${month}-${day}`
         $("#edit").append(`
         <div class="row justify-content-center">
             <div class="col-4" id="get-todo">
@@ -224,25 +212,13 @@ function editShow(id){
                 </div>
         </div>
         `)
-        // $("#edit").hide()
-        // $("#read").show()
-        // $("#todolist").empty()
-        // $("#get-todo").empty()
-        // $("#edit-title").val("") // biar add todo langsung kosong
-        // $("#edit-description").val("")
-        // $("#edit-due-date").val("")
-
     }).fail(err => {
-        console.log(err)
+        console.log(err.responseJSON.errors)
     })
 }
 function editPost(id){
-    // event.preventDefault()
-
-    
     const title = $("#edit-title").val()
     const description = $("#edit-description").val()
-    // const status = $("#edit-status").val()
     const due_date = $("#edit-due-date").val()
     $.ajax({
         method: "PUT",
@@ -278,12 +254,10 @@ function done(id){
 
 
 function create(event){ // add todo
-    // $("#logout").hide()
     event.preventDefault()
     const title = $("#title-todo").val()
     const description = $("#description-todo").val()
     const due_date = $("#due-date-todo").val()
-
     $.ajax({
         method: "POST",
         url: SERVER + "/todos",
@@ -309,9 +283,7 @@ function create(event){ // add todo
 
 
 function logout(){
-    // $("#read").hide()
     $("#login").show()
-    // $("#register").show()
     $("#read").hide()
     localStorage.clear()
     $("#logout").hide()

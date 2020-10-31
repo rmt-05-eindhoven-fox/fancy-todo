@@ -58,7 +58,6 @@ class UserController{
         })
         .then(ticket => {
             payload = ticket.getPayload()
-            // console.log(payload, 'ini payload')
             return User.findOne({where: {email: payload.email}})
         })
         .then(user => {
@@ -74,7 +73,6 @@ class UserController{
             return res.status(200).json({ token })
         })
         .catch(err => {
-            // console.log(err, 'ini dari server')
             next(err)
         })
     }
