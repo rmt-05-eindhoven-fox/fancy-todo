@@ -4,19 +4,15 @@ async function authorization(request, response, next) {
     try {
         const id = +request.params.id;
         const data = await Todo.findByPk(id)
-        // console.log("Id Todos = ",id);
-        // console.log("UserId di Todos : ",data.UserId);
-        // console.log("Logged in User id : ",request.loggedInUser);
         if(!data) {
-            response.status(404).json({msg: 'Todo not found'})
+            throw { name: 'NotFound' }
         } else if(data.UserId === request.loggedInUser.id) {
             next();
         } else {
-            response.status(401).json({msg: 'Unauthorized'})
+            throw{ name: 'Unauthorized' }
         }
-    } catch (error) {
-        console.log(Error);
-        response.status(404).json({msg: 'Internal Server Error'});
+    } catch(error) {
+        next(error);
     }
 }
 

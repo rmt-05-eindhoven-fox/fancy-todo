@@ -5,13 +5,13 @@ const homeController = require("../controllers/homeController");
 const userController = require("../controllers/userController");
 const authentication = require("../middlewares/authentication");
 const authorization = require("../middlewares/authorization");
-router.use(authentication);
 
 router.get("/", homeController.homepage);
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 
+router.use(authentication);
 router.get("/todos", todoController.viewAll);
 router.post("/todos", todoController.create);
 router.get("/todos/:id", todoController.viewById);

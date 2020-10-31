@@ -3,15 +3,15 @@ const {Todo} = require("../models");
 class todoController{
     static async viewAll(request, response) {
         try {
-            const userId = request.loggedInUser.id
+            const userId = request.loggedInUser.id;
             const data = await Todo.findAll({
                 where: {
                     UserId: userId
                 }
-            })   
+            });
             response.status(201).json(data)
         } catch (error) {
-            response.status(500).json(error);
+            next(error);
         }
     }
 

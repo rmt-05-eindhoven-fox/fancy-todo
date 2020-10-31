@@ -1,27 +1,27 @@
 const { verifyToken } = require("../helpers/jwt");
 const { User } = require("../models");
 
-async function authentication(request, response, next){
+async function authentication(request, response, next) {
     const { token } = request.headers;
     try {
-        if(!token){
-            throw { msg: 'Authentication Failed', status: 401 }
+        if(!token) {
+            throw { name: 'AuthenticationFailed' }
         } else {
             const decoded = verifyToken(token);
             const user = await User.findOne({
                 where: {
                     email: decoded.email
                 }
-            })
-            if(!user){
-                throw { msg: 'Authentication Failed', status: 401}
+            });
+            if(!user) {
+                throw { name: 'AuthenticationFailed' }
             } else {
                 request.loggedInUser = decoded;
                 next();
             }
         }
-    } catch (err) {
-        response.status(500).json({msg: 'Internal Server Error'});
+    } catch(error) {
+        next(error);
     }
 }
 
