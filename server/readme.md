@@ -23,7 +23,7 @@ summary h1, summary h2{ display: inline-block; }
   **required**
   ```js
     {
-      accesstoken: "accessToken" 
+      accesstoken: "accesstoken" 
     }
   ```
 
@@ -95,7 +95,7 @@ summary h1, summary h2{ display: inline-block; }
   **required**
   ```js
     {
-      accesstoken: "accessToken" 
+      accesstoken: "accesstoken" 
     }
   ```
 
@@ -160,7 +160,7 @@ summary h1, summary h2{ display: inline-block; }
   **required**
   ```js
     {
-      accesstoken: "accessToken" 
+      accesstoken: "accesstoken" 
     }
   ```
 
@@ -222,14 +222,14 @@ summary h1, summary h2{ display: inline-block; }
   **required**
   ```js
     {
-      accesstoken: "accessToken" 
+      accesstoken: "accesstoken" 
     }
   ```
 
 * **Data Params**
 
   ***required***
-    token: <accessToken>
+    token: <accesstoken>
   *accesstoken**
 
   ```javascript
@@ -310,14 +310,14 @@ summary h1, summary h2{ display: inline-block; }
   **required**
   ```js
     {
-      accesstoken: "accessToken" 
+      accesstoken: "accesstoken" 
     }
   ```
 
 * **Data Params**
 
   ***required***
-    token: <accessToken>
+    token: <accesstoken>
   *accesstoken**
 
   ```javascript
@@ -393,7 +393,7 @@ summary h1, summary h2{ display: inline-block; }
   **required**
   ```js
   {
-    accesstoken: "accessToken" 
+    accesstoken: "accesstoken" 
   }
   ```
 
@@ -529,7 +529,7 @@ summary h1, summary h2{ display: inline-block; }
     **Content:** 
     ```javascript
     {
-      accessToken : "eyJhbGciOiJIUzI1NiJ9. xxxx "
+      accesstoken : "eyJhbGciOiJIUzI1NiJ9. xxxx "
     }
     ```
  

@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const { match } = require('../helper/bycript');
 const { generateToken } = require('../helper/jwt');
 const { User } = require('../models');
+const { OAuth2Client } = require('google-auth-library');
 
 class UserController {
 
@@ -31,15 +32,48 @@ class UserController {
             next(createError(401, 'Wrong Username / Password '));
           } else {
             const { id, username, email } = user;
-            const jwt = generateToken({
-              id, username, email
-            });
+            const jwt = generateToken({ id, username, email });
             res.status(200).json({ accesstoken: jwt });
           }
         }
       }).catch((err) => {
         next(err);
       });
+  }
+
+  static googlesignin(req, res, next) {
+    let { google_access_token } = req.body
+    const client = new OAuth2Client(process.env.CLIENT_ID);
+    let userGoogle = {}
+
+    client.verifyIdToken({
+      idToken: google_access_token,
+      audience: process.env.CLIENT_ID,
+    }).then(ticket => {
+      const payload = ticket.getPayload();
+      const { name, email, picture } = payload;
+      userGoogle = { name, email, picture }
+
+      return User.findOne({ where: { email } })
+    }).then(user => {
+      if (user) {
+        return user
+      } else {
+        const newUser = {
+          username: userGoogle.email,
+          password: 'jJys8Hsk8wEmJSa',
+          email: userGoogle.email
+        }
+        return User.create(newUser)
+      }
+    }).then(data => {
+      console.log(data)
+      const { id, username, email } = data;
+      const jwt = generateToken({ id, username, email });
+      res.status(200).json({ accesstoken: jwt, username, email, userid: id });
+    }).catch(err => {
+      next(err)
+    })
   }
 }
 
