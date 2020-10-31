@@ -96,7 +96,6 @@ function afterLogin(){
     $("#register").hide();
     $("#login").hide();
     $("#main").show();
-    // $("#user-info").
     showTodos();
 }
 
