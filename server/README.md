@@ -1,6 +1,13 @@
-
 # Fancy Todo
     Merupakan aplikasi untuk memanage todo pada sebuah project
+
+**Fitur Apps**
+* Register user
+* Login User
+* Oauth gmail
+* Send Email saat register user & menjadi member project
+* Membuat Project 
+* Membuat Todo
 
 
 **Running Apps**
@@ -18,6 +25,17 @@ EMAIL=ujioba12345@gmail.com
 PASS=ujicobaferdian
 SMTP=smtp.gmail.com
 CLIENT_ID=790332648718-5ij89p1a3db2kkas7g28833sd2iqo3ku.apps.googleusercontent.com
+```
+
+**Kendala**
+```
+1. Membuat code yang rapih & bagus agar mudah di pahami
+2. Membuat tampilan UI, masih berantakan tampilannya, karna masih belum terlalu menguasai css sehingga masih buka tutorial dan dokumentasi
+3. Membuat authorization untuk multiple kondisi
+4. Membuat sending email, sempet gagal ga kekirim terus emailnya ini karna config di gmailnya
+5. Menghubungkan relasi antar table
+6. Deploy aplikasi ke heroku dan 000webhost, saat deploy error terus web dan apinya
+7. Oauth gagal terus saat config
 ```
 
 **Dokumentasi Postman**
