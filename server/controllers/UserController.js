@@ -25,14 +25,14 @@ class Controller {
     static async login (req, res, next){
         try {
             const payload = {
-                username: req.body.username,
+                email: req.body.email,
                 password: req.body.password
             }
-            let user = await User.findOne({where:{username: payload.username}});
+            let user = await User.findOne({where:{email: payload.email}});
             if(!user){
-                next({message:"Wrong username/password", status: 401})
+                next({message:"Wrong email/password", status: 401})
             } else if(!checkPassword(payload.password, user.password)) {
-                next({message:"Wrong username/password", status: 401});
+                next({message:"Wrong email/password", status: 401});
             } else {
                 let access_token = hashToken({id: user.id, email: user.email})
                 res.status(200).json({token: access_token})

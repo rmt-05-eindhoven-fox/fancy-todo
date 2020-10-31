@@ -29,7 +29,15 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true
       }
     },
-    password: DataTypes.STRING
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [8],
+          msg: "Password must not be less than length of 8!"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'User',

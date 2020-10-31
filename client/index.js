@@ -63,10 +63,21 @@ function register(e){
         data: {username, email, password}
     })
     .done(response => {
-        console.log(response)
+        Swal.fire({
+            icon: 'success',
+            title: 'Register Success',
+            showConfirmButton: false,
+            timer: 1500
+        })
         afterRegister(e);
     })
-    .fail(err => console.log(err.statusText))
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    })
 }
 
 function afterRegister(e){
@@ -76,20 +87,31 @@ function afterRegister(e){
 
 function login(e){
     e.preventDefault();
-    let username = $("#username").val();
+    let email = $("#email-login").val();
     let password = $("#password").val();
 
     $.ajax({
         method: "POST",
         url: `${SERVER}/login`,
-        data: {username, password}
+        data: {email, password}
     })
     .done(response => {
-        console.log(response)
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Success',
+            showConfirmButton: false,
+            timer: 1500
+        })
         localStorage.setItem("access_token", response.token)
         afterLogin()
     })
-    .fail(err => console.log(err.statusText))
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }
 
 function afterLogin(){
@@ -188,7 +210,13 @@ function showTodos(){
         })
         
     })
-    .fail(err => console.log(err));
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }
 
 function addTodo(e){
@@ -205,8 +233,22 @@ function addTodo(e){
         data: {title, description, due_date, status},
         headers: {access_token}
     })
-    .done(response => { console.log(response); $(`#AddTodoForm`).modal('hide'); showTodos()})
-    .fail(err => console.log(err.responseJSON.error));
+    .done(response => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Your todo has been added',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        $(`#AddTodoForm`).modal('hide'); showTodos()
+        })
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }
 
 function deleteTodo(id){
@@ -217,7 +259,13 @@ function deleteTodo(id){
         headers: {access_token}
     })
     .done(response => {showTodos()})
-    .fail(err => console.log(err.responseJSON.error));
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }
 
 function markAsDone(id){
@@ -229,7 +277,13 @@ function markAsDone(id){
         data: {status: "done"}
     })
     .done(response => {showTodos()})
-    .fail(err => console.log(err.responseJSON.error));
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }
 
 function undo(id){
@@ -241,7 +295,13 @@ function undo(id){
         data: {status: "undone"}
     })
     .done(response => {showTodos()})
-    .fail(err => console.log(err.responseJSON.error));
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }
 
 function editTodo(id, e){
@@ -262,5 +322,11 @@ function editTodo(id, e){
         showTodos();
         $(`#editTodoForm${id}`).modal('hide');
     })
-    .fail(err => console.log(err.responseJSON.error));
+    .fail(err => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.responseJSON.error
+        });
+    });
 }

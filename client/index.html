@@ -30,8 +30,8 @@
                         <h2 class="form-title">Login</h2>
                         <form onsubmit="login(event)" class="register-form" id="login-form">
                             <div class="form-group">
-                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="username" placeholder="Your username"/>
+                                <label for="your_email"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="your_email" id="email-login" placeholder="Your email"/>
                             </div>
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
@@ -97,89 +97,92 @@
         
     </div>
     <!-- main -->
-    <div id="main">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="col-md-12">
-                        <h2 class="text-center" style="color: #52050A;">Fancy Todo</h2>
+    <div class="card px-3"id="main">
+        <div class="container card-body" >
+            <h2 class="card-title" style="color: #52050A;">Tasks List</h2>
+            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#AddTodoForm">Add Todo</a>
+            <div class="list-wrapper">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row justify-content-center">
-                <div class="col-md-5 mb-3">
-                    <table class="table table-hover c_table theme-color table-responsive-sm">
-                        <thead style="background-color: rgb(233,223,0); color: darkslategrey;">
-                            <tr>
-                              <th colspan="3" class="text-center">
-                                  Todo
-                              </th>
-                            </tr>
-                        </thead>
-                        <tbody id="todo-list" class="todo-list">
-                             
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-5 mb-3">
-                    <table class="table table-hover c_table theme-color table-responsive-sm">
-                        <thead style="background-color: rgb(251,80,18); color:whitesmoke;">
-                            <tr>
-                              <th colspan="3" class="text-center">
-                                  Done
-                              </th>
-                            </tr>
-                        </thead>
-                        <tbody id="done-list">
-                             <!-- <tr>
-                                <td> 
-                                    <div class="card">
-                                        <div class="card-body">
-                                          <h5 class="card-title">Belajar React</h5>
-                                          <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p>
-                                          <a href="#" class="btn btn-warning">Undo</a>
+                <br>
+                <div class="row justify-content-center">
+                    <div class="col-md-5 mb-3">
+                        <table class="table table-hover c_table theme-color table-responsive-sm">
+                            <thead style="background-color: rgb(233,223,0); color: darkslategrey;">
+                                <tr>
+                                <th colspan="3" class="text-center">
+                                    Todo
+                                </th>
+                                </tr>
+                            </thead>
+                            <tbody id="todo-list" class="todo-list">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <table class="table table-hover c_table theme-color table-responsive-sm">
+                            <thead style="background-color: rgb(251,80,18); color:whitesmoke;">
+                                <tr>
+                                <th colspan="3" class="text-center">
+                                    Done
+                                </th>
+                                </tr>
+                            </thead>
+                            <tbody id="done-list">
+                                <!-- <tr>
+                                    <td> 
+                                        <div class="card">
+                                            <div class="card-body">
+                                            <h5 class="card-title">Belajar React</h5>
+                                            <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p>
+                                            <a href="#" class="btn btn-warning">Undo</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr> -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-sm-2 mb-3">
-                    <div class="card">
-                        <div class="card-body" id="user-info">
-                            <h2 class="text-center">User</h2>
-                            <a href="#" class="btn btn-info" style="margin-left: 15px;" data-toggle="modal" data-target="#AddTodoForm">Add Todo</a>
-                            <a href="javascript:void();" style="margin-left: 18px; margin-top: 10px;" class="btn btn-info" onclick="logout(event)">Sign Out</a> <br> <br>
-                            
-                            <div class="modal fade" id="AddTodoForm" role="dialog">
-                                <div class="modal-dialog">
-                                <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <p>Add todo</p>
-                                            <form onsubmit="addTodo(event)">
-                                                <div class="form-group">
-                                                    <label for="todo-title">Title</label>
-                                                    <input type="text" class="form-control" id="todo-title" aria-describedby="textHelp" placeholder="Enter Todo title" required>
-                                                    <small id="textHelp" class="form-text text-muted">What are you planning to do?</small>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="todo-desc">Description</label>
-                                                    <input type="text" class="form-control" id="todo-desc" aria-describedby="descHelp" placeholder="Add description here" required>
-                                                    <small id="descHelp" class="form-text text-muted">Tell me specifically what it is about?</small>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="todo-date">Due Date</label>
-                                                    <input type="date" class="form-control" id="todo-date" aria-describedby="dateHelp" required>
-                                                    <small id="dateHelp" class="form-text text-muted">When is the deadline?</small>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-2 mb-3">
+                        <div class="card">
+                            <div class="card-body" id="user-info">
+                                <h4 class="text-center">Account</h2>
+                                <a href="javascript:void();" style="margin-left: 10px; margin-top: 10px;" class="btn btn-info" onclick="logout(event)">Sign Out</a> <br> <br>
+                                
+                                <div class="modal fade" id="AddTodoForm" role="dialog">
+                                    <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <p>Add todo</p>
+                                                <form onsubmit="addTodo(event)">
+                                                    <div class="form-group">
+                                                        <label for="todo-title">Title</label>
+                                                        <input type="text" class="form-control" id="todo-title" aria-describedby="textHelp" placeholder="Enter Todo title" required>
+                                                        <small id="textHelp" class="form-text text-muted">What are you planning to do?</small>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="todo-desc">Description</label>
+                                                        <input type="text" class="form-control" id="todo-desc" aria-describedby="descHelp" placeholder="Add description here" required>
+                                                        <small id="descHelp" class="form-text text-muted">Tell me specifically what it is about?</small>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="todo-date">Due Date</label>
+                                                        <input type="date" class="form-control" id="todo-date" aria-describedby="dateHelp" required>
+                                                        <small id="dateHelp" class="form-text text-muted">When is the deadline?</small>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -187,13 +190,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script> -->
     <script src="index.js"></script>
