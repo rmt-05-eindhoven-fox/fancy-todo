@@ -5,75 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="google-signin-client_id" content="907101746187-ulqiue2nob430ekm2ahlbecod8csmcv3.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+        <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
     <style>
     </style>
     <title>Hello, world!</title>
   </head>
   <body>
-    <div id="login">
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
-                        <form onsubmit="login(event)">
-                            <h3 class="text-center text-dark">Login</h3>
+      <div class="landing-page">
+        
+        <section class="sign-in" id="login">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
+                        <a href="javascript:pageManager(0)" class="text-info">Register here</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Login</h2>
+                        <form onsubmit="login(event)" class="register-form" id="login-form">
                             <div class="form-group">
-                                <label for="username" class="text-dark">Username:</label><br>
-                                <input type="text" name="username" id="username" class="form-control">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="your_name" id="username" placeholder="Your username"/>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="text-dark">Password:</label><br>
-                                <input type="password" name="password" id="password" class="form-control">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="your_pass" id="password" placeholder="Password"/>
                             </div>
                             <div class="form-group">
-                                <!-- <label for="remember-me" class="text-dark"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br> -->
-                                <!-- <input type="submit" name="submit" id="login-btn" class="btn btn-info btn-md" value="submit"> -->
-                                <button id="login-btn" type="submit">Submit</button>
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
                             </div>
-                            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                            <div id="register-link" class="text-right">
-                                <a href="javascript:pageManager(0)" class="text-info">Register here</a>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
                             </div>
                         </form>
+                        <div class="social-login">
+                            <!-- <span class="social-label">Or login with</span> -->
+                            <ul class="socials">
+                                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                <!-- <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li> -->
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="register">
-        <div class="container">
-            <div id="register-row" class="row justify-content-center align-items-center">
-                <div id="register-column" class="col-md-6">
-                    <div id="register-box" class="col-md-12">
-                        <form onsubmit="register(event)">
-                            <h3 class="text-center text-dark">Register</h3>
+        </section>
+        <section class="signup" id="register">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form onsubmit="register(event)" class="register-form" id="register-form">
                             <div class="form-group">
-                                <label for="username" class="text-dark">Username:</label><br>
-                                <input type="text" name="username" id="username-register" class="form-control">
+                                <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="username-register" placeholder="Your Username"/>
                             </div>
                             <div class="form-group">
-                                <label for="email" class="text-dark">Email:</label><br>
-                                <input type="text" name="email" id="email" class="form-control">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="text" name="email" id="email" placeholder="Your Email"/>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="text-dark">Password:</label><br>
-                                <input type="password" name="password" id="password-register" class="form-control">
+                                <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password-register" placeholder="Password"/>
                             </div>
                             <div class="form-group">
-                                <!-- <label for="remember-me" class="text-dark"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br> -->
-                                <!-- <input type="submit" name="submit" id="login-btn" class="btn btn-info btn-md" value="submit"> -->
-                                <button id="register-btn" type="submit">Submit</button>
-                                
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
                             </div>
-                            <div id="login-link" class="text-right">
-                                <a href="javascript:pageManager(1)" class="text-info">Login here</a>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
                             </div>
                         </form>
                     </div>
+                    <div class="signup-image">
+                        <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                        <a href="javascript:pageManager(1)" class="text-info">I am already registered</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+        
     </div>
     <!-- main -->
     <div id="main">
