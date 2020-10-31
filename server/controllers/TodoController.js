@@ -23,7 +23,7 @@ class TodoController {
   static async readTodo(req, res, next) {
     try {
       const UserId = +req.userLoggedIn.id;
-      const todos = await Todo.findAll({ where: { UserId } ,order: [["id", "ASC"]] });
+      const todos = await Todo.findAll({ where: { UserId } ,order: [["updatedAt", "DESC"]] });
       res.status(200).json(todos);
     } catch (err) {
       next(err);
