@@ -1,9 +1,10 @@
 const { User } = require("../models/index")
 const { compare } = require('../helpers/bcrypt')
-const signToken = require("../helpers/jwt")
+const { signToken } = require("../helpers/jwt")
+
 
 class UserController {
-    static signIn(req,res){
+    static signUp(req,res, next){
         const payload = {
             email: req.body.email,
             password: req.body.password
@@ -16,10 +17,10 @@ class UserController {
             })
         })
         .catch(err => {
-            res.status(500).json(err)
+            next(err)
         })
     }
-    static signUp(req,res){
+    static signIn(req,res, next){
         const payload = {
             email: req.body.email,
             password: req.body.password
@@ -42,14 +43,14 @@ class UserController {
             }
             else {
                 const acces_token = signToken({
-                    id: User.id,
-                    email: User.email
+                    id: data.id,
+                    email: data.email
                 })
                 res.status(200).json({acces_token})
             }
         })
         .catch(err => {
-            res.status(500).json(err)
+            next(err)
         })
     }
 }
