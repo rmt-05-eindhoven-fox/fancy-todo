@@ -13,19 +13,21 @@
   font-weight: bold;
 }
 
-.section-todo{
-margin-bottom: 50px;
+.section-todo {
+  margin-bottom: 50px;
 }
 
-.section-todo .card{
+.section-todo .card {
   color: #383838;
   min-height: 300px;
   overflow: auto;
 }
 
-.section-add {
+.section-add,
+.section-update {
   color: #383838;
 }
+
 
 li {
   margin-left: 50px;
@@ -36,7 +38,9 @@ li {
 }
 
 footer {
+  font-family: monospace;
+  font-size: large;
   margin-top: auto;
   margin-bottom: 0;
-  min-height: 200px;
+  min-height: 100px;
 }

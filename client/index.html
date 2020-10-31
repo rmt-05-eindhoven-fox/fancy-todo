@@ -83,7 +83,7 @@
     <div class="section-todo container" id="todo">
       <div class="row">
         <h1 class="col-10">Your To-Do List</h1>
-        <button type="button" class="btn btn-outline-warning ml-3" data-toggle="modal" data-target="#exampleModal">+ Add New To-Do</button>
+        <button type="button" class="btn btn-outline-warning ml-3" data-toggle="modal" data-target="#addModal">+ Add New To-Do</button>
       </div>
 
       <div id="alert-add">
@@ -119,7 +119,7 @@
 
       <!-- Modal Add -->
       <div class="section-add">
-        <div class="modal fade my-auto" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade my-auto" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -141,8 +141,8 @@
                   <div class="form-group">
                     <label for="status">Status</label>
                     <select class="form-control" id="status">
-                      <option>Unfinished</option>
-                      <option>Finished</option>
+                      <option value="Unfinised">Unfinished</option>
+                      <option value="Finished">Finished</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -157,6 +157,47 @@
         </div>
       </div>
 
+
+      <!-- Modal Edit -->
+      <div class="section-update">
+        <div class="modal fade my-auto" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update To-Do</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="">
+                  <div class="form-group">
+                    <label for="edit-id">ID</label>
+                    <input type="text" class="form-control" id="edit-id" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" class="form-control" id="edit-title">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea class="form-control" id="edit-description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-status">Status</label>
+                    <input type="text" class="form-control" id="edit-status" placeholder="Finish Or Unfinished">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit_due_date">Due Date</label><br>
+                    <input type="date" class="form-control" id="edit_due_date">
+                  </div>
+                  <button type="button" onclick="postUpdate()" class="btn btn-success btn-block" data-dismiss="modal">Update Task</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row" id="user-todo">
         <!-- card todo content-->
         <!-- <div class="col-lg-4 col-sm-6">
@@ -185,8 +226,8 @@
   <!-- END HOMEPAGE -->
 
 
-  <footer class="d-flex justify-content-center">
-    <small>Dickyandeyan</small>
+  <footer class="d-flex justify-content-center py-5">
+    <small>Simple Fancy To-Do &copy; Dicky Andeyan, Hacktiv8 2020</small>
   </footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

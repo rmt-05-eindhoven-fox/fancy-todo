@@ -73,11 +73,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    hooks: {
-      beforeCreate(todos) {
-        todos.status = 'Unfinished';
-      }
-    },
     modelName: 'Todo',
   });
   return Todo;

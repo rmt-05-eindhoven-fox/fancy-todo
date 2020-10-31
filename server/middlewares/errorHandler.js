@@ -1,6 +1,6 @@
 module.exports = function(err, req, res, next) {
   console.log('Masuk Handler');
-  // console.log(err)
+  console.log(err)
   let status = 500
   let msg = err.name || 'Internal Server Error'
   if (err.name === 'SequelizeValidationError') {

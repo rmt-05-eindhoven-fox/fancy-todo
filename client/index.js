@@ -104,21 +104,20 @@ function getTodo() {
       }
     })
     .done(response => {
-      console.log(response);
       if (response.length > 0) {
         response.forEach(element => {
           $('#user-todo').append(`
           <div class="col-lg-4 col-sm-6">
-            <div class = "card bg-warning mb-3 mt-3 pb-3 pr-3" >
+            <div class = "card bg-warning mb-3 mt-3" >
               <div class="card-header">${element.status}</div>
               <div class="card-body">
                 <h5 class="card-title">${element.title}</h5>
                 <p class="card-text">${element.description}</p>
                 <p class="text-monospace"><cite>Due Date:</cite> ${element.due_date}</p>
                 </div>
-                <div class="d-flex justify-content-end mr-1">
-                  <button class="btn btn-info mr-2">Update</button>
-                  <button class="btn btn-danger" onclick="deleteTodo(${element.id})">Delete</button>
+                <div class="d-flex justify-content-end mr-1 px-2">
+                  <button class="btn btn-info mr-2 mb-2" onclick="updateTodo(${element.id})" id="btn-edit")">Edit</button>
+                  <button class="btn btn-danger mb-2" onclick="deleteTodo(${element.id})">Delete</button>
               </div>
             </div>
           </div>
@@ -164,11 +163,68 @@ function postTodo() {
       $('#alert-add').show()
     })
     .fail(error => {
-      console.log(error);
+      console.log(error.message);
       getTodo()
       $('#alert-error').show()
     })
 }
+
+
+function updateTodo(id) {
+  const token = localStorage.getItem('token')
+
+  $.ajax({
+      url: `${SERVER}/todos/${id}`,
+      method: 'GET',
+      headers: {
+        token
+      }
+    })
+    .done(response => {
+      console.log(response.id);
+      $('#updateModal').modal()
+      $('#edit-id').val(`${response.id}`)
+      $('#edit-title').val(`${response.title}`)
+      $('#edit-description').val(`${response.description}`)
+      $('#edit-status').val(`${response.status}`)
+      $('#edit_due_date').val(`${response.due_date}`)
+    })
+    .fail(error => {
+      console.log(error);
+    })
+}
+
+function postUpdate() {
+  const token = localStorage.getItem('token')
+  let newId = $('#edit-id').val()
+  let title = $('#edit-title').val()
+  let description = $('#edit-description').val()
+  let status = $('#edit-status').val()
+  let date = $('#edit_due_date').val()
+
+
+  $.ajax({
+      url: `${SERVER}/todos/${newId}`,
+      method: 'PUT',
+      headers: {
+        token
+      },
+      data: {
+        title,
+        description,
+        status,
+        date
+      }
+    })
+    .done(response => {
+      console.log(response)
+    })
+    .fail(error => {
+      console.log(error);
+    })
+}
+
+
 
 function deleteTodo(id) {
   const token = localStorage.getItem("token")
