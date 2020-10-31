@@ -15,7 +15,7 @@
 
 body {
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 80px;
   background-image: url('https://grantcardonetv.com/wp-content/uploads/todo_list.jpg');
   background-attachment: fixed;
   font-family: 'Montserrat', sans-serif;
@@ -26,9 +26,14 @@ body {
   position: relative;
 }
 
-.row {
+.row,
+.news {
   border: 0;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.news {
+  padding-left: 30px;
 }
 
 .row-login,
@@ -48,6 +53,7 @@ body {
 }
 
 .card-login .card-title {
+  color: white;
   margin-bottom: 2rem;
   font-weight: 300;
   font-size: 1.5rem;

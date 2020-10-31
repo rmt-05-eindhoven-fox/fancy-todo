@@ -38,7 +38,8 @@ function onSignIn(googleUser) {
       icon: 'success',
       title: 'Login successfully'
     })
-    
+    getNews();
+    getQotd();
     readTodo();
   })
   .fail(err => {
@@ -53,6 +54,8 @@ function onSignIn(googleUser) {
 $(document).ready(function () {
   const access_token = localStorage.getItem('access_token');
   if (access_token) {
+    getNews();
+    getQotd();
     readTodo();
   } else {
     loginPage();
@@ -83,6 +86,7 @@ function todoPage() {
   $('#login-page').hide();
   $('#register-page').hide();
   $('#todo-page').show();
+  $('#footer').show();
 }
 
 function login(e) {
@@ -109,7 +113,8 @@ function login(e) {
       icon: 'success',
       title: 'Login successfully'
     })
-    
+    getNews();
+    getQotd();
     readTodo();
   })
   .fail(err => {
@@ -143,7 +148,6 @@ function register(e) {
       icon: 'success',
       title: 'Registered successfully'
     });
-
     loginPage();
   })
   .fail(err => {
@@ -420,5 +424,69 @@ function deleteTodo(id) {
         'success'
       );
     }
+  })
+}
+
+// 3rd API
+
+function getQotd() {
+  const access_token = localStorage.getItem('access_token');
+  $.ajax({
+    method: "GET",
+    url: `${SERVER}/quotes`,
+    headers: {
+      access_token
+    }
+  })
+  .done(response => {
+    $('#qotd').empty();
+    $('#qotd').append(`
+    <p>
+    ${response.qotd}
+    </p>
+    <cite>
+    ${response.author}
+    </cite>
+    `)
+  })
+  .fail(err => {
+    Swal.fire(
+      'Error!',
+      err.responseJSON.msg,
+      'error'
+    );
+  })
+}
+
+function getNews() {
+  const access_token = localStorage.getItem('access_token');
+  $.ajax({
+    method: "GET",
+    url: `${SERVER}/news`,
+    headers: {
+      access_token
+    }
+  })
+  .done(response => {
+    $('#news-card').empty();
+    response.forEach(news => {
+      $('#news-card').append(`
+      <div class="card bg-info text-light">
+        <img class="card-img-top" src="${news.urlToImage}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">${news.source.name}</h5>
+          <p class="card-text">${news.title}</p>
+          <a href="${news.url}" target="_blank" class="btn btn-primary">Read More</a>
+        </div>
+      </div><br>
+      `);
+    })
+  })
+  .fail(err => {
+    Swal.fire(
+      'Error!',
+      err.responseJSON.msg,
+      'error'
+    );
   })
 }

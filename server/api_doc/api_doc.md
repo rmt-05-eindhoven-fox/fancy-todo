@@ -476,3 +476,113 @@ My Fancy Todo App is an application to list your todo. This app has :
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ msg : "Internal server error!" }`
+
+&nbsp;
+
+**Get Qoutes**
+----
+  Get quotes form Favs 3rd APIs Quotes
+
+* **URL**
+
+  /quotes
+
+* **Method:**
+  
+  `GET`
+
+* **Request Headers**
+
+  **Required:**
+
+  ```
+  {
+    "access_token": "<your access token>"
+  }
+  ```
+  
+* **URL Params**
+
+  None
+
+* **Data Params**
+   
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+    **Content:**
+{
+    "qotd": "A person with a new idea is a crank until the idea succeeds.",
+    "author": "Mark Twain"
+}
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ 
+      "error_code": 21,
+      "message": "Invalid login or password."
+    }`
+
+&nbsp;
+
+**Get News**
+----
+  Get news form Newsapi.org 3rd APIs news.
+
+* **URL**
+
+  /news
+
+* **Method:**
+  
+  `GET`
+
+* **Request Headers**
+
+  **Required:**
+
+  ```
+  {
+    "access_token": "<your access token>"
+  }
+  ```
+  
+* **URL Params**
+
+  None
+
+* **Data Params**
+   
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+    **Content:**
+    [
+    {
+        "source": {
+            "id": null,
+            "name": "Cnnindonesia.com"
+        },
+        "author": null,
+        "title": "Alvin Lie Kembali Dapat Kuota Subsidi Kemendikbud 35GB - CNN Indonesia",
+        "description": "Di periode kedua pemberian subsidi kuota internet, nomor Alvin Lie kembali mendapat 35GB gratis secara otomatis. Bulan lalu, ia sempat menolak subsidi ini.",
+        "url": "https://www.cnnindonesia.com/nasional/20201031185951-20-564459/alvin-lie-kembali-dapat-kuota-subsidi-kemendikbud-35gb",
+        "urlToImage": "https://akcdn.detik.net.id/visual/2017/03/20/f0209fdc-1541-4663-bde9-a23267949b99_169.jpg?w=650",
+        "publishedAt": "2020-10-31T12:20:00Z",
+        "content": "Jakarta, CNN Indonesia -- Anggota Ombudsman RI, Alvin Lie, kembali mendapatkan subsidi kuota belajar dari Kementerian Pendidikan dan Kebudayaan sebesar 35 GB lagi. Sebelumnya pada akhir September lal… [+3503 chars]"
+    }
+]
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{
+      "status": "error",
+      "code": "apiKeyMissing",
+      "message": "Your API key is missing. Append this to the URL with the apiKey param, or use the x-api-key HTTP header."
+    }`

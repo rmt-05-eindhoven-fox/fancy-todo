@@ -62,7 +62,7 @@
                   <small class="form-text text-light text-center" style="line-height: 30px;">Sign in with your google account</small>
                   <div class="g-signin2" data-onsuccess="onSignIn" style="width: 100%; display: flex; justify-content: center;"></div>
                 </form><br>
-                <small class="form-text text-dark" style="text-align: center;">Don't have an account yet?<a onclick="registerPage()" style="display: inline;"> Register now!</a></small>
+                <small class="form-text text-light" style="text-align: center;">Don't have an account yet?<a href="#" onclick="registerPage()" style="display: inline;" class="text-danger"> Register now!</a></small>
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@
                 </div>
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
               </form><br>
-              <small class="form-text text-dark" style="text-align: center;">Back to<a onclick="loginPage()"> Login!</a></small>
+              <small class="form-text text-light" style="text-align: center;">Back to<a href="#" onclick="loginPage()" class="text-danger"> Login!</a></small>
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@
     <!-- HOME NAVBAR-->
     <section id="navbar-home-page">
       <nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top rounded-pill">
-        <a class="navbar-brand" style="font-size: 1.5rem;font-family: 'Russo One', 'Montserrat', sans-serif;"><i class="fas fa-pencil-alt"></i> FancyTodo</a>
+        <a href="#" class="navbar-brand" style="font-size: 1.5rem;font-family: 'Russo One', 'Montserrat', sans-serif;"><i class="fas fa-pencil-alt"></i> FancyTodo</a>
         <div class="container-fluid justify-content-end">
           <button type="button" class="btn btn-dark" onclick="logout();">Logout</button>
         </div>
@@ -122,86 +122,91 @@
       <!-- QUOTES -->
       <div class="row">
         <div class="container">
-          <blockquote class="quote-card color-card">
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea tempora quia praesentium vitae ratione corporis similique, recusandae incidunt beatae, quae vel magni repellat commodi modi unde suscipit debitis labore odit!
-            </p>
-            <cite>
-            Ipsum dolor
-            </cite>
+          <blockquote id="qotd" class="quote-card color-card">
+            <!-- APPEND -->
           </blockquote>
         </div>
       </div>
       <!-- QUOTES -->
 
-      <!-- FORM ADD TODO -->
       <div class="row">
-        <div class="container-fluid">
-          <div class="col-sm col-md-auto">
-            <h3 class="text-center bg-primary text-light rounded-pill">ADD TODO</h3>
-            <div class="card bg-dark text-light">
-              <div class="card-body">
-                <form onsubmit="createTodo(event)">
-                  <div class="form-row font-weight-bold">
-                    <div class="col-sm col-auto">
-                      <div class="form-group mx-sm-3 mb-2">
-                        <label for="title-todo">Title :</label>
-                        <input type="text" class="form-control" id="title-todo" placeholder="Title">
+        <div class="news col-6 col-md-2">
+          <h3 class="text-center bg-primary text-light rounded-pill">TODAY'S NEWS</h3>
+          <div id="news-card" class="col">
+            <!-- APPEND -->
+          </div>
+        </div>
+        <div class="col-12 col-md-10">
+          <!-- FORM ADD TODO -->
+          <div class="row">
+            <div class="container-fluid">
+              <div class="col-sm col-md-auto">
+                <h3 class="text-center bg-primary text-light rounded-pill">ADD TODO</h3>
+                <div class="card bg-dark text-light">
+                  <div class="card-body">
+                    <form onsubmit="createTodo(event)">
+                      <div class="form-row font-weight-bold">
+                        <div class="col-sm col-auto">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <label for="title-todo">Title :</label>
+                            <input type="text" class="form-control" id="title-todo" placeholder="Title">
+                          </div>
+                        </div>
+                        <div class="col-sm col-auto">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <label for="desc-todo">Description :</label>
+                            <input type="text" class="form-control" id="desc-todo" placeholder="Description">
+                          </div>
+                        </div>
+                        <div class="col-sm col-auto">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <label for="status-todo">Status :</label>
+                            <select id="status-todo" class="form-control">
+                              <option value="Undone" selected>Undone</option>
+                              <option value="Done">Done</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm col-auto">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <label for="duedate-todo">Due Date :</label>
+                            <input class="form-control" type="date" value="" id="duedate-todo">
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-sm col-auto">
-                      <div class="form-group mx-sm-3 mb-2">
-                        <label for="desc-todo">Description :</label>
-                        <input type="text" class="form-control" id="desc-todo" placeholder="Description">
+                      <div class="form-row mt-3">
+                        <div class="col-sm col-auto">
+                          <div class="text-center justify-content-center">
+                            <button type="submit" class="btn btn-primary">Add New Todo</button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-sm col-auto">
-                      <div class="form-group mx-sm-3 mb-2">
-                        <label for="status-todo">Status :</label>
-                        <select id="status-todo" class="form-control">
-                          <option value="Undone" selected>Undone</option>
-                          <option value="Done">Done</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm col-auto">
-                      <div class="form-group mx-sm-3 mb-2">
-                        <label for="duedate-todo">Due Date :</label>
-                        <input class="form-control" type="date" value="" id="duedate-todo">
-                      </div>
-                    </div>
+                    </form>
                   </div>
-                  <div class="form-row mt-3">
-                    <div class="col-sm col-auto">
-                      <div class="text-center justify-content-center">
-                        <button type="submit" class="btn btn-primary">Add New Todo</button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
+          <!-- FORM ADD TODO -->
+          
+          <!-- TODO -->
+          <div class="row row-todo">
+            <div class="col-sm">
+              <h3 class="text-center bg-danger text-light rounded-pill font-weight-bold">UNDONE</h3>
+              <div id="todo-undone" >
+                <!-- APPEND -->
+              </div>
+            </div>
+            <div class="col-sm">
+              <h3 class="text-center bg-success text-light rounded-pill font-weight-bold">DONE</h3>
+              <div id="todo-done">
+                <!-- APPEND -->
+              </div>
+            </div>
+          </div>
+          <!-- TODO -->
         </div>
       </div>
-      <!-- FORM ADD TODO -->
-      
-      <!-- TODO -->
-      <div class="row row-todo">
-        <div class="col-sm">
-          <h3 class="text-center bg-danger text-light rounded-pill font-weight-bold">UNDONE</h3>
-          <div id="todo-undone" >
-            <!-- APPEND -->
-          </div>
-        </div>
-        <div class="col-sm">
-          <h3 class="text-center bg-success text-light rounded-pill font-weight-bold">DONE</h3>
-          <div id="todo-done">
-            <!-- APPEND -->
-          </div>
-        </div>
-      </div>
-      <!-- TODO -->
     </section>
     <!-- TODO PAGE -->
 
