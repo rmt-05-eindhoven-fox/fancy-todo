@@ -31,8 +31,6 @@ class WeatherController{
           method : 'GET',
           url : `/api/location/${cityId}/`,
         })
-
-        console.log(weatherReport.data.consolidated_weather[0])
         
         res.status(200).json(weatherReport.data.consolidated_weather[0])
       }

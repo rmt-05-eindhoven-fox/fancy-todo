@@ -37,6 +37,7 @@ function afterLogin() {
   $('#navbar').show()
 
   getAllTodo()
+  userSummary()
   getWeatherOnLocation()
 
 
