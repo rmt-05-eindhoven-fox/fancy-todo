@@ -91,6 +91,7 @@ class TodoController {
     try {
       const id = +req.params.id;
       const { status } = req.body;
+      console.log(status);
       let update = await Todo.update({ status }, { 
         where: { id },
         returning: true,
@@ -114,6 +115,7 @@ class TodoController {
   static async deleteTodo(req, res, next) {
     try {
       const id = +req.params.id;
+      // console.log(id, '------------------');
       const todoDeleted = await Todo.destroy({ where : { id }});
 
       if (todoDeleted) {

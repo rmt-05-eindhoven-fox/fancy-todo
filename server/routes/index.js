@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const todoRouter = require('./todoRouter');
 const UserController = require('../controllers/UserController');
+const { thirdPartyLogin } = require('../middleware/thirdPartyLogin');
 const { authentication } = require('../middleware/auth');
 
-router.post('/register', UserController.register);
-
 router.post('/login', UserController.login);
+
+router.post('/register', thirdPartyLogin, UserController.register);
 
 router.use(authentication);
 

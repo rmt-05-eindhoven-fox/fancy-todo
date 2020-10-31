@@ -4,6 +4,7 @@ const { User, Todo } = require('../models');
 const authentication = (req, res, next) => {
   const accessToken = req.headers.access_token;
   const verifiedData = verifyToken(accessToken);
+  // console.log(accessToken)
   try {
     if (!accessToken) {
       throw {
@@ -15,11 +16,12 @@ const authentication = (req, res, next) => {
       };
     } else {
       const { id, email } = verifiedData;
-      req.user = { id, email }; 
+      req.user = { id, email };
+      // console.log(req.params.id) 
       next();
     }
   } catch (error) {
-    // console.log(error, 'ini error autentikasi');
+    console.log(error, 'ini error autentikasi');
     next(error);
   }
 }

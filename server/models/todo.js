@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: (todo, options) => {
         todo.due_date = dateFormat(new Date(todo.due_date));
+        // console.log(todo.due_date);
       },
       afterCreate: (todo, options) => {
         delete todo.dataValues.createdAt;

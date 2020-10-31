@@ -11,10 +11,15 @@ class UserController {
         password
       });
 
-      res.status(201).json({
-        id: user.id,
-        email: user.email
-      });
+      if(req.body.thirdPartyLogin) {
+        next()
+      } else {
+        res.status(201).json({
+          id: user.id,
+          email: user.email
+        });
+      }
+
     } catch (error) {
       // console.log(error.name);
       next(error);
@@ -28,7 +33,11 @@ class UserController {
 
   static async login(req, res, next) {
     try {
+      // if(google_access_token) {
+
+      // }
       const { email, password } = req.body;
+      console.log(password);
       // console.log(email, password);
       const user = await User.findOne({
         where: {
@@ -37,10 +46,12 @@ class UserController {
       });
       
       if (!user) {
+        console.log(password, '---------------ga ada user')
         throw {
           name: 'InvalidUserPassword'
         }
       } else if (!comparePassword(password, user.password)) {
+        console.log(password, '---------------di hash')
         throw {
           name: 'InvalidUserPassword'
         }
