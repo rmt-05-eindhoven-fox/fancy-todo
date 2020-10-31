@@ -3,7 +3,7 @@ const { comparePassword } = require("../helpers/bcrypt");
 const { loginToken } = require("../helpers/jwt");
 
 class userController{
-    static async register(request, response){
+    static async register(request, response) {
         try{
             const payload = {
                 email: request.body.email,
@@ -19,7 +19,7 @@ class userController{
         }
     }
 
-    static async login(request, response){
+    static async login(request, response) {
         try{
             const payload = {
                 email: request.body.email,
@@ -30,26 +30,19 @@ class userController{
                     email: payload.email
                 }
             });
-            if (!user) {
-                throw{ name: InvalidUserPassword }
-                response.status(401).json({
-                    message: 'Wrong email/password!'
-                });
-            } else if (!comparePassword(payload.password, user.password)) {
-                response.status(401).json({
-                    message: 'Wrong email/password!'
-                });
+            if(!user) {
+                throw { name: "InvalidEmailPassword" }
+            } else if(!comparePassword(payload.password, user.password)) {
+                throw { name: "InvalidEmailPassword" }
             } else {
                 const access_token = loginToken({
                     id: user.id,
                     email: user.email
                 });
-                response.status(200).json({
-                    access_token
-                });
+                response.status(200).json({ access_token });
             }
         } catch(error) {
-            response.status(500).json(error);
+            next(error);
         }
     }
 }
