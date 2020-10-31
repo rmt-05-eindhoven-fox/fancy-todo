@@ -16,8 +16,23 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
+    fullname: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Full Name is requiere, can't be empty!`
+        },
+        notNull: {
+          args: true,
+          msg: `Full Name is requiere, can't be empty!`
+        }
+      }
+    },
     username: {
       type: DataTypes.STRING,
+      allowNull:false,
       unique: {
         args: true,
         msg: 'Username already registered'
@@ -30,11 +45,16 @@ module.exports = (sequelize, DataTypes) => {
         len: {
           args: [6],
           msg: 'Username minimal 6 character'
+        },
+        notNull: {
+          args: true,
+          msg: `Full Name is requiere, can't be empty!`
         }
       }
     },
     email: {
       type: DataTypes.STRING,
+      allowNull:false,
       unique: {
         args: true,
         msg: 'Email already registered'
@@ -47,11 +67,16 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: {
           args: true,
           msg: 'Email must be valid an email address!'
+        },
+        notNull: {
+          args: true,
+          msg: `Full Name is requiere, can't be empty!`
         }
       }
     },
     password: {
       type: DataTypes.STRING,
+      allowNull:false,
       validate: {
         notEmpty: {
           args: true,
@@ -60,6 +85,10 @@ module.exports = (sequelize, DataTypes) => {
         len: {
           args: [8],
           msg: 'Password minimal 8 character'
+        },
+        notNull: {
+          args: true,
+          msg: `Full Name is requiere, can't be empty!`
         }
       }
     }

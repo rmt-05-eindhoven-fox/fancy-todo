@@ -7,8 +7,8 @@ const { OAuth2Client } = require('google-auth-library');
 class UserController {
 
   static register(req, res, next) {
-    const { username, email, password } = req.body;
-    const input = { username, email, password };
+    const { fullname, username, email, password } = req.body;
+    const input = { fullname, username, email, password };
     User.create(input)
       .then((user) => {
         res.status(200).json(user);
@@ -31,9 +31,9 @@ class UserController {
           if (!status) {
             next(createError(401, 'Wrong Username / Password '));
           } else {
-            const { id, username, email } = user;
-            const jwt = generateToken({ id, username, email });
-            res.status(200).json({ accesstoken: jwt, username, email, userid: id });
+            const { id, fullname, username, email } = user; 
+            const jwt = generateToken({ id, fullname, username, email });
+            res.status(200).json({ accesstoken: jwt, fullname, username, email, userid: id });
           }
         }
       }).catch((err) => {
@@ -60,6 +60,7 @@ class UserController {
         return user
       } else {
         const newUser = {
+          fullname: userGoogle.name,
           username: userGoogle.email,
           password: 'jJys8Hsk8wEmJSa',
           email: userGoogle.email
@@ -68,9 +69,9 @@ class UserController {
       }
     }).then(data => {
       console.log(data)
-      const { id, username, email } = data;
-      const jwt = generateToken({ id, username, email });
-      res.status(200).json({ accesstoken: jwt, username, email, userid: id });
+      const { id, fullname, username, email } = data;
+      const jwt = generateToken({ id, fullname, username, email });
+      res.status(200).json({ accesstoken: jwt, fullname, username, email, userid: id });
     }).catch(err => {
       next(err)
     })

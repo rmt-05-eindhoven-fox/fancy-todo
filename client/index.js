@@ -5,13 +5,21 @@ $(document).ready(() => {
   verifyToken();
 })
 
+function verifyEmail(mail) {
+  var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if (mail.match(mailformat)) {
+    return true
+  }
+  return false
+}
+
 function verifyToken() {
   $.ajax({
     method: "POST",
     url: base_url + "/users/verifytoken",
     headers: {
       accesstoken: localStorage.getItem('accesstoken')
-    } 
+    }
   })
     .done(response => {
       afterLogin();
@@ -29,6 +37,7 @@ function showRegister(e) {
 
 function register(e) {
   e.preventDefault()
+  const fullname = $('#register-fullname').val()
   const username = $('#register-username').val()
   const email = $('#register-email').val()
   const password = $('#register-password').val()
@@ -36,20 +45,15 @@ function register(e) {
   if (password !== retypePassword) {
     Swal.fire('Register Failed', 'Password not match', 'error')
   } else {
-    prosesRegister({ username, email, password });
+    prosesRegister({ fullname, username, email, password });
   }
 }
 
 function prosesRegister(input) {
-  const { username, email, password } = input;
   $.ajax({
     method: "POST",
     url: base_url + "/users/register",
-    data: {
-      username,
-      email,
-      password
-    }
+    data: input
   })
     .done(response => {
       Swal.fire({
@@ -65,11 +69,11 @@ function prosesRegister(input) {
     .fail(err => {
       let message = checkError(err);
       Swal.fire('Register Failed!', message, 'error')
-      console.log(err.responseJSON[0].message)
     })
 }
 
 function clearRegisterValue() {
+  $('#register-fullname').val('')
   $('#register-username').val('')
   $('#register-email').val('')
   $('#register-password').val('')
@@ -129,6 +133,11 @@ function login(e) {
     })
 }
 
+function setProfile() {
+  $('#fullname').html(`<strong>${localStorage.fullname}</strong>`);
+  $('#email').html(`<strong>${localStorage.email}</strong>`);
+}
+
 function clearLogin() {
   const username = $("#login-username").val('')
   const password = $("#login-password").val('')
@@ -142,6 +151,7 @@ function afterLogin() {
   $('#page-home').show();
   clearRegisterValue();
   clearLogin();
+  setProfile();
 }
 
 function afterSignOut() {
@@ -165,7 +175,9 @@ function onSignIn(googleUser) {
       google_access_token
     }
   }).done(response => {
+    console.log(response)
     saveUserInfo(response)
+    afterLogin()
   }).fail(err => {
     console.log(err)
   })
@@ -198,7 +210,8 @@ function googleSignOut() {
 }
 
 function saveUserInfo(user) {
-  const { username, email, userid, accesstoken } = user
+  const { fullname, username, email, userid, accesstoken } = user
+  localStorage.setItem('fullname', fullname)
   localStorage.setItem('username', username)
   localStorage.setItem('email', email)
   localStorage.setItem('userid', userid)
