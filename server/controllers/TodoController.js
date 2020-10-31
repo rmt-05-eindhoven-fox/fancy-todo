@@ -1,4 +1,5 @@
-const createError = require('http-errors'); 
+const createError = require('http-errors');
+const { Op } = require("sequelize");
 const { Todo, User } = require('../models');
 const axios = require('axios');
 
@@ -6,7 +7,8 @@ class TodoController {
 
   static index(req, res, next) {
     Todo.findAll({
-      where: { UserId: req.logedInUser.id }
+      where: { UserId: req.logedInUser.id },
+      order: [['due_date', 'ASC'], ['id', 'ASC']]
     })
       .then((todos) => {
         res.status(200).json(todos)
@@ -78,6 +80,43 @@ class TodoController {
       });
   }
 
+  static search(req, res, next) {
+    const { title } = req.body;
+    Todo.findAll({
+      where: {
+        title: {
+          [Op.iLike]: title,
+        },
+        UserId: req.logedInUser.id
+      }
+    }).then(todos => {
+      res.status(200).json(todos)
+    }).catch(err => {
+      next(err)
+    })
+  }
+
+  static filterDueDate(req, res, next) {
+    let { due_date } = req.body; 
+    console.log(due_date)
+
+    // due_date = new Date(due_date).toLocaleString("en-US", {timeZone: "Asia/Jakarta"});
+    due_date = new Date(due_date).toISOString(); 
+    console.log(due_date)
+
+    Todo.findAll({
+      where: {
+        due_date,
+        status: 'pending',
+        UserId: req.logedInUser.id
+      }
+    }).then(todos => {
+      res.status(200).json(todos)
+    }).catch(err => {
+      next(err)
+    })
+  }
+
   static holiday(req, res, next) {
     axios({
       method: 'get',
@@ -89,14 +128,14 @@ class TodoController {
       }
     })
       .then((response) => {
-        const { data } = response 
+        const { data } = response
         const holidays = [];
         data.response.holidays.forEach(holiday => {
           if (holiday.type[0] !== 'Season' && holiday.type[0] !== 'Hinduism') {
             holidays.push(holiday)
           }
         })
-        res.status(200).json(holidays) 
+        res.status(200).json(holidays)
       }).catch(err => {
         next(err)
       });

@@ -27,7 +27,10 @@ function verifyToken() {
       afterLogin();
     })
     .fail(err => {
+      let message = checkError(err)
       afterSignOut();
+      console.log(message)
+      // Swal.fire('Access Denied!', message, 'error')
     })
 }
 
@@ -70,7 +73,7 @@ function prosesRegister(input) {
     })
     .fail(err => {
       let message = checkError(err);
-      Swal.fire('Failed Add Todo!', message, 'error')
+      Swal.fire('Failed to Register!', message, 'error')
     })
 }
 
@@ -85,9 +88,13 @@ function clearRegisterValue() {
 function checkError(err) {
   if (Array.isArray(err.responseJSON)) {
     message = err.responseJSON[0].message;
-  } else {
+  } else if (err.hasOwnProperty('message')) {
     message = err.responseJSON.message;
+  } else {
+    console.log(err)
+    message = 'Something error while connecting to the server'
   }
+
   return message;
 }
 
@@ -125,12 +132,7 @@ function login(e) {
       })
     })
     .fail(err => {
-      let message = '';
-      if (Array.isArray(err.responseJSON)) {
-        message = err.responseJSON[0].message;
-      } else {
-        message = err.responseJSON.message;
-      }
+      let message = checkError(err)
       Swal.fire('Access Denied!', message, 'error')
     })
 }
@@ -182,7 +184,8 @@ function onSignIn(googleUser) {
     saveUserInfo(response)
     afterLogin()
   }).fail(err => {
-    console.log(err)
+    let message = checkError(err)
+    Swal.fire('Access Denied!', message, 'error')
   })
 }
 
@@ -232,7 +235,7 @@ function showAddTodo(e) {
   $('#defaultModalLabel').text('Add Todo')
   $('#add-todo').show()
   $('#edit-todo').hide()
-  $('#modalTodo').modal('toggle');
+  $('#modalTodo').modal({ backdrop: 'static', keyboard: false });
 }
 
 function showEditTodo(e, todoId) {
@@ -242,14 +245,17 @@ function showEditTodo(e, todoId) {
   $('#defaultModalLabel').text('Edit Todo')
   $('#add-todo').hide()
   $('#edit-todo').show()
-  $('#modalTodo').modal('toggle');
 
   getTodo(todoId, (todo) => {
-    $('#edit-todo-id').val(todoId);
-    $('#edit-todo-title').val(todo.title)
-    $('#edit-todo-description').val(todo.description)
-    $('#edit-todo-due_date').val(new Date(todo.due_date).toISOString().slice(0, 10))
-    $('#' + todo.status).attr('checked', 'checked');
+    console.log(todo)
+    if (todo != 'err') {
+      $('#edit-todo-id').val(todoId);
+      $('#edit-todo-title').val(todo.title)
+      $('#edit-todo-description').val(todo.description)
+      $('#edit-todo-due_date').val(new Date(todo.due_date).toISOString().slice(0, 10))
+      $('#modalTodo').modal({ backdrop: 'static', keyboard: false });
+      $('#' + todo.status).attr('checked', 'checked');
+    }
   })
 }
 
@@ -263,11 +269,12 @@ function loadTodo() {
   })
     .done(response => {
       console.log(response)
+      $("#todo-filter-date").val('')
       filterTodo(response)
     })
     .fail(err => {
       let message = checkError(err);
-      Swal.fire('Register Failed!', message, 'error')
+      Swal.fire('Failed to Retrieve!', message, 'error')
     })
 }
 
@@ -284,8 +291,9 @@ function getTodo(todoId, callback) {
       callback(response)
     })
     .fail(err => {
+      callback('err')
       let message = checkError(err);
-      Swal.fire('Register Failed!', message, 'error')
+      Swal.fire('Failed to Retrieve Todo!', message, 'error')
     })
 }
 
@@ -320,7 +328,7 @@ function addTodo(e) {
     })
     .fail(err => {
       let message = checkError(err);
-      Swal.fire('Register Failed!', message, 'error')
+      Swal.fire('Failed to Add!', message, 'error')
     })
 }
 
@@ -359,7 +367,7 @@ function editTodo(e, todoId) {
     })
     .fail(err => {
       let message = checkError(err);
-      Swal.fire('Register Failed!', message, 'error')
+      Swal.fire('Failed to Update!', message, 'error')
     })
 }
 
@@ -380,29 +388,90 @@ function updateStatus(e, todoId) {
     })
     .fail(err => {
       let message = checkError(err);
-      Swal.fire('Load data Failed!', message, 'error')
+      Swal.fire('Failed to Change Status!', message, 'error')
     })
+}
+
+function searchTodo(e) {
+  e.preventDefault();
+  const query = $('#todo-search').val()
+  $('#search').removeClass('open');
+  $('#todo-search').val('');
+  console.log(query)
+  $.ajax({
+    method: "POST",
+    url: base_url + `/todos/search`,
+    headers: {
+      accesstoken
+    },
+    data: {
+      title: `%${query}%`
+    }
+  }).done(response => {
+    console.log(response)
+    filterTodo(response)
+  }).fail(err => {
+    let message = checkError(err);
+    Swal.fire('Failed to Find!', message, 'error')
+  })
 }
 
 function deleteTodo(e, todoId) {
   e.preventDefault()
-  $.ajax({
-    method: "DELETE",
-    url: base_url + `/todos/${todoId}`,
-    headers: {
-      accesstoken
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        method: "DELETE",
+        url: base_url + `/todos/${todoId}`,
+        headers: {
+          accesstoken
+        }
+      }).done(response => {
+        Swal.fire(
+          'Deleted!',
+          response.message,
+          'success'
+        )
+        loadTodo()
+      }).fail(err => {
+        let message = checkError(err);
+        Swal.fire('Failed to Delete!', message, 'error')
+      })
     }
   })
-    .done(response => {
-      loadTodo()
-    })
-    .fail(err => {
-      let message = checkError(err);
-      Swal.fire('Load data Failed!', message, 'error')
-    })
+}
+
+function filterDueDate(e) {
+  e.preventDefault()
+  const due_date = $("#todo-filter-date").val()
+  $.ajax({
+    method: "POST",
+    url: base_url + `/todos/filterdue`,
+    headers: {
+      accesstoken
+    },
+    data: {
+      due_date
+    }
+  }).done(response => {
+    console.log(response)
+    filterTodo(response)
+  }).fail(err => {
+    let message = checkError(err);
+    Swal.fire('Failed to Find!', message, 'error')
+  })
 }
 
 function filterTodo(todos) {
+  let missed = 0, active = 0, complete = 0;
   const currentDate = new Date()
   beforeLoadTodo()
   todos.forEach(todo => {
@@ -410,6 +479,7 @@ function filterTodo(todos) {
     const dueStatus = compareDate(due_date);
     if (status == 'finished') {
       appendCompleteTodo(todo);
+      complete++;
       console.log('appendCompleteTodo', todo.id)
     }
     switch (dueStatus) {
@@ -417,32 +487,34 @@ function filterTodo(todos) {
         if (status === 'pending') {
           appendWillDue(todo);
           appendActiveTodo(todo);
+          active++;
           console.log('appendWillDue', todo.id)
-          // console.log('appendActiveTodo', todo.id)
         }
         break;
       case 'active':
         if (status === 'pending') {
           appendActiveTodo(todo);
-          console.log('appendActiveTodo', todo.id)
+          active++;
         }
         break;
       case 'isDue':
         if (status === 'pending') {
           appendMissedTodo(todo);
-          console.log('appendMissedTodo', todo.id)
         }
+        missed++;
         break
     }
   });
-
+  $('#total-missed').text(missed)
+  $('#total-active').text(active)
+  $('#total-completed').text(complete)
 }
 
 function appendWillDue(todo) {
   const wildue =
   /*html*/ `<li>
     <a href="javascript:void(0);" onclick="showEditTodo(event, ${todo.id})">
-      <div class="icon-circle bg-blue"><i class="zmdi zmdi-account"></i></div>
+      <div class="icon-circle bg-blue"><i class="zmdi zmdi-assignment-check"></i></div>
       <div class="menu-info">
         <h4>${todo.title}</h4>
         <p><i class="zmdi zmdi-time"></i> will due today </p>
@@ -483,7 +555,6 @@ function appendMissedTodo(todo) {
   $('#todo-isdue').append(missed);
 }
 
-
 function appendActiveTodo(todo) {
   const active = /*html*/ `
   <li class="dd-item" data-id="2">
@@ -494,7 +565,7 @@ function appendActiveTodo(todo) {
       <p>${todo.description}</p>
       <ul class="list-unstyled d-flex bd-highlight align-items-center">
         <li class="mr-2 flex-grow-1 bd-highlight">
-          <span class="badge badge-default">
+          <span class="badge badge-default text-dark">
             <i class="zmdi zmdi-time"></i> ${formatDate(todo.due_date)}
           </span>
         </li>
@@ -529,8 +600,8 @@ function appendCompleteTodo(todo) {
       <p>${todo.description}</p>
       <ul class="list-unstyled d-flex bd-highlight align-items-center">
         <li class="mr-2 flex-grow-1 bd-highlight">
-          <span class="badge badge-default">
-            <i class="zmdi zmdi-time"></i> ${formatDate(todo.due_date)}
+          <span class="badge badge-info">
+            <i class="zmdi zmdi-check-square"></i> ${formatDate(todo.updatedAt)}
           </span>
         </li> 
         <li class="ml-3 bd-highlight action" onclick="deleteTodo(event, ${todo.id})">

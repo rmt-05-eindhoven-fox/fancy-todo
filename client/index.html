@@ -27,7 +27,7 @@
   <!-- Page Loader -->
   <div class="page-loader-wrapper">
     <div class="loader">
-      <div class="m-t-30"><img class="zmdi-hc-spin" src="public/images/ajax-progres.gif" height="48" alt="Loading">
+      <div class="m-t-30"><img class="zmdi-hc-spin" src="public/images/loading.png" height="48" alt="Loading">
       </div>
       <p>Please wait...</p>
     </div>
@@ -36,11 +36,22 @@
   <!-- Overlay For Sidebars -->
   <div class="overlay"></div>
 
+  <!-- Main Search -->
+  <div id="search">
+    <button id="close" type="button" class="close btn btn-primary btn-icon btn-icon-mini btn-round">x</button>
+    <form>
+      <input type="search" id="todo-search" value="" placeholder="Search..." autocomplete="off" required />
+      <button type="submit" class="btn btn-primary" onclick="searchTodo(event)">Search</button>
+    </form>
+  </div>
+
   <!-- ! Right Sidebar -->
   <!-- Right Icon menu Sidebar -->
   <div id="right-sidebar" style="display: none;">
     <div class="navbar-right m-t-60">
       <ul class="navbar-nav">
+
+        <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i
               class="zmdi zmdi-apps"></i></a>
@@ -86,15 +97,7 @@
             <li class="header">Notifications</li>
             <li class="body">
               <ul class="menu list-unstyled" id="todo-wildue">
-                <!-- <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-blue"><i class="zmdi zmdi-account"></i></div>
-                    <div class="menu-info">
-                      <h4>Shutdown my Computer</h4>
-                      <p><i class="zmdi zmdi-time"></i> will due today </p>
-                    </div>
-                  </a>
-                </li> -->
+                <!-- List of Notification -->
               </ul>
             </li>
             <li class="footer"> <a href="showEditTodojavascript:void(0);">View All Notifications</a> </li>
@@ -179,6 +182,7 @@
                 class="zmdi zmdi-arrow-right"></i></button>
             <button class="btn btn-success btn-icon float-right" data-toggle="modal" onclick="showAddTodo(event)"
               data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-plus"></i></button>
+
           </div>
         </div>
       </div>
@@ -193,34 +197,9 @@
               </div>
               <div class="body taskboard planned_task">
                 <div class="dd">
-                  <ol class="dd-list" id="todo-isdue"> 
+                  <ol class="dd-list" id="todo-isdue">
 
                     <!-- * List Missed Todo -->
-                    <!-- <li class="dd-item" data-id="2">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="dd-handle  h6 mb-0">Sites to review</div>
-                      </div>
-                      <div class="dd-content p-15">
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply.</p>
-                        <ul class="list-unstyled d-flex bd-highlight align-items-center">
-                          <li class="mr-2 flex-grow-1 bd-highlight">
-                            <span class="badge badge-default">
-                              <i class="zmdi zmdi-time"></i> 28 Jan
-                            </span>
-                          </li>
-                          <li class="ml-3 bd-highlight action" onclick="showEditTodo(event, 1)">
-                            <a href="javascript:void(0);" class="text-muted">
-                              <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
-                            </a>
-                          </li>
-                          <li class="ml-3 bd-highlight action">
-                            <a href="javascript:void(0);" class="text-muted">
-                              <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li> -->
 
                   </ol>
                 </div>
@@ -236,37 +215,21 @@
               </div>
               <div class="body taskboard progress_task">
                 <div class="dd">
+                  <div class="row clearfix">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                      <div class="form-group mt-2">
+                        <label for="">Due Date</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                      <div class="form-group">
+                        <input type="date" id="todo-filter-date" onchange="filterDueDate(event);" class="form-control" style="outline: none;" required>
+                      </div>
+                    </div>
+                  </div> 
                   <ol class="dd-list" id="todo-active">
 
-                    <!-- <li class="dd-item" data-id="2">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="dd-handle  h6 mb-0">Sites to review</div>
-                      </div>
-                      <div class="dd-content p-15">
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply.</p>
-                        <ul class="list-unstyled d-flex bd-highlight align-items-center">
-                          <li class="mr-2 flex-grow-1 bd-highlight">
-                            <span class="badge badge-default">
-                              <i class="zmdi zmdi-time"></i> 28 Jan
-                            </span>
-                          </li>
-                          <li class="ml-3 bd-highlight action">
-                            <a href="javascript:void(0);" class="text-muted">
-                              <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
-                            </a>
-                          </li>
-                          <li class="ml-3 bd-highlight action">
-                            <a href="javascript:void(0);" class="text-muted">
-                              <i class="zmdi zmdi-assignment-check" style="font-size: 1.2rem; color: grey;"></i>
-                            </a>
-                          <li class="ml-3 bd-highlight action">
-                            <a href="javascript:void(0);" class="text-muted">
-                              <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li> -->
+                    <!-- * List Active Todo -->
 
                   </ol>
                 </div>
@@ -283,26 +246,9 @@
               <div class="body taskboard completed_task">
                 <div class="dd">
                   <ol class="dd-list" id="todo-complete">
-                    <!-- <li class="dd-item" data-id="2">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="dd-handle  h6 mb-0">Sites to review</div>
-                      </div>
-                      <div class="dd-content p-15">
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply.</p>
-                        <ul class="list-unstyled d-flex bd-highlight align-items-center">
-                          <li class="mr-2 flex-grow-1 bd-highlight">
-                            <span class="badge badge-default">
-                              <i class="zmdi zmdi-time"></i> 28 Jan
-                            </span>
-                          </li>
-                          <li class="ml-3 bd-highlight action">
-                            <a href="javascript:void(0);" class="text-muted">
-                              <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li> -->
+
+                    <!-- * List Completed Todo -->
+
                   </ol>
                 </div>
               </div>
@@ -353,7 +299,6 @@
                   <p class="mb-0">or Sign Up using</p>
                   <button class="btn btn-link btn-icon btn-lg btn-icon-mini btn-round g-signin2" data-height="59"
                     data-onsuccess="onSignIn"></button>
-                  <a href="#" onclick="signOut(event);">Sign out</a>
                 </div>
               </div>
             </form>
@@ -413,6 +358,7 @@
               </div>
             </form>
           </div>
+
           <!-- * END FORM REGISTER -->
 
           <div class="copyright text-center">
