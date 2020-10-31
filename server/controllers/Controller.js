@@ -1,5 +1,7 @@
 const { Todo } = require('../models/')
 const {Op} = require('sequelize')
+const {verifyToken} = require('../helpers/jwt')
+const { convertFromDate, convertToDate, convertToWords } = require('../helpers/dates')
 
 
 class Controller{
@@ -8,17 +10,37 @@ class Controller{
 
     static async getTodos(req, res, next) {
         try {
-            const { userId } = req.loggedInUser
-
-            const todos = await Todo.findAll({
+            const { id } = verifyToken(req.headers.token)
+            
+            let todos = await Todo.findAll({
                 attributes : {
                     exclude : ['createdAt', 'updatedAt']
                 },
                 where : {
-                    UserId : userId
-                }
+                    UserId : id
+                },
+                order : [
+                    ['due_date', 'ASC'],
+                    ['status', 'DESC']
+                    
+                ]
             })
-            res.status(200).json(todos)
+            // Todo is in array. due_date needs to be converted
+            let returnedTodo = []
+            if( todos.length > 0 ) {
+                todos.forEach(todo => {
+                    const { id, title, description, status, due_date, UserId } = todo
+                    returnedTodo.push({
+                        id, title, description, status, 
+                        due_date : convertFromDate(due_date), 
+                        due_date_words : convertToWords(due_date),
+                        UserId 
+                    })
+                })
+
+            }
+            // todos.due_date = convertFromDate(due_date)
+            res.status(200).json(returnedTodo)
 
         } catch (error) {
             next(error)
@@ -26,18 +48,31 @@ class Controller{
     }
 
     static async getOneTodo(req, res, next) {
-        const { userId } = req.loggedInUser
-        const id = +req.params.id
+        
+        const { id } = verifyToken(req.headers.token)
+        const todoId = +req.params.id
         try {
-            const todos = await Todo.findByPk(id,{
+            const todos = await Todo.findByPk(todoId,{
                 attributes : {
                     exclude : ['createdAt', 'updatedAt']
                 }, 
                 where : {
-                    UserId : userId
+                    UserId : id
                 }
             })
-            res.status(200).json(todos)
+
+            let returnedTodo 
+
+            returnedTodo = {
+                id : todos.id, 
+                title : todos.title, 
+                description : todos.description, 
+                status : todos.status, 
+                due_date : convertFromDate(todos.due_date), 
+                UserId : todos.UserId
+            }
+
+            res.status(200).json(returnedTodo)
 
         } catch (error) {
             next(error)
@@ -47,8 +82,11 @@ class Controller{
     // 💈=== POST ===💈 //
 
     static async postNewTodo(req, res, next) {
-        const { userId } = req.loggedInUser
-        const { title, description, status, due_date } = req.body
+
+        const { id } = verifyToken(req.headers.token)
+        let { title, description, due_date } = req.body
+
+        let status = "Not Done"
 
         try {
             const newTodo = await Todo.create({
@@ -56,19 +94,12 @@ class Controller{
                 description, 
                 status, 
                 due_date, 
-                UserId : userId
+                UserId : id
             })
 
-            const returnedTodo = {
-                id : newTodo.id,
-                title : newTodo.title,
-                description : newTodo.description,
-                status : newTodo.status,
-                due_date : newTodo.due_date,
-                UserId : userId
-            }
+  
 
-            res.status(201).json(returnedTodo)
+            res.status(201).json(newTodo)
 
         } catch (error) {
             next(error)
@@ -79,12 +110,14 @@ class Controller{
     // 💈=== PUT ===💈 //
 
     static async putUpdatedTodo(req, res, next) {
-        const id = +req.params.id
-        const { title, description, status, due_date } = req.body
+        // const id = +req.params.id
+        let { id, title, description, due_date } = req.body
+
+        due_date = convertToDate(due_date)
 
         try {
             const newTodo = await Todo.update({
-                title, description, status, due_date
+                title, description, due_date
             },{
                 where : { id },
                 returning : ['id', 'title', 'description', 'status', 'due_date']
@@ -99,6 +132,7 @@ class Controller{
     // 💈=== PATCH ===💈 //
 
     static async patchTodoStatus(req, res, next) {
+
         const id = +req.params.id
         const { status } = req.body
 
@@ -116,7 +150,7 @@ class Controller{
             } else {
                 next({
                     status : 404,
-                    message : `Error not found`
+                    message : `Error can't find Todo`
                 })
             }
 

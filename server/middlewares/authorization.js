@@ -5,6 +5,8 @@ async function authorization(req,res,next){
     const {userId} = req.loggedInUser
     const paramId = req.params.id
 
+    console.log(userId)
+    
     const todo = await Todo.findByPk(+paramId)
 
     if(!todo){

@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
           msg : `Password property is missing`
         },
         len :{
-          args : [3,12],
+          args : [3,20],
           msg : `Password is too short`
         }
       }

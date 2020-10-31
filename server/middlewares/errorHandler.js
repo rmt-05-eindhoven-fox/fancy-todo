@@ -6,7 +6,6 @@ module.exports = function(err,req,res,next){
       switch (err.name) {
       case 'SequelizeValidationError':
         let errors = []
-
         err.errors.forEach(error => {
           errors.push(error.message)
         })  
@@ -23,7 +22,7 @@ module.exports = function(err,req,res,next){
   }
 
   
-  res.status(status).json({ error : msg })
+  res.status(status).json({ message : msg })
 
 
 }
