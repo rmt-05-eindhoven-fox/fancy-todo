@@ -23,6 +23,23 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Todo',
+    validate: {
+      checkDate(){
+        const date = this.due_date;
+        const now = new Date();
+        const temp = date.split('-');
+
+        if(temp[0] > now.getFullYear()) {
+          throw new Error('date is a require field');
+        }
+        if(temp[1] > now.getMonth()) {
+          throw new Error('date is a require field');
+        }
+        if(temp[2] > now.getDay()) {
+          throw new Error('date is a require field');
+        }
+      }
+    }
   });
   return Todo;
 };

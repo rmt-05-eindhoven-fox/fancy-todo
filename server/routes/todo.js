@@ -5,12 +5,13 @@ const authorization = require('../middlewares/authorization');
 const todoRouter = require('express').Router();
 
 todoRouter.use(authentication);
-todoRouter.get('/todos',TodoController.findAll);
-todoRouter.post('/todos', TodoController.create);
-todoRouter.get('/todos/:id', TodoController.findId);
-todoRouter.put('/todos/:id', TodoController.update);
-todoRouter.patch('/todos/:id', TodoController.updateStatus);
-todoRouter.delete('/todos/:id', authorization, TodoController.delete);
+todoRouter.get('/', TodoController.findAll);
+todoRouter.get('/false', TodoController.findTrue);
+todoRouter.post('/', TodoController.create);
+todoRouter.get('/:id', authorization, TodoController.findId);
+todoRouter.put('/:id', authorization, TodoController.update);
+todoRouter.patch('/:id', authorization, TodoController.updateStatus);
+todoRouter.delete('/:id', authorization, TodoController.delete);
 
 
-module.exports = todoRouter
+module.exports = todoRouter;

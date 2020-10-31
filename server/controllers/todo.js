@@ -2,25 +2,36 @@ const { Todo } = require('../models');
 
 class TodoController {
 
-  static findAll(req, res){
+  static findAll(req, res, next){
     const userId = req.loginUser.id;
-    Todo.findAll({ where : {'UserId': userId}})
+    Todo.findAll({ where : {'UserId': userId, 'status': false}})
       .then(data => [
         res.status(201).json(data)
       ])
       .catch(err => {
-        res.status(500).json(err)
+        next(err)
       })
   }
 
-  static create(req, res){
+  static findTrue(req, res, next){
+    const userId = req.loginUser.id;
+    Todo.findAll({ where : {'UserId': userId, 'status': true}})
+      .then(data => [
+        res.status(201).json(data)
+      ])
+      .catch(err => {
+        next(err)
+      })
+  }
+
+  static create(req, res, next){
     const userId = req.loginUser.id;
 
     let obj = {
       title: req.body.title,
       description: req.body.description,
       due_date: req.body.due_date,
-      status: req.body.status,
+      status: false,
       UserId: userId
     }
     Todo.create(obj)
@@ -28,11 +39,11 @@ class TodoController {
         res.status(201).json(data);
       })
       .catch(err => {
-        res.status(500).json(err);
+        next(err);
       })
   }
 
-  static findId(req, res){
+  static findId(req, res, next){
     const id = +req.params.id;
 
     Todo.findByPk(id)
@@ -40,15 +51,15 @@ class TodoController {
         if(data){
           res.status(201).json(data);
         } else {
-          throw res.status(404).json({error : "not found"});
+          throw next(err);
         }
       })
       .catch(err => {
-        res.status(500).json(err);
+        next(err)
       })
   }
 
-  static update(req, res){
+  static update(req, res, next){
     const id = +req.params.id;
     const obj = {
       title: req.body.title,
@@ -62,18 +73,18 @@ class TodoController {
         if(data[1][0]){
           res.status(201).json(data[1][0]);
         } else {
-          throw res.status(404).json({error : "not found"});
+          throw next(err)
         }
       })
       .catch(err => {
-        res.status(500).json(err);
+        next(err)
       })
   }
 
-  static updateStatus(req, res){
+  static updateStatus(req, res, next){
     const id = +req.params.id;
     const obj = {
-      status: req.body.status
+      status: true
     }
 
     Todo.update(obj, { where : {'id' : id}, returning: true})
@@ -81,15 +92,15 @@ class TodoController {
         if(data[1][0]){
           res.status(201).json(data[1][0]);
         } else {
-          throw res.status(404).json({error : "not found"});
+          throw next(err);
         }
       })
       .catch(err => {
-        res.status(500).json(err);
+        next(err);
       })
   }
 
-  static delete(req, res){
+  static delete(req, res, next){
     const id = +req.params.id;
 
     Todo.destroy({where : {'id': id}})
@@ -97,11 +108,11 @@ class TodoController {
         if(data){
           res.status(201).json({message : 'todo success to delete'})
         } else {
-          res.status(404).json({error : "not found"});
+          next(err);
         }
       })
       .catch(err => {
-        res.status(500).json(err);
+        next(err);
       })
   }
 

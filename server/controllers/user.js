@@ -1,10 +1,11 @@
 const { comparePassword } = require('../helpers/bcrypt');
 const { signToken } = require('../helpers/jwt');
+const { OAuth2Client } = require('google-auth-library');
 const { User } = require('../models');
 
 class UserController {
 
-  static async register(req, res){
+  static async register(req, res, next){
     try {
       const { email, password } = req.body;
       let payload = {
@@ -18,10 +19,7 @@ class UserController {
         email: user.email
       })
     } catch (err) {
-      const status = err.status || 500;
-      const msg = err.msg || `Internal Server Error`;
-
-      res.status(status).json({msg});
+      next(err)
     }
   }
 
@@ -58,6 +56,40 @@ class UserController {
 
       res.status(status).json({ msg });
     }
+  }
+
+  static googleLogin(req, res, next){
+    let { id_token } = req.body;
+    const client = new OAuth2Client(process.env.CLIENT_ID);
+    let email = ""
+
+    client.verifyIdToken({
+      idToken: id_token,
+      audience: process.env.CLIENT_ID
+    })
+      .then(tiket => {
+        let payload = tiket.getPayload();
+        email = payload.email;
+        return User.findOne({where : { email: payload.email}})
+      })
+      .then(user => {
+        if(user){
+          return user
+        } else {
+          let obj = {
+            email,
+            password: 'randomaja'
+          }
+          return User.create(obj)
+        }
+      })
+      .then(dataUser => {
+        let access_token = signToken({ id: dataUser.id, email: dataUser.email });
+        return res.status(200).json({ access_token });
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 }
 
