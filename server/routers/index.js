@@ -3,9 +3,13 @@ const UserController = require('../controllers/user')
 const ToDoController = require('../controllers/todo')
 const authentication = require('../middlewares/authentication')
 const authorization = require('../middlewares/authorization')
+const favRoute = require('../controllers/favQ')
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
+router.post('/googleLogin', UserController.googleLogin)
+router.get('/favQ', favRoute.show)
+
 router.use(authentication)
 router.post('/todos', ToDoController.add)
 router.get('/todos', ToDoController.findAll)
