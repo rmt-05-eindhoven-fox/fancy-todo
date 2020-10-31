@@ -3,6 +3,7 @@ const { Todo } = require("../models")
 class TodoController {
   static getTodo(req, res, next) {
     Todo.findAll({
+      order: [["id", "ASC"]],
       where: {
         UserId: req.loggedInUser.id
       }

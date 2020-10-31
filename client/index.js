@@ -28,6 +28,7 @@ $(document).ready(() => {
     $("#login").hide()
     $("#navbar").hide()
     listTodo()
+    checkBox()
   } else {
     $("#register").hide()
     $("#login").show()
@@ -150,33 +151,97 @@ function addTodo(e) {
 function listTodo() {
   const token = localStorage.getItem("token")
 
-  $("#todoContainer").empty()
   $.ajax({
     method: "GET",
     url: SERVER + "/todos",
     headers: { token: token },
   })
     .done(response => {
+      $("#todoContainer").empty()
       response.forEach((el, index) => {
         const date = calculateDate(new Date(), el.due_date)
-        const status = statusCheck(date, response.status)
-        $("#todoContainer").append(`
-      <div class="row">
-        <div class="col">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox${el.id}" value="option${el.id}">
-            <label class="form-check-label" for="inlineCheckbox${el.id}">${el.title} ${status}</label><br><br>
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-success" onclick="editTodoForm(${el.id})">Edit</button>
-            <button type="button" class="btn btn-secondary" onclick="deleteTodo(${el.id})">Delete</button>
-          </div>
+        const status = statusCheck(date, el.status)
+        if (el.status) {
+          finishedTodo(el.id, el.title, status)
+        } else {
+          unfinishedTodo(el.id, el.title, status)
+        }
+      });
+      checkBox()
+    })
+    .fail(err => {
+      console.log(err.responseJSON)
+    })
+}
+
+function finishedTodo(id, title, status) {
+  $("#todoContainer").append(`
+  <div class="row">
+    <div class="col">
+      <div class="form-check form-check-inline">
+        <div class="d-flex align-items-center">
+          <label>
+            <input type="checkbox" class="option-input radio" value="${id}" checked><span class="label-text completed">${title} ${status}</span>
+          </label>
         </div>
       </div>
-          `)
-      });
+    </div>
+  <div class="col col-lg-2">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
+      <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+    </div>
+  </div>
+  </div>
+    `)
+}
+
+function unfinishedTodo(id, title, status) {
+  $("#todoContainer").append(`
+  <div class="row">
+    <div class="col">
+      <div class="form-check form-check-inline">
+        <div class="d-flex align-items-center">
+          <label>
+            <input type="checkbox" class="option-input radio" value="${id}"><span class="label-text">${title} ${status}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  <div class="col col-lg-2">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
+      <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+    </div>
+  </div>
+  </div>
+    `)
+}
+
+function checkBox() {
+  $("input[type=checkbox]").on('click', function () {
+    if (this.checked) {
+      $('input[type="checkbox"]:checked').each(function (index, el) {
+        updateStatus($(el).val(), true)
+      })
+    } else {
+      $("input:checkbox:not(:checked)").each(function (index, el) {
+        updateStatus($(el).val(), false)
+      })
+    }
+  })
+}
+
+function updateStatus(id, status) {
+  const token = localStorage.getItem("token")
+  $.ajax({
+    method: "PATCH",
+    url: SERVER + `/todos/${id}`,
+    headers: { token: token },
+    data: { status }
+  })
+    .done(response => {
+      listTodo()
     })
     .fail(err => {
       console.log(err.responseJSON)
@@ -274,7 +339,7 @@ function calculateDate(date1, date2) {
 }
 
 function statusCheck(date, status) {
-  if (status === "true" || date === true) {
+  if (status || date === true) {
     return ("Done")
   }
   return date
