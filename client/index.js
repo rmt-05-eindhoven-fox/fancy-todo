@@ -240,10 +240,17 @@ function showEditTodo(e, todoId) {
   const currentDate = new Date().toISOString().slice(0, 10);
   $('#edit-todo-due_date').attr('min', currentDate);
   $('#defaultModalLabel').text('Edit Todo')
-  $('#edit-todo-id').val(todoId)
   $('#add-todo').hide()
   $('#edit-todo').show()
   $('#modalTodo').modal('toggle');
+
+  getTodo(todoId, (todo) => {
+    $('#edit-todo-id').val(todoId);
+    $('#edit-todo-title').val(todo.title)
+    $('#edit-todo-description').val(todo.description)
+    $('#edit-todo-due_date').val(new Date(todo.due_date).toISOString().slice(0, 10))
+    $('#' + todo.status).attr('checked', 'checked');
+  })
 }
 
 function loadTodo() {
@@ -256,6 +263,25 @@ function loadTodo() {
   })
     .done(response => {
       console.log(response)
+      filterTodo(response)
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Register Failed!', message, 'error')
+    })
+}
+
+function getTodo(todoId, callback) {
+  $.ajax({
+    method: "GET",
+    url: base_url + `/todos/${todoId}`,
+    headers: {
+      accesstoken
+    }
+  })
+    .done(response => {
+      console.log(response)
+      callback(response)
     })
     .fail(err => {
       let message = checkError(err);
@@ -288,6 +314,7 @@ function addTodo(e) {
         icon: 'success',
         willClose: () => {
           afterAddTodo()
+          loadTodo()
         }
       })
     })
@@ -336,10 +363,216 @@ function editTodo(e, todoId) {
     })
 }
 
+function updateStatus(e, todoId) {
+  e.preventDefault()
+  $.ajax({
+    method: "PATCH",
+    url: base_url + `/todos/${todoId}`,
+    headers: {
+      accesstoken
+    },
+    data: {
+      status: 'finished'
+    }
+  })
+    .done(response => {
+      loadTodo()
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Load data Failed!', message, 'error')
+    })
+}
+
+function deleteTodo(e, todoId) {
+  e.preventDefault()
+  $.ajax({
+    method: "DELETE",
+    url: base_url + `/todos/${todoId}`,
+    headers: {
+      accesstoken
+    }
+  })
+    .done(response => {
+      loadTodo()
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Load data Failed!', message, 'error')
+    })
+}
+
+function filterTodo(todos) {
+  const currentDate = new Date()
+  beforeLoadTodo()
+  todos.forEach(todo => {
+    const { id, UserId, title, description, status, due_date, updatedAt } = todo;
+    const dueStatus = compareDate(due_date);
+    if (status == 'finished') {
+      appendCompleteTodo(todo);
+      console.log('appendCompleteTodo', todo.id)
+    }
+    switch (dueStatus) {
+      case 'willDue':
+        if (status === 'pending') {
+          appendWillDue(todo);
+          appendActiveTodo(todo);
+          console.log('appendWillDue', todo.id)
+          // console.log('appendActiveTodo', todo.id)
+        }
+        break;
+      case 'active':
+        if (status === 'pending') {
+          appendActiveTodo(todo);
+          console.log('appendActiveTodo', todo.id)
+        }
+        break;
+      case 'isDue':
+        if (status === 'pending') {
+          appendMissedTodo(todo);
+          console.log('appendMissedTodo', todo.id)
+        }
+        break
+    }
+  });
+
+}
+
+function appendWillDue(todo) {
+  const wildue =
+  /*html*/ `<li>
+    <a href="javascript:void(0);" onclick="showEditTodo(event, ${todo.id})">
+      <div class="icon-circle bg-blue"><i class="zmdi zmdi-account"></i></div>
+      <div class="menu-info">
+        <h4>${todo.title}</h4>
+        <p><i class="zmdi zmdi-time"></i> will due today </p>
+      </div>
+    </a>
+  </li>`;
+  $('#todo-wildue').append(wildue);
+}
+
+function appendMissedTodo(todo) {
+  const missed = /*html*/ `
+  <li class="dd-item" data-id="2">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="dd-handle  h6 mb-0">${todo.title}</div>
+    </div>
+    <div class="dd-content p-15">
+      <p>${todo.description}</p>
+      <ul class="list-unstyled d-flex bd-highlight align-items-center">
+        <li class="mr-2 flex-grow-1 bd-highlight">
+          <span class="badge badge-default">
+            <i class="zmdi zmdi-time"></i> ${formatDate(todo.due_date)}
+          </span>
+        </li>
+        <li class="ml-3 bd-highlight action" onclick="showEditTodo(event, ${todo.id})">
+          <a href="javascript:void(0);" class="text-muted">
+            <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
+          </a>
+        </li>
+        <li class="ml-3 bd-highlight action" onclick="deleteTodo(event, ${todo.id})">
+          <a href="javascript:void(0);" class="text-muted">
+            <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+  `
+  $('#todo-isdue').append(missed);
+}
+
+
+function appendActiveTodo(todo) {
+  const active = /*html*/ `
+  <li class="dd-item" data-id="2">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="dd-handle  h6 mb-0">${todo.title}</div>
+    </div>
+    <div class="dd-content p-15">
+      <p>${todo.description}</p>
+      <ul class="list-unstyled d-flex bd-highlight align-items-center">
+        <li class="mr-2 flex-grow-1 bd-highlight">
+          <span class="badge badge-default">
+            <i class="zmdi zmdi-time"></i> ${formatDate(todo.due_date)}
+          </span>
+        </li>
+        <li class="ml-3 bd-highlight action" onclick="showEditTodo(event, ${todo.id})">
+          <a href="javascript:void(0);" class="text-muted">
+            <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
+          </a>
+        </li>
+        <li class="ml-3 bd-highlight action" onclick="updateStatus(event, ${todo.id})">
+          <a href="javascript:void(0);" class="text-muted">
+            <i class="zmdi zmdi-assignment-check" style="font-size: 1.2rem; color: grey;"></i>
+          </a>
+        <li class="ml-3 bd-highlight action" onclick="deleteTodo(event, ${todo.id})">
+          <a href="javascript:void(0);" class="text-muted">
+            <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+  `
+  $('#todo-active').append(active)
+}
+
+function appendCompleteTodo(todo) {
+  const active = /*html*/ `
+  <li class="dd-item" data-id="2">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="dd-handle  h6 mb-0">${todo.title}</div>
+    </div>
+    <div class="dd-content p-15">
+      <p>${todo.description}</p>
+      <ul class="list-unstyled d-flex bd-highlight align-items-center">
+        <li class="mr-2 flex-grow-1 bd-highlight">
+          <span class="badge badge-default">
+            <i class="zmdi zmdi-time"></i> ${formatDate(todo.due_date)}
+          </span>
+        </li> 
+        <li class="ml-3 bd-highlight action" onclick="deleteTodo(event, ${todo.id})">
+          <a href="javascript:void(0);" class="text-muted">
+            <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+  `
+  $('#todo-complete').append(active)
+}
+
+function compareDate(due_date) {
+  let duedate = new Date(due_date);
+  let dateNow = new Date();
+  duedate = duedate.setHours(0, 0, 0, 0);
+  dateNow = dateNow.setHours(0, 0, 0, 0);
+  // console.log(duedate, dateNow)
+
+  if (duedate === dateNow) {
+    return 'willDue'
+  } else if (duedate > dateNow) {
+    return 'active'
+  } else if (duedate < dateNow) {
+    return 'isDue'
+  }
+}
+
+function beforeLoadTodo() {
+  $('#todo-wildue').empty()
+  $('#todo-isdue').empty()
+  $('#todo-active').empty()
+  $('#todo-complete').empty()
+}
+
 function afterAddTodo() {
   $('#add-todo-title').val('')
   $('#add-todo-description').val('')
   $('#add-todo-due_date').val('')
+  loadTodo()
 }
 
 function afterEditTodo() {
@@ -347,4 +580,11 @@ function afterEditTodo() {
   $('#edit-todo-description').val('')
   $('#edit-todo-due_date').val('')
   $('#modalTodo').modal('hide');
+  loadTodo()
+}
+
+function formatDate(date) {
+  const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const newDate = new Date(date);
+  return `${newDate.getDate()} ${bulan[newDate.getMonth()]} ${newDate.getFullYear()}`
 }
