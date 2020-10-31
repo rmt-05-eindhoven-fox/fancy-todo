@@ -16,10 +16,25 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Todo, {foreignKey: 'UserId'})
     }
   };
+
   User.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
+    email = {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { message: "Email is required!" },
+        isEmail: { message: "Input format must be email" }
+      }
+    },
+    password = {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { message: "Password is required!" } 
+      }
+    }
+  }, 
+  {
     sequelize,
     modelName: 'User',
     hooks: {
@@ -28,5 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
+  
   return User;
 };
