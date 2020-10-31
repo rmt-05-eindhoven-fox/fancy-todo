@@ -100,7 +100,7 @@ function showTodos(){
     $.ajax({
         method: "GET",
         url: `${SERVER}/todos`,
-        headers: {token}
+        headers: {access_token: token}
     })
     .done(response => {
         $("#todo-list").empty();
@@ -109,6 +109,7 @@ function showTodos(){
         console.log(response);
         response.forEach((el) => {
             if(el.status === "undone"){
+                let stringDate = el.due_date.slice(0, 10)
                 $("#todo-list").append(`
                             <tr>
                                 <td> 
@@ -116,13 +117,43 @@ function showTodos(){
                                         <div class="card-body">
                                           <h5 class="card-title">${el.title}</h5>
                                           <p class="card-text">${el.description}</p>
-                                          <a href="#" class="btn btn-warning">Edit Todo</a>
-                                          <a href="#" class="btn btn-primary">Mark as done</a>
-                                          <a href="#" class="btn btn-danger">Delete Todo</a>
+                                          <p class="card-text">Due Date : <strong style="color: red;">${stringDate}</strong></p>
+                                          <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#editTodoForm${el.id}">Edit Todo</a>
+                                          <a href="javascript:void();" class="btn btn-primary" onclick="markAsDone(${el.id})">Mark as done</a>
+                                          <a href="javascript:void();" class="btn btn-danger" onclick="deleteTodo(${el.id})">Delete Todo</a>
                                         </div>
                                     </div>
-                                    <!-- <h5 class="card-title">Belajar React</h5>
-                                    <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p> -->
+                                    <div class="modal fade" id="editTodoForm${el.id}" role="dialog">
+                                        <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <p>Add todo</p>
+                                                    <form onsubmit="editTodo(${el.id}, event)">
+                                                        <div class="form-group">
+                                                            <label for="edit-todo-title${el.id}">Title</label>
+                                                            <input type="text" class="form-control" id="edit-todo-title${el.id}" aria-describedby="textHelp" value="${el.title}" required>
+                                                            <small id="textHelp" class="form-text text-muted">What are you planning to do?</small>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="edit-todo-desc${el.id}">Description</label>
+                                                            <input type="text" class="form-control" id="edit-todo-desc${el.id}" aria-describedby="descHelp" value="${el.description}" required>
+                                                            <small id="descHelp" class="form-text text-muted">Tell me specifically what it is about?</small>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="edit-todo-date${el.id}">Due Date</label>
+                                                            <input type="date" class="form-control" id="edit-todo-date${el.id}" aria-describedby="dateHelp" value="${el.due_date.slice(0, 10)}" required>
+                                                            <small id="dateHelp" class="form-text text-muted">When is the deadline?</small>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                 `)
@@ -134,12 +165,10 @@ function showTodos(){
                                         <div class="card-body">
                                           <h5 class="card-title">${el.title}</h5>
                                           <p class="card-text">${el.description}</p>
-                                          <a href="#" class="btn btn-warning">Undo</a>
-                                          <a href="#" class="btn btn-danger">Delete Todo</a>
+                                          <a href="javascript:void();" class="btn btn-warning" onclick="undo(${el.id})">Undo</a>
+                                          <a href="javascript:void();" class="btn btn-danger" onclick="deleteTodo(${el.id})">Delete Todo</a>
                                         </div>
                                     </div>
-                                    <!-- <h5 class="card-title">Belajar React</h5>
-                                    <p class="card-text">Belajar react lewat recording karena instruktur libur tanggal merah</p> -->
                                 </td>
                             </tr>
                 `)
@@ -148,5 +177,78 @@ function showTodos(){
         
     })
     .fail(err => console.log(err));
-    console.log(token);
+}
+
+function addTodo(e){
+    e.preventDefault();
+    let access_token = localStorage.getItem("access_token")
+    let title = $("#todo-title").val();
+    let description = $("#todo-desc").val();
+    let due_date = $("#todo-date").val();
+    let status = "undone";
+
+    $.ajax({
+        method: "POST",
+        url: `${SERVER}/todos`,
+        data: {title, description, due_date, status},
+        headers: {access_token}
+    })
+    .done(response => { console.log(response); $(`#AddTodoForm`).modal('hide'); showTodos()})
+    .fail(err => alert(err.responseJSON.error));
+}
+
+function deleteTodo(id){
+    let access_token = localStorage.getItem("access_token");
+    $.ajax({
+        method: "DELETE",
+        url: `${SERVER}/todos/${id}`,
+        headers: {access_token}
+    })
+    .done(response => {showTodos()})
+    .fail(err => alert(err.responseJSON.error));
+}
+
+function markAsDone(id){
+    let access_token = localStorage.getItem("access_token");
+    $.ajax({
+        method: "PATCH",
+        url: `${SERVER}/todos/${id}`,
+        headers: {access_token},
+        data: {status: "done"}
+    })
+    .done(response => {showTodos()})
+    .fail(err => alert(err.responseJSON.error));
+}
+
+function undo(id){
+    let access_token = localStorage.getItem("access_token");
+    $.ajax({
+        method: "PATCH",
+        url: `${SERVER}/todos/${id}`,
+        headers: {access_token},
+        data: {status: "undone"}
+    })
+    .done(response => {showTodos()})
+    .fail(err => alert(err.responseJSON.error));
+}
+
+function editTodo(id, e){
+    e.preventDefault()
+    let access_token = localStorage.getItem("access_token")
+    let title = $(`#edit-todo-title${id}`).val();
+    let description = $(`#edit-todo-desc${id}`).val();
+    let due_date = $(`#edit-todo-date${id}`).val();
+    let status = "undone";
+
+    $.ajax({
+        method: "PUT",
+        url: `${SERVER}/todos/${id}`,
+        data: {title, description, due_date, status},
+        headers: {access_token}
+    })
+    .done(response => {
+        showTodos();
+        $(`#editTodoForm${id}`).modal('hide');
+    })
+    .fail(err => alert(err.responseJSON.error));
 }

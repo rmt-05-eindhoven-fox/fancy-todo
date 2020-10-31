@@ -33,8 +33,8 @@ class Controller {
             } else if(!checkPassword(payload.password, user.password)) {
                 next({message:"Wrong username/password", status: 401});
             } else {
-                let token = hashToken({id: user.id, email: user.email})
-                res.status(200).json({token})
+                let access_token = hashToken({id: user.id, email: user.email})
+                res.status(200).json({token: access_token})
             }
         } catch (err){
             next(err);
