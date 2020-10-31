@@ -11,13 +11,17 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await queryInterface.bulkInsert('Projects', [{
-    project_name: 'Portofolio',
-    project_status: 'true',
-    createdAt: new Date(),
-    updatedAt: new Date()
+    await queryInterface.bulkInsert('todos', [{
+        title: 'Portofolio 1',
+        description: 'Membuat fancy todo',
+        status: 'New',
+        creator_id:'1',
+        project_id:'1',
+        due_date:new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
      },
-  ], {});
+    ], {});
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -27,6 +31,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Projects', null);
+     await queryInterface.bulkDelete('todos', null, {});
   }
 };

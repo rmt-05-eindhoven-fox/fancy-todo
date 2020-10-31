@@ -21,7 +21,7 @@ CLIENT_ID=790332648718-5ij89p1a3db2kkas7g28833sd2iqo3ku.apps.googleusercontent.c
 ```
 
 **Dokumentasi Postman**
-* [api-postman](api-postman/FancyTodo.postman_collection.json) : `FancyTodo.postman_collection.json`
+* [api-postman](../dokumentasi/FancyTodo.postman_collection.json) : `FancyTodo.postman_collection.json`
 * [api-heroku](https://fancy-todo-apps.herokuapp.com/)
 * [Web-fancy-todo](https://fancy-tod-appss.000webhostapp.com/)
 

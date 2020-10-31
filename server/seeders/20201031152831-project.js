@@ -11,12 +11,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await queryInterface.bulkInsert('Users', [{
-    email: "adhi@gmail.com",
-    password: "12345",
-    createdAt: new Date(),
-    updatedAt: new Date()
-     },
+        await queryInterface.bulkInsert('projects', [{
+          project_name: 'Hacktiv 8 Phase 2',
+          project_status: 'open',
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
     ], {});
   },
 
@@ -27,6 +27,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Users', null);
+     await queryInterface.bulkDelete('projects', null, {});
   }
 };
