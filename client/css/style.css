@@ -1,9 +1,42 @@
 .homepage {
   background-color: #383838 !important;
   color: #ffffff;
-  min-height: 400px;
+  min-height: 100vh;
+}
+
+.jumbotron {
+  font-family: 'Playfair Display', serif;
+  color: #383838;
+  text-align: center;
+  max-height: 400px;
+  overflow: auto;
+  font-weight: bold;
+}
+
+.section-todo{
+margin-bottom: 50px;
+}
+
+.section-todo .card{
+  color: #383838;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.section-add {
+  color: #383838;
 }
 
 li {
   margin-left: 50px;
+}
+
+#todo-null {
+  color: #5c5c5c;
+}
+
+footer {
+  margin-top: auto;
+  margin-bottom: 0;
+  min-height: 200px;
 }
