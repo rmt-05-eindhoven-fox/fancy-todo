@@ -36,7 +36,7 @@ class UserController {
       }
       else {
         const accessToken = signToken({ email: user.email, id: user.id })
-        res.status(200).json({ accesstoken: accessToken })
+        res.status(200).json({ access_token: accessToken })
       }
     })
     .catch(err => {

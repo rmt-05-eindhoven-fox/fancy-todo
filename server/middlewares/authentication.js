@@ -2,7 +2,7 @@ const { User } = require('../models')
 const { decodeToken } = require('../helpers/jwt')
 
 async function authentication(req, res, next) {
-  const token = req.headers.accesstoken
+  const token = req.headers.access_token
   try {
     if (!token) {
       throw { msg: 'Authentification failed', status: 401}

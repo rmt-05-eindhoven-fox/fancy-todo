@@ -103,7 +103,7 @@ _Response (500 - Internal server error)_
 }
 ```
 ---
-### GET /todos:id
+### GET /todos/:id
 
 > Get a specific todo by id
 
@@ -117,7 +117,7 @@ _Request Header_
 _Request Params_
 ```
 {
-  "id": "<your id>"
+  "id": <number>
 }
 ```
 
@@ -147,7 +147,7 @@ _Response (500 - Internal server error)_
   "errors": "internal server error"
 }
 ```
-### PUT /todos:id
+### PUT /todos/:id
 
 > Update one of an existing todo in tables
 
@@ -160,7 +160,7 @@ _Request Header_
 _Request Params_
 ```
 {
-  "id": "<your id>"
+  "id": <number>
 }
 ```
 _Request Body_
@@ -206,7 +206,7 @@ _Response (500 - Internal server error)_
 }
 ```
 
-### PATCH /todos:id
+### PATCH /todos/:id
 
 > Update status attribute in one of an existing todo in tables
 
@@ -219,7 +219,7 @@ _Request Header_
 _Request Params_
 ```
 {
-  "id": "<your id>"
+  "id": <number>
 }
 ```
 _Request Body_
@@ -260,7 +260,7 @@ _Response (500 - Internal server error)_
   "errors": "internal server error"
 }
 ```
-### DELETE /todos:id
+### DELETE /todos/:id
 
 > Delete one of an existing todo by id
 
@@ -274,7 +274,7 @@ _Request Header_
 _Request Params_
 ```
 {
-  "id": "<your id>"
+  "id": <number>
 }
 ```
 
