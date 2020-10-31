@@ -206,21 +206,26 @@ input[type=radio] {
     border-radius: 0
   }
 
+  .card {
+    background-color: #F2DDA4;
+  }
   .card .card-body {
     padding: 1.25rem 1.75rem
   }
 
   #main {
-    margin-top: 125px;
+    
   }
 
   body {
-    background-color: #f9f9fa;
+    background-color: #5AB1BB;
+    margin-top: 125px;
   }
 
   .card-body {
       flex: 1 1 auto;
-      padding: 1.25rem
+      padding: 1.25rem;
+      background-color: #F2DDA4;
   }
 
   .card .card-title {
@@ -234,6 +239,7 @@ input[type=radio] {
     max-height: 100%;
     max-width: 100%;
   }
+
 
   .landing-page .container {
   width: 900px;
