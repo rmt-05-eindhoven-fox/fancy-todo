@@ -176,8 +176,8 @@ function fetchData () {
 }
 
 function addData () {
-  $("#show_todos").hide()
   $("#show_todos").empty()
+  $("#show_movie").empty()
   $("#form_add").show()
   $("#form_add").empty()
   $("#form_add").append(`
@@ -272,8 +272,8 @@ function editData (id) {
       notStart = 'selected';
     }
     let tanggal = response.due_date.toString().split('T')[0];
-    $("#show_todos").hide()
     $("#show_todos").empty()
+    $("#show_movie").empty()
     $("#form_edit").show()
     $("#form_edit").empty()
     $("#form_edit").append(`
@@ -345,6 +345,7 @@ function editDataPut (id, event) {
     }
   })
   .done(response => {
+    $("#form_edit").empty()
     afterLogin()
   })
   .fail(err => {
