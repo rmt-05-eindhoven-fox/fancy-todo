@@ -5,29 +5,25 @@ class todoController{
         try {
             const userId = request.loggedInUser.id;
             const data = await Todo.findAll({
-                where: {
-                    UserId: userId
-                }
+                where: { UserId: userId },
+                order: [["due_date", "DESC"]]
             });
             response.status(201).json(data)
-        } catch (error) {
+        } catch(error) {
             next(error);
         }
     }
 
     static async viewById(request, response) {
         try {
-            const userId = request.loggedInUser.id
+            const userId = request.loggedInUser.id;
 			const todoId = +request.params.id;
 			const todo = await Todo.findByPk({
-                where: {
-                    UserId: userId,
-                    id: todoId
-                }
-            })
+                where: { UserId: userId, id: todoId }
+            });
 			response.status(200).json(todo);
 		} catch (error) {
-			response.status(404).json(error);
+			next(error);
 		}
     }
 
@@ -39,11 +35,8 @@ class todoController{
             due_date: request.body.due_date,
             UserId: request.loggedInUser.id 
         }
-
-        console.log(newData);
-
         try{
-            const data = await Todo.create(newData)
+            const data = await Todo.create(newData);
             const result = {
                 "id": data.id,
                 "title": data.title,
@@ -54,7 +47,7 @@ class todoController{
             }
             response.status(201).json(result);
         }catch(error){
-            response.status(500).json(error);
+            next(error);
         }
     }
 
@@ -69,29 +62,27 @@ class todoController{
                 due_date: request.body.due_date 
             }
 			const updateTodo = await Todo.update(newData, { 
-                where: 
-                    { UserId: userId, id: todoId },
-                    returning: true 
+                where: { UserId: userId, id: todoId }, 
+                returning: true 
             })
-			response.status(200).json(updateTodo[1][0])
-		} catch (err) {
-			response.status(404).json(err)
+			response.status(200).json(updateTodo[1][0]);
+		} catch (error) {
+			next(error);
 		}
     }
 
     static async updateStatus(request, response) {
         try {
-            const userId = request.loggedInUser.id
+            const userId = request.loggedInUser.id;
 			const todoId = +request.params.id;
 			const newData = { status: request.body.status }
 			const updateTodo = await Todo.update(newData, { 
-                where: 
-                    { UserId: userId, id: todoId},
-                    returning: true 
-            })
-			response.status(200).json(updateTodo[1][0])
+                where: { UserId: userId, id: todoId},
+                returning: true 
+            });
+			response.status(200).json(updateTodo[1][0]);
 		} catch (err) {
-			response.status(404).json(err)
+			next(error);
 		}
     }
 
@@ -103,8 +94,8 @@ class todoController{
                 returning: true
 			})
 			response.status(200).json({msg: "todo deleted successfully"})
-		} catch (err) {
-			response.status(500).json(err)
+		} catch(error) {
+			next(err);
 		}
     }
 }
