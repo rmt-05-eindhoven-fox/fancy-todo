@@ -15,7 +15,9 @@ module.exports = {
        title: 'Go to GYM',
        description: '1 jam workout',
        status: 'true',
-       due_date: "2020-10-26",
+       due_date: new Date(),
+       project_id: '',
+       creator_id: '',
        createdAt: new Date(),
        updatedAt: new Date()
      },
@@ -24,6 +26,8 @@ module.exports = {
       description: 'nonton naruto',
       status: 'false',
       due_date: new Date(),
+      project_id:'',
+      creator_id: '',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

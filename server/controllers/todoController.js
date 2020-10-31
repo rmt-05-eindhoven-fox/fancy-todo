@@ -52,7 +52,7 @@ class TodoController{
             const userId = req.loggedInUser.id
             project_member.findOne({where : 
             {
-                project_id: req.params.projectid,
+                project_id: req.params.project_id,
                 user_id:userId
             }
             })
@@ -103,6 +103,7 @@ class TodoController{
 
     static Update(req, res, next){
         try {      
+            
             const data = req.body;
             const todo = {
                 title : data.title,
@@ -120,6 +121,9 @@ class TodoController{
                   data.update(todo)
                   .then(data=>{
                       res.status(200).json(response.onSuccess("success update todo",data))
+                  })
+                  .catch(err=>{
+                    next(err)
                   })
               })
               .catch(err=>{

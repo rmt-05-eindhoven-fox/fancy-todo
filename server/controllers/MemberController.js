@@ -1,6 +1,6 @@
 const {project,project_member,user} = require("../models/index")
 const response = require("../helpers/response")
-
+const mailer = require('../helpers/mailer')
 
 class MemberController{
     static Create(req, res, next){
@@ -8,8 +8,8 @@ class MemberController{
             const data = req.body
             const userId = req.loggedInUser.id
             const member = {
-                user_email:data.user_email,
-                project_id:data.project_id,
+                user_email:data.user_email || "",
+                project_id:data.project_id || "",
                 member_status:'user',
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -22,7 +22,7 @@ class MemberController{
             })
             .then(data=>{
                 if(!data)
-                    return res.status(400).json(response.onFailed("can't register a member, email not does not exists"))
+                    return res.status(400).json(response.onFailed("can't register a member, email does not exists"))
 
                 member["user_id"] = data.id                
                 project_member.findOne({
@@ -47,6 +47,7 @@ class MemberController{
 
                         project_member.create(member)
                         .then(data=>{
+                            mailer.sendMail(member.user_email,"Added member","you added to project, please check todo in project")                            
                             return res.status(201).json(response.onSuccess("success register member",data))                    
                         })
                         .catch(err=>{

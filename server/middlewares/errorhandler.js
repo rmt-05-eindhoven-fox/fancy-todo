@@ -1,5 +1,6 @@
 const response = require("../helpers/response")
-function errorHandler(err, req, res, next){
+
+function errorhandler(err, req, res, next){
     let status = 500
     let errors = {} || "internal server error"
     let errorList = [];
@@ -21,4 +22,4 @@ function errorHandler(err, req, res, next){
     res.status(status).json(response.onFailed(errors))
 }   
 
-module.exports = errorHandler
+module.exports = errorhandler

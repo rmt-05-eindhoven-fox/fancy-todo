@@ -13,8 +13,12 @@ $("#login").click(function () {
 })
 
 function logout() {
-    localStorage.removeItem("token");
+    var auth2 = gapi.auth2.getAuthInstance();
+    localStorage.clear("token");
     initScreen()
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
 }
 
 function initScreen() {
@@ -546,3 +550,38 @@ function updateTodo() {
         }
     });
 }
+
+function onSignIn(googleUser) {
+  var google_access_token = googleUser.getAuthResponse().id_token;
+  console.log(google_access_token);
+
+  $.ajax({
+    method: 'POST',
+    url: baseUrl + '/googlelogin',
+    headers: {
+      google_access_token
+    }
+  })
+    .done(response => {
+        console.log(response);
+      localStorage.setItem('token', response.token)
+      initScreen()
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+
+// function signOut() {
+//   var auth2 = gapi.auth2.getAuthInstance();
+//   localStorage.clear('token')
+//   $("#content").hide()
+//   allContent()
+//   auth2.signOut().then(function () {
+//     console.log('User signed out.');
+//   });
+// }
+
+
+

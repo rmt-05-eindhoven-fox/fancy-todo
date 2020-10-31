@@ -48,7 +48,7 @@ class ProjectController{
             project.findByPk(req.params.id)
               .then(data=>{
                   if(!data){
-                      res.status(404).json(response.onFailed("project not found"))
+                      return res.status(404).json(response.onFailed("project not found"))
                   }
                   data.update(projectData)
                   .then(data=>{
@@ -87,7 +87,7 @@ class ProjectController{
             })
             .then(data=>{
                 if(!data)
-                    res.status(400).json(response.onFailed("you are not author, please contact author to delete project"))
+                    return res.status(400).json(response.onFailed("you are not author, please contact author to delete project"))
 
                 data.destroy()
                     .then(data=>{
@@ -119,7 +119,7 @@ class ProjectController{
             })
             .then(data=>{
                 if(data.length == 0){
-                    res.status(404).json(response.onFailed("project not found"))                        
+                    return res.status(404).json(response.onFailed("project not found"))                        
                 }              
                 res.status(200).json(response.onSuccess("success get project",data))                        
 
@@ -155,7 +155,7 @@ class ProjectController{
             })
             .then(data=>{
                 if(data.length == 0){
-                    res.status(404).json(response.onFailed("project not found"))                        
+                    return res.status(404).json(response.onFailed("project not found"))                        
                 }              
                 res.status(200).json(response.onSuccess("success get project",data))                        
 

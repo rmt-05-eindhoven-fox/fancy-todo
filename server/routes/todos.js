@@ -12,7 +12,7 @@ router.get('/:id', authorization,controller.GetTodoById)
 router.put('/:id', authorization, controller.Update)
 router.delete('/:id', authorization, controller.Delete)
 router.patch('/:id', authorization, controller.UpdateStatus)
-router.get('/project/:projectid', authorization,controller.GetTodoByProjectId)
+router.get('/project/:project_id', authorization,controller.GetTodoByProjectId)
 
 
 module.exports = router;

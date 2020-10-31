@@ -1,9 +1,9 @@
-const {project,project_member} = require('../models/index')
+const {project,project_member,todo} = require('../models/index')
  
 const response = require('../helpers/response')
 
 
-function authorization(req, res, next,name=""){ 
+function authorization(req, res, next,name=""){     
     if(req.baseUrl === "/projects"){
         project.findByPk(req.params.id)
             .then((dataProject) => {
@@ -32,8 +32,8 @@ function authorization(req, res, next,name=""){
         })
     }else if(req.baseUrl === '/members'){
         const authorId = req.loggedInUser.id
-        const user_id = req.body.user_id || req.params.userid
-        const project_id = req.body.project_id || req.params.projectid
+        const user_id = req.body.user_id || req.params.userid || ""
+        const project_id = req.body.project_id || req.params.projectid || ""
 
         project_member.findOne({
             where:{
@@ -50,6 +50,61 @@ function authorization(req, res, next,name=""){
         .catch(err=>{
             next(err)
         })
+    }else if(req.baseUrl == "/todos"){
+        const user_id = req.loggedInUser.id
+        let project_id = req.body.project_id || req.params.project_id || ""
+
+        if(project_id == ""){
+            const todo_id = req.params.id || ""            
+            todo.findOne({
+                where:{
+                    id:todo_id
+                }
+            })
+            .then(data=>{
+                if(!data)
+                    throw {message: "todo not found"}
+                
+                project_id = data.project_id                  
+
+                project_member.findOne({
+                    where:{
+                        user_id:user_id,
+                        project_id:project_id
+                    }
+                })
+                .then(data=>{
+                    if(!data)
+                        throw {message: "not authorized"}
+                    
+                    next()            
+                })
+                .catch(err=>{
+                    next(err)
+                })                
+            })
+            .catch(err=>{
+                next(err)
+            })            
+        }else{
+            project_member.findOne({
+                where:{
+                    user_id:user_id,
+                    project_id:project_id
+                }
+            })
+            .then(data=>{
+                if(!data)
+                    throw {message: "not authorized"}
+                    
+                next()            
+            })
+            .catch(err=>{
+                next(err)
+            })            
+        }
+        
+
     }else{
         next()
     }
