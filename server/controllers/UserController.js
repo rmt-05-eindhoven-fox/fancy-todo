@@ -51,7 +51,7 @@ class UserController {
     let client = new OAuth2Client(process.env.CLIENT_ID)
     let email = ""
     let name = ""
-
+    console.log(client)
     client.verifyIdToken({
       idToken: id_token,
       access_token: process.env.CLIENT_ID
