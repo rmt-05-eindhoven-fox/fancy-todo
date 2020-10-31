@@ -60,7 +60,7 @@ function prosesRegister(input) {
         title: 'Register Succesfully!',
         text: 'Please Login first!',
         icon: 'success',
-        onClose: () => {
+        willClose: () => {
           clearRegisterValue()
           showLogin()
         }
@@ -116,7 +116,7 @@ function login(e) {
         title: 'Access Granted!',
         text: 'Welcome, enjoy plan your task!',
         icon: 'success',
-        onClose: () => {
+        willClose: () => {
           afterLogin()
           clearLogin()
         }
@@ -152,6 +152,7 @@ function afterLogin() {
   clearRegisterValue();
   clearLogin();
   setProfile();
+  loadTodo();
 }
 
 function afterSignOut() {
@@ -220,6 +221,23 @@ function saveUserInfo(user) {
 
 function destroyUserInfo() {
   localStorage.clear();
+}
+
+function loadTodo() {
+  $.ajax({
+    method: "GET",
+    url: base_url + "/todos",
+    headers: {
+      accesstoken
+    }
+  })
+    .done(response => {
+      console.log(response)
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Register Failed!', message, 'error')
+    })
 }
 
 function addTodo(e) {
