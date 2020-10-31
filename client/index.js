@@ -2,7 +2,24 @@
 const base_url = 'http://localhost:3000';
 $(document).ready(() => {
   // $('#page-authetication').show();
+  verifyToken();
 })
+
+function verifyToken() {
+  $.ajax({
+    method: "POST",
+    url: base_url + "/users/verifytoken",
+    headers: {
+      accesstoken: localStorage.getItem('accesstoken')
+    } 
+  })
+    .done(response => {
+      afterLogin();
+    })
+    .fail(err => {
+      afterSignOut();
+    })
+}
 
 function showRegister(e) {
   e.preventDefault()
