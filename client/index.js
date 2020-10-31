@@ -196,18 +196,11 @@ function readTodo() {
           <div class="card-body">
             <h5 class="card-title">Due Date : ${todo.due_date}</h5>
             <p class="card-text">${todo.description}</p>
-            <a class="btn btn-outline-warning" onclick="editTodoModal(${todo.id}, '${todo.title}', '${todo.description}', '${todo.status}', '${todo.due_date}')" data-toggle="modal" data-target="#myModal">EDIT</a>
+            <a href="#" class="btn btn-outline-warning" onclick="editTodo(${todo.id}, '${todo.title}', '${todo.description}', '${todo.status}', '${todo.due_date}')">EDIT</a>
             <a class="btn btn-outline-danger" onclick="deleteTodo(${todo.id})">DELETE</a>
             <a class="btn btn-outline-success" onclick="updateStatusTodo(${todo.id}, '${todo.status}')">DONE</a>
           </div>
         </div><br>
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-          <div id="edit-modal-content" class="modal-dialog">
-            <!-- APPEND -->
-          </div>
-        </div>
         `);
       } else {
         $('#todo-done').append(`
@@ -278,46 +271,62 @@ function createTodo(e) {
   })
 }
 
-function editTodoModal(id, title, description, status, due_date) {
-  $('#edit-modal-content').empty();
-  $('#edit-modal-content').append(`
-  <!-- Modal content-->
-  <div class="modal-content bg-primary">
-    <div class="modal-body">
+function editTodo(id, title, description, status, due_date) {
+  $('#edit-box-todo').empty();
+  $('#edit-box-todo').append(`
+    <div class="container-fluid">
       <div class="col-sm col-md-auto">
-        <h3 class="text-center bg-dark text-light rounded-pill">EDIT TODO</h3>
-        <div class="card bg-dark text-light">
+      <h3 class="text-center bg-primary text-light rounded-pill">EDIT TODO</h3>
+        <div class="card bg-warning text-dark">
           <div class="card-body">
             <form onsubmit="editTodoSubmit(${id}, event)">
-              <div class="form-group">
-                <label for="title-todo">Title :</label>
-                <input type="text" class="form-control" id="title-todo-edit" value="${title}" placeholder="Title">
+              <div class="form-row font-weight-bold">
+                <div class="col-sm col-auto">
+                  <div class="form-group">
+                    <label for="title-todo-edit">Title :</label>
+                    <input type="text" class="form-control" id="title-todo-edit" placeholder="Title" value="${title}">
+                  </div>
+                </div>
+                <div class="col-sm col-auto">
+                  <div class="form-group">
+                    <label for="desc-todo-edit">Description :</label>
+                    <input type="text" class="form-control" id="desc-todo-edit" placeholder="Description" value="${description}">
+                  </div>
+                </div>
+                <div class="col-sm col-auto">
+                  <div class="form-group">
+                    <label for="status-todo-edit">Status :</label>
+                    <select id="status-todo-edit" class="form-control">
+                      <option value="Undone" selected>Undone</option>
+                      <option value="Done">Done</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm col-auto">
+                  <div class="form-group">
+                    <label for="duedate-todo-edit">Due Date :</label>
+                    <input class="form-control" type="date" value="${due_date}" id="duedate-todo-edit">
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="desc-todo">Description :</label>
-                <input type="text" class="form-control" id="desc-todo-edit" value="${description}" placeholder="Description">
-              </div>
-              <div class="form-group">
-                <label for="status-todo">Status :</label>
-                <select id="status-todo-edit" class="form-control">
-                  <option value="Undone">Undone</option>
-                  <option value="Done">Done</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="duedate-todo">Due Date :</label>
-                <input class="form-control" type="date" value="${due_date}" id="duedate-todo-edit">
-              </div>
-              <div class="text-center justify-content-center">
-                <button type="submit" class="btn btn-warning">Edit Todo</button>
+              <div class="form-row mt-3">
+                <div class="col-sm col-auto">
+                  <div class="text-center justify-content-center">
+                    <button type="submit" class="btn btn-primary">EDIT TODO</button>
+                    <button class="btn btn-danger" onclick="cancelEdit()">CANCEL</button>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-  </div>
   `)
+}
+
+function cancelEdit() {
+  $('#edit-box-todo').empty();
 }
 
 function editTodoSubmit(id, e) {
@@ -349,6 +358,7 @@ function editTodoSubmit(id, e) {
       'Your todo has been edited.',
       'success'
     );
+    $('#edit-box-todo').empty();
     readTodo();
   })
   .fail(err => {

@@ -147,28 +147,29 @@
                     <form onsubmit="createTodo(event)">
                       <div class="form-row font-weight-bold">
                         <div class="col-sm col-auto">
-                          <div class="form-group mx-sm-3 mb-2">
+                          <div class="form-group">
                             <label for="title-todo">Title :</label>
                             <input type="text" class="form-control" id="title-todo" placeholder="Title">
                           </div>
                         </div>
                         <div class="col-sm col-auto">
-                          <div class="form-group mx-sm-3 mb-2">
+                          <div class="form-group">
                             <label for="desc-todo">Description :</label>
                             <input type="text" class="form-control" id="desc-todo" placeholder="Description">
                           </div>
                         </div>
                         <div class="col-sm col-auto">
-                          <div class="form-group mx-sm-3 mb-2">
+                          <div class="form-group">
                             <label for="status-todo">Status :</label>
                             <select id="status-todo" class="form-control">
-                              <option value="Undone" selected>Undone</option>
+                              <option value="" selected>Select</option>
+                              <option value="Undone">Undone</option>
                               <option value="Done">Done</option>
                             </select>
                           </div>
                         </div>
                         <div class="col-sm col-auto">
-                          <div class="form-group mx-sm-3 mb-2">
+                          <div class="form-group">
                             <label for="duedate-todo">Due Date :</label>
                             <input class="form-control" type="date" value="" id="duedate-todo">
                           </div>
@@ -188,6 +189,12 @@
             </div>
           </div>
           <!-- FORM ADD TODO -->
+
+          <!-- FORM EDIT TODO -->
+          <div id="edit-box-todo" class="row">
+            <!-- APPEND -->
+          </div>
+          <!-- FORM EDIT TODO -->
           
           <!-- TODO -->
           <div class="row row-todo">
