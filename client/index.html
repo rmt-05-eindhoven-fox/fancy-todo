@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- META UNTUK GOOGLE SIGN-IN-->
+  <meta name="google-signin-client_id"
+    content="498807088801-tvti3e47rcbqf4kd3105jp6opiktcp19.apps.googleusercontent.com">
+  <!-- END META UNTUK GOOGLE SIGN-IN-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- FORM LOGIN -->
+  <section id="login">
+    <div class="container-fluid ">
+      <div class="row justify-content-center mt-5">
+        <div class="col-4">
+          <form action="" onsubmit="login(event)">
+            <div class="form-group">
+              <label for="email"> Email</label>
+              <input type="email" name="email" id="email" class="form-control" autocomplete="current-email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" class="form-control" autocomplete="current-password">
+            </div>
+            <div class="row justify-content-center">
+              <button type="submit" class="btn btn-primary">LOGIN</button>
+              <div class="g-signin2" data-onsuccess="onSignIn" style="margin-left: 20px;"></div>
+              <!--<a href="#" class="btn btn-primary" onclick="signOut();" style="margin-left: 20px;">Sign out</a>-->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- END FORM LOGIN-->
+
+  <!--MENU UTAMA-->
+  <section id="mainPage" class="container-fluid">
+    <div class="jumbotron text-center" style="margin-bottom:0">
+      <h1>My First Bootstrap 4 Page</h1>
+      <p>Resize this responsive page to see the effect!</p>
+    </div>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="userMenu">
+      <a class="navbar-brand" href="#" id="namaUser"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="logout()">LOGOUT</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="fetchMyTodo()">My Todo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="formAddTodo()">Add Todo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!--END MENU UTAMA-->
+    <!-- CONTENT MY TODO -->
+    <div class="container" id="containerMyTodo">
+      <div class="bg-light" id="myTodo" style="margin-top: 10px;">
+      </div>
+    </div>
+    <!-- CONTENT MY TODO -->
+    <section id="formAddTodo">
+      <form onsubmit="addTodo(event)">
+        <div>
+          <table>
+            <tr>
+              <th>
+                <label for="">Title</label>
+              </th>
+              <td>
+                <input type="text" name="title" id="title">
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label for="">Description</label>
+              </th>
+              <td>
+                <textarea rows="4" cols="50" name="comment" form="usrform" id="description">
+                          Enter text here...</textarea>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label for="">Due Date</label>
+              </th>
+              <td>
+                <input type="date" name="due_date" id="due_date">
+              </td>
+            </tr>
+          </table>
+          <button type="submit"> Add Todo</button>
+        </div>
+      </form>
+    </section>
+    <section id="formUpdateTodo">
+      <form onsubmit="updateTodo(event)">
+        <input type="text" name="updateId" id="updateId" hidden>
+        <div>
+          <table>
+            <tr>
+              <th>
+                <label for="">Title</label>
+              </th>
+              <td>
+                <input type="text" name="title" id="updateTitle">
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label for="">Description</label>
+              </th>
+              <td>
+                <textarea rows="4" cols="50" name="comment" form="usrform" id="updateDescription">
+                              Enter text here...</textarea>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label for="">Due Date</label>
+              </th>
+              <td>
+                <input type="date" name="due_date" id="updateDue_date">
+              </td>
+            </tr>
+          </table>
+          <button type="submit"> Update Todo</button>
+        </div>
+      </form>
+    </section>
+  </section>
+
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- SCRIPT UNTUK GOOGLE SIGN-IN-->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- END SCRIPT UNTUK GOOGLE SIGN-IN-->
+  <script src="index.js"></script>
+</body>
+
+</html>
