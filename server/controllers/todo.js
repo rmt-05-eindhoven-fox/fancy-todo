@@ -47,7 +47,7 @@ class TodoController{
     static put(req, res, next){
         const { title, description, status, due_date } = req.body
         Todo.update({
-            title, description, status, due_date
+            title, description, due_date
         }, {
             where: { id: req.params.id}
         })
@@ -65,7 +65,7 @@ class TodoController{
     static patch(req, res, next){
         const { status } = req.body
         Todo.update({
-            status
+            status: true
         }, {
             where: { id: req.params.id }
         })

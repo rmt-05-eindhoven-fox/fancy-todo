@@ -1,35 +1,9 @@
 const { User } = require('../models/index')
 const bcrypt = require('bcryptjs')
 const { generateToken } = require('../helper/jwt')
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 
 class UserController{
-    static loginGoogle(req, res, next){
-        const { google_token } = req.body
-        const client = new OAuth2Client(process.env.CLIENTID);
-        client.verifyIdToken({
-            idToken: google_token,
-            audience: process.env.CLIENTID
-        })
-        .then(ticket => {
-            let payload = ticket.getPayload()
-            return User.findOne({where: {email: payload.email}})
-        })
-        .then(user => {
-            if(user){
-                return user
-            }else{
-                return User.create({email: payload.email, password: "random"})
-            }
-        })
-        .then(dataUser => {
-            let token = generateToken({id: dataUser.id, email: dataUser.email})
-            return res.status(201).json({ token })
-        })
-        .catch(err => {
-            next(err)
-        })
-    }
     static register(req, res, next){
         const { email, password } = req.body
         User.create({
@@ -72,6 +46,37 @@ class UserController{
             .catch((err) => {
                 next(err)
             })
+    }
+    static loginGoogle(req, res, next){
+        const { google_token } = req.body // isinya data google-token
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        let payload; 
+        
+        client.verifyIdToken({
+            idToken: google_token,
+            audience: process.env.CLIENT_ID
+        })
+        .then(ticket => {
+            payload = ticket.getPayload()
+            // console.log(payload, 'ini payload')
+            return User.findOne({where: {email: payload.email}})
+        })
+        .then(user => {
+            if(user){
+                return user
+            }else{
+                return User.create({email: payload.email, password: "random"})
+            }
+        })
+        .then(dataUser => {
+            let payload = {id: dataUser.id, email: dataUser.email}
+            let token = generateToken(payload)
+            return res.status(200).json({ token })
+        })
+        .catch(err => {
+            // console.log(err, 'ini dari server')
+            next(err)
+        })
     }
 }
 
