@@ -48,6 +48,34 @@ function login(event) {
   })
 }
 
+//google sign-in
+function onSignIn(googleUser) {
+  // var profile = googleUser.getBasicProfile();
+  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  // console.log('Name: ' + profile.getName());
+  // console.log('Image URL: ' + profile.getImageUrl());
+  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  var google_access_token = googleUser.getAuthResponse().id_token;
+
+  //verify to backend
+  $.ajax({
+    method: 'POST',
+    url: SERVER + '/user/googleLogin',
+    data: {
+      google_access_token: google_access_token
+    }
+  })
+  .done(response => {
+    const token = response.access_token
+    localStorage.setItem("token", token)
+    afterLogin()
+  })
+  .fail(err => {
+    console.log(err)
+  })
+}
+
+
 function register (event) {
   event.preventDefault()
   const email = $("#register-email").val()
@@ -80,7 +108,19 @@ function afterLogin () {
   $("#error").hide()
   $("#form_add").empty()
   $("#form_edit").empty()
+  $("#show_movie").empty()
   fetchData()
+}
+
+function beforeLogin () {
+  $("#login").show()
+  $("#register").hide()
+  $("#content").hide()
+  $(".navbar").hide()
+  $("#error").hide()
+  $("#form_add").empty()
+  $("#form_edit").empty()
+  $("#show_movie").empty()
 }
 
 function showError (error) {
@@ -108,7 +148,6 @@ function fetchData () {
     $("#show_todos").empty()
     let result = `
     <h1>Todo List</h1>
-    <a class="btn btn-primary" onclick="addData()">Add</a>
     <table border=1>
       <tr>
         <th>Title</th>
@@ -187,7 +226,7 @@ function addDataPost (event) {
   const description = $("#add-description").val()
   const status = $("#add-status").val()
   const due_date = $("#add-due_date").val()
-console.log(due_date)
+
   $.ajax({
     method: "POST",
     url: SERVER + `/todos/`,
@@ -314,6 +353,50 @@ function editDataPut (id, event) {
   })
 }
 
+function fetchMovie () {
+  const token = localStorage.getItem("token")
+
+  $.ajax({
+    method: 'GET',
+    url: SERVER + '/movies/popular',
+    headers: {
+      access_token: token
+    }
+  })
+  .done(response => {
+    let result = `<h2>Popular Movies</h2><div class="row">`
+    response.forEach(element => {
+      result += `
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <img src="http://image.tmdb.org/t/p/w185/${element.poster_path}" class="card-img" alt="http://image.tmdb.org/t/p/w185/${element.backdrop_path}">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">${element.title}</h5>
+                <p class="card-text">${element.overview}</p>
+                <p class="card-text"><small class="text-muted">Release Date: ${element.release_date}</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    result += '</div>'
+    $("#show_todos").empty()
+    $("#form_add").empty()
+    $("#form_edit").empty()
+    $("#show_movie").show()
+    $("#show_movie").empty()
+    $("#show_movie").append(`${result}`)
+  })
+  .fail(err => {
+    console.log(err)
+    showError(err.responseJSON.message)
+  })
+}
+
 function deleteData (id) {
   const token = localStorage.getItem("token")
 
@@ -333,6 +416,18 @@ function deleteData (id) {
   })
 }
 
+//google sign-out
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut()
+  .then(function () {
+    console.log('User signed out.');
+  })
+  .catch((err) => {
+    showError(err.responseJSON.message)
+  })
+}
+
 function logout () {
   $("#login").show()
   $("#register").hide()
@@ -340,4 +435,5 @@ function logout () {
   $("#error").hide()
   $(".navbar").hide()
   localStorage.removeItem("token")
+  signOut()
 }

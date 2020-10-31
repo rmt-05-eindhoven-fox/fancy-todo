@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const todoController = require('../Controller/todoController.js');
-const { authentication, authorization } = require('../middleware/auth.js');
+const { authorization } = require('../middleware/auth.js');
 
-router.use(authentication);
 router.post('/', todoController.create);
 router.get('/', todoController.showAll);
 router.get('/:id', todoController.showOne);
