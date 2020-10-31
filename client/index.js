@@ -157,6 +157,7 @@ function afterLogin() {
   clearRegisterValue();
   clearLogin();
   setProfile();
+  loadTodo();
 }
 
 function afterSignOut() {
@@ -241,6 +242,23 @@ function showEditTodo(e, todoId) {
   $('#add-todo').hide()
   $('#edit-todo').show()
   $('#modalTodo').modal('toggle');
+}
+
+function loadTodo() {
+  $.ajax({
+    method: "GET",
+    url: base_url + "/todos",
+    headers: {
+      accesstoken
+    }
+  })
+    .done(response => {
+      console.log(response)
+    })
+    .fail(err => {
+      let message = checkError(err);
+      Swal.fire('Register Failed!', message, 'error')
+    })
 }
 
 function addTodo(e) {
