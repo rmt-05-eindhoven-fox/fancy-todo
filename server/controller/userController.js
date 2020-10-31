@@ -1,3 +1,4 @@
+const {OAuth2Client} = require('google-auth-library');
 const { User } = require("../models/index")
 const { compare } = require('../helpers/bcrypt')
 const { signToken } = require("../helpers/jwt")
@@ -17,6 +18,7 @@ class UserController {
             })
         })
         .catch(err => {
+            // console.log(err, "masuk ke sini bro")
             next(err)
         })
     }
@@ -32,12 +34,12 @@ class UserController {
         })
         .then(data => {
             if (!data){
-                res.status(401).json({
+                throw res.status(401).json({
                     message: "wrong email/password"
                 })
             }
             else if(!compare(payload.password, data.password)){
-                res.status(401).json({
+                throw res.status(401).json({
                     message: "wrong email/password"
                 })
             }
@@ -50,9 +52,46 @@ class UserController {
             }
         })
         .catch(err => {
+            // console.log(err, "masuk ke sini bro")
             next(err)
         })
     }
+    static googleSignIn (req, res, next){
+        let {google_access_token} = req.body
+        const client = new OAuth2Client("1095760211786-qokfg5qdtd90at78uq37gtaj3u5385uu.apps.googleusercontent.com")
+        let email;
+        client.verifyIdToken({
+            idToken: google_access_token,
+            audience: "1095760211786-qokfg5qdtd90at78uq37gtaj3u5385uu.apps.googleusercontent.com"
+        })
+        .then(ticket => {
+            let payload = ticket.getPayload()
+            email = payload.email
+            return User.findOne({
+            where: {email: payload.email}
+          })
+        .then(user =>{
+            if(user){
+                return user
+            } 
+            else {
+                let newUser = {
+                    email,
+                    password: "12345",
+                }
+                return User.create(newUser)
+            }
+          })
+        })
+        .then(data => {
+            let token = signToken({id: data.id, email: data.email})
+            return res.status(200).json(token)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+    
 }
 
 module.exports = UserController

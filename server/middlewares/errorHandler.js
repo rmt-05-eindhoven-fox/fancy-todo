@@ -1,6 +1,6 @@
-const e = require("express");
 
 module.exports = function(err, req, res, next){
+    // console.log("masuk ke sini bro")
     let status = 500
     let msg = err.name || "internal server error"
     if (msg === "SequelizeValidationError"){
