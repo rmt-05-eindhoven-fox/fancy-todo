@@ -2,6 +2,7 @@ const server = "http://localhost:3000"
 
 $(document).ready(() => {
    const token = localStorage.getItem("token")
+   $("#add-discord-username").hide()
    if (token) {
       $("#homepage").show()
       $("#login").hide()
@@ -14,6 +15,13 @@ $(document).ready(() => {
       $("#register").hide()
       $("#nav-bar").hide()
    }
+
+   $("#btn-add-discord").on("click", function () {
+      $("#homepage").hide()
+      $("#add-discord-username").show()
+      $("#discord-add-form").show()
+      $("#discord-add-success").hide()
+   })
 
    $("#btn-logout").on("click", function () {
       logout()
@@ -41,7 +49,7 @@ login = (event) => {
    $("#nav-bar").show()
    $.ajax({
          type: "POST",
-         url: server + "/login",
+         url: server + "/user/login",
          data: {
             email,
             password
@@ -54,6 +62,9 @@ login = (event) => {
          $("#register").hide()
          $("#login-email").val("")
          $("#login-password").val("")
+
+         $("#btn-logout-google").hide()
+         $("#btn-logout-normal").show()
          getAllTodos()
 
       })
@@ -61,10 +72,88 @@ login = (event) => {
          $("#alert-message").empty()
          $("#alert-message").append(`
          <div class="alert alert-danger ">
-            <strong>Error! ${err.responseJSON.message}</strong>.
+            <strong>Error! ${err.responseJSON.error}</strong>.
          </div>   
          `)
+         $("#homepage").hide()
+         $("#navbar").hide()
+         console.log(err);
       })
+}
+
+onSignIn = (googleUser) => {
+   // $("#login").hide()
+
+   var id_token = googleUser.getAuthResponse().id_token;
+   
+   $.ajax({
+      method: "POST",
+      url: server + "/user/googleLogin",
+      data: {
+         id_token
+      },
+   })
+   .done(res => {
+      const token = res.access_token
+      localStorage.setItem('token', token)
+      $("#homepage").show()
+      $("#login").hide()
+      $("#register").hide()
+      $("#login-email").val("")
+      $("#login-password").val("")
+
+      $("#btn-logout-google").show()
+      $("#btn-logout-normal").hide()
+      $("#todo-list").empty()
+      getAllTodos()
+   })
+   .fail(err => {
+      console.log(err);
+   })
+}
+
+addDiscordUsername = (event) => {
+   event.preventDefault()
+   // $("#add-discord-username").show()
+   // $("#homepage").hide()
+   // $("discord-add-form").show()
+   // $("#discord-add-success").hide()
+   const token = localStorage.getItem('token')
+   const username = $("#discord-username").val()
+
+   $.ajax({
+      method: "PATCH",
+      url: server + "/user/add-discord",
+      data: {
+         token,
+         username
+      },
+   })
+   .done(res => {
+      $("#discord-add-form").hide()
+      $("#alert-message-discord-sucess").empty()
+      $("#alert-message-discord-sucess").append(`
+         <div class="alert alert-success ">
+            <strong>Congratulations!</strong>.
+            <br>Your account is now integrated with Discord.
+            <br>And you can click the link below to join our server to start getting reminder from our Bot.
+         </div>
+
+         
+         <button type="button" class="btn btn-outline-success" onclick="backToHome()">Back To Homepage</button>
+         <a target="_blank" style="margin-right: 30px;" class="btn btn-outline-info" href="https://discord.gg/s5kJQTzUJ2" role="button">Join Discord Server</a>
+      `)
+      $("#discord-add-success").show()
+   })
+   .catch(err => {
+      $("#alert-message-discord").empty()
+      $("#alert-message-discord").append(`
+         <div class="alert alert-danger ">
+            <strong>Error! ${err.responseJSON.error}</strong>.
+         </div>   
+      `)
+      console.log(err);
+   })
 }
 
 register = (event) => {
@@ -75,7 +164,7 @@ register = (event) => {
    // console.log(email, password);
    $.ajax({
          type: "POST",
-         url: server + "/register",
+         url: server + "/user/register",
          data: {
             username,
             email,
@@ -91,13 +180,13 @@ register = (event) => {
          $("#register").hide()
       })
       .fail(err => {
-         $("#alert-message").empty()
-         $("#alert-message").append(`
+         $("#alert-message-register").empty()
+         $("#alert-message-register").append(`
          <div class="alert alert-danger ">
-            <strong>Error! ${err.responseJSON.message}</strong>.
+            <strong>Error! ${err.responseJSON.error}</strong>.
          </div>   
          `)
-         
+         console.log(err);
       })
 }
 
@@ -107,14 +196,21 @@ logout = () => {
    $("#todo-list").empty()
    $("#nav-bar").hide()
    localStorage.removeItem("token")
+
+   var auth2 = gapi.auth2.getAuthInstance();
+   auth2.signOut().then(function () {
+      console.log('User signed out.');
+   });
 }
 
 getAllTodos = () => {
+   $("#btn-logout-normal").show()
    $("#todos").show()
    $("#discord").hide()
    $("#edit-todo-form").hide()
    // $("#edit-user-form").empty()
    $("#nav-bar").show()
+   
    const token = localStorage.getItem("token")
    $.ajax({
          type: "GET",
@@ -294,8 +390,8 @@ createTodo = (event) => {
          getAllTodos()
       })
       .fail(err => {
-         $("#alert-message").empty()
-         $("#alert-message").append(`
+         $("#alert-message-create-todo").empty()
+         $("#alert-message-create-todo").append(`
          <div class="alert alert-danger ">
             <strong>Error! ${err.responseJSON.error}</strong>.
          </div>   
@@ -320,6 +416,8 @@ formatDate = (date) => {
 backToHome = () => {
    $("#todo-list").empty()
    $("#edit-todo-form").empty()
+   $("#add-discord-username").hide()
+   $("#homepage").show()
    getAllTodos()
 }
 
