@@ -9,52 +9,276 @@
     content="587928803783-gpma25dc0lregt0781id9sef0dq3o3ka.apps.googleusercontent.com">
   <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
   <title>:: My Fancy Todo ::</title>
+
   <!-- Favicon-->
   <link rel="icon" href="public/images/logo.png" type="image/x-icon">
-  <!-- Custom Css -->
+
+  <!-- Bootsrap -->
   <link rel="stylesheet" href="public/css/bootstrap.min.css">
+
+  <!-- Custom Css -->
   <link rel="stylesheet" href="public/css/style.min.css">
+
   <!-- Sweetalert -->
   <link rel="stylesheet" href="public/plugins/sweetalert2/sweetalert2.min.css">
 </head>
 
 <body class="theme-blush">
 
-  <div class="authentication" id="page-authetication">
+  <!-- ! Main Content -->
+  <section class="content" id="page-home" style="display: none;">
+    <div class="body_scroll">
+      <div class="block-header">
+        <div class="row">
+          <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>My Fancy Todo</h2>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Home</a></li>
+              <!-- <li class="breadcrumb-item">Project</li> -->
+              <li class="breadcrumb-item active">Todo</li>
+            </ul>
+            <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+                class="zmdi zmdi-sort-amount-desc"></i></button> -->
+          </div>
+          <div class="col-lg-5 col-md-6 col-sm-12">
+            <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i
+                class="zmdi zmdi-arrow-right"></i></button>
+            <button class="btn btn-success btn-icon float-right" data-toggle="modal" data-target="#addTodo"
+              data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row clearfix">
+
+          <!-- TODO: Missed Todo -->
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Missed</strong> Todo</h2>
+                <!-- <ul class="header-dropdown">
+                  <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addTodo"><i
+                        class="icon-plus"></i></a></li>
+                </ul> -->
+              </div>
+              <div class="body taskboard planned_task">
+                <div class="dd" data-plugin="nestable">
+                  <ol class="dd-list">
+
+                    <!-- * List Missed Todo -->
+                    <li class="dd-item" data-id="2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="dd-handle  h6 mb-0">Sites to review</div>
+                      </div>
+                      <div class="dd-content p-15">
+                        <p>Contrary to popular belief, Lorem Ipsum is not simply.</p>
+                        <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                          <li class="mr-2 flex-grow-1 bd-highlight">
+                            <span class="badge badge-default">
+                              <i class="zmdi zmdi-time"></i> 28 Jan
+                            </span>
+                          </li>
+                          <li class="ml-3 bd-highlight action">
+                            <a href="javascript:void(0);" class="text-muted">
+                              <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
+                            </a>
+                          </li>
+                          <li class="ml-3 bd-highlight action">
+                            <a href="javascript:void(0);" class="text-muted">
+                              <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODO: Active Todo -->
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Active</strong> todo</h2>
+              </div>
+              <div class="body taskboard progress_task">
+                <div class="dd" data-plugin="nestable">
+                  <ol class="dd-list">
+
+                    <li class="dd-item" data-id="2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="dd-handle  h6 mb-0">Sites to review</div>
+                      </div>
+                      <div class="dd-content p-15">
+                        <p>Contrary to popular belief, Lorem Ipsum is not simply.</p>
+                        <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                          <li class="mr-2 flex-grow-1 bd-highlight">
+                            <span class="badge badge-default">
+                              <i class="zmdi zmdi-time"></i> 28 Jan
+                            </span>
+                          </li>
+                          <li class="ml-3 bd-highlight action">
+                            <a href="javascript:void(0);" class="text-muted">
+                              <i class="zmdi zmdi-edit" style="font-size: 1.2rem; color: grey;"></i>
+                            </a>
+                          </li>
+                          <li class="ml-3 bd-highlight action">
+                            <a href="javascript:void(0);" class="text-muted">
+                              <i class="zmdi zmdi-assignment-check" style="font-size: 1.2rem; color: grey;"></i>
+                            </a>
+                          <li class="ml-3 bd-highlight action">
+                            <a href="javascript:void(0);" class="text-muted">
+                              <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODO: CompletedTodo -->
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Completed</strong> Todo</h2>
+              </div>
+              <div class="body taskboard completed_task">
+                <div class="dd" data-plugin="nestable">
+                  <ol class="dd-list">
+                    <li class="dd-item" data-id="2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="dd-handle  h6 mb-0">Sites to review</div>
+                      </div>
+                      <div class="dd-content p-15">
+                        <p>Contrary to popular belief, Lorem Ipsum is not simply.</p>
+                        <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                          <li class="mr-2 flex-grow-1 bd-highlight">
+                            <span class="badge badge-default">
+                              <i class="zmdi zmdi-time"></i> 28 Jan
+                            </span>
+                          </li>
+                          <li class="ml-3 bd-highlight action">
+                            <a href="javascript:void(0);" class="text-muted">
+                              <i class="zmdi zmdi-delete" style="font-size: 1.2rem; color: grey;"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TODO: Page Authentication -->
+  <div class="authentication" id="page-authetication" style="display: true;">
     <div class="container">
       <div class="row">
-        <div class="col-lg-4 col-sm-12" id="form-login">
-          <form class="card auth_form" onsubmit="login(event)">
-            <div class="header">
-              <img class="logo" src="public/images/logo.png" alt="">
-              <h5>Log in</h5>
-            </div>
-            <div class="body">
-              <div class="input-group mb-3">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+        <div class="col-lg-4 col-sm-12">
+
+          <!-- TODO: Strat Form Login -->
+          <div id="form-login" style="display: block;">
+            <form class="card auth_form" onsubmit="login(event)">
+              <div class="header">
+                <img class="logo" src="public/images/logo.png" alt="">
+                <h5>Log in</h5>
+              </div>
+              <div class="body">
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                  </div>
+                  <input type="text" id="login-username" class="form-control" placeholder="Username">
                 </div>
-                <input type="text" id="login-username" class="form-control" placeholder="Username">
-              </div>
-              <div class="input-group mb-3">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" id="login-password" class="form-control" placeholder="Password">
                 </div>
-                <input type="password" id="login-password" class="form-control" placeholder="Password">
+                <!-- <div class="checkbox">
+                  <input id="remember_me" type="checkbox">
+                  <label for="remember_me">Remember Me</label>
+                </div> -->
+                <div class="signin_with">
+                  <button type="submit" class="btn-lg btn-link" onclick="showRegister(event)">Register new
+                    membership?</button>
+                </div>
+
+                <button class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
+                <div class="signin_with mt-3">
+                  <p class="mb-0">or Sign Up using</p>
+                  <button class="btn btn-link btn-icon btn-lg btn-icon-mini btn-round g-signin2" data-height="59"
+                    data-onsuccess="onSignIn"></button>
+                  <a href="#" onclick="signOut(event);">Sign out</a>
+                </div>
               </div>
-              <!-- <div class="checkbox">
-                <input id="remember_me" type="checkbox">
-                <label for="remember_me">Remember Me</label>
-              </div> -->
-              <button class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
-              <div class="signin_with mt-3">
-                <p class="mb-0">or Sign Up using</p>
-                <button class="btn btn-link btn-icon btn-lg btn-icon-mini btn-round g-signin2" data-height="59"
-                  data-onsuccess="onSignIn"></button>
-                <a href="#" onclick="signOut(event);">Sign out</a>
+            </form>
+          </div>
+          <!-- * End Form Login -->
+
+          <!-- TODO: Start Form Register -->
+          <div id="form-register" style="display: none;">
+            <form class="card auth_form" onsubmit="register(event)">
+              <div class="header">
+                <img class="logo" src="public/images/logo.png" alt="">
+                <h5>Sign Up</h5>
+                <span>Register a new membership</span>
               </div>
-            </div>
-          </form>
+              <div class="body">
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                  </div>
+                  <input type="text" class="form-control" id="register-username" placeholder="Username" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                  </div>
+                  <input type="email" class="form-control" id="register-email" placeholder="Enter Email" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" id="register-password" placeholder="Password" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" id="register-retype-password"
+                    placeholder="Retype password" required>
+                </div>
+                <div class="checkbox">
+                  <input id="remember_me" type="checkbox">
+                  <label for="remember_me">I read and agree to the <a href="javascript:void(0);">terms of
+                      usage</a></label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">SIGN UP</button>
+                <div class="signin_with mt-3">
+                  <button type="submit" class="btn-lg btn-link" onclick="showLogin(event)">You already have a
+                    membership?</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- * END FORM REGISTER -->
           <div class="copyright text-center">
             <span>Fancy Todo &COPY;
               <script> document.write(new Date().getFullYear()) </script> </span>
@@ -70,17 +294,64 @@
     </div>
   </div>
 
-  <!-- Jquery Core Js -->
+  <!-- todo: Add New Todo -->
+  <div class="modal fade" id="addTodo" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="title" id="defaultModalLabel">Add New Todo</h6>
+        </div>
+        <form onsumbit="addTodo(e)">
+          <div class="modal-body">
+            <div class="row clearfix">
+              <div class="col-12">
+                <div class="form-group">
+                  <input type="text" id="todo-title" class="form-control" maxlength="20" placeholder="Title.." required>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <textarea type="text" id="todo-description" class="form-control" style="height: 100px;"
+                    maxlength="255" placeholder="Description.."></textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <input type="date" id="todo-due_date" class="form-control" min="2020-10-31" required>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Add Todo</button>
+            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JQuery Library -->
   <script type="text/javascript" src="public/js/jquery/jquery.js"></script>
-  <script type="text/javascript" src="public/js/bundles/libscripts.bundle.js"></script>
+
+  <!-- Jquery Core Js -->
+  <script src="public/js/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
   <script src="public/js/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
-  
+  <!-- Jquery Nestable -->
+  <!-- <script src="public/plugins/nestable/jquery.nestable.js"></script> -->
+
+  <script src="public/js/bundles/mainscripts.bundle.js"></script>
+  <script src="public/js/sortable-nestable.js"></script>
+
+  <!-- Sweet Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
-  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script> -->
 
+  <!-- App JS -->
   <script type="text/javascript" src="index.js"></script>
 
+  <!-- Google Library -->
   <script src="https://apis.google.com/js/platform.js" async defer></script><!-- oauth goole -->
 
 </body>

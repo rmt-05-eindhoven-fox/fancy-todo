@@ -33,7 +33,7 @@ class UserController {
           } else {
             const { id, username, email } = user;
             const jwt = generateToken({ id, username, email });
-            res.status(200).json({ accesstoken: jwt });
+            res.status(200).json({ accesstoken: jwt, username, email, userid: id });
           }
         }
       }).catch((err) => {
