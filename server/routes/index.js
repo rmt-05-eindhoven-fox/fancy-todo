@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const todoRoutes = require('./todo')
 const userRoutes = require('./user')
-const gifRoutes = require('./gif')
+const favqRoutes =require('./favq')
 
 router.use('/todos', todoRoutes)
 router.use('/', userRoutes)
-router.use('/gif', gifRoutes)
+router.use('/', favqRoutes)
 
 module.exports = router
