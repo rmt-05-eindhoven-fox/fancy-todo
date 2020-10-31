@@ -306,7 +306,7 @@ function editTodo(e, todoId) {
         text: ``,
         icon: 'success',
         willClose: () => {
-          afterAddTodo()
+          afterEditTodo()
         }
       })
     })
