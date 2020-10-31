@@ -1,4 +1,5 @@
 'use strict';
+const moment = require("moment")
 const {
   Model, DATE
 } = require('sequelize');
@@ -16,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   Todo.init({
     title: {
       type: DataTypes.STRING,
+      allowNull: {
+        args: false,
+        msg: 'You must fill the title'
+      },
       validate: {
         notEmpty: {
           args: true,
@@ -26,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     status: {
       type: DataTypes.STRING,
+      allowNull: {
+        args: false,
+        msg: 'You must fill the title'
+      },
       validate: {
         notEmpty: {
           args: true,
@@ -35,14 +44,22 @@ module.exports = (sequelize, DataTypes) => {
     },
     due_date: {
       type: DataTypes.DATE,
+      allowNull: {
+        args: false,
+        msg: 'You must fill the title'
+      },
       validate: {
         isAfter: {
-          args: new Date().toISOString().split('T')[0],
-          msg: `Due date must be after or equal ${new Date().toISOString().split('T')[0]}`
+          args: moment().subtract(1, 'days').format().split('T')[0],
+          msg: `Due date must be after ${moment().subtract(1, 'days').format().split('T')[0]}`
         },
         notEmpty: {
           args: true,
           msg: 'You must fill the due date'
+        },
+        isDate: {
+          args: true,
+          msg: 'Format must be mm/dd/yyyy'
         }
       }
     }

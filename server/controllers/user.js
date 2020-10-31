@@ -1,6 +1,7 @@
 const { Todo, User } = require("../models");
 const { signToken } = require("../helpers/jwt");
 const { comparePassword } = require("../helpers/bcrypt");
+const {OAuth2Client} = require('google-auth-library');
 
 class UserController {
 	static async register (req, res, next) {
@@ -40,6 +41,39 @@ class UserController {
 			next(err)
 		}
 	}
+
+	static async googleLogin(req, res, next) {
+		const { google_access_token } = req.body
+		const client = new OAuth2Client(process.env.CLIENT_ID);
+
+		try {
+			const ticket = await client.verifyIdToken({
+				idToken: google_access_token,
+				audience: process.env.CLIENT_ID
+			});
+			
+			const payload = ticket.getPayload();
+			const email = payload.email
+
+			let user = await User.findOne({ where: { email } })
+			
+			if (!user) {
+				const newUser = {
+					email,
+					password: 'apaajaboleh'
+				}
+				user = await User.create(newUser)
+			}
+			console.log(user);
+
+			const access_token = signToken(user.id)
+			res.status(200).json({ access_token })	
+		} catch(err) {
+			next(err)
+		}
+	}
+
 }
+
 
 module.exports = UserController;

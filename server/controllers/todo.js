@@ -19,7 +19,7 @@ class TodoController {
 		const UserId = req.loggedIn
 
 		try {
-			const todos = await Todo.findAll()
+			const todos = await Todo.findAll({ where: { UserId } })
 			res.status(200).json(todos)
 		} catch (err) {
 			next(err)
@@ -48,7 +48,7 @@ class TodoController {
 			if (todo) {
 				await Todo.update({
 					title, description, status, due_date
-				}, { where: { id }})
+				}, { where: { id } })
 				res.status(200).json(req.body)
 			} else {
 				throw { msg: 'NOT FOUND', status: 404 }
