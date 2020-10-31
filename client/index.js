@@ -52,7 +52,7 @@ function prosesRegister(input) {
     })
 }
 
-function clearRegisterValue() { 
+function clearRegisterValue() {
   $('#register-username').val('')
   $('#register-email').val('')
   $('#register-password').val('')
@@ -89,7 +89,7 @@ function login(e) {
       password
     }
   })
-    .done(response => { 
+    .done(response => {
       saveUserInfo(response);
       Swal.fire({
         title: 'Access Granted!',
@@ -97,7 +97,7 @@ function login(e) {
         icon: 'success',
         onClose: () => {
           afterLogin()
-          clearRegisterLogin()
+          clearLogin()
         }
       })
     })
@@ -112,18 +112,28 @@ function login(e) {
     })
 }
 
-function clearRegisterLogin() { 
+function clearLogin() {
   const username = $("#login-username").val('')
   const password = $("#login-password").val('')
 }
 
-function afterLogin() { 
+function afterLogin() {
+  $('#page-authetication').hide();
   $('#form-login').hide();
   $('#form-register').hide();
-  $('#form-register').hide();
-  $('#page-authetication').hide();
+  $('#right-sidebar').show();
+  $('#page-home').show();
   clearRegisterValue();
-  clearRegisterLogin();
+  clearLogin();
+}
+
+function afterSignOut() {
+  $('#page-authetication').show();
+  $('#form-login').show();
+  $('#form-register').hide();
+  $('#page-home').hide();
+  $('#right-sidebar').hide();
+
 }
 
 //google signin
@@ -156,6 +166,7 @@ function signOut(e) {
     confirmButtonText: 'Yes, Logout!'
   }).then((result) => {
     if (result.isConfirmed) {
+      afterSignOut();
       googleSignOut();
     }
   })
@@ -181,3 +192,7 @@ function destroyUserInfo() {
   localStorage.clear();
 }
 
+function addTodo(e) {
+  e.preventDefault();
+  alert('clicked')
+}

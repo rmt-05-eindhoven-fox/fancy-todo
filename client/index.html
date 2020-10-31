@@ -24,6 +24,114 @@
 </head>
 
 <body class="theme-blush">
+  <!-- Page Loader -->
+  <div class="page-loader-wrapper">
+    <div class="loader">
+      <div class="m-t-30"><img class="zmdi-hc-spin" src="public/images/ajax-progres.gif" height="48" alt="Loading">
+      </div>
+      <p>Please wait...</p>
+    </div>
+  </div>
+
+  <!-- Overlay For Sidebars -->
+  <div class="overlay"></div>
+
+  <!-- ! Right Sidebar -->
+  <!-- Right Icon menu Sidebar -->
+  <div id="right-sidebar" style="display: none;">
+    <div class="navbar-right m-t-60">
+      <ul class="navbar-nav">
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i
+              class="zmdi zmdi-apps"></i></a>
+          <ul class="dropdown-menu slideUp2">
+            <li class="header">Profile</li>
+            <li class="body">
+              <!-- TODO List profile -->
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" title="Notifications" data-toggle="dropdown"
+            role="button"><i class="zmdi zmdi-notifications"></i>
+            <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+          </a>
+          <ul class="dropdown-menu slideUp2">
+            <li class="header">Notifications</li>
+            <li class="body">
+              <ul class="menu list-unstyled">
+                <li>
+                  <a href="javascript:void(0);">
+                    <div class="icon-circle bg-blue"><i class="zmdi zmdi-account"></i></div>
+                    <div class="menu-info">
+                      <h4>8 New Members joined</h4>
+                      <p><i class="zmdi zmdi-time"></i> 14 mins ago </p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="footer"> <a href="javascript:void(0);">View All Notifications</a> </li>
+          </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i
+              class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+        <li><a href="sign-in.html" class="mega-menu" title="Sign Out" onclick="signOut(event)"><i
+              class="zmdi zmdi-power"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Right Sidebar -->
+  <aside id="rightsidebar" class="right-sidebar">
+    <ul class="nav nav-tabs sm">
+      <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#setting"><i
+            class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="setting">
+        <div class="slim_scroll">
+          <div class="card">
+            <h6>Theme Option</h6>
+            <div class="light_dark">
+              <div class="radio">
+                <input type="radio" name="radio1" id="lighttheme" value="light" checked="">
+                <label for="lighttheme">Light Mode</label>
+              </div>
+              <div class="radio mb-0">
+                <input type="radio" name="radio1" id="darktheme" value="dark">
+                <label for="darktheme">Dark Mode</label>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h6>Color Skins</h6>
+            <ul class="choose-skin list-unstyled">
+              <li data-theme="purple">
+                <div class="purple"></div>
+              </li>
+              <li data-theme="blue">
+                <div class="blue"></div>
+              </li>
+              <li data-theme="cyan">
+                <div class="cyan"></div>
+              </li>
+              <li data-theme="green">
+                <div class="green"></div>
+              </li>
+              <li data-theme="orange">
+                <div class="orange"></div>
+              </li>
+              <li data-theme="blush" class="active">
+                <div class="blush"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <!-- ! Main Content -->
   <section class="content" id="page-home" style="display: none;">
@@ -62,7 +170,7 @@
                 </ul> -->
               </div>
               <div class="body taskboard planned_task">
-                <div class="dd" data-plugin="nestable">
+                <div class="dd">
                   <ol class="dd-list">
 
                     <!-- * List Missed Todo -->
@@ -105,7 +213,7 @@
                 <h2><strong>Active</strong> todo</h2>
               </div>
               <div class="body taskboard progress_task">
-                <div class="dd" data-plugin="nestable">
+                <div class="dd">
                   <ol class="dd-list">
 
                     <li class="dd-item" data-id="2">
@@ -151,7 +259,7 @@
                 <h2><strong>Completed</strong> Todo</h2>
               </div>
               <div class="body taskboard completed_task">
-                <div class="dd" data-plugin="nestable">
+                <div class="dd">
                   <ol class="dd-list">
                     <li class="dd-item" data-id="2">
                       <div class="d-flex justify-content-between align-items-center">
@@ -178,14 +286,13 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TODO: Page Authentication -->
-  <div class="authentication" id="page-authetication" style="display: true;">
+  <!-- ! Page Authentication -->
+  <div class="authentication" id="page-authetication" style="display: block;">
     <div class="container">
       <div class="row">
         <div class="col-lg-4 col-sm-12">
@@ -297,37 +404,40 @@
   <!-- todo: Add New Todo -->
   <div class="modal fade" id="addTodo" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 class="title" id="defaultModalLabel">Add New Todo</h6>
-        </div>
-        <form onsumbit="addTodo(e)">
-          <div class="modal-body">
-            <div class="row clearfix">
-              <div class="col-12">
-                <div class="form-group">
-                  <input type="text" id="todo-title" class="form-control" maxlength="20" placeholder="Title.." required>
+      <section class="content">
+        <div class="modal-content card card-inside-title body">
+          <div class="modal-header">
+            <h6 class="title" id="defaultModalLabel">Add New Todo</h6>
+          </div>
+          <form onsubmit="addTodo(event)">
+            <div class="modal-body">
+              <div class="row clearfix">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="text" id="todo-title" class="form-control" maxlength="20" placeholder="Title.."
+                      required>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12">
-                <div class="form-group">
-                  <textarea type="text" id="todo-description" class="form-control" style="height: 100px;"
-                    maxlength="255" placeholder="Description.."></textarea>
+                <div class="col-12">
+                  <div class="form-group">
+                    <textarea type="text" id="todo-description" class="form-control" style="height: 100px;"
+                      maxlength="255" placeholder="Description.."></textarea>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12">
-                <div class="form-group">
-                  <input type="date" id="todo-due_date" class="form-control" min="2020-10-31" required>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="date" id="todo-due_date" class="form-control" min="2020-10-31" required>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" type="submit">Add Todo</button>
-            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          </div>
-        </form>
-      </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">Add Todo</button>
+              <button class="btn btn-raised btn-secondary btn-round waves-effect" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -341,7 +451,7 @@
   <!-- <script src="public/plugins/nestable/jquery.nestable.js"></script> -->
 
   <script src="public/js/bundles/mainscripts.bundle.js"></script>
-  <script src="public/js/sortable-nestable.js"></script>
+  <!-- <script src="public/js/sortable-nestable.js"></script> -->
 
   <!-- Sweet Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
