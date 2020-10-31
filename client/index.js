@@ -146,9 +146,7 @@ function clearLogin() {
 }
 
 function afterLogin() {
-  const currentDate = new Date().toISOString().slice(0, 10);
   accesstoken = localStorage.getItem('accesstoken');
-  $('#todo-due_date').attr('min', currentDate);
   $('#page-authetication').hide();
   $('#form-login').hide();
   $('#form-register').hide();
@@ -229,6 +227,8 @@ function destroyUserInfo() {
 
 function showAddTodo(e) {
   e.preventDefault();
+  const currentDate = new Date().toISOString().slice(0, 10);
+  $('#add-todo-due_date').attr('min', currentDate);
   $('#defaultModalLabel').text('Add Todo')
   $('#add-todo').show()
   $('#edit-todo').hide()
@@ -237,6 +237,8 @@ function showAddTodo(e) {
 
 function showEditTodo(e, todoId) {
   e.preventDefault()
+  const currentDate = new Date().toISOString().slice(0, 10);
+  $('#edit-todo-due_date').attr('min', currentDate);
   $('#defaultModalLabel').text('Edit Todo')
   $('#edit-todo-id').val(todoId)
   $('#add-todo').hide()
