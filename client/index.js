@@ -20,7 +20,6 @@ function onSignIn(googleUser) {
   // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
   var google_access_token = googleUser.getAuthResponse().id_token;
-  console.log(google_access_token);
 
   // verify di backend
   $.ajax({
@@ -31,18 +30,13 @@ function onSignIn(googleUser) {
     }
   })
   .done(response => {
-    console.log(response);
+    localStorage.setItem('access_token', response.access_token)
+    showHome()
+    fetchTodo()
   })
   .fail(err => {
     console.log(err, err.responseJSON);
   })
-}
-
-function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
 }
 
 function logout() {
@@ -50,6 +44,10 @@ function logout() {
   $("#register").hide()
   $("#login").show()
   $("#updateTodo").hide()
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
   localStorage.removeItem('access_token')
 }
 
@@ -126,9 +124,7 @@ function login(e) {
   }).done(response => {
     console.log(response);
     localStorage.setItem('access_token', response.access_token)
-    $("#home").show()
-    $("#login").hide()
-    fetchTodo()
+    showHome()
   }).fail(err => {
     console.log(err, err.responseJSON);
   })
