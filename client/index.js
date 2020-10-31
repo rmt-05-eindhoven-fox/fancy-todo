@@ -148,7 +148,7 @@ function showTodos(){
                             <tr>
                                 <td> 
                                     <div class="card">
-                                        <div class="card-body">
+                                        <div class="card-body" style="background-color: white;">
                                           <h5 class="card-title">${el.title}</h5>
                                           <p class="card-text">${el.description}</p>
                                           <p class="card-text">Due Date : <strong style="color: red;">${stringDate}</strong></p>
