@@ -4,7 +4,7 @@ class ToDoController {
 
   static async findAll(req, res, next) {
     const UserId = +req.loginCredential.id
-    console.log(UserId)
+    console.log(req.loginCredential)
     try {
       const list = await ToDo.findAll({
         where: { UserId }
@@ -56,8 +56,12 @@ class ToDoController {
       const edit = await ToDo.update({ title, description, status, due_date }, {
         where: { id, UserId }, returning: true
       })
+      if (!edit) {
+        throw { message: 'ToDo Not Found', status: 404 }
+      }
       res.status(200).json(edit[1][0])
     } catch (err) {
+      err.status = 400
       next(err)
     }
   }
@@ -73,8 +77,12 @@ class ToDoController {
           UserId
         }, returning: true
       })
+      if (!editStatus) {
+        throw { message: 'ToDo Not Found', status: 404 }
+      }
       res.status(200).json(editStatus[1][0])
     } catch (err) {
+      err.status = 400
       next(err)
     }
   }
@@ -83,8 +91,11 @@ class ToDoController {
     const UserId = +req.loginCredential.id
     const id = +req.params.id
     try {
-      await ToDo.destroy({ where: { id, UserId } }
+      const deleted = await ToDo.destroy({ where: { id, UserId } }
       )
+      if (!deleted) {
+        throw { message: 'ToDo Not Found', status: 404 }
+      }
       res.status(200).json({ msg: 'ToDO deleted Succesfully' })
     } catch (err) {
       next(err)

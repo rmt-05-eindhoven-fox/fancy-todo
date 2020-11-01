@@ -10,7 +10,6 @@ class FavRoute {
         res.status(200).json(data.data.quote.body)
       })
       .catch(err => {
-        console.log(err)
         next(err)
       })
   }

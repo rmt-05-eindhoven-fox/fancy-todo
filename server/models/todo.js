@@ -64,7 +64,6 @@ module.exports = (sequelize, DataTypes) => {
           args: ToDo.date(),
           msg: `Only allow the date after today`
         }
-
       }
     },
     UserId: {
