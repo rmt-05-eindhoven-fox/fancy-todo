@@ -196,18 +196,19 @@ function finishedTodo(id, title, status) {
   $("#todoContainer").append(`
   <div class="row">
     <div class="col">
-      <div class="form-check form-check-inline">
+      <div class="form-check disabled">
         <div class="d-flex align-items-center">
           <label>
-            <input type="checkbox" class="option-input radio" value="${id}" checked><span class="completed">${title} <span class="badge badge-success">${status}</span></span>
+            <input disabled type="checkbox" class="form-check-input option-input radio" value="${id}" checked><span class="completed">${title} <span class="badge badge-success">${status}</span></span>
           </label>
         </div>
       </div>
     </div>
-    <div class="col col-lg-2">
+    <div class="col col-lg-3">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
-        <button type="button" class="btn btn-secondary" onclick="willDelete(${id})">Delete</button>
+      <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
+      <button type="button" class="btn btn-secondary" onclick="willDelete(${id})">Delete</button>
+      <button type="button" class="btn btn-info" onclick="showDetailTodo(${id})">Show</button>
       </div>
     </div>
   </div>
@@ -233,14 +234,28 @@ function unfinishedTodo(id, title, status) {
         </div>
       </div>
     </div>
-    <div class="col col-lg-2">
+    <div class="col col-lg-3">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
-        <button type="button" class="btn btn-secondary" onclick="willDelete(${id})">Delete</button>
+      <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
+      <button type="button" class="btn btn-secondary" onclick="willDelete(${id})">Delete</button>
+      <button type="button" class="btn btn-info" onclick="showDetailTodo(${id})">Show</button>
       </div>
     </div>
   </div>
   `)
+}
+
+// Show detail
+function showDetailTodo(id) {
+  const token = localStorage.getItem("token")
+  $.ajax({
+    method: "GET",
+    url: SERVER + `/todos/${id}`,
+    headers: { token: token },
+  })
+    .done(response => {
+      swal(`${response.title}`, `${response.description}`);
+    })
 }
 
 // checked checkbox
@@ -248,11 +263,7 @@ function checkBox() {
   $("input[type=checkbox]").on('click', function () {
     if (this.checked) {
       $('input[type="checkbox"]:checked').each(function (index, el) {
-        updateStatus($(el).val(), true)
-      })
-    } else {
-      $("input:checkbox:not(:checked)").each(function (index, el) {
-        updateStatus($(el).val(), false)
+        willUpdate($(el).val(), true)
       })
     }
   })
@@ -354,6 +365,26 @@ function willDelete(id) {
           icon: "success",
         });
         deleteTodo(id)
+      }
+    });
+}
+
+function willUpdate(id, status) {
+  swal({
+    title: "Are you sure?",
+    text: "Once finished, you will not be able to unfinish this todo!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+    .then((willUpdate) => {
+      if (willUpdate) {
+        swal("Poof! Your todo has been finished!", {
+          icon: "success",
+        });
+        updateStatus(id, status)
+      } else {
+        afterLogin()
       }
     });
 }
