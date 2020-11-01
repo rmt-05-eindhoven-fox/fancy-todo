@@ -10,15 +10,15 @@ body {
 
 /* Todo list Scroll */
 .scrollable {
+  overflow-x: hidden;
   height: 300px;
-  overflow: scroll
 }
 
 /* Landing */
 .containerLanding {
   width: 100%;
   padding-top: 60px;
-  padding-bottom: 100px
+  padding-bottom: 30px
 }
 
 .frame {
@@ -432,10 +432,15 @@ a.btn-goback:hover {
 
 .completed {
   color: gray;
-  text-decoration: line-through
-}
-
-.label-text {
+  text-decoration: line-through;
   font-size: large;
   font-weight: 600;
 }
+
+.label-text {
+  color:black;
+  font-size: large;
+  font-weight: 600;
+}
+
+

@@ -93,10 +93,23 @@ function login(e) {
     .done(response => {
       const token = response.access_token
       localStorage.setItem("token", token)
-      afterLogin()
+      swal({
+        title: "Success",
+        text: "Welcome back!",
+        icon: "success",
+        buttons: false,
+        timer: 3000,
+      });
+      setTimeout(() => {
+        afterLogin()
+      }, 3000)
     })
     .fail(err => {
-      console.log(err.responseJSON)
+      swal({
+        title: "Failed!",
+        text: err.responseJSON.error,
+        icon: "warning",
+      });
     })
 }
 
@@ -166,7 +179,7 @@ function listTodo() {
     })
     .fail(err => {
       swal({
-        title: "Check Field!",
+        title: "Error!",
         text: err.responseJSON.error,
         icon: "warning",
       });
@@ -181,7 +194,7 @@ function finishedTodo(id, title, status) {
       <div class="form-check form-check-inline">
         <div class="d-flex align-items-center">
           <label>
-            <input type="checkbox" class="option-input radio" value="${id}" checked><span class="label-text completed">${title} ${status}</span>
+            <input type="checkbox" class="option-input radio" value="${id}" checked><span class="completed">${title} <span class="badge badge-success">${status}</span></span>
           </label>
         </div>
       </div>
@@ -198,13 +211,19 @@ function finishedTodo(id, title, status) {
 
 // For check status if true, check checkbox
 function unfinishedTodo(id, title, status) {
+  let input = ""
+  if (status === "Tomorrow") {
+    input = `<input type="checkbox" class="option-input radio" value="${id}"><span class="label-text">${title} <span class="badge badge-warning">${status}</span></span>`
+  } else {
+    input = `<input type="checkbox" class="option-input radio" value="${id}"><span class="label-text">${title} <span class="badge badge-info">${status}</span></span>`
+  }
   $("#todoContainer").append(`
   <div class="row">
     <div class="col">
       <div class="form-check form-check-inline">
         <div class="d-flex align-items-center">
           <label>
-            <input type="checkbox" class="option-input radio" value="${id}"><span class="label-text">${title} ${status}</span>
+            ${input}
           </label>
         </div>
       </div>
@@ -355,7 +374,7 @@ function calculateDate(date1, date2) {
   dt1 = new Date(date1);
   dt2 = new Date(date2);
   const date = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
-  if (date > 0) {
+  if (date > 1) {
     return date + " days"
   } else if (date === 1) {
     return "Tomorrow"
