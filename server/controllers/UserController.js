@@ -5,20 +5,17 @@ const { loginToken } = require('../helpers/token');
 class UserController {
   static async register(req, res, next) {
     try {
-      const { email, password } = req.body;
+      const { name, email, password } = req.body;
       const user = await User.create({
+        name,
         email,
         password
       });
 
-      if(req.body.thirdPartyLogin) {
-        next()
-      } else {
         res.status(201).json({
           id: user.id,
           email: user.email
         });
-      }
 
     } catch (error) {
       // console.log(error.name);
@@ -60,7 +57,7 @@ class UserController {
           id: user.id,
           email
         });
-        res.status(200).json({ accessToken });
+        res.status(200).json({ accessToken, name: user.name });
       }
     } catch (error) {
       // console.log(error.message);

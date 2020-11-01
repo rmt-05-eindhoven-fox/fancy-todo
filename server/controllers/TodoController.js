@@ -1,4 +1,4 @@
-const { Todo } = require('../models');
+const { Todo, User } = require('../models');
 
 class TodoController {
   static async create(req, res, next) {

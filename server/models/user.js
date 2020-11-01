@@ -42,6 +42,14 @@ module.exports = (sequelize, DataTypes) => {
           msg: `Password must be more than 5 character`
         }
       }
+    },
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: `Name is required`
+        }
+      }
     }
   }, {
     sequelize,
