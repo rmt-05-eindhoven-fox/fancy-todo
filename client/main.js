@@ -230,7 +230,7 @@ function fetchTodo(){
 function toAddPage() {
   $('#add-page').show()
   $('#home-page').hide()
-
+  hideEditForm()
   
 
 }
