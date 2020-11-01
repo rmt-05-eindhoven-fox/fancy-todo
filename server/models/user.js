@@ -3,60 +3,58 @@ const {
   Model
 } = require('sequelize');
 
-const { encode, compare } = require('../helpers/bcrypt')
+
+const { hashPassword } = require('../helper/bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
       // define association here
-      User.hasMany( models.Todo )
-      User.belongsToMany( models.Project , { through : models.UserProject })
+      User.hasMany(models.Todo)
     }
   };
   User.init({
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Username cannot be empty"
+        }
+      }
+    },
     email: {
-      type : DataTypes.STRING,
-      allowNull : false,
-      validate : {
-        isEmail : {
-          msg : `Not a valid email`
-        },
-        notNull : {
-          msg : `Email property is missing`
-        },
-        notEmpty : {
-          msg : `Email can't be empty`
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: "Must be email format!"
         }
       }
     },
     password: {
-      type : DataTypes.STRING,
-      allowNull : false,
-      validate : {
-        notEmpty : {
-          msg : `Password can't be empty`
-        },
-        notNull : {
-          msg : `Password property is missing`
-        },
-        len :{
-          args : [3,20],
-          msg : `Password is too short`
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Password cannot be empty"
         }
       }
     }
-  }, {
-    hooks: {
-      beforeCreate : (user) => {
-        user.password = encode(user.password)
-      },
-      afterCreate : (user) => {
-        delete user.password
-      }
-    },
+  }, 
+   {
     sequelize,
     modelName: 'User',
+    hooks: {
+      beforeCreate (int, opt) {
+        int.password = hashPassword(int.password)
+      }
+    }
   });
   return User;
 };

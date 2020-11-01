@@ -1,39 +1,21 @@
-const { Todo } = require('../models')
+const { Todo } = require('../models/index')
 
-async function authorization(req,res,next){
-  try {
-    const {userId} = req.loggedInUser
-    const paramId = req.params.id
+async function authorization(req, res, next) {
+    const { id } = req.params
 
-    console.log(userId)
-    
-    const todo = await Todo.findByPk(+paramId)
-
-    if(!todo){
-      next({
-        status : 404,
-        message : `Todo not found`
-      })
-    } else {
-
-      if(todo.UserId === userId){
-        // everything is good! //
-        next()
-
-      } else {
-        next({
-          status : 401,
-          message : 'Unauthorized'
-        })
-      }
-
+    try {
+        const todo = await Todo.findByPk(id)
+        if (!todo) {
+            throw { msg: "Todo is not found", status: 404 }
+        } else if (+todo.UserId === +req.loggedInUser.id) {
+            next()
+        } else {
+            throw { msg: "Not Authorized", status: 401 }
+        }
     }
-  
-    
-  } catch (error) {
-    next(error)
-  }
-
+    catch (err) {
+        next(err)
+    }
 }
 
 module.exports = authorization

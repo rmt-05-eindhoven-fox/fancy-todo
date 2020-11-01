@@ -1,50 +1,38 @@
-const {verifyToken} = require('../helpers/jwt')
-const { User } = require('../models')
+const { verifyToken } = require('../helper/jwt')
+const { User } = require('../models/index')
 
-async function authentication(req, res, next){
-  /**TODO
-   * check if token is there if not, send error
-   * if token is there, we need to check if email is there
-   * if email is there, put data inside req
-   */
-  try {
+async function authentication(req, res, next) {
     const { token } = req.headers
-
-    if(!token){
-      next({
-        status : 401,
-        message : 'Unauthorized Access'
-      })
-
-    } else {
-      const decoded = verifyToken(token)
-      const { id, email, iat } = decoded
-
-      await User
-      .findOne({
-        where : {
-          email
+    try {
+        if (!token) {
+            throw {
+                msg: "Authentication Failed", status: 401
+            }
+        } else {
+            const decoded = verifyToken(token)
+            // console.log(decoded, "<<< decoded");
+            const user = await User.findOne({
+                where: {
+                    email: decoded.email
+                }
+            })
+            // console.log(user);
+            if (!user) {
+                throw {
+                    msg: "Authentication Failed", status: 401
+                }
+            } else {
+                // console.log(req.loggedInUser, "<<< req.loggedInUser sebelum");
+                req.loggedInUser = decoded
+                // console.log(req.loggedInUser, "<<< req.loggedInUser sesudah");
+                next()
+            }
         }
-      })
-      .then(_=> {
-        req.loggedInUser = {
-          userId : id,
-          userEmail : email
-        }
-
-        // SUCCESS AUTHENTICATE //
-        next()
-
-      })
-      .catch(err => {
-        next(err)
-      })
-
     }
-    
-  } catch (error) {
-    next(error)
-  }
+    catch (err) {
+        next(err)
+    }
 }
+
 
 module.exports = authentication
