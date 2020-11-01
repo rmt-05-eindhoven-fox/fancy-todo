@@ -28,6 +28,13 @@ _Response_
 
 > Create new todo
 
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
+
 _Parameters_
 ```
 not needed
@@ -56,6 +63,13 @@ _Response (201 - Created)_
 ### GET /todos
 
 > Get all todos
+
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
 
 _Parameters_
 ```
@@ -93,6 +107,13 @@ _Response (200)_
 
 > Get specific todo based on unique id
 
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
+
 _Parameters_
 ```
 {
@@ -118,6 +139,13 @@ _Response (200)_
 ### PUT /todos/:id
 
 > Update title, description, status, and due_date of specific todo based on unique id
+
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
 
 _Parameters_
 ```
@@ -151,6 +179,13 @@ _Response (200)_
 
 > Update status of specific todo based on unique id
 
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
+
 _Parameters_
 ```
 {
@@ -180,6 +215,13 @@ _Response (200)_
 
 > Delete specific todo based on unique id
 
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
+
 _Parameters_
 ```
 {
@@ -203,6 +245,11 @@ _Response (200)_
 
 > Create new user
 
+_Request Headers_
+```
+not needed
+```
+
 _Parameters_
 ```
 not needed
@@ -211,6 +258,7 @@ not needed
 _Request Body_
 ```
 {
+  "name": "John Doe"
   "email": "sample@mail.com",
   "password": "asdfgh"
 }
@@ -227,6 +275,11 @@ _Response (201 - Created)_
 ### POST /login
 
 > Create access token based on user login data
+
+_Request Headers_
+```
+not needed
+```
 
 _Parameters_
 ```
@@ -246,4 +299,37 @@ _Response (200)_
 {
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
 }
+```
+
+### GET /apis/holiday
+
+> Get array of object containing holidays on current year from 3rd party Calendarific
+
+_Request Headers_
+```
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
+
+_Parameters_
+```
+not needed
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```
+[
+  {
+    "title": New Year's Eve,
+    "date": "2020-12-01"
+  },
+  { ... },
+  { ... }
+]
 ```
