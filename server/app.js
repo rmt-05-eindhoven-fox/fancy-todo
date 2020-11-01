@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const cors = require('cors')
 const compression = require('compression');
 const express = require('express')
 const router = require('./routers')
@@ -7,7 +8,7 @@ const app = express()
 const port = process.env.PORT || 8080
 const errorHandler = require('./middlewares/errorHandler')
 
-
+app.use(cors())
 app.use(express.urlencoded({
    extended: true
 }))

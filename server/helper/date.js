@@ -1,12 +1,10 @@
-const { parseISO } = require('date-fns');
-const isAfter = require('date-fns/isAfter')
+const moment = require('moment')
 
-const checkIsAfter = (date) => {
-   const result = isAfter(parseISO(date), new Date())
-   
-   return result
+dateFormat = (date) => {
+   date = date.toISOString()
+   newDate = moment(date).format('YYYY-MM-DD')
+   return newDate
 }
 
-// console.log(checkIsAfter("2020-10-30"));
-// console.log(checkIsAfter("2020-09-22"));
-module.exports = {checkIsAfter}
+module.exports = {dateFormat}
+// console.log(dateFormat("2020-11-15T00:00:00.000Z"));

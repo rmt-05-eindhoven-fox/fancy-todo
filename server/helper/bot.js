@@ -16,7 +16,8 @@ const getAllTodos = (UserId) => {
       where: {
          UserId,
          status: 'not done'
-      }
+      },
+      limit: 5, // discord chat maximum of 2000 characters
    })
 }
 

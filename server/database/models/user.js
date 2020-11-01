@@ -38,16 +38,16 @@ module.exports = (sequelize, DataTypes) => {
             // validasi is email masih bocor
             isEmail: {
                args: true,
-               msg: "Not a valid email!"
+               msg: "Not a valid email"
             },
             notNull: {
                args: true,
-               msg: 'Email is required.'
+               msg: 'Email is required'
             },
          },
          unique: {
             args: true,
-            msg: 'Email already in use!'
+            msg: 'Email already in use'
          },
       },
       password: {
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
          validate: {
             notNull: {
                args: true,
-               msg: 'Password is required.'
+               msg: 'Password is required'
             }
          }
       },
