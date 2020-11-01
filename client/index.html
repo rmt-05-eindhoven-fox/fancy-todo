@@ -9,6 +9,7 @@
   <meta name="google-signin-client_id"
     content="73778169427-l80ckpaf02m9lofa9uat9k7sdd0dum43.apps.googleusercontent.com">
   <title>Fancy Todo</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -65,54 +66,47 @@
 
 
   <div id="afterLogin">
-    <button onclick="signOut()" style="color: red;"> logout </button>
-    <div id="left">
-      <div id="formAddTodo">
-        <h3>Add Todo</h3>
-        <div id="add-todo">
-          <div id="create_todo">
-            <div>
-              <label>Title</label>
-              <input id="add-todo-title" type="text">
+    <div id="buttonLogout">
+      <button onclick="signOut()"> logout </button>
+    </div>
+    <div id="todoContainer">
+      <div id="left">
+        <div id="formAddTodo">
+          <h3>Add Todo</h3>
+          <div id="add-todo">
+            <div id="create_todo">
+              <div>
+                <label>Title</label>
+                <input id="add-todo-title" type="text">
+              </div>
+              <div>
+                <label>Description</label>
+                <textarea id="add-todo-description" type="text"></textarea>
+              </div>
+              <br>
+              Due Date:
+              <br>
+              <input id="add-todo-dueDate" type="date">
+              <br><br>
+              <button onclick="createTodo()"> Submit </button>
             </div>
-            <div>
-              <label>Description</label>
-              <textarea id="add-todo-description" type="text"></textarea>
-            </div>
-            <!-- <div>
-              Status <br>
-              <label for="">selesai</label>
-              <input id="add-todo-status" type="radio" name="status" value="true"> <br>
-              <label for="">belum selesai</label>
-              <input id="add-todo-status" type="radio" name="status" value="false">
-            </div> -->
-            <br>
-            Due Date:
-            <br>
-            <input id="add-todo-dueDate" type="date">
-            <br><br>
-            <button onclick="createTodo()"> Submit </button>
+          </div>
+        </div>
+        <div id="formEditTodo">
+          <h3>Edit Todo</h3>
+          <div id="edit-todo">
           </div>
         </div>
       </div>
-      <div id="formEditTodo">
-        <h3>Edit Todo</h3>
-        <div id="edit-todo">
-          
-        </div>
+
+      <div id="right">
+        <h3>List Todo</h3>
+        <div id="listTodo"></div>
+
+        <!-- <h3>List Finished Todo</h3>
+        <div id="finishedTodo"></div> -->
       </div>
     </div>
-
-
-    <div id="right">
-      <h3>List Todo</h3>
-      <div id="listTodo"></div>
-
-      <h3>List Finished Todo</h3>
-      <div id="finishedTodo"></div>
-
-    </div>
-
 
 
     <script src="./assets/todo.js"></script>

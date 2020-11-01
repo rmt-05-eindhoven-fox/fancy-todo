@@ -45,6 +45,25 @@ $("#logout-button").on("click", () => {
   signOut()
 })
 
+function helloSalut() {
+  $.ajax({
+    method: "GET",
+    url: SERVER + "/salut",
+  }).done(response => {
+    const user = localStorage.getItem("first_name")
+    $("#hello-salut").empty();
+    $("#hello-salut").append(`
+      <h1>${response.hello} ${user}</h1>
+      <p class="text-muted">Hello ${user}</p>
+    `);
+    setTimeout(() => {
+      $("#hello-salut").empty();
+    }, 5000)
+  }).fail(err => {
+    console.log(err)
+  })
+}
+
 function login(e) {
   e.preventDefault()
   const email = $("#login-email").val()
