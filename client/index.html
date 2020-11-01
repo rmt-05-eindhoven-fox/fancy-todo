@@ -10,18 +10,44 @@
   <title>Fancy Todo</title>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Fancy Todo</a>
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- Navbar Home -->
+  <nav id="navbar-home" class="navbar navbar-expand-lg navbar-light bg-light">
+    <h4>Fancy Todo <span class="badge badge-secondary">FT</span></h4>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button> -->
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <button type="button" class="btn btn-link" onclick="showHome()">Home</button>
-        <button type="button" class="btn btn-danger" onclick="logout()">Logout</button>
-      </div>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showHome()">Home</a>
+        </li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-danger" onclick="logout()">Logout</button>
+  </nav>
+
+  <!-- Navbar Landing -->
+  <nav id="navbar-landing" class="navbar navbar-expand-lg navbar-light bg-light">
+    <h4>Fancy Todo <span class="badge badge-secondary">FT</span></h4>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showLogin()">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showRegister()">Register</a>
+        </li>
+      </ul>
     </div>
   </nav>
+
+  <!-- Show Error -->
+  <div id="error-alert" class="alert alert-danger" role="alert">
+    <!-- Append error -->
+  </div>
 
   <!-- Register Page -->
   <section class="container" id="register">
@@ -95,7 +121,12 @@
           </div>
           <div class="form-group">
             <label for="add-status">Status</label>
-            <input type="text" class="form-control" id="add-status">
+            <!-- <input type="text" class="form-control" id="add-status"> -->
+            <select class="custom-select" id="add-status">
+              <option selected value="">Choose...</option>
+              <option value="done">Done</option>
+              <option value="not done">Not Done</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="add-due_date">Due date</label>
@@ -112,7 +143,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Title</th>
               <th>Description</th>
               <th>Status</th>
@@ -144,13 +175,18 @@
           </div>
           <div class="form-group">
             <label for="update-status">Status</label>
-            <input type="text" class="form-control" id="update-status">
+            <select class="custom-select" id="update-status">
+              <option selected value="">Choose...</option>
+              <option value="done">Done</option>
+              <option value="not done">Not Done</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="update-due_date">Due date</label>
             <input type="date" class="form-control" id="update-due_date">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-danger" onclick="showHome()">Cancel</button>
         </form>
       </div>
     </div>
@@ -199,6 +235,8 @@
   
   <!-- cdn jquery, dari googleapis  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- sweetalert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <!-- google platform libarary -->
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <!-- jquery dulu, setelah itu script index -->

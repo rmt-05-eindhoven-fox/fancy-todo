@@ -1,6 +1,6 @@
 ////////////////////////////////////
 const SERVER = "http://localhost:3000"
-let tempId
+let tempId = null
 
 $(document).ready(function() {
   // cuma dijalankan saat page pertama kali load
@@ -13,15 +13,8 @@ $(document).ready(function() {
 })
 
 function onSignIn(googleUser) {
-  // var profile = googleUser.getBasicProfile();
-  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  // console.log('Name: ' + profile.getName());
-  // console.log('Image URL: ' + profile.getImageUrl());
-  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
   var google_access_token = googleUser.getAuthResponse().id_token;
 
-  // verify di backend
   $.ajax({
     method: 'POST',
     url: SERVER + '/loginGoogle',
@@ -32,53 +25,98 @@ function onSignIn(googleUser) {
   .done(response => {
     localStorage.setItem('access_token', response.access_token)
     showHome()
-    fetchTodo()
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Login Successfull',
+      showConfirmButton: false,
+      timer: 1500
+    })
   })
   .fail(err => {
     console.log(err, err.responseJSON);
+    // Swal.fire(
+    //   'Login by Google Error',
+    //   err.responseJSON.errors,
+    //   'error'
+    // )
   })
 }
 
 function logout() {
-  $("#home").hide()
-  $("#register").hide()
-  $("#login").show()
-  $("#updateTodo").hide()
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-  localStorage.removeItem('access_token')
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Logout'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      localStorage.removeItem('access_token')
+      showLogin()
+      Swal.fire(
+        'Logged out!',
+        'Log out successfull.',
+        'success'
+      )
+    }
+  })
+}
+
+function showError(error) {
+  $("#error-alert").show()
+  $("#error-alert").empty()
+  $("#error-alert").append(`
+  <p>${error}</p>
+  `)
 }
 
 function showRegister() {
+  $("#error-alert").hide()
   $("#login").hide()
   $("#home").hide()
   $("#register").show()
   $("#updateTodo").hide()
+  $("#navbar-home").hide()
+  $("#navbar-landing").show()
 }
 
 function showHome() {
+  $("#error-alert").hide()
   $("#register").hide()
   $("#login").hide()
   $("#home").show()
   $("#updateTodo").hide()
+  $("#navbar-home").show()
+  $("#navbar-landing").hide()
   fetchTodo()
 }
 
 function showLogin() {
+  $("#error-alert").hide()
   $("#register").hide()
   $("#login").show()    
   $("#home").hide()
   $("#updateTodo").hide()
+  $("#navbar-home").hide()
+  $("#navbar-landing").show()
 }
 
 function showUpdate(id, title, description, status, due_date) {
-  console.log(id, title, description, status, due_date);
+  $("#error-alert").hide()
   $("#register").hide()
   $("#login").hide()    
   $("#home").hide()
   $("#updateTodo").show()
+  $("#navbar-home").show()
+  $("#navbar-landing").hide()
+
   $("#update-title").val(title)
   $("#update-description").val(description)
   $("#update-status").val(status)
@@ -91,10 +129,6 @@ function register(e) {
   console.log('register');
   const email = $("#register-email").val()
   const password = $("#register-password").val()
-  console.log({
-    email,
-    password
-  });
   $.ajax({
     method: "POST",
     url: SERVER + "/register",
@@ -103,10 +137,20 @@ function register(e) {
       password
     }
   }).done(response => {
-    console.log(response);
+    Swal.fire(
+      'Success',
+      'Register Succesfull',
+      'success'
+    )
     showLogin()
   }).fail(err => {
     console.log(err, err.responseJSON);
+    // showError(err.responseJSON.errors)
+    Swal.fire(
+      'Register Error',
+      err.responseJSON.errors,
+      'error'
+    )
   })
 }
 
@@ -122,11 +166,23 @@ function login(e) {
       password
     }
   }).done(response => {
-    console.log(response);
     localStorage.setItem('access_token', response.access_token)
     showHome()
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Login Successfull',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }).fail(err => {
     console.log(err, err.responseJSON);
+    // showError(err.responseJSON.errors)
+    Swal.fire(
+      'Login Error',
+      err.responseJSON.errors,
+      'error'
+    )
   })
 }
 
@@ -141,11 +197,11 @@ function fetchTodo() {
   }).done(response => {
     const todos = response
     $("#todo-table-content").empty()
-    todos.forEach(todo => {
+    todos.forEach((todo, i) => {
       let due_date = todo.due_date.split('T')[0]
       $("#todo-table-content").append(`
       <tr>
-        <th scope="row">${todo.id}</th>
+        <th scope="row">${i + 1}</th>
         <td>${todo.title}</td>
         <td>${todo.description}</td>
         <td>${todo.status}</td>
@@ -159,6 +215,12 @@ function fetchTodo() {
     });
   }).fail(err => {
     console.log(err, err.responseJSON);
+    // showError(err.responseJSON.errors)
+    Swal.fire(
+      'Fetch Todo Error',
+      err.responseJSON.errors,
+      'error'
+    )
   })
 }
 
@@ -169,13 +231,6 @@ function addTodo(e) {
   const description = $("#add-description").val()
   const status = $("#add-status").val()
   const due_date = $("#add-due_date").val()
-  const todo = {
-    title,
-    description,
-    status,
-    due_date
-  }
-  console.log(todo);
   $.ajax({
     method: 'POST',
     url: SERVER + '/todos',
@@ -196,22 +251,51 @@ function addTodo(e) {
     showHome()
   }).fail(err => {
     console.log(err, err.responseJSON);
+    // showError(err.responseJSON.errors)
+    Swal.fire(
+      'Add Todo Error',
+      err.responseJSON.errors,
+      'error'
+    )
   })
 }
 
 function deleteTodo(id) {
   const access_token = localStorage.getItem('access_token')
-  $.ajax({
-    method: 'delete',
-    url: SERVER + `/todos/${id}`,
-    headers: {
-      access_token
+  Swal.fire({
+    title: 'Are you sure want to delete this Todo?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: `Yes, I want to delete it`,
+  }).then( result => {
+    if (result.isConfirmed) {
+      $.ajax({
+        method: 'delete',
+        url: SERVER + `/todos/${id}`,
+        headers: {
+          access_token
+        }
+      })
+      .done(response => {
+        showHome()
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Todo Deleted',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+      .fail(err => {
+        console.log(err, err.responseJSON);
+        // showError(err.responseJSON.errors)
+        Swal.fire(
+          'Delete Todo Error',
+          err.responseJSON.errors,
+          'error'
+        )
+      })
     }
-  }).done(response => {
-    console.log(response);
-    showHome()
-  }).fail(err => {
-    console.log(err, err.responseJSON);
   })
 }
 
@@ -223,13 +307,6 @@ function updateTodo(e) {
   const description = $("#update-description").val()
   const status = $("#update-status").val()
   const due_date = $("#update-due_date").val()
-  const todo = {
-    title,
-    description,
-    status,
-    due_date
-  }
-  console.log(todo, id);
   $.ajax({
     method: 'PUT',
     url: SERVER + `/todos/${id}`,
@@ -248,7 +325,20 @@ function updateTodo(e) {
     $("#update-status").val('')
     $("#update-due_date").val('')
     showHome()
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Todo Updated',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }).fail(err => {
     console.log(err, err.responseJSON);
+    // showError(err.responseJSON.errors)
+    Swal.fire(
+      'Update Todo Error',
+      err.responseJSON.errors,
+      'error'
+    )
   })
 }
