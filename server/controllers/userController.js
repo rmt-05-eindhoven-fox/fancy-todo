@@ -3,7 +3,7 @@ const { comparePassword } = require("../helpers/bcrypt");
 const { loginToken } = require("../helpers/jwt");
 
 class userController{
-    static async register(request, response) {
+    static async register(request, response, next) {
         try{
             const payload = {
                 email: request.body.email,
@@ -19,7 +19,7 @@ class userController{
         }
     }
 
-    static async login(request, response) {
+    static async login(request, response, next) {
         try{
             const payload = {
                 email: request.body.email,
