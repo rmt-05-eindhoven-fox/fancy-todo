@@ -100,7 +100,23 @@
                 <!-- List of Notification -->
               </ul>
             </li>
-            <li class="footer"> <a href="showEditTodojavascript:void(0);">View All Notifications</a> </li>
+            <!-- <li class="footer"> <a href="showEditTodojavascript:void(0);">View All Notifications</a> </li> -->
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" title="Holiday" data-toggle="dropdown" role="button"><i
+              class="zmdi zmdi-calendar"></i>
+            <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+          </a>
+          <ul class="dropdown-menu slideUp2">
+            <li class="header">Holiday This Month</li>
+            <li class="body">
+              <ul class="menu list-unstyled" id="todo-holiday">
+
+                <!-- List of Holiday -->
+              </ul>
+            </li>
+            <!-- <li class="footer"> <a href="showEditTodojavascript:void(0);">View All Notifications</a> </li> -->
           </ul>
         </li>
         <li><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i
@@ -174,15 +190,55 @@
               <!-- <li class="breadcrumb-item">Project</li> -->
               <li class="breadcrumb-item active">Todo</li>
             </ul>
-            <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
-                class="zmdi zmdi-sort-amount-desc"></i></button> -->
+            <div class="mobile_menu">
+              <div class="d-flex">
+                <div class="mr-auto p-2 col-sm-4">
+                  <div class="form-group" style="padding: 10px 0;">
+                    <span class="align-baseline" style="font-size: 1.0rem;">Due Date</span>
+                  </div>
+                </div>
+                <div class="p-2 col-sm-6">
+                  <div class="form-group">
+                    <input type="date" id="todo-filter-date-mobile" onchange="filterDueDate(event, 'mobile');"
+                      class="form-control" style="outline: none;" title="Filter by due date" required>
+                  </div>
+                </div>
+                <div class="mr-auto p-2">
+                  <div class="form-group ">
+                    <button class="btn btn-info btn-icon float-right m-t-0" data-toggle="modal"
+                      onclick="refreshTodo(event)" data-backdrop="static" data-keyboard="false" type="button"><i
+                        class="zmdi zmdi-refresh"></i></button>
+                  </div>
+                </div>
+                <div class="mr-0 p-2">
+                  <div class="form-group ">
+                    <button class="btn btn-success btn-icon float-right m-t-0" data-toggle="modal"
+                      onclick="showAddTodo(event)" data-backdrop="static" data-keyboard="false" type="button"><i
+                        class="zmdi zmdi-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
+
           <div class="col-lg-5 col-md-6 col-sm-12">
+
             <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i
                 class="zmdi zmdi-arrow-right"></i></button>
+
             <button class="btn btn-success btn-icon float-right" data-toggle="modal" onclick="showAddTodo(event)"
               data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-plus"></i></button>
 
+            <button class="btn btn-info btn-icon float-right" data-toggle="modal" onclick="refreshTodo(event)"
+              data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-refresh"></i></button>
+
+            <div class="p-2 col-sm-6 float-right">
+              <div class="form-group">
+                <input type="date" id="todo-filter-date-dekstop" onchange="filterDueDate(event, 'dekstop');"
+                  class="form-control" style="outline: none;" title="Filter by due date" required>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -215,18 +271,7 @@
               </div>
               <div class="body taskboard progress_task">
                 <div class="dd">
-                  <div class="row clearfix">
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                      <div class="form-group mt-2">
-                        <label for="">Due Date</label>
-                      </div>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8">
-                      <div class="form-group">
-                        <input type="date" id="todo-filter-date" onchange="filterDueDate(event);" class="form-control" style="outline: none;" required>
-                      </div>
-                    </div>
-                  </div> 
+
                   <ol class="dd-list" id="todo-active">
 
                     <!-- * List Active Todo -->
@@ -377,7 +422,7 @@
   </div>
 
   <!-- todo: Add New Todo -->
-  <div class="modal fade" id="modalTodo" tabindex="-1" role="dialog">
+  <div class="modal fade m-t-70" id="modalTodo" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <section class="content">
         <div class="modal-content card card-inside-title body">
@@ -389,7 +434,7 @@
               <div class="row clearfix">
                 <div class="col-12">
                   <div class="form-group">
-                    <input type="text" id="add-todo-title" class="form-control" maxlength="20" placeholder="Title.."
+                    <input type="text" id="add-todo-title" class="form-control" maxlength="100" placeholder="Title.."
                       required>
                   </div>
                 </div>
@@ -418,7 +463,7 @@
                   required readonly>
                 <div class="col-12">
                   <div class="form-group">
-                    <input type="text" id="edit-todo-title" class="form-control" maxlength="20" placeholder="Title.."
+                    <input type="text" id="edit-todo-title" class="form-control" maxlength="100" placeholder="Title.."
                       required>
                   </div>
                 </div>

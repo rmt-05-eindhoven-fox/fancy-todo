@@ -86,9 +86,10 @@ function clearRegisterValue() {
 }
 
 function checkError(err) {
+  console.log(err.message)
   if (Array.isArray(err.responseJSON)) {
     message = err.responseJSON[0].message;
-  } else if (err.hasOwnProperty('message')) {
+  } else if (err.responseJSON.hasOwnProperty('message')) {
     message = err.responseJSON.message;
   } else {
     console.log(err)
@@ -158,6 +159,7 @@ function afterLogin() {
   clearLogin();
   setProfile();
   loadTodo();
+  loadHoliday();
 }
 
 function afterSignOut() {
@@ -166,7 +168,6 @@ function afterSignOut() {
   $('#form-register').hide();
   $('#page-home').hide();
   $('#right-sidebar').hide();
-
 }
 
 //google signin
@@ -269,7 +270,8 @@ function loadTodo() {
   })
     .done(response => {
       console.log(response)
-      $("#todo-filter-date").val('')
+      due_date = $("#todo-filter-date-mobile").val()
+      due_date = $("#todo-filter-date-dekstop").val()
       filterTodo(response)
     })
     .fail(err => {
@@ -449,9 +451,16 @@ function deleteTodo(e, todoId) {
   })
 }
 
-function filterDueDate(e) {
+function filterDueDate(e, source) {
   e.preventDefault()
-  const due_date = $("#todo-filter-date").val()
+
+  let due_date = '';
+  if (source === 'mobile') {
+    due_date = $("#todo-filter-date-mobile").val()
+  } else {
+    due_date = $("#todo-filter-date-dekstop").val()
+  }
+
   $.ajax({
     method: "POST",
     url: base_url + `/todos/filterdue`,
@@ -464,6 +473,22 @@ function filterDueDate(e) {
   }).done(response => {
     console.log(response)
     filterTodo(response)
+  }).fail(err => {
+    let message = checkError(err);
+    Swal.fire('Failed to Find!', message, 'error')
+  })
+}
+
+function loadHoliday() {
+  $.ajax({
+    method: "GET",
+    url: base_url + `/todos/calender/holiday`,
+    headers: {
+      accesstoken
+    }
+  }).done(response => {
+    console.log(response)
+    appendHolidays(response)
   }).fail(err => {
     let message = checkError(err);
     Swal.fire('Failed to Find!', message, 'error')
@@ -500,8 +525,8 @@ function filterTodo(todos) {
       case 'isDue':
         if (status === 'pending') {
           appendMissedTodo(todo);
+          missed++;
         }
-        missed++;
         break
     }
   });
@@ -513,7 +538,7 @@ function filterTodo(todos) {
 function appendWillDue(todo) {
   const wildue =
   /*html*/ `<li>
-    <a href="javascript:void(0);" onclick="showEditTodo(event, ${todo.id})">
+    <a href="javascript:void(0);" onclick="showEditTodo(event, ${todo.id})" title="${todo.description}">
       <div class="icon-circle bg-blue"><i class="zmdi zmdi-assignment-check"></i></div>
       <div class="menu-info">
         <h4>${todo.title}</h4>
@@ -616,6 +641,29 @@ function appendCompleteTodo(todo) {
   $('#todo-complete').append(active)
 }
 
+function appendHolidays(holidays) {
+  $('#todo-holiday').empty()
+  holidays.forEach(holiday => {
+    const holimonth = new Date(holiday.date).getMonth();
+    const curtmonth = new Date().getMonth();
+    if (holimonth == curtmonth) {
+      const temp =
+      /*html*/ `
+      <li>
+        <a href="javascript:void(0);" title="${holiday.description}">
+          <div class="icon-circle bg-blue"><i class="zmdi zmdi-calendar"></i></div>
+          <div class="menu-info">
+            <h4>${holiday.name}</h4>
+            <p><i class="zmdi zmdi-time"></i>${formatDate(holiday.date)} </p>
+          </div>
+        </a>
+      </li>`;
+      $('#todo-holiday').append(temp);
+    }
+  })
+
+}
+
 function compareDate(due_date) {
   let duedate = new Date(due_date);
   let dateNow = new Date();
@@ -630,6 +678,11 @@ function compareDate(due_date) {
   } else if (duedate < dateNow) {
     return 'isDue'
   }
+}
+
+function refreshTodo(e) {
+  e.preventDefault()
+  loadTodo()
 }
 
 function beforeLoadTodo() {
