@@ -14,6 +14,12 @@ function errHandler(err, req, res, next){
             status = err.code || 500
             break;
     }
+    if(err.code === 404){
+        status = 404
+        errors.push({
+            msg: "Not found"
+        })
+    }
 
     res.status(status).json({errors})
 }   

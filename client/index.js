@@ -9,8 +9,12 @@ $(document).ready(function (){
         $("#create").hide()
         $("#logout").show()
         $("#read").show()
+        $("#error").hide()
+        $("#sukses").hide()
         read()
     }else{
+        $("#error").hide()
+        $("#sukses").hide()
         $("#login").show()
         $("#read").hide()
         $("#register").hide()
@@ -20,11 +24,30 @@ $(document).ready(function (){
     }
 })
 
+function showError(error){
+    $("#error").show()
+    $("#error").empty()
+    $("#error").append(`
+    <p>${error.join(', ')}</p>
+    `)
+    setTimeout(() => {
+        $("#error").hide()
+    }, 3000)
+}
+function showSucces(response){
+    $("#sukses").show()
+    $("#sukses").empty()
+    $("#sukses").append(`
+    <p>${response}</p>
+    `)
+    setTimeout(() => {
+        $("#sukses").hide()
+    }, 3000)
+}
 function login(event){
     event.preventDefault()
     const email = $("#login-email").val()
     const password = $("#login-password").val()
-
     $.ajax({
         method: "POST",
         url: SERVER + "/users/login",
@@ -32,6 +55,7 @@ function login(event){
             email, password
         }
     }).done(response => {
+        showSucces("Berhasil Login")
         localStorage.setItem("token", response.token)
         $("#login").hide()
         $("#login-email").val("")
@@ -41,7 +65,7 @@ function login(event){
         $("#todolist").empty()
         read()
     }).fail(err => {
-        console.log(err.responseJSON.errors)
+        showError(err.responseJSON.errors)
     })
 }
 function onSignIn(googleUser) {
@@ -53,7 +77,7 @@ function onSignIn(googleUser) {
             google_token: google_token
         }
     }).done(response => {
-        console.log(response, 'adsfdasdf')
+        showSucces("Berhasil Login")
         localStorage.setItem("token", response.token)
         $("#login").hide()
         $("#login-email").val("")
@@ -63,7 +87,7 @@ function onSignIn(googleUser) {
         $("#todolist").empty()
         read()
     }).fail(err => {
-        console.log({msg: "masuk ke error saat google login"})
+        showError(err)
     })
   }
   function signOut() {
@@ -84,12 +108,13 @@ function destroy(status, id){
             $("#todolist").empty()
             read()
             $("#read").show()
-            console.log(response)
+            // console.log(response)
+            showSucces("Todo berhasil dihapus")
         }).fail(err => {
-            console.log(err.responseJSON.errors)
+            showError(err.responseJSON.errors)
         })
     }else{
-        console.log({msg: "todo masih belum dikerjakan"})
+        showError(["todo masih belum dikerjakan"])
     }
 }
 function openRegister(){
@@ -106,11 +131,12 @@ function register(event){
         url: SERVER + "/users/register",
         data: {email, password}
     }).done(response => {
-        console.log(response)
+        // console.log(response)
+        showSucces("Berhasil register")
         $("#login").show()
         $("#register").hide()
     }).fail(err => {
-        console.log(err.responseJSON.errors)
+        showError(err.responseJSON.errors)
     })
 }
 function opentaddtodo(){
@@ -122,7 +148,7 @@ function hideadd(){
     $("#create").hide()
     $("#read").show()
     $("#logout").show()
-    // read()
+    read()
 }
 function loginpage(){
     $("#register").hide()
@@ -159,9 +185,9 @@ function read(){ // nampilin todo list
                             
                             `)
                         })
-                        console.log(dataTodo)
-                    }).fail(err => {
-        console.log(err.responseJSON.errors)
+                        // console.log(dataTodo)
+        }).fail(err => {
+        showError(err.responseJSON.errors)
     })
 }
 
@@ -176,7 +202,7 @@ function editShow(id){
             token: token
         }
     }).done(response => {
-        console.log(response)
+        // console.log(response)
         const dataTodo = response.dataTodo
         let date = new Date(dataTodo.due_date)
         let day = date.getDate()
@@ -206,17 +232,23 @@ function editShow(id){
                         <label for="edit-due-date">Due Date</label>
                         <input type="date" id="edit-due-date" class="form-control" value="${ddate}">
                     </div>
-                    <button onclick="editPost(${id})" class="btn btn-primary">Edit Todo</button>
-                    <button onclick="read()" class="btn btn-secondary">Cancel</button>
-                </form>
+                    <button onclick="editPost(event, ${id})" class="btn btn-primary">Edit Todo</button>
+                    </form><br>
+                    <button onclick="hideedit()" class="btn btn-secondary">Cancel</button>
                 </div>
         </div>
         `)
     }).fail(err => {
-        console.log(err.responseJSON.errors)
+        showError(err.responseJSON.errors)
     })
 }
-function editPost(id){
+function hideedit(){
+    $("#edit").hide()
+    $("#read").show()
+    $("#logout").show()
+}
+function editPost(event, id){
+    event.preventDefault()
     const title = $("#edit-title").val()
     const description = $("#edit-description").val()
     const due_date = $("#edit-due-date").val()
@@ -230,10 +262,13 @@ function editPost(id){
             token: token
         }
     }).done(response => {
-        
-        console.log(response)
+        $("#edit").hide()
+        $("#logout").show()
+        $("#read").show()
+        // console.log(response)
+        showSucces("Berhasil mengedit todo")
     }).fail(err => {
-        console.log(err.responseJSON.errors)
+        showError(err.responseJSON.errors)
     })
 }
 function done(id){
@@ -244,11 +279,11 @@ function done(id){
             token: localStorage.getItem("token")
         }
     }).done(response => {
-        console.log(response)
+        showSucces("Todo telah selesai")
         $("#todolist").empty()
         read()
     }).fail(err => {
-        console.log(err.responseJSON.errors)
+        showError(err.responseJSON.errors)
     })
 }
 
@@ -270,14 +305,15 @@ function create(event){ // add todo
     }).done(response => {
         $("#create").hide()
         $("#read").show()
+        $("#logout").show()
         $("#todolist").empty()
         read()
         $("#title-todo").val("") // biar add todo langsung kosong
         $("#description-todo").val("")
         $("#due-date-todo").val("")
-        console.log(response)
+        showSucces("Berhasil add todo")
     }).fail(err => {
-        console.log(err.responseJSON.errors)
+        showError(err.responseJSON.errors)
     })
 }
 
@@ -287,6 +323,7 @@ function logout(){
     $("#read").hide()
     localStorage.clear()
     $("#logout").hide()
+    showSucces("Berhasil Logout")
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
