@@ -1,9 +1,14 @@
 
 # **API Documentation** My Fancy Todo
-## server : 
+## Local server : 
   `http://localhost:3000`
----- 
 ----
+## production SERVER
+  `https://fancytoodoapi.herokuapp.com`
+---- 
+## production CLIENT
+  `https://fancytoodo.herokuapp.com`
+----  
 <br>
 
 # Todos  
