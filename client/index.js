@@ -1,4 +1,3 @@
-const tempId = null
 const SERVER = "http://localhost:3000"
 
 $(document).ready(function () {
@@ -186,7 +185,16 @@ function edit(e) {
         headers: {token},
         data: {title, description, status, due_date}
     }).done(response => {
+        $("#content").show()
+        $("#login-page").hide()
+        $("#btn-logout").show()
+        $("#register-page").hide()
+        $("#add-todos").show()
+        $("#title-todo").show()
+        $("#edit-form").hide()
         showTodos()
+
+
     }).fail(err => {
         console.log(err)
     })
@@ -202,7 +210,7 @@ function editTodos(id,title,description,status,due_date) {
     $("#edit-title").val(title)
     $("#edit-description").val(description)
     $("#edit-status").val(status)
-    $("#edit-due_date").val(due_date)
+    $("#edit-due_date").val(new Date(due_date).toISOString().slice(0,10))
     $("#edit-id").val(id)
 }
 
@@ -223,9 +231,8 @@ function deleteTodos(id) {
 }
 
 function onSignIn(googleUser) {
-    console.log('masuk');
     var google_access_token = googleUser.getAuthResponse().id_token;
-    console.log(google_access_token, "<<< google_access_token");
+    console.log(google_access_token);
 
     $.ajax({
         method: "POST",
