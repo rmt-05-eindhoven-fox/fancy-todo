@@ -41,23 +41,30 @@ class Middleware {
   }
 
   static errorHandler(err, req, res, next) {
-    // console.log("sukses masuk");
-    // for (const x in err) console.log(err[x]);
     let status = err.status || 500;
-    let message = err.message || "Internal Server Error";
-    if (err.name === "SequelizeValidationError") {
-      status = 400;
-      message = "";
-      err.errors.forEach((eachErrorMsg, index) => {
-        if (index === 0) message += `${eachErrorMsg.message}`;
-        else if (index >= 1) message += `, ${eachErrorMsg.message}`;
-      });
-    } else if (err.message === "invalid token") {
-      status = 401;
-      message = "Not Authorizeled";
-    }
+    let msg = err.msg || "Internal Server Error";
 
-    res.status(status).json(message);
+    if (
+      err.name === "SequelizeValidationError" ||
+      err.name === "SequelizeUniqueConstraintError"
+    ) {
+      status = 400;
+      msg = err.errors.map((el) => el.message).join(", ");
+    } else if (err.name === "Invalid Input") {
+      status = 401;
+      msg = "Wrong email/password";
+    } else if (err.name === "Authentication failed") {
+      status = 401;
+      msg = "Authentication failed";
+    } else if (err.name === "Not authorized") {
+      status = 401;
+      msg = "Not authorized";
+    } else if (err.name === "Post not found") {
+      status = 404;
+      msg = "Post not found";
+    }
+    console.log(err);
+    res.status(status).json({ msg });
   }
 }
 
