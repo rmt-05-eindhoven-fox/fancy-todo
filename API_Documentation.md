@@ -458,7 +458,7 @@
 -------
 
 
-**Login User via Google**
+* **Login User via Google**
 ----
   User login via Google
 
@@ -499,6 +499,232 @@
 
   ```
 
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+  <!-- **Content:** `{ error : "Log in" }` -->
+
+-------
+
+# PROJECTS
+
+
+**Get all Users' Projects**
+----
+  Retrieve all users' projects
+
+* **URL**
+
+  `/projects`
+
+* **Method:**
+  
+  `GET` 
+
+* **URL Params**
+
+  NONE
+
+* **Header Params**
+
+  ```json
+    {
+      "token"
+    }
+  ```
+
+* **Data Params**
+
+  NONE
+
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json    
+    {
+    "data": [
+        {
+            "id": 1,
+            "name": "First Project",
+            "createdAt": "2020-11-01T04:06:51.529Z",
+            "updatedAt": "2020-11-01T04:06:51.531Z",
+            "UserProject": {
+                "UserId": 14,
+                "ProjectId": 1,
+                "createdAt": "2020-11-01T04:06:51.548Z",
+                "updatedAt": "2020-11-01T04:06:51.548Z"
+            }
+        }
+          ]
+    }
+  ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+  <!-- **Content:** `{ error : "Log in" }` -->
+
+-------
+
+**Add New Project**
+----
+  Registered User adding new project
+
+* **URL**
+
+  `/projects`
+
+* **Method:**
+  
+  `POST` 
+
+* **URL Params**
+
+  NONE
+
+* **Header Params**
+
+  ```json
+    {
+      "token"
+    }
+  ```
+
+* **Data Params**
+
+  ```json
+    {
+      "name" : "example Project"
+    }
+
+  ```
+
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json    
+    {
+      "message" : "Succesfully created ProjectName project"
+    }
+
+  ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+  <!-- **Content:** `{ error : "Log in" }` -->
+
+-------
+
+
+**Update Project Name**
+----
+  Update Project Name
+
+* **URL**
+
+  `/projects/:id`
+
+* **Method:**
+  
+  `PATCH` 
+
+* **URL Params**
+
+  id refers to id of Project object
+
+  **Required:**
+
+  `id=[integer]`
+
+* **Header Params**
+
+  ```json
+    {
+      "token"
+    }
+  ```
+
+* **Data Params**
+
+  ```json
+    {
+      "name" : "example Project Edited"
+    }
+
+  ```
+
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json    
+    {
+      "message" : "Update Successful"
+    }
+
+  ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+  <!-- **Content:** `{ error : "Log in" }` -->
+
+-------
+
+**Delete Project**
+----
+  Delete a Users' Project
+
+* **URL**
+
+  `/projects/:id`
+
+* **Method:**
+  
+  `DELETE` 
+
+* **URL Params**
+
+  id refers to id of Project object
+
+  **Required:**
+
+  `id=[integer]`
+
+* **Header Params**
+
+  ```json
+    {
+      "token"
+    }
+  ```
+
+* **Data Params**
+
+  NONE
+
+
+* **Success Response:**
+
+  * **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json    
+    {
+      "message" : "Delete Successful"
+    }
+
+  ```
  
 * **Error Response:**
 

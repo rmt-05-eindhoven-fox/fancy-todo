@@ -167,9 +167,21 @@
         
         <!-- <button class = "btn btn-primary" onclick="getAllTodo()">Get all Todo</button> -->
         
-        <button type="button" class="btn w-100 btn-outline-secondary mb-3" data-toggle="modal" data-target="#modal_addTodo">
+        <button type="button" onclick="getAllProjects('#formTodo_project')" class="btn w-100 btn-outline-secondary mb-3" data-toggle="modal" data-target="#modal_addTodo">
           Add Todo
         </button>
+
+        <div class="btn-group w-100" role="group" aria-label="Basic example">
+          <button type="button" class="btn w-100 btn-outline-secondary mb-3" data-toggle="modal" data-target="#modal_addProject">
+            Add Project
+          </button>
+  
+          <button type="button" onclick="getAllProjects('#formDelete_project')" class="btn w-100 btn-outline-secondary mb-3" data-toggle="modal" data-target="#modal_deleteProject">
+            Delete Project
+          </button>
+         
+        </div>
+
         
         <div class = "weather-report">
           <div id = "weather-content">
@@ -183,8 +195,9 @@
               Max temp : 32 
             </p> -->
 
-          </div>
 
+
+          </div>
 
           <h6 style="font-weight: 400;">Your city</h6>
 
@@ -231,6 +244,62 @@
   <!-- Modal -->
   
 
+  <!-- Modal // Delete Project -->
+  <div class="modal fade" id="modal_deleteProject" tabindex="-1" role="dialog" aria-labelledby="modalDeleteProjectLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDeleteProjectLabel">Delete Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="project">Select which project to Delete</label>
+              <select class="custom-select mr-sm-2" id="formDelete_project">
+    
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="emptyAllForms()" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="deleteProject()" >Delete Project</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal // Add Project -->
+  <div class="modal fade" id="modal_addProject" tabindex="-1" role="dialog" aria-labelledby="modalAddProjectLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAddProjectLabel">Add Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="name">Project Name</label>
+              <input type="text" class="form-control" id="formProject_name" placeholder="Project Name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="emptyAllForms()" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="postNewProject()" >Create New Project</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Modal // Add To Do -->
   <div class="modal fade" id="modal_addTodo" tabindex="-1" role="dialog" aria-labelledby="modalAddToDoLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -256,6 +325,15 @@
               <label for="due_date">Due Date</label>
               <input type="date" class="form-control" id="formTodo_due_date">
             </div>
+
+            <div class="form-group">
+              <label for="project">Project</label>
+              <select class="custom-select mr-sm-2" id="formTodo_project">
+    
+              </select>
+            </div>
+
+
           </form>
         </div>
         <div class="modal-footer">
@@ -292,6 +370,14 @@
               <label for="due_date">Due Date</label>
               <input type="date" class="form-control" id="formEditTodo_due_date">
             </div>
+
+            <div class="form-group">
+              <label for="project">Project</label>
+              <select class="custom-select mr-sm-2" id="formEditTodo_project">
+    
+              </select>
+            </div>
+
           </form>
         </div>
         <div class="modal-footer">
