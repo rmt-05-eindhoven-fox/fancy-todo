@@ -11,25 +11,27 @@ class ToDoController {
   // }
 
   // POST /todos
-  static createTodo(req, res) {
+  static createTodo(req, res, next) {
     const { title, description, status, due_date } = req.body
     const UserId = req.loggedInUser.id
+    // console.log(UserId, title, description, status, due_date )
     Todo
       .create({ title, description, status, due_date, UserId })
       .then(data => {
         res.status(201).json(data)
       })
       .catch(err => {
-        if (err.name === 'SequelizeValidationError') {
-          let errors = err.errors.map(el => el.message)
-          res.status(400).json(errors.join(', '))
-        } else {
-          res.status(500).json(err)
-        }
+        next(err)
+        // if (err.name === 'SequelizeValidationError') {
+        //   let errors = err.errors.map(el => el.message)
+        //   res.status(400).json(errors.join(', '))
+        // } else {
+        //   res.status(500).json(err)
+        // }
       })
   }
   // GET /todos
-  static findAll(req, res) {
+  static findAll(req, res, next) {
     const UserId = req.loggedInUser.id
     Todo
       .findAll({
@@ -41,11 +43,12 @@ class ToDoController {
         res.status(200).json(data)
       })
       .catch(err => {
-        res.status(500).json(err)
+        // res.status(500).json(err)
+        next(err)
       })
   }
   // GET /todos/:id
-  static findOneTodo(req, res) {
+  static findOneTodo(req, res, next) {
     const UserId = req.loggedInUser.id
     Todo
       .findOne({
@@ -55,14 +58,16 @@ class ToDoController {
         }
       })
       .then(data => {
+        // console.log(data)
         res.status(200).json(data)
       })
       .catch(err => {
-        res.status(404).json(err)
+        // res.status(404).json(err)
+        next(err)
       })
   }
   // PUT /todos/:id
-  static updateTodo(req, res) {
+  static updateTodo(req, res, next) {
     const UserId = req.loggedInUser.id
     const { title, description, status, due_date } = req.body
     Todo
@@ -82,11 +87,12 @@ class ToDoController {
         res.status(200).json(data[1][0])
       })
       .catch(err => {
-        res.status(500).json(err)
+        // res.status(500).json(err)
+        next(err)
       })
   }
   // PATCH /todos/:id
-  static updateTodoStatus(req, res) {
+  static updateTodoStatus(req, res, next) {
     const UserId = req.loggedInUser.id
     const { status } = req.body
     Todo
@@ -106,11 +112,12 @@ class ToDoController {
         res.status(200).json(data[1][0])
       })
       .catch(err => {
-        res.status(500).json(err)
+        // res.status(500).json(err)
+        next(err)
       })
   }
   // DELETE /todos/:id
-  static deleteTodo(req, res) {
+  static deleteTodo(req, res, next) {
     const UserId = req.loggedInUser.id
     Todo
       .destroy({
@@ -123,7 +130,8 @@ class ToDoController {
         res.status(200).json({message: 'todo success to delete'})
       })
       .catch(err => {
-        res.status(500).json(err)
+        // res.status(500).json(err)
+        next(err)
       })
   }
 }

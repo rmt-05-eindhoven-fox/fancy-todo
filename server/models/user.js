@@ -28,12 +28,12 @@ module.exports = (sequelize, DataTypes) => {
         msg: 'Email address already in use!'
       },
       validate: {
+        notNull: {
+          msg: 'Please enter your email.'
+        },
         isEmail: {
           args: true,
           msg: 'Wrong email format!'
-        },
-        notNull: {
-          msg: 'Please enter your email.'
         },
         isUnique: async function(value, next) {
           let found = await User.findOne({
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
             }
           })
           if (found) {
-            next({msg: 'Email used!'})
+            next('Email already exist!')
           } else {
             next()
           }
@@ -55,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: {
           msg: 'Please enter your password.'
+        },
+        len: {
+          args: [3, 20],
+          msg: 'Password must have length of atleast 3'
         }
       }
     }

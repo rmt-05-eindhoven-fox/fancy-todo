@@ -22,7 +22,7 @@ class UserController {
   //     res.status(500).json(error)
   //   }
   // }
-  static register(req, res) {
+  static register(req, res, next) {
     const { email, password } = req.body
     // if (!email || !password) {
     //   throw (`email:(${email}), password:(${password})`)
@@ -35,18 +35,20 @@ class UserController {
       .then(data => {
         let { id, email } = data
         res.status(201).json({ id, email })        
-        return User.findAll()
+        // return User.findAll()
       })
-      .then(data => {
-        data = data.map(el => {
-          return {
-            email: el.email,
-            password: el.email
-          }
-        })
-      })
+      // .then(data => {
+      //   data = data.map(el => {
+      //     return {
+      //       email: el.email,
+      //       password: el.password
+      //     }
+      //   })
+      //   console.log(data)
+      // })
       .catch(err => {
-        res.status(500).json(err)
+        // res.status(500).json(err)
+        next(err)
       })
   }
   
@@ -153,6 +155,8 @@ class UserController {
       })
       .catch(err => {
       console.log(err)
+      // res.status(500).json(err)
+      next(err)
     })
   }
 }

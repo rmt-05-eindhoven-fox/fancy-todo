@@ -1,18 +1,22 @@
 module.exports = function (err, req, res, next) {
   console.log('***masuk error handler***')
-  console.log(err)
-  let status = 500
-  let msg = err.name || 'Internal server error!'
+  // console.log(err, "+++++++++=========== err")
+  // console.log(err.name, "+++++++++=========== err")
+  let status = err.status || 500
+  let msg = err.name || err.msg || 'Internal server error!'
+  // console.log('status:', status, 'msg:', msg)
   if (err.name === 'SequelizeValidationError') {
+    // console.log('err message:', err.errors[0].message)
     status = 400
     msg = err.errors.map( el => {
-      el.message
-    })
+      return el.message
+    }).join('<br/>')
   } else if (err.name === 'SequelizeUniqueConstraintError') {
     status = 400
     msg = err.errors.map( el => {
-      el.message
+      return el.message
     })
   }
-  res.status(status).json({ msg })
+  // console.log(msg, status)
+  res.status(status).json(msg)
 }

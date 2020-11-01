@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 class MovieController {
-  static findPopularMovie(req, res) {
+  static findPopularMovie(req, res, next) {
     axios({
       url: 'https://api.themoviedb.org/3/movie/popular',
       method: 'get',
@@ -16,7 +16,8 @@ class MovieController {
         res.status(200).json(data.results)
       })
       .catch(error => {
-        res.status(500).json(error)
+        // res.status(500).json(error)
+        next(error)
       })
   }
 }
