@@ -23,6 +23,7 @@ function beforeLogin(event) {
     $("#main").show();
     $("#about").show();
     $("#register-form").hide();
+    $("#go-to-addtodo").hide()
     $("#add-form-todo").hide();
      $("#edit-form-todo").hide();
     $("#go-to-register").on("click", function(event) {
@@ -68,6 +69,7 @@ function afterLogin(event) {
     $("#add-form-todo").hide();
     $("#edit-form-todo").hide();
     $("#logout-button").show();
+     $("#go-to-addtodo").show()
         $("#go-to-addtodo").on("click", function(event) {
         $("#add-form-todo").show();
         $("#content").hide()
