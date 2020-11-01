@@ -37,9 +37,13 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Password Cant Be Empty!'
+        },
+        len: {
+          args: [7, 15],
+          msg: 'Password length must be between 7 and 15 character!'
         }
-      }
-    },
+      },
+    }
   }, {
     hooks: {
       beforeCreate(user) {
