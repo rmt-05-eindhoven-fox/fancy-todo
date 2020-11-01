@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const formatDate = require('../helpers/formatDate')
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -39,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Status is required'
+        },
+        allowNull: {
+          args: false,
+          msg: 'Status cannot be empty!'
         }
       }
     },
@@ -48,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
         isDate: {
           args: true,
           msg: 'Please input a valid date'
+        }, 
+        isAfter: {
+          args: formatDate(new Date(), -1),
+          msg: `You cannot set Due Date to past date!`
         }
       }
     }, 
@@ -55,6 +64,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Todo',
+    hooks: {
+      beforeCreate: (todo, options) => {
+        todo.due_date = formatDate(new Date(todo.due_date))
+      }
+    }
   });
   return Todo;
 };

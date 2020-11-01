@@ -61,40 +61,46 @@ class UserController {
       }
     }
 
-    // incomplete, continue later
+    static googleLogin(req, res, next) {
+      let {google_access_token} = req.body
+      let email;
 
-    // static googleLogin(req, res, next) {
-    //   let {google_access_token} = req.body
-    //   let email;
-
-    //   const client = new OAuth2Client(process.env.CLIENT_ID);
-    //   async function verify() {
-    //     const ticket = await client.verifyIdToken({
-    //         idToken: google_access_token,
-    //         audience: process.env.CLIENT_ID,
-    //     });
-    //     const payload = ticket.getPayload();
-    //     email = payload.email
-    //     const user = await User.findOne({
-    //       where: {
-    //         email: payload.email
-    //       }
-    //     })
-
-    //     if (user) {
-
-    //     } else {
-    //       var userObj = {
-    //         email,
-    //         password: 
-    //       }
-    //       return User.create(userObj)
-    //     }
-    //     // const userid = payload['sub'];
-    //     // console.log(payload)
-    //   }
-    //   verify().catch(console.error);
-    // }
+      const client = new OAuth2Client('257701925850-sj3m6v1ep7cp6dhhht0gn532r1h2sgct.apps.googleusercontent.com');
+      client.verifyIdToken({
+        idToken: google_access_token,
+        audience: '257701925850-sj3m6v1ep7cp6dhhht0gn532r1h2sgct.apps.googleusercontent.com',
+      })
+      .then(ticket => {
+        let payload = ticket.getPayload()
+        email = payload.email
+        return User.findOne({
+          where: {
+            email:email
+          }
+        })
+        // console.log(payload)
+      })
+      .then(user => {
+        if(user) {
+          return user
+        } else {
+          return User.create({
+            email:email,
+            password: 'random'
+          })
+        }
+      })
+      .then(dataUser => {
+        let access_token = signToken({
+          id: dataUser.id,
+          email: dataUser.email
+        })
+        res.status(200).json({access_token})
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
 }
 
 module.exports = UserController

@@ -1,7 +1,7 @@
-const {Todo, Post} = require('../models')
+const {Todo} = require('../models')
 
-const {comparePassword} = require('../helpers/bcrypt')
-const { signToken } = require('../helpers/jwt')
+// const {comparePassword} = require('../helpers/bcrypt')
+// const { signToken } = require('../helpers/jwt')
 
 class TodoController {
 
@@ -74,6 +74,7 @@ class TodoController {
       })
       res.status(200).json(update[1][0])
     } catch(error) {
+      console.log(error)
       next(error)
     }
   }
