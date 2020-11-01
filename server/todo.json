@@ -1,0 +1,15 @@
+[
+    {
+        "title": "Jogging",
+        "description": "Lari pagi",
+        "status": false,
+        "due_date": "2020-10-12"
+    },
+    
+    {
+        "title": "Gym",
+        "description": "Upper body sore",
+        "status": false,
+        "due_date": "2020-10-13"
+    }
+]
