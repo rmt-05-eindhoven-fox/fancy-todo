@@ -26,9 +26,6 @@ async function authentication(req, res, next){
     }
   } catch (err) {
     next(err);
-    // const status = err.status || 500;
-    // const error = err.msg || 'Interval Server Error';
-    // res.status(status).json(error);
   }
 }
 

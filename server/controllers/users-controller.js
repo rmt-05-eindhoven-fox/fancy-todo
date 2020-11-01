@@ -10,6 +10,7 @@ class UsersController{
       email: req.body.email,
       password: req.body.password
     }
+    
     try {
       const data = await User.create(objParam);
       res.status(201).json({

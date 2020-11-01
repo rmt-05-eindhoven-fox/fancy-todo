@@ -16,8 +16,33 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique:{
+        msg: 'Email already registered!'
+      },
+      validate:{
+        notEmpty: {
+          args: true,
+          msg: 'Email is Required!!!'
+        },
+        isEmail:{
+          args: true,
+          msg: 'Format must be email!!!'
+        }
+      }
+    },
+    password: {
+     type: DataTypes.STRING,
+     allowNull: false,
+     validate: {
+       notEmpty:{
+         args: true,
+         msg: 'Password is required!!!'
+       }
+     }
+    }
   }, {
     hooks:{
       beforeCreate(user){

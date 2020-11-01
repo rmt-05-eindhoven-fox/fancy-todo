@@ -22,7 +22,7 @@ class TodosController {
       title: req.body.title,
       description: req.body.description,
       status: 'Uncompleted',
-      due_date: new Date(),
+      due_date: req.body.due_date,
       UserId: req.loggedInUser.id
     }
     try {
@@ -83,7 +83,7 @@ class TodosController {
   static async deleteTodos(req, res, next){
     let idparams = req.params.id;
     try {
-      const data = await Todo.destroy({ where: { id: idparams }});
+      const data = await Todo.destroy({ where: { id: +idparams }});
       res.status(200).json('Todo Success to delete!');
     } catch (err) {
       next(err);
