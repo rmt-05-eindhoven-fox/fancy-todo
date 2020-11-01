@@ -13,12 +13,13 @@ module.exports = {
          .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
          .addFields(
             { name: 'list', value: 'View all your not completed Todos.' },
-            { name: 'remindMe', value: 'Automatically remind you 1 day before your Todo deadline. Currently in development.' },
             { name: 'done', value: 'Mark your Todo as done' },
+            { name: 'create', value: '[title] [description] [due_date]'}, 
+            { name: 'remindMe', value: 'Automatically remind you 1 day before your Todo deadline. Currently in development.' },
+
          )
          .setTimestamp()
          .setFooter(`You're amazing`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
-      
 		msg.channel.send(messageEmbed);
 	},
 };

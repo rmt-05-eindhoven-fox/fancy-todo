@@ -15,50 +15,58 @@
     None
 
 * Data Params
-```
-{
-    "title" : "Todo Title",
-    "description" : "Todo Description",
-    "status" : "Not done",
-    "due_date" : "2020-10-26"
-}
-```
+
+    ```
+    {
+        "title" : "Todo Title",
+        "description" : "Todo Description",
+        "status" : "Not done",
+        "due_date" : "2020-10-26"
+    }, 
+    {
+        headers: token
+    }
+    ```
 
 * Success Response
     
     Code: `201 CREATED`
     
     Content:
-```
-{
-    "title" : "API Documentation",
-    "description" : "Fancy Todos API Documentation",
-    "status" : "In progress",
-    "due_date" : "2020-10-26"
-}
-```
+    
+    ```
+    {
+        "title" : "API Documentation",
+        "description" : "Fancy Todos API Documentation",
+        "status" : "In progress",
+        "due_date" : "2020-10-26"
+    }
+    ```
 
 * Error Response
     
     Code: `400 BAD REQUEST`
     
     Content:
-```
-{
-    error: ['Title is required', 
-            ...,
-            'Description is missing']
-}
-```
+    
+    ```
+    {
+        error: ['Title is required', 
+                ...,
+                'Description is missing']
+    }
+    ```
 
-Code: `500 INTERNAL SERVER ERROR`
+    Code: `500 INTERNAL SERVER ERROR`
     
     Content:
-```
-{
-    error: 'Our server ran into troubles. Please wait few moments for our engineer to fix the problem.'
-}
-```
+    
+    ```
+    {
+        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix                 the problem.'
+    }
+    ```
+    
     
 ## 2. Get all Todos
 
@@ -76,7 +84,9 @@ Code: `500 INTERNAL SERVER ERROR`
 
 * Data Params
 
-    None
+    {
+        headers: token
+    }
 
 
 * Success Response
@@ -84,24 +94,24 @@ Code: `500 INTERNAL SERVER ERROR`
     Code: `200 OK`
         
     Content:
-```
-[
-    {
-        "id" : 1,
-        "title" : "API Documentation",
-        "description" : "Fancy Todos API Documentation",
-        "status" : "In progress",
-        "due_date" : "2020-10-26"
-    },
-    {
-        "id" : 2,
-        "title" : "Read REST API Tutorial",
-        "description" : "Read REST API Tutorial",
-        "status" : "In progress",
-        "due_date" : "2020-10-30"
-    }
-]
-```
+    ```
+    [
+        {
+            "id" : 1,
+            "title" : "API Documentation",
+            "description" : "Fancy Todos API Documentation",
+            "status" : "In progress",
+            "due_date" : "2020-10-26"
+        },
+        {
+            "id" : 2,
+            "title" : "Read REST API Tutorial",
+            "description" : "Read REST API Tutorial",
+            "status" : "In progress",
+            "due_date" : "2020-10-30"
+        }
+    ]
+    ```
 
 * Error Response
     
@@ -111,7 +121,7 @@ Code: `500 INTERNAL SERVER ERROR`
         
     ```
     {
-        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix the problem.'
+        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix                 the problem.'
     }
     ```
 
@@ -131,7 +141,11 @@ Code: `500 INTERNAL SERVER ERROR`
 
 * Data Params
 
-    None
+    ```
+    {
+        headers: token
+    }
+    ```
 
 
 * Success Response
@@ -180,7 +194,7 @@ Code: `500 INTERNAL SERVER ERROR`
 
 * Method
 
-    `GET`
+    `PUT`
 
 * URL Params
 
@@ -194,6 +208,9 @@ Code: `500 INTERNAL SERVER ERROR`
         "description" : "Edited Todo Description",
         "status" : "Edited Todo Status",
         "due_date" : "2020-10-26"
+    },
+    {
+        headers: token
     }
     ```
 
@@ -255,17 +272,20 @@ Code: `500 INTERNAL SERVER ERROR`
 
 * Method
 
-    `GET`
+    `PATCH`
 
 * URL Params
 
     Required: `id = [integer]`
-
+    
 * Data Params
 
     ```
     {
         "status" : "done"
+    },
+    {
+        headers: token
     }
     ```
 
@@ -316,15 +336,19 @@ Code: `500 INTERNAL SERVER ERROR`
 
 * Method
 
-    `PATCH`
+    `DELETE`
 
 * URL Params
 
     Required: `id = [integer]`
 
 * Data Params
-
-   None
+    
+    ```
+    {
+        headers: token
+    }
+    ```
 
 
 * Success Response
@@ -358,5 +382,223 @@ Code: `500 INTERNAL SERVER ERROR`
     ```
     {
         error: 'Our server ran into troubles. Please wait few moments for our engineer to fix the problem.'
+    }
+    ```
+    
+## 7. User registration
+
+* URL
+
+    /user/register
+
+* Method
+
+    `POST`
+
+* URL Params
+
+    None
+
+* Data Params
+
+    ```
+    {
+        "username" : "Username",
+        "email" : "Email",
+        "passsword" : "Password",
+    }, 
+    ```
+
+* Success Response
+    
+    Code: `201 CREATED`
+    
+    Content:
+    
+    ```
+    {
+        "id" : "id",
+        "username" : "Username",
+        "email" : "Email",
+    }, 
+    ```
+
+* Error Response
+    
+    Code: `400 BAD REQUEST`
+    
+    Content:
+    
+    ```
+    {
+        error: ['Invalid username', 
+                ...,
+                'Password is required']
+    }
+    ```
+
+    Code: `500 INTERNAL SERVER ERROR`
+    
+    Content:
+    
+    ```
+    {
+        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix                 the problem.'
+    }
+    ```
+    
+## 8. User login
+
+* URL
+
+    /user/login
+
+* Method
+
+    `POST`
+
+* URL Params
+
+    None
+
+* Data Params
+
+    ```
+    {
+        "email" : "Email",
+        "passsword" : "Password",
+    }, 
+    ```
+
+* Success Response
+    
+    Code: `201 CREATED`
+    
+    Content:
+    
+    ```
+    {
+        "access_token" : "token"
+    }, 
+    ```
+
+* Error Response
+    
+    Code: `400 BAD REQUEST`
+    
+    Content:
+    
+    ```
+    {
+        error: ['Email/password didn't match']
+    }
+    ```
+
+    Code: `500 INTERNAL SERVER ERROR`
+    
+    Content:
+    
+    ```
+    {
+        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix                 the problem.'
+    }
+    ```
+    
+## 8. User login
+
+* URL
+
+    /user/login
+
+* Method
+
+    `POST`
+
+* URL Params
+
+    None
+
+* Data Params
+
+    ```
+    {
+        "email" : "Email",
+        "passsword" : "Password",
+    }, 
+    ```
+
+* Success Response
+    
+    Code: `201 CREATED`
+    
+    Content:
+    
+    ```
+    {
+        "access_token" : "token"
+    }, 
+    ```
+
+* Error Response
+    
+    Code: `400 BAD REQUEST`
+    
+    Content:
+    
+    ```
+    {
+        error: ['Email/password didn't match']
+    }
+    ```
+
+    Code: `500 INTERNAL SERVER ERROR`
+    
+    Content:
+    
+    ```
+    {
+        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix                 the problem.'
+    }
+    ```
+    
+## 9. Get background image
+
+* URL
+
+    /photos
+
+* Method
+
+    `GET`
+
+* URL Params
+
+    None
+
+* Data Params
+    
+    None
+
+* Success Response
+    
+    Code: `200`
+    
+    Content:
+    
+    ```
+    {
+        "url" : "img_url"
+    }, 
+    ```
+
+* Error Response
+    
+    Code: `500 INTERNAL SERVER ERROR`
+    
+    Content:
+    
+    ```
+    {
+        error: 'Our server ran into troubles. Please wait few moments for our engineer to fix                 the problem.'
     }
     ```

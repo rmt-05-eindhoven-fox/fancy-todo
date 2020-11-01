@@ -195,6 +195,8 @@ logout = () => {
    $("#login").show()
    $("#todo-list").empty()
    $("#nav-bar").hide()
+   $("#alert-message").empty()
+   $("#alert-message-register").empty()
    localStorage.removeItem("token")
 
    var auth2 = gapi.auth2.getAuthInstance();
