@@ -209,35 +209,20 @@ function hideAll() {
   $("#logout").hide() 
 }
 
-// Google Signin
-// <script>
-// var googleUser = {};
-// var startApp = function() {
-//   gapi.load('auth2', function(){
-//     // Retrieve the singleton for the GoogleAuth library and set up the client.
-//     auth2 = gapi.auth2.init({
-//       client_id: '390207241181-48b99jgbdiscpqticbdpoo6hvcfkcvvr.apps.googleusercontent.com',
-//       cookiepolicy: 'single_host_origin',
-//       // Request scopes in addition to 'profile' and 'email'
-//       //scope: 'additional_scope'
-//     });
-//     attachSignin(document.getElementById('customBtn'));
-//   });
-// };
+// Google sign in
+function onSignIn(googleUser) {
+  const token = googleUser.getAuthResponse().id_token;
+  console.log(token);
+  $.ajax({
+    method: 'post',
+    url: SERVER + "users/googleLogin",
+    data: {token}
+  }).done(result => {
 
-// function attachSignin(element) {
-//   console.log(element.id);
-//   auth2.attachClickHandler(element, {},
-//       function(googleUser) {
-//         document.getElementById('name').innerText = "Signed in: " +
-//             googleUser.getBasicProfile().getName();
-//       }, function(error) {
-//         alert(JSON.stringify(error, undefined, 2));
-//       });
-// }
-// </script>
-startApp()
+  }).fail(err => {
 
+  })
+}
 
 // Google sign out
 function signOut() {
