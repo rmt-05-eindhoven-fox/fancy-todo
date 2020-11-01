@@ -1,6 +1,8 @@
 const { User } = require('../models')
 const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
+const { OAuth2Client } = require('google-auth-library')
+const randomPassword = require('../helpers/randomPassword')
 
 class UsersController {
     static postRegister(req, res, next){
@@ -30,7 +32,7 @@ class UsersController {
             }
         })
         .then(user=>{
-            console.log(user)
+            //console.log(user)
             if(!user){
                 throw {msg: 'Wrong email/password', status: 400}
             }
@@ -44,6 +46,41 @@ class UsersController {
                 })
                 res.status(200).json({access_token})
             }
+        })
+        .catch(err=>{
+            next(err)
+        })
+    }
+
+    static googleLogin(req, res, next){
+        const { id_token } = req.body
+        let email = ''
+        const client = new OAuth2Client(process.env.CLIENT_ID)
+        client.verifyIdToken({
+            idToken: id_token,
+            audience: process.env.CLIENT_ID
+        })
+        .then(ticket=>{
+            const payload = ticket.getPayload()
+            //console.log(payload)
+            email = payload.email
+            return User.findOne({where:{email}})
+        })
+        .then(user=>{
+            if(user){
+               return user 
+            }else{
+                let newUser = {
+                    email,
+                    password: randomPassword()
+                }
+                console.log(newUser.password)
+                return User.create(newUser)
+            }
+        })
+        .then(data=>{
+            let access_token = signToken({id: data.id, email: data.email})
+            res.status(200).json({access_token})
         })
         .catch(err=>{
             next(err)
