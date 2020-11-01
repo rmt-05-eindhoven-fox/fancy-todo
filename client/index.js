@@ -1,48 +1,34 @@
 const SERVER = "http://localhost:3000"
 
-$("#navregister").click(() => {
-  $("#register").show()
-  $("#login").hide()
-})
+function beforeLogin() {
+  $("#landingPage").show()
+  $("#addTodo").hide()
+  $("#listTodo").hide()
+  $("#logout").hide()
+}
 
-$("#navlogin").click(() => {
-  $("#register").hide()
-  $("#login").show()
-})
-
-$("#navregister1").click(() => {
-  $("#register").show()
-  $("#login").hide()
-})
-
-$("#navlogin1").click(() => {
-  $("#register").hide()
-  $("#login").show()
-})
+function afterLogin() {
+  $("#landingPage").hide()
+  $("#addTodo").show()
+  $("#listTodo").show()
+  $("#logout").show()
+  listTodo()
+  checkBox()
+}
 
 $(document).ready(() => {
   const token = localStorage.getItem("token")
 
   if (token) {
-    $("#register").hide()
-    $("#login").hide()
-    $("#navbar").hide()
-    listTodo()
-    checkBox()
+    afterLogin()
   } else {
-    $("#register").hide()
-    $("#login").show()
-    $("#navbar").show()
-    $("#addTodo").hide()
+    beforeLogin()
   }
 })
 
+// Login with google
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  // console.log('Name: ' + profile.getName());
-  // console.log('Image URL: ' + profile.getImageUrl());
-  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
   var id_token = googleUser.getAuthResponse().id_token;
   $.ajax({
     method: "POST",
@@ -52,21 +38,16 @@ function onSignIn(googleUser) {
     }
   })
     .done(response => {
-      console.log(response)
       const token = response.access_token
       localStorage.setItem("token", token)
-      $("#register").hide()
-      $("#login").hide()
-      $("#navbar").hide()
-      $("#addTodo").show()
-      listTodo()
-
+      afterLogin()
     })
     .fail(err => {
       console.log(err)
     })
 }
 
+// Register
 function register(e) {
   e.preventDefault()
   const email = $("#register-email").val()
@@ -87,6 +68,7 @@ function register(e) {
     })
 }
 
+// Login
 function login(e) {
   e.preventDefault()
   const email = $("#login-email").val()
@@ -100,32 +82,23 @@ function login(e) {
     .done(response => {
       const token = response.access_token
       localStorage.setItem("token", token)
-      $("#register").hide()
-      $("#login").hide()
-      $("#navbar").hide()
-      $("#addTodo").show()
-      listTodo()
+      afterLogin()
     })
     .fail(err => {
       console.log(err.responseJSON)
     })
 }
 
+// Logout
 const logout = () => {
-  // $("#login").show()
-  // $("#content").hide()
-  // $("#navBtn").show()
   localStorage.removeItem('token')
-  signOut()
-}
-
-function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
-    console.log('User signed out.');
+    beforeLogin()
   });
 }
 
+// Add todo list
 function addTodo(e) {
   e.preventDefault()
   const token = localStorage.getItem("token")
@@ -147,6 +120,7 @@ function addTodo(e) {
     })
 }
 
+// Show todo list
 function listTodo() {
   const token = localStorage.getItem("token")
 
@@ -173,6 +147,7 @@ function listTodo() {
     })
 }
 
+// For check status if true, check checkbox
 function finishedTodo(id, title, status) {
   $("#todoContainer").append(`
   <div class="row">
@@ -185,16 +160,17 @@ function finishedTodo(id, title, status) {
         </div>
       </div>
     </div>
-  <div class="col col-lg-2">
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
-      <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+    <div class="col col-lg-2">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
+        <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+      </div>
     </div>
   </div>
-  </div>
-    `)
+  `)
 }
 
+// For check status if true, check checkbox
 function unfinishedTodo(id, title, status) {
   $("#todoContainer").append(`
   <div class="row">
@@ -207,16 +183,17 @@ function unfinishedTodo(id, title, status) {
         </div>
       </div>
     </div>
-  <div class="col col-lg-2">
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
-      <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+    <div class="col col-lg-2">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
+        <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+      </div>
     </div>
   </div>
-  </div>
-    `)
+  `)
 }
 
+// checked checkbox
 function checkBox() {
   $("input[type=checkbox]").on('click', function () {
     if (this.checked) {
@@ -231,6 +208,7 @@ function checkBox() {
   })
 }
 
+// Patch status to true
 function updateStatus(id, status) {
   const token = localStorage.getItem("token")
   $.ajax({
@@ -247,6 +225,7 @@ function updateStatus(id, status) {
     })
 }
 
+// Get todo
 function editTodoForm(id) {
   const token = localStorage.getItem("token")
   $.ajax({
@@ -258,24 +237,24 @@ function editTodoForm(id) {
       console.log(response.id)
       $("#editTodo").append(`
       <div class="row justify-content-center mt-5">
-      <div class="col-4">
-        <form onsubmit="editTodo(event, ${response.id})">
-          <div class="form-group">
-            <label style="font-size: larger; font-weight: bold;" for="title">Title</label>
-            <input required type="text" id="title-e" class="form-control" value="${response.title}">
-          </div>
-          <div class="form-group">
-            <label style="font-size: larger; font-weight: bold;" for="description">Description</label>
-            <input required type="text" id="description-e" class="form-control" value="${response.description}">
-          </div>
-          <div class=" form-group">
-            <label style="font-size: larger; font-weight: bold;" for="due_date">Date</label>
-            <input required type="date" id="due_date-e" class="form-control" value="${response.due_date}">
-          </div>
-          <button type="submit" class="btn btn-secondary">Edit Todo</button>
-        </form>
+        <div class="col-4">
+          <form onsubmit="editTodo(event, ${response.id})">
+            <div class="form-group">
+              <label style="font-size: larger; font-weight: bold;" for="title">Title</label>
+              <input required type="text" id="title-e" class="form-control" value="${response.title}">
+            </div>
+            <div class="form-group">
+              <label style="font-size: larger; font-weight: bold;" for="description">Description</label>
+              <input required type="text" id="description-e" class="form-control" value="${response.description}">
+            </div>
+            <div class=" form-group">
+              <label style="font-size: larger; font-weight: bold;" for="due_date">Date</label>
+              <input required type="date" id="due_date-e" class="form-control" value="${response.due_date}">
+            </div>
+              <button type="submit" class="btn btn-secondary">Edit Todo</button>
+          </form>
+        </div>
       </div>
-    </div>
       `)
       $("#addTodo").hide()
 
@@ -285,6 +264,7 @@ function editTodoForm(id) {
     })
 }
 
+// Put todo
 function editTodo(e, id) {
   e.preventDefault()
   const token = localStorage.getItem("token")
@@ -305,6 +285,7 @@ function editTodo(e, id) {
     })
 }
 
+// Delete todo
 function deleteTodo(id) {
   const token = localStorage.getItem("token")
   $.ajax({
@@ -321,6 +302,7 @@ function deleteTodo(id) {
     })
 }
 
+// Function for deadline
 function calculateDate(date1, date2) {
   dt1 = new Date(date1);
   dt2 = new Date(date2);
@@ -337,9 +319,20 @@ function calculateDate(date1, date2) {
   }
 }
 
+// Function for check status
 function statusCheck(date, status) {
   if (status || date === true) {
     return ("Done")
   }
   return date
 }
+
+// Function for transisi nav landing page
+$(function () {
+  $(".butn").click(function () {
+    $(".form-signin").toggleClass("form-signin-left");
+    $(".form-signup").toggleClass("form-signup-left");
+    $(".signup-inactive").toggleClass("signup-active");
+    $(".signin-active").toggleClass("signin-inactive");
+  });
+});

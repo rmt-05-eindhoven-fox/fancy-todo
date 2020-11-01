@@ -20,7 +20,6 @@ class TodoController {
     const { google } = require("googleapis")
     const { OAuth2 } = google.auth
     const oAuth2Client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET)
-    console.log(oAuth2Client)
     oAuth2Client.setCredentials({
       refresh_token: process.env.REFRESH_TOKEN
     })
@@ -40,7 +39,6 @@ class TodoController {
         dateTime: eventEndTime,
       }
     }
-    console.log(event)
     calendar.freebusy.query(
       {
         resource: {
@@ -72,7 +70,6 @@ class TodoController {
         return console.log(`Sorry I'm busy for that time...`)
       }
     )
-    // console.log(req.body)
     const data = {
       title: req.body.title,
       description: req.body.description,

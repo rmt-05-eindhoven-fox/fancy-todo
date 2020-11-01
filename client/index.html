@@ -13,55 +13,43 @@
 </head>
 
 <body>
-  <section class="container" id="register">
-    <div class="row justify-content-center mt-5">
-      <div class="col-4">
-        <h2 style="text-align: center;"><span>
-            <a id="navlogin1" style="cursor: pointer;">Login</a>
-          </span>|<span>
-            <a id="navregister1" style="cursor: pointer; text-decoration: underline;">Register</a>
-          </span></h2>
-        <form onsubmit="register(event)">
-          <div class="form-group">
-            <label for="register-email">Email Address</label>
-            <input required type="email" id="register-email" class="form-control" placeholder="example@email.com">
-          </div>
-          <div class="form-group">
-            <label for="register-password">Password</label>
-            <input required type="password" id="register-password" class="form-control">
-          </div>
-          <button type="submit" class="btn btn-secondary">Register</button>
-        </form>
+  <!-- Landing Page -->
+  <div class="containerLanding" id="landingPage">
+    <div class="frame">
+      <!-- Navigasi -->
+      <div class="nav">
+        <ul class="links">
+          <li class="signin-active font-weight-bold"><a class="butn">Login</a></li>
+          <li class="signup-inactive font-weight-bold"><a class="butn">Register</a></li>
+        </ul>
       </div>
+      <!-- Login -->
+      <form class="form-signin" onsubmit="login(event)">
+        <label class="text-dark font-weight-bold" for="login-email">Email Address</label>
+        <input required style="color: black;" type="email" id="login-email" class="form-styling"
+          placeholder="example@email.com">
+        <label class="text-dark font-weight-bold" for="login-password">Password</label>
+        <input required style="color: black;" type="password" id="login-password" class="form-styling">
+        <button style="margin-left: 145px;" type="submit" class="btn btn-secondary mt-2">Login</button>
+        <h6 class="row justify-content-center mt-5">Or login with</h6>
+        <div style="margin-left: 120px;" class="g-signin2" data-onsuccess="onSignIn"></div>
+      </form>
+      <!-- Register -->
+      <form class="form-signup" onsubmit="register(event)">
+        <label class="text-dark font-weight-bold" for="register-email">Email Address</label>
+        <input required style="color: black;" type="email" id="register-email" class="form-styling"
+          placeholder="example@email.com">
+        <label class="text-dark font-weight-bold" for="register-password">Password</label>
+        <input required style="color: black;" type="password" id="register-password" class="form-styling">
+        <button style="margin-left: 140px;" type="submit" class="btn btn-secondary mt-2">Register</button>
+      </form>
     </div>
-  </section>
+  </div>
 
-  <section class="container" id="login">
-    <div class="row justify-content-center mt-5">
-      <div class="col-4">
-        <h2 style="text-align: center;"><span>
-            <a id="navlogin" style="cursor: pointer; text-decoration: underline;">Login</a>
-          </span>|<span>
-            <a id="navregister" style="cursor: pointer;">Register</a>
-          </span></h2>
-        <form onsubmit="login(event)">
-          <div class="form-group">
-            <label for="login-email">Email Address</label>
-            <input required type="email" id="login-email" class="form-control" placeholder="example@email.com">
-          </div>
-          <div class="form-group">
-            <label for="login-password">Password</label>
-            <input required type="password" id="login-password" class="form-control">
-          </div>
-          <button type="submit" class="btn btn-secondary">Login</button>
-        </form>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-      </div>
-    </div>
-  </section>
+  <!-- Logout -->
+  <a class="btn btn-danger" id="logout" onclick="logout();">Logout</a>
 
-  <a class="btn btn-danger" onclick="logout();">Sign out</a>
-
+  <!-- Add Todo -->
   <section class="container" id="addTodo">
     <div class="row justify-content-center mt-5">
       <div class="col-4">
@@ -84,10 +72,10 @@
     </div>
   </section>
 
-  <section class="container" id="editTodo">
+  <!-- Edit todo -->
+  <section class="container" id="editTodo"></section>
 
-  </section>
-
+  <!-- List todo -->
   <section class="container" id="listTodo">
     <div class="row justify-content-center mt-5">
       <div class="listTodo">
@@ -97,6 +85,7 @@
     </div>
   </section>
 
+  <!-- Script -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="index.js"></script>
