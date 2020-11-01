@@ -20,6 +20,15 @@
         }
         ```
 
+* **Headers Params**
+
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
+
 * **Success Response:**
 
   * **Code:** 201 <br />
@@ -29,7 +38,7 @@
         "id": 1,
         "title" : "Learn REST API",
         "description" : "Learn how to create  RESTful API with Express and Sequelize",
-        "status" : "Not Done",
+        "status" : "undone",
         "due_date" : "2020-01-29"
     }
     ```
@@ -41,7 +50,6 @@
     OR
 
    * **Code:** 400 BAD REQUEST <br />
-     **Content:** `{ error : "Validation error" }`
 
 
 <hr>
@@ -75,11 +83,26 @@
         "due_date" : "2020-02-05"
     } ]
     ```
+
+* **Headers Params**
+
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
  
 * **Error Response:**
 
-  * **Code:** 500 NOT FOUND <br />
-    **Content:** `{ error : "Data Not Found." }`
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Internal Server Error" }`
+
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ error : "Authentication failed" }`
+
 
 <hr>
 
@@ -89,16 +112,17 @@
   /todos/:id
 
 * **Method:**
-  
-  <_The request type_>
 
   `GET`
   
-*  **URL Params** 
+* **Headers Params**
 
-   **Required:**
- 
-   `id=[integer]`
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
 
 
 * **Success Response:**
@@ -118,8 +142,18 @@
  
 * **Error Response:**
 
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Internal Server Error" }`
+
+  OR
+
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ error : "Not Found" }`
+
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ error : "Authentication failed" }`
 
 <hr>
 
@@ -132,12 +166,14 @@
 
   `PUT`
   
-*  **URL Params**
+* **Headers Params**
 
-   **Required:**
- 
-   `id=[integer]`
-
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
 
 * **Data Params**
     ```
@@ -165,17 +201,18 @@
 * **Error Response:**
 
 
-   * **Code:** 404 NOT FOUND <br />
-     **Content:** `{ error : "Not Found" }`
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Internal Server Error" }`
 
-    OR
+  OR
 
-   * **Code:** 500 INTERNAL SERVER ERROR <br />
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ error : "Not Found" }`
 
-    OR
+  OR
 
-   * **Code:** 400 BAD REQUEST <br />
-     **Content:** `{ error : "Validation error" }`
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ error : "Authentication failed" }`
 
 
 <hr>
@@ -190,12 +227,14 @@
 
   `PATCH`
   
-*  **URL Params**
+* **Headers Params**
 
-
-   **Required:**
- 
-   `id=[integer]`
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
 
 * **Data Params**
 
@@ -227,6 +266,11 @@
     OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ error : "Internal Server Error" }`
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ error : "Authentication failed" }`
 
 <hr>
 
@@ -238,11 +282,14 @@
 
   `DELETE`
   
-*  **URL Params**
+* **Headers Params**
 
-   **Required:**
- 
-   `id=[integer]`
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
 
 
 * **Success Response:**
@@ -252,12 +299,138 @@
  
 * **Error Response:**
 
-  <_Most endpoints will have many ways they can fail. From unauthorized access, to wrongful parameters etc. All of those should be liste d here. It might seem repetitive, but it helps prevent assumptions from being made where they should be._>
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ error : "error" }`
 
-    OR
+  OR
 
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ error : "Not Found" }`
+
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{ error : "Authentication failed" }`
+
+<hr>
+
+* **URL**
+
+  /register
+
+* **Method:**
+
+  `POST`
+
+
+* **Data Params**
+
+  ```
+    {
+      "username": "mansur",
+      "email": "mansur@yahoo.ac",
+      "password": "alhamdulilah"
+    }
+  ```
+
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:** 
+    ```
+    {
+      "id": 10,
+      "username": "mansur",
+      "email": "mansur@yahoo.ac"
+    }
+    ```
+ 
+* **Error Response:**
+
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ error : "error" }`
+
+<hr>
+
+* **URL**
+
+  /login
+
+* **Method:**
+
+  `POST`
+
+* **Data Params**
+
+  ```
+    {
+      "email": "mansur@yahoo.ac",
+      "password": "alhamdulilah"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJyYW1hQHlhaG9vLmNvbSIsImlhdCI6MTYwNDIxNDg5OX0.882lz20jN4ZZNydcgnsqLxglv1xB1yfEH0QW9h2L4aM"
+    }
+    ```
+ 
+* **Error Response:**
+
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ error : "error" }`
+
+  OR
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ error : "Not Found" }`
+
+<hr>
+
+* **URL**
+
+  /googleLogin
+
+* **Method:**
+
+  `POST`
+
+* **Data Params**
+
+  ```
+    {
+      "google_access_token": <INPUT GOOGLE ID TOKEN>
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJyYW1hQHlhaG9vLmNvbSIsImlhdCI6MTYwNDIxNDg5OX0.882lz20jN4ZZNydcgnsqLxglv1xB1yfEH0QW9h2L4aM"
+    }
+    ```
+ 
+* **Error Response:**
+
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ error : "error" }`
+
+  OR
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ error : "Not Found" }`
+
+
+
