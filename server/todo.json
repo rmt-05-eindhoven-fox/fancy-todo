@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Belajar Logic",
+    "description": "Dasar dari pemrograman adalah Logic",
+    "due_date": "07-28-2012"
+  },
+  {
+    "title": "Latihan Logic",
+    "description": "Latihan menyelesaikan masalah logic",
+    "due_date": "07-29-2012"
+  },
+  {
+    "title": "Ujian Logic",
+    "description": "Tes untuk mengetahui pemahaman",
+    "due_date": "07-30-2012"
+  }
+]
