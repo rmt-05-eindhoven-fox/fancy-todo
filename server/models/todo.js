@@ -18,28 +18,26 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
-    due_date: DataTypes.STRING,
+    due_date: {
+      type: DataTypes.STRING,
+      validate: {
+        checkDate(){
+          let date = this.due_date;
+          let temp = date.split('-');
+          const inputDate = Number(temp[0]) + Number(temp[1]) + Number(temp[2])
+          let now = new Date();
+          const nowDate = now.getFullYear() + now.getMonth() + now.getDay() + 1
+  
+          if(inputDate < nowDate) {
+            throw new Error('date is a require field');
+          }
+        }
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',
-    validate: {
-      checkDate(){
-        const date = this.due_date;
-        const now = new Date();
-        const temp = date.split('-');
-
-        if(temp[0] > now.getFullYear()) {
-          throw new Error('date is a require field');
-        }
-        if(temp[1] > now.getMonth()) {
-          throw new Error('date is a require field');
-        }
-        if(temp[2] > now.getDay()) {
-          throw new Error('date is a require field');
-        }
-      }
-    }
   });
   return Todo;
 };

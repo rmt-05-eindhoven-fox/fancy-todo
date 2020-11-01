@@ -22,31 +22,40 @@
 * **Success Response:**
 
   * **Code:** 201 <br />
-    **Content:** `{
+    **Content:** 
+    ```
+    {
       id : 1,
       title : "masak",
       description : "sayur kangkung",
       status : false,
       due_date : 2020/10/25
-    }`
+    }
+    ```
  
 * **Error Response:**
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "User doesn't exist" }`
+    **Content:** 
+    ```
+    { error : "User doesn't exist" }
+    ```
 
   OR
 
   * **Code:** 500 Internal Server Error <br />
-    **Content:** `{ error : "You are unauthorized to make this request." }`
+    **Content:** 
+    ```
+    { error : "You are unauthorized to make this request." }
+    ```
 
-**ShowAll Todo**
+**ShowAll Todo false**
 ----
   Returns json data about a all todo.
 
 * **URL**
 
-  /users
+  /todos
 
 * **Method:**
 
@@ -55,36 +64,87 @@
 * **Success Response:**
 
   * **Code:** 201 <br />
-    **Content:** `{
+    **Content:** 
+    ```
+    {
       id : 1,
       title : "masak",
       description : "sayur kangkung",
       status : false,
       due_date : 2020/10/25
-    }`
+    }
+    ```
  
 * **Error Response:**
 
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "User doesn't exist" }`
+    **Content:** 
+    ```
+    { error : "User doesn't exist" }
+    ```
 
   OR
 
   * **Code:** 500 Internal Server Error <br />
-    **Content:** `{ error : "You are unauthorized to make this request." }`
+    **Content:** 
+    ```
+    { error : "You are unauthorized to make this request." }
+    ```
+
+**ShowAll Todo True**
+----
+  Returns json data about a all todo.
+
+* **URL**
+
+  /todos
+
+* **Method:**
+
+  `GET`
+  
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:** 
+    ```
+    {
+      id : 1,
+      title : "masak",
+      description : "sayur kangkung",
+      status : true,
+      due_date : 2020/10/25
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** 
+    ```
+    { error : "User doesn't exist" }
+    ```
+
+  OR
+
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** 
+    ```
+    { error : "You are unauthorized to make this request." }
+    ```
 
 
-**Show Todo**
+**Register user**
 ----
   Returns json data about a single todo.
 
 * **URL**
 
-  /users/:id
+  /users/register
 
 * **Method:**
 
-  `GET`
+  `POST`
   
 *  **URL Params**
 

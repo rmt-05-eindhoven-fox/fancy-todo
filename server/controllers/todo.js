@@ -82,20 +82,21 @@ class TodoController {
   }
 
   static updateStatus(req, res, next){
-    const id = +req.params.id;
+    const id = req.params.id;
     const obj = {
       status: true
     }
 
-    Todo.update(obj, { where : {'id' : id}, returning: true})
+    Todo.update(obj, { where : {id}})
       .then(data => {
-        if(data[1][0]){
-          res.status(201).json(data[1][0]);
+        if(data[0]){
+          res.status(201).json(data[0]);
         } else {
           throw next(err);
         }
       })
       .catch(err => {
+        console.log(err);
         next(err);
       })
   }
