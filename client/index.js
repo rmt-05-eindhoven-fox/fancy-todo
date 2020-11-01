@@ -196,7 +196,7 @@ function showTodos(){
                             <tr>
                                 <td> 
                                     <div class="card">
-                                        <div class="card-body">
+                                        <div class="card-body" style="background-color: white;">
                                           <h5 class="card-title">${el.title}</h5>
                                           <p class="card-text">${el.description}</p>
                                           <a href="javascript:void();" class="btn btn-warning" onclick="undo(${el.id})">Undo</a>
