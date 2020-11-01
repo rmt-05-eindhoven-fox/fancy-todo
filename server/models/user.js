@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         len: {
-          args: [6, 10],
+          // args: [6, 10],
           msg: 'Minimum 6 character'
         }
       }

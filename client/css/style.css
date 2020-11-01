@@ -1,3 +1,24 @@
+#register-page {
+  min-height: 220px;
+  padding: 70px 0;
+  background-color: #383838;
+  color: #f5c21c;
+}
+
+#register-page-btn {
+  color: #383838;
+}
+
+#login-page {
+  min-height: 100px;
+  padding: 70px 0;
+  background-color: #f5c21c;
+}
+
+#login-page-btn {
+  color: #f5c21c;
+}
+
 .homepage {
   background-color: #383838 !important;
   color: #ffffff;
@@ -8,7 +29,8 @@
   font-family: 'Playfair Display', serif;
   color: #383838;
   text-align: center;
-  max-height: 400px;
+  min-height: 50vh;
+
   overflow: auto;
   font-weight: bold;
 }
@@ -42,5 +64,19 @@ footer {
   font-size: large;
   margin-top: auto;
   margin-bottom: 0;
-  min-height: 100px;
+  min-height: 80px;
+  background-color: #383838;
+  color: #f5c21c;
+}
+
+.finished {
+  background-color: #15b100;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.unfinished {
+  background-color: #ce0000;
+  color: #ffffff;
+  font-weight: bold;
 }
