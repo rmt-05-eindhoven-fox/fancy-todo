@@ -24,7 +24,7 @@ _Response (500 - Internal Server Error)_
 ## Register
 ***
 register with new user info
-1. URL  `localhost:8080/register`
+1. URL  `localhost:3000/register`
 2. Method `POST`
 3. URL Param `not required`
 4. Data Param
@@ -61,7 +61,7 @@ CONTENT:
 ## Login
 ***
 login while get an access token based on credentials
-1. URL  `localhost:8080/login`
+1. URL  `localhost:3000/login`
 2. Method `POST`
 3. URL Param `not required`
 4. Data Param
@@ -100,7 +100,7 @@ CONTENT:
 ## Sign In Using Google
 ***
 sign in while get an access token based on credentials
-1. URL  `localhost:8080/googleLogin`
+1. URL  `localhost:3000/googleLogin`
 2. Method `POST`
 3. URL Param `not required`
 4. Data
@@ -135,7 +135,7 @@ CONTENT:
 ***
 ## logout
 ***
-1. URL  `localhost:8080/signout`
+1. URL  `localhost:3000/signout`
 2. Method `GET`
 3. URL Param `not required`
 4. Data Param
@@ -152,7 +152,7 @@ CONTENT:
 ***
 create todo list ( authenticated only )
 
-1. URL  `localhost:8080/todo`
+1. URL  `localhost:3000/todo`
 2. Method `POST`
 3. URL Param `not required`
 4. Data Param
@@ -188,7 +188,7 @@ CONTENT: {
 ***
 show all todo list ( authenticated user only )
 
-1. URL  `localhost:8080/todos`
+1. URL  `localhost:3000/todos`
 2. Method `GET`
 3. URL Param 
 4. Data Param
@@ -213,7 +213,7 @@ CONTENT: {
 ## Edit Todo
 ***
 edit todo list ( authenticated user only )
-1. URL  `localhost:8080/todos/:id`
+1. URL  `localhost:3000/todos/:id`
 2. Method `PUT`
 3. URL Param `not required`
 4. Data Param
@@ -254,11 +254,51 @@ CONTENT:
 
 ```
 ***
+## Edit status Todo
+***
+edit status todo list (ceklist if finish) ( authenticated user only )
+1. URL  `localhost:3000/todos/:id`
+2. Method `PATCH`
+3. URL Param `not required`
+4. Data Param
+```javascript
+data: {
+      id: 'number',
+      status: 'json.parse(string)' ==> boolean
+      token: '<your token>'
+    },
+    headers: {
+      'Authorization': `${token}`
+    }
+```
+5. Success Response
+```javascript
+CODE : 200(OK)
+CONTENT: {
+  title,
+  description,
+  status,
+  due_date
+}
+```
+6. Error Response
+```javascript
+CODE: 400
+CONTENT: "json" {
+  message: "Bad request"
+}
+OR 
+CODE: 500('internal server error')
+
+CONTENT:
+
+```
+***
 ## Delete Todo
 ***
 delete todo list ( authenticated user only )
 
-1. URL  `localhost:8080/todos/:id`
+1. URL  `localhost:3000/todos/:id`
 2. Method `DELETE`
 3. URL Param 
 4. Data Param
