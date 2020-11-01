@@ -69,23 +69,22 @@ List of available endpoints:
     ```
 ----
 
-**LOGIN**
+**TODOS**
 ----
-  Login into the web app
+ Get all Todo
 
 * **URL**
 
-  /users/login
+  /todos
 
 * **Method:**
 
-  `POST`
+  `GET`
 
-* **Data Params**
+* **Data Headers**
     ```javascript
     {
-        email: "string",
-        password: "string"
+        token: "string",
     }
     ```
 * **Success Response:**
@@ -94,15 +93,15 @@ List of available endpoints:
     **Content:** 
     ```javascript
     {
-        access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRseW1zQGdtYWlsLmNvbSIsImlhdCI6MTYwNDEzMTkyMn0.ZT1EwUalysX7Z4DkLOWHivhi3f1PdpEEKREVLXAqK2I"
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJmYXV6YW5AZ21haWwuY29tIiwiaWF0IjoxNjA0MjE0MDkxfQ.n8P4_eh95A3a-BZ_lFXcMUetTIyCQWrqmVeYgIy8NGU"
     }
     ```
 
-    * **Code:**  401 Unauthorized <br />
+    * **Code:**  400 Bad Request <br />
     **Content:** 
     ```javascript
   { 
-        "error": "wrong email/password"
+         "error": "Authentication failed"
 
   }
     ```
@@ -117,7 +116,112 @@ List of available endpoints:
     }
     ```
 ----
+
+
+**GET TODOS BY ID**
+----
+  Get Todos By Id
+
+* **URL**
+
+  /todos/id
+
+* **Method:**
+
+  `GET`
+
+* **Data Params**
+    ```javascript
+    {
+        token: "string"
+    }
+    ```
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJmYXV6YW5AZ21haWwuY29tIiwiaWF0IjoxNjA0MTc2ODcwfQ.KGwolyhW6hsWvkYMGNTky2Z2UaX7XCHLiTMeRKd1NEo"
+    }
+    ```
+
+    * **Code:**  400 BadRequest <br />
+    **Content:** 
+    ```javascript
+  { 
+        "error": "Authentication failed"
+  }
+    ```
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+     ```
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    {
+        msg : "internal server error"
+    }
+    ```
+----
   
+
+
+**POST TODOS BY ID**
+----
+  Post Todos By Id
+
+* **URL**
+
+  /todos/id
+
+* **Method:**
+
+  `POST`
+
+* **Data Params**
+    ```javascript
+    {
+        token: "string"
+    }
+    ```
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **HEADERS:** 
+    ```javascript
+    {
+        "id": 31,
+        "title": "ini punya id 7 1",
+        "description": "hallo",
+        "status": true,
+        "due_date": "2020-11-09T00:00:00.000Z",
+        "UserId": 4,
+        "createdAt": "2020-11-01T07:12:10.381Z",
+        "updatedAt": "2020-11-01T07:21:14.337Z"
+    }
+    ```
+
+
+
+    * **Code:**  400 BadRequest <br />
+    **Content:** 
+    ```javascript
+  { 
+    "error": "Due date should not in the past time"
+  }
+    ```
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+     ```
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    {
+        msg : "internal server error"
+    }
+    ```
+----
 
 ### URL ###
 URL 

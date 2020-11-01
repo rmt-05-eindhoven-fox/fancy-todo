@@ -58,16 +58,16 @@ class TodoController {
 
     static async updateStatus(req, res, next) {
         try {
-            let { status } = req.body
-            let todo = await ToDo.findOne({ where: { id: req.params.id } })
-            console.log(todo)
-            if (todo) {
-                todo.status = status
-                todo.save()
-                res.status(200).json(todo)
-            } else {
-                res.status(404)
-            }
+            // let { status } = req.body
+            let todo = await ToDo.update({status : true}, { where: { id: req.params.id } , returning : true})
+            console.log(todo, ">>> ini dari update status")
+            res.status(200).json(todo)
+            // if (todo) {
+            //     todo.status = false
+            //     // todo.update()
+            //     res.status(200).json(todo)
+            // } else {
+            //     res.status(404)
         } catch (err) {
             console.log(err, '>>> ERROR DATA UPDATE')
             next(err)
