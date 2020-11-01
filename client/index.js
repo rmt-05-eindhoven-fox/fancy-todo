@@ -9,17 +9,52 @@ $(document).ready(function () {
         $("#login-page").hide()
         $("#btn-logout").show()
         $("#register-page").hide()
+        $("#add-todos").show()
+        $("#title-todo").show()
+        $("#edit-form").hide()
         showTodos()
+        addNewTodos()
     } else {
         $("#content").hide()
         $("#login-page").show() 
         $("#register-page").hide()
         $("#btn-logout").hide()
+        $("#add-todos").hide()
+        $("#title").hide()
+        $("#title-todo").hide()
+        $("#edit-form").hide()
     }
     $("#btn-logout").on("click", function () {
         logout()
     })
 })
+
+function addNewTodos() {
+    $("#login-page").hide()
+    $("#register-page").hide()
+    $("#add-todos").show()
+    $("#edit-form").hide()
+}
+
+function create(e) {
+    e.preventDefault()
+    const title = $("#title-add").val()
+    const description = $("#description").val()
+    const status = $("#status").val()
+    const due_date = $("#due_date").val()
+    //console.log(title)
+    $.ajax({
+        url: SERVER + "/todos",
+        method: "POST",
+        headers: {token: localStorage.token},
+        data: {title, description, status, due_date}
+    }).done( response => {
+        //console(response)
+        showTodos()
+    }).fail(err => {
+        console.log(err)
+    })
+}
 
 function registerPage() {
     $("#login-page").hide()
@@ -30,6 +65,7 @@ function registerPage() {
 function loginPage() {
     $("#login-page").show()
     $("#register-page").hide()
+    $("#edit-form").hide()
     login(e)
 }
 
@@ -53,6 +89,7 @@ function register() {
         $("#btn-logout").hide()
         $("#login-page").show()
         $("#register-page").hide()
+        $("#edit-form").hide()
     })
     .fail(err => {
         console.log(err)
@@ -79,10 +116,12 @@ function login(e) {
         $("#login-page").hide()
         $("#register-page").hide()
         $("#content").show()
+        $("#add-todos").show()
         $("#btn-logout").show()
         $("#email").val("")
         $("#password").val("")
         showTodos()
+        addNewTodos()
     }).fail(err => {
         console.log(err)
     })
@@ -91,7 +130,10 @@ function login(e) {
 function logout() {
     $("#login-page").show()
     $("#content").hide()
+    $("#add-todos").hide()
     $("#btn-logout").hide()
+    $("#title-todo").hide()
+    $("#edit-form").hide()
     localStorage.removeItem('token')
 }
 
@@ -105,14 +147,76 @@ function showTodos() {
         }
     }).done(response => {
         const todos = response.todos
-        $("#content").append(`
-                <p>Error Handler</p>
-                <p>Has to do it tonight</p>
-                <p>on progress</p>
-                <p>2020-10-29T00:00:00.000Z</p>
-        `)
+        console.log(todos)
+        $("#title-todo").show()
+        $("#content").empty()
+        todos.forEach(el => {
+
+            $("#content").append(`
+            
+                <div class="col-6 mt-5 md-3">
+                    <p class="text-left font-weight-bold">${el.title}</p>
+                    <p class="text-left font-weight-bold">${el.description}</p>
+                    <p class="text-left font-weight-bold">${el.status}</p>
+                    <p class="text-left font-weight-bold">${el.due_date}</p>
+                    <button type="submit" class="btn btn-primary" style="background-color: blue;" onClick="editTodos(${el.id},"${el.title}","${el.description}","${el.status}","${el.due_date}")">Edit</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: red;" onClick="deleteTodos(${el.id})">Delete</button>
+                </div>
+            `)
+        })
         console.log(todos)
     }).fail(err => {
         console.log(err)
     })
-} 
+}
+
+function edit(e) {
+    e.preventDefault()
+    const token = localStorage.getItem("token")
+    const title = $("#edit-title").val()
+    const description = $("#edit-description").val()
+    const status = $("#edit-status").val()
+    const due_date = $("#edit-due_date").val()
+
+    $.ajax({
+        url: SERVER + "/todos/" + id,
+        method: "PUT",
+        headers: {token},
+        data: {title, description, status, due_date}
+    }).done(response => {
+        showTodos()
+    }).fail(err => {
+        console.log(err)
+    })
+}
+
+function editTodos(id,title,description,status,due_date) {
+    
+    $("#content").hide()
+    $("#edit-form").show()
+    
+    $("#edit-title").val(title)
+    $("#edit-description").val(description)
+    $("#edit-status").val(status)
+    $("#edit-due_date").val(due_date)
+    //idTemp = id
+
+}
+
+
+function deleteTodos(id) {
+    //console.log(id, 'ini id')
+    const token = localStorage.getItem("token")
+    $.ajax({
+        url: SERVER + "/todos/" + id,
+        method: "DELETE",
+        headers: {token}
+    }).done(response => {
+        $("#content").show()
+        showTodos()
+    }).fail(err => {
+        console.log(err)
+    })
+}
+
+
