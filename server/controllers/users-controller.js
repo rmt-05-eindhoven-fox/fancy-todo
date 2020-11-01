@@ -2,7 +2,8 @@
 
 const { comparePassword } = require('../helpers/bcrypt');
 const { signToken } = require('../helpers/jwt');
-const { User } = require('../models/')
+const { User } = require('../models/');
+const { OAuth2Client } = require('google-auth-library');
 
 class UsersController{
   static async postRegister(req, res, next){
@@ -10,7 +11,6 @@ class UsersController{
       email: req.body.email,
       password: req.body.password
     }
-    
     try {
       const data = await User.create(objParam);
       res.status(201).json({
@@ -52,6 +52,48 @@ class UsersController{
       // const error = err.msg || 'Bad Request';
       // res.status(status).json(error);
     }
+  }
+
+  static googleLogin(req, res, next){
+    let { google_access_token } = req.body;
+    let email;
+    const client = new OAuth2Client(process.env.CLIENT_ID);
+    client.verifyIdToken({
+      idToken: google_access_token,
+      audience: process.env.CLIENT_ID,  
+    })
+    .then(data => {
+      let payload = data.getPayload();
+      email = payload.email;
+      // console.log(payload, 'data payload dave');
+      return User.findOne({
+        where: { email }
+      })
+    })
+    .then(user=>{
+      console.log(user)
+      if(user){
+        return user;
+      }
+      else{
+        let userObj = {
+          email,
+          password: 'randomkuy'
+        }
+        return User.create(userObj)
+      }
+    })
+    .then(dataUser=> {
+      let token = signToken({
+        id: dataUser.id,
+        email: dataUser.email
+      })
+      res.status(200).json(token);
+    })
+    .catch(err => {
+      next(err);
+    })
+
   }
 }
 
