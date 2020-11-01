@@ -1,7 +1,7 @@
 const { Todo, User } = require("../models");
 const { signToken } = require("../helpers/jwt");
 const { comparePassword } = require("../helpers/bcrypt");
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 
 class UserController {
 	static async register (req, res, next) {
@@ -60,11 +60,10 @@ class UserController {
 			if (!user) {
 				const newUser = {
 					email,
-					password: 'apaajaboleh'
+					password: process.env.GOOGLEPASSWORD
 				}
 				user = await User.create(newUser)
 			}
-			console.log(user);
 
 			const access_token = signToken(user.id)
 			res.status(200).json({ access_token })	
