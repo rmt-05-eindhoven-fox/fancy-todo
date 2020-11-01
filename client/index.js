@@ -9,6 +9,8 @@ $(document).ready(function(){
     $('#register').hide()
     cook()
     listTodo()
+    showTodoFalse()
+    showTodoTrue()
   } else {
     $('#home').hide()
     $('#login').show()
@@ -41,6 +43,8 @@ function login(e) {
       $('#home').show()
       cook()
       listTodo()
+      showTodoFalse()
+      showTodoTrue()
       $('#email').val("")
       $('#password').val("")
     })
@@ -99,12 +103,16 @@ function onSignIn(googleUser) {
     }
   })
   .done(res => {
-    $('#email').val("")
-    $('#password').val("")
     const token = res.access_token;
     localStorage.setItem("token", token);
     $('#login').hide()
     $('#home').show()
+    cook()
+    listTodo()
+    showTodoFalse()
+    showTodoTrue()
+    $('#email').val("")
+    $('#password').val("")
   })
   .fail(err => {
     console.log(err)
@@ -128,6 +136,7 @@ function cook(){
     }
   })
   .done(res => {
+    $("#cook").empty();
     $("#cook").append(`
     <h2> Cooking Today ... </h2>
     <img src="${res.thumb}" class="card-img-top">
@@ -153,10 +162,133 @@ function listTodo(){
 
 function createTodo(e){
   e.preventDefault()
+  const token = localStorage.getItem("token");
   const title = $('#title').val()
   const description = $('#description').val()
   const due_date = $('#due_date').val()
 
-  console.log(title, description, due_date);
+  $.ajax({
+    method: 'POST',
+    url: SERVER + '/todos',
+    headers: {
+      access_token: token
+    },
+    data: {
+      title,
+      description,
+      due_date
+    }
+  })
+    .done(res => {
+      listTodo();
+      showTodoFalse();
+    })
+    .fail(err => {
+      console.log(err);
+    })
 
+}
+
+function showTodoFalse(){
+  const token = localStorage.getItem("token");
+  $.ajax({
+    method: "GET",
+    url: SERVER + "/todos",
+    headers: {
+      access_token: token
+    }
+  })
+  .done(res => {
+    $('#todoFalse').empty();
+    res.forEach(todo => {
+      $("#todoFalse").append(`
+      <div class="card" style="padding: 10px; margin-bottom: 10px;">
+        <h5 class="card-title">${todo.title}</h5>
+        <p class="card-text">${todo.description}</p>
+        <p class="card-text">${todo.due_date}</p>
+        <a href="#" class="btn" onclick="processTodo(${todo.id}, event)">Process</a>
+      </div>
+      `)
+    });
+  })
+  .fail(err => {
+    console.log(err)
+  })
+}
+
+function showTodoTrue(){
+  const token = localStorage.getItem("token");
+  $.ajax({
+    method: "GET",
+    url: SERVER + "/todos/true",
+    headers: {
+      access_token: token
+    }
+  })
+  .done(res => {
+    $('#todoTrue').empty();
+    res.forEach(todo => {
+      $("#todoTrue").append(`
+      <div class="card" style="padding: 10px; margin-bottom: 10px;">
+        <h5 class="card-title">${todo.title}</h5>
+        <p class="card-text">${todo.description}</p>
+        <p class="card-text">${todo.due_date}</p>
+        <a href="#" class="btn" onclick="deleteTodo(${todo.id}, event)">Done</a>
+      </div>
+      `)
+    });
+  })
+  .fail(err => {
+    console.log(err)
+  })
+}
+
+function processTodo(id_todo, e) {
+  e.preventDefault();
+  const id = id_todo;
+  console.log(id);
+  const token = localStorage.getItem("token");
+  $.ajax({
+    method: "PATCH",
+    url: `${SERVER}/todos/${id}`,
+    headers: {
+      access_token: token,
+    },
+    params: {
+      id
+    }
+  })
+  .done(res => {
+    console.log(res);
+    listTodo()
+    showTodoFalse()
+  })
+  .fail(err => {
+    console.log(err)
+  })
+}
+
+function deleteTodo(id_todo, e){
+  e.preventDefault();
+  const id = id_todo;
+  console.log(id);
+  const token = localStorage.getItem("token");
+  $.ajax({
+    method: "DELETE",
+    url: `${SERVER}/todos/${id}`,
+    headers: {
+      access_token: token,
+    },
+    params: {
+      id
+    }
+  })
+  .done(res => {
+    console.log(res);
+    listTodo()
+    showTodoTrue()
+  })
+  .fail(err => {
+    console.log(err)
+  })
 }
