@@ -12,18 +12,25 @@
 
   <body>
     <header>
-    <section class="container">
-      <!--Logout-->
-      <section class="col-sm-4" id="logout">
-        <button onclick="logout()" class="btn btn-danger">Logout</button>
-      </section>
-      <!--End Logout-->
-    </section>
+        <nav class="navbar navbar-light flex-row-reverse">
+            <section id="logout">
+                <button onclick="logout()" class="btn btn-danger">Logout</button>
+            </section>
+
+            <section id="signupButton">
+            <button onclick="showSignup()" class="btn btn-primary">Sign Up</button>
+            </section>
+
+            <section id="signinButton">
+            <button onclick="cancelSignup()" class="btn btn-primary">Sign In</button>
+            </section>
+        </nav>
     </header>
 
     <!--Sign In-->
     <section class="container" id="signin">        
     <div class="row justify-content-center mt-5">
+        <div>
         <form onsubmit="signin(event)">
             <h1>Sign In</h1>
             <div class="form-group" id="signinError">
@@ -40,10 +47,16 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Sign In</button>   
             </div>
+            <div class="form-group">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
         </form>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <button onclick="showSignup()" class="btn btn-primary">Sign Up</button>
+        </div>
+        <div>
+            
+        </div>
     </div>
+    
     </section>
     <!--End Sign In-->
 
@@ -68,7 +81,6 @@
                 <button type="submit" class="btn btn-primary">Sign Up</button>    
             </div>
         </form>
-        <button onclick="cancelSignup()" class="btn btn-primary">Cancel</button>
     </div>
     </section>
     <!--End Sign Up-->
@@ -77,76 +89,75 @@
     <section class="container-fluid" id="content">
         <!--Todo List-->
         <section class="container-fluid" id="todoList">
-            <div class="row justify-content-center mt-5">
+            <div class="col justify-content-center mt-5 ">
                 <div>
                     <h1>Todo list</h1>
                 </div>
                 <div>
                     <a onclick="showAddTodoForm()" class="btn btn-primary">Add todo</a>
                 </div>
-                <div id="todos">
+                <div id="todos" class="col justify-content-center">
                 </div>
             </div>
         </section>
         <!--End Todo List-->
 
-        <!--Add Todo Form-->
-        <section class="container-fluid" id="addTodoForm">
-            <div class="row justify-content-center mt-5">
-                <div>
-                    <form onsubmit="addTodo(event)">
-                        <h1>Add Todo</h1>
-                        <div class="form-group" id="addError">
-                            <p>Invalid Email/Password</p>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-title">Title</label>
-                            <input type="text" id="add-title" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="add-description">Description</label>
-                            <input type="text" id="add-description" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="add-status">Status</label>
-                            <input type="text" id="add-status" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="add-due_date">Due Date</label>
-                            <input type="date" id="add-due_date" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Add</button>  
-                            <button onclick="cancelAdd()" class="btn btn-primary">Cancel</button> 
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-        <!--End Add Todo Form-->
-
-        <!--Edit Todo Form-->
-        <section class="container-fluid" id="editFormSection">
-            <div class="row justify-content-center mt-5">
-                <h1>Edit Todo</h1>
-                <div id="editForm"></div>
-            </div>
-        </section>
-        <!--End Edit Todo Form-->
-
         <!--Manga Recomendation-->
         <section class="container-fluid" id="mangaRecommend">
-            <div class="row justify-content-center mt-5">
+            <div class="col justify-content-center mt-5">
                 <h1>Recommendation  Manga List</h1>
                 <div id="mangaList"></div>
             </div>
         </section>
         <!--End Manga Recommendation-->
-
     </section>
     <!--End Home-->
 
+    <!--Edit Todo Form-->
+    <section class="container-fluid" id="editFormSection">
+        <div class="row justify-content-center">
+            <div>
+            <h1>Edit Todo</h1>
+            <div id="editForm"></div>
+        </div>
+        </div>
+    </section>
+    <!--End Edit Todo Form-->
 
+    <!--Add Todo Form-->
+    <section class="container-fluid" id="addTodoForm">
+        <div class="row justify-content-center">
+            <div>
+                <form onsubmit="addTodo(event)">
+                    <h1>Add Todo</h1>
+                    <div class="form-group" id="addError">
+                        <p>Invalid Email/Password</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-title">Title</label>
+                        <input type="text" id="add-title" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="add-description">Description</label>
+                        <input type="text" id="add-description" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="add-status">Status</label>
+                        <input type="text" id="add-status" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="add-due_date">Due Date</label>
+                        <input type="date" id="add-due_date" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Add</button>  
+                        <button onclick="cancelAdd()" class="btn btn-primary">Cancel</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!--End Add Todo Form-->
 
 
 

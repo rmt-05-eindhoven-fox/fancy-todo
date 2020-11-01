@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -11,47 +9,44 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Todo.belongsTo(models.User)
+      Todo.belongsTo(models.User);
     }
-  };
-  Todo.init({
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }, 
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    status: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    due_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate:{
-        isDate: {
-          msg: `Must be a date`
+  }
+  Todo.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      due_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          isDate: {
+            msg: `Must be a date`,
+          },
+          validate(value) {
+            const now = new Date();
+            if (value < now) {
+              throw new Error(`Due date must be greater than now`);
+            }
+          },
         },
-        validate(value) {
-          const now = new Date()
-          if (value < now) {
-            throw new Error(`Due date must be greater than now`)
-          } 
-        }
-      }
-    }
-  }, {
-    hooks: {
-      // beforeCreate(value) {
-      //   if (!value.status) {
-      //     value.status = `not done`
-      //   }
-      // }
+      },
     },
-    sequelize,
-    modelName: 'Todo',
-  });
+    {
+      hooks: {},
+      sequelize,
+      modelName: "Todo",
+    }
+  );
   return Todo;
 };
