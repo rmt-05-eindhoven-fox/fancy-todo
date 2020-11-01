@@ -3,6 +3,10 @@ const server = "http://localhost:3000"
 $(document).ready(() => {
    const token = localStorage.getItem("token")
    $("#add-discord-username").hide()
+   
+   //Kalau lemot getBackgroundImg di comment aja kak
+   getBackgroundImg()
+   
    if (token) {
       $("#homepage").show()
       $("#login").hide()
@@ -423,6 +427,28 @@ backToHome = () => {
    getAllTodos()
 }
 
+getBackgroundImg = () => {
+   $.ajax({
+      type: "GET",
+      url: server + "/photos",
+   })
+   .done(res => {      
+      $("#style").append(`
+         body {
+            background: url('${res.url}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
+         }
+      `)
+
+      console.log(res.url);
+   })
+   .fail(err => {
+      console.log(err);
+   })
+}
 // editUserInfoForm = () => {
 //    $("#todos").hide()
 //    $("#nav-bar").hide()

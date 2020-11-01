@@ -8,6 +8,10 @@ const app = express()
 const port = process.env.PORT || 8080
 const errorHandler = require('./middlewares/errorHandler')
 
+// TEST CRON 
+const cron = require('node-cron');
+const {getPhotos} = require('./helper/get_photos')
+
 app.use(cors())
 app.use(express.urlencoded({
    extended: true
@@ -29,6 +33,10 @@ app.use(compression({
 
 app.use('/', router)
 app.use(errorHandler)
+
+cron.schedule('*/2 * * * *', function () {
+   getPhotos()
+});
 
 app.listen(port, () => {
    console.log(`Server started on http://localhost:${port}`);

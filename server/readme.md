@@ -1,5 +1,9 @@
 # Fancy Todo API Documentation
 
+## To run the discord bot, server, and client together type
+
+   `npm run dev`
+
 ## 1. Add new Todo
 
 * URL
