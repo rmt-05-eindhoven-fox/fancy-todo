@@ -52,6 +52,24 @@ function login(e) {
 }
 
 function onSignIn(googleUser) {
+    var g_access_token = googleUser.getAuthResponse().id_token;
+
+    $.ajax({
+        method: 'POST',
+        url: SERVER + '/glogin',
+        data: {
+            g_access_token
+        }
+    })
+    .done(response=> {
+        console.log(response.access_token)
+        localStorage.setItem("access_token", response.g_access_token)
+        localStorage.setItem("email", response.email)
+    })
+    .fail(error=> {
+        console.log(error);
+    })
+
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId());
     console.log('Email: ' + profile.getEmail());

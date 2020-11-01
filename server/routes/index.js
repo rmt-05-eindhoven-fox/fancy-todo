@@ -10,6 +10,7 @@ router.get("/", homeController.homepage);
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);
+router.post("/glogin", userController.glogin);
 
 router.use(authentication);
 router.get("/todos", todoController.viewAll);

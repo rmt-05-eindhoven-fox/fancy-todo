@@ -2,7 +2,9 @@ const { verifyToken } = require("../helpers/jwt");
 const { User } = require("../models");
 
 async function authentication(request, response, next) {
-    const { token } = request.headers;
+    //const { token } = request.headers;
+    const token = verifyToken(request.headers.access_token)
+
     try {
         if(!token) {
             throw { name: 'AuthenticationFailed' }
