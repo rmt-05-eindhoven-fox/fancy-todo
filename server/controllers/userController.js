@@ -23,7 +23,6 @@ class UserController {
     }
 
     static login(req, res){
-        console.log('MASUK LOGIN');
         const playload = {
             email: req.body.email,
             password: req.body.password

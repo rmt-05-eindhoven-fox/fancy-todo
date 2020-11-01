@@ -17,6 +17,7 @@ function inititialize() {
   $("#register-page").hide();
   $(".register-success").empty();
   $(".error-message").empty();
+
 }
 
 function afterLogin() {
@@ -26,6 +27,7 @@ function afterLogin() {
   $("#left").show();
   $("#formAddTodo").show();
   $("#formEditTodo").hide();
+  helloSalut()
   getAllTodo();
 }
 
@@ -50,7 +52,7 @@ function helloSalut() {
     method: "GET",
     url: SERVER + "/salut",
   }).done(response => {
-    const user = localStorage.getItem("first_name")
+    const user = localStorage.getItem("email").split('@')[0]
     $("#hello-salut").empty();
     $("#hello-salut").append(`
       <h1>${response.hello} ${user}</h1>

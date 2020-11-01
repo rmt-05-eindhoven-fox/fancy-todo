@@ -1,5 +1,25 @@
 # todo-fancy
 
+### GET /salut  
+
+> Get random salut in many languages
+
+_Response (200)_ : OK
+```
+[
+  {
+    "code" : <language>
+    "hello" : <salut-in-language>
+  }
+]
+```
+
+_Response (500 - Internal Server Error)_
+```
+{
+  "message": "Internal Server Error."
+}
+```
 ***
 ## Register
 ***
