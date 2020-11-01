@@ -37,7 +37,7 @@ class UserController {
 
       // }
       const { email, password } = req.body;
-      console.log(password);
+      // console.log(password);
       // console.log(email, password);
       const user = await User.findOne({
         where: {
@@ -46,12 +46,12 @@ class UserController {
       });
       
       if (!user) {
-        console.log(password, '---------------ga ada user')
+        // console.log(password, '---------------ga ada user')
         throw {
           name: 'InvalidUserPassword'
         }
       } else if (!comparePassword(password, user.password)) {
-        console.log(password, '---------------di hash')
+        // console.log(password, '---------------di hash')
         throw {
           name: 'InvalidUserPassword'
         }

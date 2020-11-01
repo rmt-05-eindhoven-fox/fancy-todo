@@ -6,6 +6,15 @@ $('.btn').click(e => {
   e.preventDefault();
 })
 
+// ! SWAL for error handler client
+
+function errorHandler (error) {
+  Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: `${error}`,
+})
+}
 
 $(document).ready(() => {
   const token = localStorage.getItem('token');
@@ -13,10 +22,12 @@ $(document).ready(() => {
   if(token) {
     $('#home-page').hide()
     $('#user-page').show()
+    $('#signOut').show()    
     getTodos();            
   } else {
     $('#home-page').show()
-    $('#user-page').hide()    
+    $('#user-page').hide()
+    $('#signOut').hide()    
   }
 });
 
@@ -42,7 +53,7 @@ function signUp(e) {
       }, 1000);
     })
     .fail(err => {
-      console.log(err);
+      errorHandler(err.responseJSON.error);
     })
   // console.log(name, email);
 }
@@ -81,7 +92,8 @@ function signIn(e) {
       completeSignIn(response.accessToken);
     })
     .fail(err => {
-      console.log(err);
+      // console.log(err);
+      errorHandler(err.responseJSON.error);
     })
   // console.log(name, email);
 }
@@ -123,12 +135,10 @@ function onSignIn(googleUser) {
             console.log('User signed out.');
           });
         }
-        signOut().catch(err => {
-          console.log(err);
-        });
+        signOut()
     })
     .fail(err => {
-      console.log(err);
+      errorHandler(err.responseJSON.error);
     })
 }
 
@@ -155,12 +165,14 @@ function tryRegister(e) {
     },
     success: loginThirdParty(email, password)
   })
-    .fail(err => console.log(err));
+    .fail(err => {
+      errorHandler(err.responseJSON.error);
+    });
 
 }
 
 function loginThirdParty(email, password) {
-  console.log(password);
+  // console.log(password);
   setTimeout(() => {
     $.ajax({
       method: 'post',
@@ -174,7 +186,9 @@ function loginThirdParty(email, password) {
     // console.log(response);
     completeSignIn(response.accessToken);
   })
-  .fail(err => console.log(err));
+  .fail(err => {
+    errorHandler(err.responseJSON.error);
+  });
 
   }, 7000);
 }
@@ -254,7 +268,7 @@ function getTodos(e) {
       });
     })
     .fail(err => {
-      console.log(err);
+      errorHandler(err.responseJSON.error);
     })
 }
 
@@ -288,7 +302,7 @@ function createTodo(e) {
       getTodos(e);
     })
     .fail(err => {
-      console.log(err);
+      errorHandler(err.responseJSON.error);
     });
 }
 
@@ -336,7 +350,7 @@ function replaceContent(e, id) {
       )
     })
     .fail(err => {
-      console.log(err);
+      errorHandler(err.responseJSON.error);
     })
 
 }
@@ -368,7 +382,7 @@ function updateTodo(e, id) {
   })
     .done(() => getTodos(e))
     .fail(err => {
-      console.log(err);
+      errorHandler(err.responseJSON.error);
     })
 }
 
@@ -400,7 +414,9 @@ function doneTodo(e, id) {
     }
   })
     .done(() => getTodos(e))
-    .fail(err => console.log(err));
+    .fail(err => {
+      errorHandler(err.responseJSON.error);
+    });
 }
 
 // ! DELETE TODO
@@ -417,7 +433,9 @@ function deleteTodo(e, id) {
     }
   })
     .done(() => getTodos(e))
-    .fail(err => console.log(err));
+    .fail(err => {
+      errorHandler(err.responseJSON.error);
+    });
 }
 
 // ! SIDEBAR TOGGLE
