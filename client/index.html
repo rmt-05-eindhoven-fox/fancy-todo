@@ -10,7 +10,7 @@
       integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" 
       crossorigin="anonymous"
     />
-    <title>What To Do?</title>
+    <title>Fancy Todo</title>
   </head>
   <body>
     <!-- NAVIGATION -->
@@ -31,6 +31,7 @@
     <section id="register-page" class="containter">
       <div class="row justify-content-center mt-5">
         <div class="col-4">
+          <h2>Register a New Account</h2>
           <form onsubmit="register(event)">
             <div class="form-group">
               <label for="email">Email</label><br>
@@ -92,54 +93,15 @@
       </section>
     <!-- END HOME -->
 
-    <!-- CREATE TODO -->
-    <section id="create-page" class="containter">
-      <div class="row justify-content-center mt-5">
-        <div class="col-4">
-          <form onsubmit="login(event)">
-            <div class="form-group">
-              
-              <label>Title</label><br>
-              <input 
-                type="text" 
-                id="create-title" 
-                class="form-control"
-              /><br>
-
-              <label>Description</label><br>
-              <input 
-                type="text" 
-                id="create-description" 
-                class="form-control"
-              /><br>
-
-              <label>Status</label><br>
-              <input type="radio" name="status" value="on going">
-              <label for="statdone">On Going</label><br>
-              <input type="radio" name="status" value="done">
-              <label for="statdone">Done</label><br><br>
-
-              <label>Due Date</label><br>
-              <input 
-                type="date" 
-                id="create-duedate" 
-                class="form-control"
-              /><br>
-
-              <button type="submit" class="btn btn-primary">Add</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-    <!-- END CREATE -->
-
     <!-- CONTENT -->
       <section id="content-page">
         <div>UNDER CONSTRUCTION</div>
-        <a href="#" onclick="signOut();">Sign out</a>
+        <a onclick="viewAllTodos()" class="btn btn-light">View All Todos</a>
+        <a href="#" onclick="onSignOut();">Sign out</a>
+        <div id="view-AllTodos"></div>
       </section>
     <!-- END CONTENT -->
+
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="index.js"></script>

@@ -5,8 +5,8 @@ class todoController{
         try {
             const userId = request.loggedInUser.id;
             const data = await Todo.findAll({
-                where: { UserId: userId },
-                order: [["due_date", "DESC"]]
+                where: { UserId: userId }
+                //order: [["due_date", "DESC"]]
             });
             response.status(201).json(data)
         } catch(error) {

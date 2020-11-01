@@ -2,22 +2,50 @@
 const {
   Model
 } = require('sequelize');
+
+const date = new Date();
+
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       Todo.belongsTo(models.User, {foreignKey:'UserId', targetKey: 'id'})
     }
   };
   Todo.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    status: DataTypes.STRING,
-    due_date: DataTypes.DATE
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          message: "Title is required"
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          message: "Description is required"
+        }
+      }
+    },
+    status: {
+      type: DataTypes.BOOLEAN,
+    },
+    due_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        isAfter: {
+          args: new Date(date.setDate(date.getDate() - 1)).toString(),
+          message: "Due date cannot be in the past time!"
+        },
+        notEmpty: {
+          message: "You have to set Due Date!"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Todo',
