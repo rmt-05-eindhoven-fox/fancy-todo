@@ -1,0 +1,534 @@
+<!doctype html>
+<html class="no-js " lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="google-signin-client_id"
+    content="587928803783-gpma25dc0lregt0781id9sef0dq3o3ka.apps.googleusercontent.com">
+  <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+  <title>:: My Fancy Todo ::</title>
+
+  <!-- Favicon-->
+  <link rel="icon" href="public/images/logo.png" type="image/x-icon">
+
+  <!-- Bootsrap -->
+  <link rel="stylesheet" href="public/css/bootstrap.min.css">
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="public/css/style.min.css">
+
+  <!-- Sweetalert -->
+  <link rel="stylesheet" href="public/plugins/sweetalert2/sweetalert2.min.css">
+</head>
+
+<body class="theme-blush">
+  <!-- Page Loader -->
+  <div class="page-loader-wrapper">
+    <div class="loader">
+      <div class="m-t-30"><img class="zmdi-hc-spin" src="public/images/loading.png" height="48" alt="Loading">
+      </div>
+      <p>Please wait...</p>
+    </div>
+  </div>
+
+  <!-- Overlay For Sidebars -->
+  <div class="overlay"></div>
+
+  <!-- Main Search -->
+  <div id="search">
+    <button id="close" type="button" class="close btn btn-primary btn-icon btn-icon-mini btn-round">x</button>
+    <form>
+      <input type="search" id="todo-search" value="" placeholder="Search..." autocomplete="off" required />
+      <button type="submit" class="btn btn-primary" onclick="searchTodo(event)">Search</button>
+    </form>
+  </div>
+
+  <!-- ! Right Sidebar -->
+  <!-- Right Icon menu Sidebar -->
+  <div id="right-sidebar" style="display: none;">
+    <div class="navbar-right m-t-60">
+      <ul class="navbar-nav">
+
+        <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i
+              class="zmdi zmdi-apps"></i></a>
+          <ul class="dropdown-menu slideUp2">
+            <li class="header">Profile</li>
+            <li class="body">
+              <!-- TODO List profile -->
+              <div class="card mcard_3">
+                <div class="body">
+                  <a href="#"><img src="public/images/logo.png" class="rounded-circle" width="70" height="70"
+                      alt="profile-image"></a>
+
+                  <div class="col-12 mb-1">
+                    <a href="#" class="btn btn-danger" id="fullname">Full name</a>
+                  </div>
+                  <span class="mt-3" id="email"> mail@yahoo.com
+                  </span>
+                  <div class="row mt-3">
+                    <div class="col-4">
+                      <small><b>Missed Todo</b></small>
+                      <h5 id="total-missed">0</h5>
+                    </div>
+                    <div class="col-4">
+                      <small><b>Active Todo</b></small>
+                      <h5 id="total-active">0</h5>
+                    </div>
+                    <div class="col-4">
+                      <small><b>Complete Todo</b></small>
+                      <h5 id="total-completed">0</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" title="Notifications" data-toggle="dropdown"
+            role="button"><i class="zmdi zmdi-notifications"></i>
+            <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+          </a>
+          <ul class="dropdown-menu slideUp2">
+            <li class="header">Notifications</li>
+            <li class="body">
+              <ul class="menu list-unstyled" id="todo-wildue">
+                <!-- List of Notification -->
+              </ul>
+            </li>
+            <!-- <li class="footer"> <a href="showEditTodojavascript:void(0);">View All Notifications</a> </li> -->
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" title="Holiday" data-toggle="dropdown" role="button"><i
+              class="zmdi zmdi-calendar"></i>
+            <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+          </a>
+          <ul class="dropdown-menu slideUp2">
+            <li class="header">Holiday This Month</li>
+            <li class="body">
+              <ul class="menu list-unstyled" id="todo-holiday">
+
+                <!-- List of Holiday -->
+              </ul>
+            </li>
+            <!-- <li class="footer"> <a href="showEditTodojavascript:void(0);">View All Notifications</a> </li> -->
+          </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i
+              class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+        <li><a href="sign-in.html" class="mega-menu" title="Sign Out" onclick="signOut(event)"><i
+              class="zmdi zmdi-power"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Right Sidebar -->
+  <aside id="rightsidebar" class="right-sidebar">
+    <ul class="nav nav-tabs sm">
+      <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#setting"><i
+            class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="setting">
+        <div class="slim_scroll">
+          <div class="card">
+            <h6>Theme Option</h6>
+            <div class="light_dark">
+              <div class="radio">
+                <input type="radio" name="radio1" id="lighttheme" value="light" checked="">
+                <label for="lighttheme">Light Mode</label>
+              </div>
+              <div class="radio mb-0">
+                <input type="radio" name="radio1" id="darktheme" value="dark">
+                <label for="darktheme">Dark Mode</label>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h6>Color Skins</h6>
+            <ul class="choose-skin list-unstyled">
+              <li data-theme="purple">
+                <div class="purple"></div>
+              </li>
+              <li data-theme="blue">
+                <div class="blue"></div>
+              </li>
+              <li data-theme="cyan">
+                <div class="cyan"></div>
+              </li>
+              <li data-theme="green">
+                <div class="green"></div>
+              </li>
+              <li data-theme="orange">
+                <div class="orange"></div>
+              </li>
+              <li data-theme="blush" class="active">
+                <div class="blush"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ! Main Content -->
+  <section class="content" id="page-home" style="display: none;">
+    <div class="body_scroll">
+      <div class="block-header">
+        <div class="row">
+          <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>My Fancy Todo</h2>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Home</a></li>
+              <!-- <li class="breadcrumb-item">Project</li> -->
+              <li class="breadcrumb-item active">Todo</li>
+            </ul>
+            <div class="mobile_menu">
+              <div class="d-flex">
+                <div class="mr-auto p-2 col-sm-4">
+                  <div class="form-group" style="padding: 10px 0;">
+                    <span class="align-baseline" style="font-size: 1.0rem;">Due Date</span>
+                  </div>
+                </div>
+                <div class="p-2 col-sm-6">
+                  <div class="form-group">
+                    <input type="date" id="todo-filter-date-mobile" onchange="filterDueDate(event, 'mobile');"
+                      class="form-control" style="outline: none;" title="Filter by due date" required>
+                  </div>
+                </div>
+                <div class="mr-auto p-2">
+                  <div class="form-group ">
+                    <button class="btn btn-info btn-icon float-right m-t-0" data-toggle="modal"
+                      onclick="refreshTodo(event)" data-backdrop="static" data-keyboard="false" type="button"><i
+                        class="zmdi zmdi-refresh"></i></button>
+                  </div>
+                </div>
+                <div class="mr-0 p-2">
+                  <div class="form-group ">
+                    <button class="btn btn-success btn-icon float-right m-t-0" data-toggle="modal"
+                      onclick="showAddTodo(event)" data-backdrop="static" data-keyboard="false" type="button"><i
+                        class="zmdi zmdi-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div> 
+          </div>
+
+          <div class="col-lg-5 col-md-6 col-sm-12">
+
+            <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i
+                class="zmdi zmdi-arrow-right"></i></button>
+
+            <button class="btn btn-success btn-icon float-right" data-toggle="modal" onclick="showAddTodo(event)"
+              data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-plus"></i></button>
+
+            <button class="btn btn-info btn-icon float-right" data-toggle="modal" onclick="refreshTodo(event)"
+              data-backdrop="static" data-keyboard="false" type="button"><i class="zmdi zmdi-refresh"></i></button>
+
+            <div class="p-2 col-sm-6 float-right">
+              <div class="form-group">
+                <input type="date" id="todo-filter-date-dekstop" onchange="filterDueDate(event, 'dekstop');"
+                  class="form-control" style="outline: none;" title="Filter by due date" required>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row clearfix">
+
+          <!-- TODO: Missed Todo -->
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Missed</strong> Todo</h2>
+              </div>
+              <div class="body taskboard planned_task">
+                <div class="dd">
+                  <ol class="dd-list" id="todo-isdue">
+
+                    <!-- * List Missed Todo -->
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODO: Active Todo -->
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Active</strong> todo</h2>
+              </div>
+              <div class="body taskboard progress_task">
+                <div class="dd">
+
+                  <ol class="dd-list" id="todo-active">
+
+                    <!-- * List Active Todo -->
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODO: CompletedTodo -->
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Completed</strong> Todo</h2>
+              </div>
+              <div class="body taskboard completed_task">
+                <div class="dd">
+                  <ol class="dd-list" id="todo-complete">
+
+                    <!-- * List Completed Todo -->
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ! Page Authentication -->
+  <div class="authentication" id="page-authetication" style="display: block;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12">
+
+          <!-- TODO: Strat Form Login -->
+          <div id="form-login" style="display: block;">
+            <form class="card auth_form" onsubmit="login(event)">
+              <div class="header">
+                <img class="logo" src="public/images/logo.png" alt="">
+                <h5>Log in</h5>
+              </div>
+              <div class="body">
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                  </div>
+                  <input type="text" id="login-username" class="form-control" placeholder="Username">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" id="login-password" class="form-control" placeholder="Password">
+                </div>
+                <!-- <div class="checkbox">
+                  <input id="remember_me" type="checkbox">
+                  <label for="remember_me">Remember Me</label>
+                </div> -->
+                <div class="signin_with">
+                  <button type="submit" class="btn-lg btn-link" onclick="showRegister(event)">Register new
+                    membership?</button>
+                </div>
+
+                <button class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
+                <div class="signin_with mt-3">
+                  <p class="mb-0">or Sign Up using</p>
+                  <button class="btn btn-link btn-icon btn-lg btn-icon-mini btn-round g-signin2" data-height="59"
+                    data-onsuccess="onSignIn"></button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- * End Form Login -->
+
+          <!-- TODO: Start Form Register -->
+          <div id="form-register" style="display: none;">
+            <form class="card auth_form" onsubmit="register(event)">
+              <div class="header">
+                <img class="logo" src="public/images/logo.png" alt="">
+                <h5>Sign Up</h5>
+                <span>Register a new membership</span>
+              </div>
+              <div class="body">
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-box"></i></span>
+                  </div>
+                  <input type="text" class="form-control" id="register-fullname" placeholder="Full Name" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                  </div>
+                  <input type="text" class="form-control" id="register-username" placeholder="Username" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                  </div>
+                  <input type="email" class="form-control" id="register-email" placeholder="Enter Email" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" id="register-password" placeholder="Password" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" id="register-retype-password"
+                    placeholder="Retype password" required>
+                </div>
+                <div class="checkbox">
+                  <input id="remember_me" type="checkbox">
+                  <label for="remember_me">I read and agree to the <a href="javascript:void(0);">terms of
+                      usage</a></label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">SIGN UP</button>
+                <div class="signin_with mt-3">
+                  <button type="submit" class="btn-lg btn-link" onclick="showLogin(event)">You already have a
+                    membership?</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- * END FORM REGISTER -->
+
+          <div class="copyright text-center">
+            <span>Fancy Todo &COPY;
+              <script> document.write(new Date().getFullYear()) </script> </span>
+          </div>
+
+        </div>
+        <div class="col-lg-8 col-sm-12">
+          <div class="card">
+            <img src="public/images/signin.svg" alt="Sign In" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- todo: Add New Todo -->
+  <div class="modal fade m-t-70" id="modalTodo" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <section class="content">
+        <div class="modal-content card card-inside-title body">
+          <div class="modal-header">
+            <h6 class="title" id="defaultModalLabel"></h6>
+          </div>
+          <form onsubmit="addTodo(event)" id="add-todo" style="display: none;">
+            <div class="modal-body">
+              <div class="row clearfix">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="text" id="add-todo-title" class="form-control" maxlength="100" placeholder="Title.."
+                      required>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <textarea type="text" id="add-todo-description" class="form-control" style="height: 100px;"
+                      maxlength="255" placeholder="Description.."></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="date" id="add-todo-due_date" class="form-control" style="outline: none;" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">Add Todo</button>
+              <button class="btn btn-raised btn-secondary btn-round waves-effect" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+          <form onsubmit="editTodo(event)" id="edit-todo">
+            <div class="modal-body">
+              <div class="row clearfix">
+                <input type="hidden" id="edit-todo-id" class="form-control" maxlength="20" placeholder="Title.."
+                  required readonly>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="text" id="edit-todo-title" class="form-control" maxlength="100" placeholder="Title.."
+                      required>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <textarea type="text" id="edit-todo-description" class="form-control" style="height: 100px;"
+                      maxlength="255" placeholder="Description.."></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="date" id="edit-todo-due_date" class="form-control" style="outline: none;" required>
+                  </div>
+                </div>
+                <div class="col-12">
+
+                  <div class="form-group">
+                    <label for="">Status</label>
+                    <div class="float-right">
+                      <div class="radio inlineblock m-r-20">
+                        <input type="radio" name="edit-todo-status" id="pending" class="with-gap" value="pending">
+                        <label for="pending">Pending</label>
+                      </div>
+                      <div class="radio inlineblock">
+                        <input type="radio" name="edit-todo-status" id="finished" class="with-gap" value="finished"
+                          checked="">
+                        <label for="finished">Finished</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">Update Todo</button>
+              <button class="btn btn-raised btn-secondary btn-round waves-effect" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- JQuery Library -->
+  <script type="text/javascript" src="public/js/jquery/jquery.js"></script>
+
+  <!-- Jquery Core Js -->
+  <script src="public/js/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+  <script src="public/js/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+  <!-- Jquery Nestable -->
+  <!-- <script src="public/plugins/nestable/jquery.nestable.js"></script> -->
+
+  <script src="public/js/bundles/mainscripts.bundle.js"></script>
+  <!-- <script src="public/js/sortable-nestable.js"></script> -->
+
+  <!-- Sweet Alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script> -->
+
+  <!-- App JS -->
+  <script type="text/javascript" src="index.js"></script>
+
+  <!-- Google Library -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script><!-- oauth goole -->
+
+</body>
+
+</html>
