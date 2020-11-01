@@ -97,17 +97,17 @@ class TodoController {
   }
 
   static filterDueDate(req, res, next) {
-    let { due_date } = req.body; 
+    let { due_date } = req.body;
     console.log(due_date)
 
     // due_date = new Date(due_date).toLocaleString("en-US", {timeZone: "Asia/Jakarta"});
-    due_date = new Date(due_date).toISOString(); 
+    due_date = new Date(due_date).toISOString();
     console.log(due_date)
 
     Todo.findAll({
       where: {
         due_date,
-        status: 'pending',
+        // status: 'pending',
         UserId: req.logedInUser.id
       }
     }).then(todos => {
@@ -135,7 +135,15 @@ class TodoController {
             holidays.push(holiday)
           }
         })
-        res.status(200).json(holidays)
+        const newHoliday = [];
+        holidays.forEach(holiday => {
+          newHoliday.push({
+            name: holiday.name,
+            description: holiday.description,
+            date: holiday.date.iso
+          })
+        })
+        res.status(200).json(newHoliday)
       }).catch(err => {
         next(err)
       });
