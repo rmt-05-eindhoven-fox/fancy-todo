@@ -1,4 +1,4 @@
-# todo-fancy 🔥
+# todo-fancy
 
 ***
 ## Register

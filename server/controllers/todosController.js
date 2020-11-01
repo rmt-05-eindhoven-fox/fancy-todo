@@ -24,14 +24,18 @@ class TodoController {
 
 
     static findAllTodo(req, res, next){
+        console.log('MASUK')
         const userId = req.loggedInUser.id
+        console.log({userId})
         Todo.findAll({
             where: {UserId: userId}
         })
         .then( todo => {
+            // console.log({todo})
             res.status(200).json(todo)
         })
         .catch(err => {
+            console.log({error})
             next(err)
         })
     }

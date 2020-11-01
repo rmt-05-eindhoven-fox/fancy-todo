@@ -3,14 +3,14 @@ const { verifyToken } = require("../helper/jwt.js");
 
 
 function authentication(req, res, next){
-    const { token } = req.headers; 
+    const { authorization } = req.headers;
 
-    if(!token){
+    if(!authorization){
         throw {
             msg: "authentication failed"
         }
     }else {
-        const decoded  = verifyToken(token);
+        const decoded  = verifyToken(authorization);
 
         User.findOne({
             where: {
@@ -28,6 +28,7 @@ function authentication(req, res, next){
             }
         })
         .catch(err => {
+            console.log({err})
             // const status = err.status || 500
             // const msg   = err.msg || 'internal server error'
             // res.status(status).json({error:msg})

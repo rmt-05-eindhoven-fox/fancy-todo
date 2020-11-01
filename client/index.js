@@ -1,23 +1,33 @@
 const SERVER = "http://localhost:3000";
 
-$(document).ready(()=> {
+$(document).ready(() => {
   const token = localStorage.token;
-  $("#register-page").hide();
-
-  $(".register-success").empty();
-  $(".error-message").empty();
-  if(token) {
-    helloSalut()
-    $("#landing-page").hide();
-    // $("#home-page").show();
-  
-    fetchCategory();
+  inititialize()
+  if (token) {
+    afterLogin()
   } else {
-    $("#landing-page").show();
-    $("#home-page").hide();
-    $("quiz").hide()
+    inititialize()
   }
 })
+
+function inititialize() {
+  $("#beforeLogin").show();
+  $("#afterLogin").hide();
+  $("#landing-page").show();
+  $("#register-page").hide();
+  $(".register-success").empty();
+  $(".error-message").empty();
+}
+
+function afterLogin() {
+  $("#beforeLogin").hide();
+  $("#afterLogin").show();
+  $("#right").show();
+  $("#left").show();
+  $("#formAddTodo").show();
+  $("#formEditTodo").hide();
+  getAllTodo();
+}
 
 $("#register-link").on("click", () => {
   $("#register-page").show();
@@ -28,45 +38,40 @@ $("#register-link").on("click", () => {
 })
 
 $(".cancel-button").on("click", () => {
-  $("#add-todo-page").hide();
-  $("#edit-todo-page").empty();
-  ready();
+  inititialize()
 })
 
 $("#logout-button").on("click", () => {
-  $("#landing-page").show();
-  $("#home-page").hide();
-  $(".error-message").empty();
-  $("#hello-salut").empty();
   signOut()
-  localStorage.clear()
 })
 
-function login(e){
-    e.preventDefault()
-    const email = $("#login-email").val()
-    const password = $("#login-password").val()
-    $.ajax({
-        method: "POST",
-        url: SERVER + "/login",
-        data: {
-            email: email,
-            password: password
-        }
-    })
-    .done(response => {  
-        const token = response.access_token;
-        const first_name = response.first_name;
-        localStorage.setItem("token", token);
-        localStorage.setItem("first_name", first_name);
-        ready();
+function login(e) {
+  e.preventDefault()
+  const email = $("#login-email").val()
+  const password = $("#login-password").val()
+  console.log({ email, password })
+  $.ajax({
+    method: "POST",
+    url: SERVER + "/login",
+    data: {
+      email: email,
+      password: password
+    }
+  })
+    .done(response => {
+      console.log({ response })
+      const { tokenAkses, email } = response;
+
+      localStorage.setItem("token", tokenAkses);
+      localStorage.setItem("email", email);
+      afterLogin()
     })
     .fail(err => {
       $(".error-message").empty();
       console.log(err)
       $(".error-message").append(`
-        <p class="alert alert-danger" role="alert" style="color: red;">${err.responseJSON.message}</p>
-      `);
+      <p class="alert alert-danger" role="alert" style="color: red;">${err.responseJSON.message}</p>
+    `);
       setTimeout(() => {
         $(".error-message").empty();
       }, 3000)
@@ -74,193 +79,240 @@ function login(e){
 }
 
 function register(event) {
-    event.preventDefault();
-    const email = $("#reg-email").val();
-    const password = $("#reg-password").val();
-    $.ajax({
-      method: "POST",
-      url: SERVER + "/register",
-      data: {
-        email,
-        password
-      }
-    }).done(response => {
-      $("#landing-page").show();
-      $("#home-page").hide();
-      $("#register-page").hide();
-      $(".register-success").empty();
-      $(".register-success").append(`
+  event.preventDefault();
+  const email = $("#reg-email").val();
+  const password = $("#reg-password").val();
+  $.ajax({
+    method: "POST",
+    url: SERVER + "/register",
+    data: {
+      email,
+      password
+    }
+  }).done(response => {
+    $("#landing-page").show();
+    $("#home-page").hide();
+    $("#register-page").hide();
+    $(".register-success").empty();
+    $(".register-success").append(`
         <p class="alert alert-success" role="alert" style="color: green;">Successful register</p>
       `)
-      setTimeout(() => {
-        $(".register-success").empty();
-      }, 3000)
-    }).fail(err => {
-      $(".error-message").empty();
-      $(".error-message").append(`
+    setTimeout(() => {
+      $(".register-success").empty();
+    }, 3000)
+  }).fail(err => {
+    $(".error-message").empty();
+    $(".error-message").append(`
         <p class="alert alert-danger" role="alert" style="color: red;">${err.responseJSON.message}</p>
       `)
-      setTimeout(() => {
-        $(".error-message").empty();
-      }, 3000)
-    })
-  }
+    setTimeout(() => {
+      $(".error-message").empty();
+    }, 3000)
+  })
+}
 
-  function onSignIn(googleUser) {
-    var google_access_token = googleUser.getAuthResponse().id_token;
-    $.ajax({
-        method:'POST',
-        url:SERVER + '/googleLogin',
-        data:{
-            google_access_token
-        }
-    }) 
+function onSignIn(googleUser) {
+  var google_access_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    method: 'POST',
+    url: SERVER + '/googleLogin',
+    data: {
+      google_access_token
+    }
+  })
     .done(response => {
-      console.log(response.access_token)
-      localStorage.setItem("token", response.access_token)
-      localStorage.setItem("first_name", response.first_name)
-      helloSalut()
-      ready()
+      console.log(response.tokenAkses)
+      localStorage.setItem("token", response.tokenAkses)
+      localStorage.setItem("email", response.email)
+      // helloSalut()
+      // ready()
+      afterLogin()
     })
     .fail(err => {
-        console.log(err)
+      console.log(err)
     })
-  }
+}
 
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      // console.log('User signed out.');
-    });
-  }
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    // console.log('User signed out.');
+    localStorage.clear()
+    clearForm()
+    inititialize()
 
-  function getAllTodo() {
-    let token = localStorage.getItem('token')
-    $.ajax({
-      type: 'get',
-      url: SERVER + '/todos',
-      headers: {
-        'Authorization': `${token}`
-      }
-    })
-      .done(result => {
-        let todos = result
-        $('#').empty()
-        let i = 1
-        todos.forEach(e => {
-          $('#').append(`<h4>${i}.${e.title} - ${e.description}<small><a href="#" onclick="editTodo('${e._id}')"> Edit </a> | <a href="/#" onclick="deleteList('${e._id}')">Delete</a></td></small></h4><br> `)
-          i++
-        });
-      })
-      .fail(err => {
-        console.log(err)
-      })
-  }
-  function createTodo() {
-    let title = $('#').val()
-    let description = $('#').val()
-    let status = $('#')
-    let dueDate = $('#').val()
-    let token = localStorage.getItem('token')
-   
-    $.ajax({
-      type: "post",
-      url: SERVER + '/todos',
-      data: {
-        title,
-        description,
-        status,
-        dueDate,
-        token
-      },
-      headers: {
-        'Authorization': `${token}`
-      }
-    })
-      .done(result => {
-     
-        getAllTodo()
-      })
-      .fail(err => {
-        console.log(err)
-      })
-  }
-  
-  function editTodo(id) {
-    
-    let title = $('#').val()
-    let description = $('#').val()
-    let status = $('#').val()
-    let dueDate = $('#').val()
-    let token = localStorage.getItem('token')
-  
-    $.ajax({
-      type: "put",
-      url: SERVER + '/todos/:id',
-      data: {
-        id,
-        title,
-        description,
-        status,
-        dueDate,
-        token
-      },
-      headers: {
-        'Authorization': `${token}`
-      }
-    })
-      .done(result => {
-        getAllTodo()
-        // window.location = 'index.html'
-      })
-      .fail(err => {
-        console.log(err)
-      })
+  });
+}
+
+function getAllTodo() {
+  let token = localStorage.getItem('token')
+  $.ajax({
+    type: 'get',
+    url: SERVER + '/todos',
+    headers: {
+      'Authorization': `${token}`
     }
-  
-  
-    function editTodoStatus(id) {
-    
-      let status = $('#').val()
-      let token = localStorage.getItem('token')
-    
-      $.ajax({
-        type: "patch",
-        url: SERVER + '/todos/:id',
-        data: {
-          id,
-          status,
-          token
-        },
-        headers: {
-          'Authorization': `${token}`
-        }
-      })
-        .done(result => {
-          getAllTodo()
-          // window.location = 'index.html'
-        })
-        .fail(err => {
-          console.log(err)
-        })
-      }
-  
-  function deleteList(id) {
-    let token = localStorage.getItem('token')
-    $.ajax({
-      type: "delete",
-      url: SERVER + '/todos/:id',
-      data: {
-        id, token
-      },
-      headers: {
-        'Authorization': `${token}`
-      }
+  })
+    .done(result => {
+      let todos = result
+      $('#listTodo').empty()
+      todos.forEach((e, i) => {
+        $('#listTodo').append(`<h4> <input type="checkbox" id="status" ${e.status ? "checked" : ''} onclick="editTodoStatus('${e.status}', '${e.id}')"> ${i + 1}.${e.title} - ${e.description}<small><a href="#" onclick="setFormEdit('${e.id}')"> Edit </a> | <a href="/#" onclick="deleteList('${e.id}')">Delete</a></td></small></h4><br> `)
+      });
     })
-      .done(result => {
-        getAllTodo()
-      })
-      .fail(err => {
-        console.log(err)
-      })
-  }
+    .fail(err => {
+      console.log(err)
+    })
+}
+function createTodo() {
+  let title = $('#add-todo-title').val()
+  let description = $('#add-todo-description').val()
+  // let status = $('input[name="status"]:checked').val()
+  let due_date = $('#add-todo-dueDate').val()
+  let token = localStorage.getItem('token')
+  $.ajax({
+    type: "post",
+    url: SERVER + '/todos',
+    data: {
+      title,
+      description,
+      status: false,
+      due_date,
+      token
+    },
+    headers: {
+      'Authorization': `${token}`
+    }
+  })
+    .done(result => {
+      getAllTodo()
+      $('#add-todo-title').val("")
+      $('#add-todo-description').val("")
+      $('input[name="status"]').val("")
+      $('#add-todo-dueDate').val("")
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+function setFormEdit(id) {
+  let token = localStorage.getItem('token')
+  $.ajax({
+    type: 'get',
+    url: SERVER + `/todos/${id}`,
+    headers: {
+      'Authorization': `${token}`
+    }
+  })
+    .done(result => {
+      console.log(result)
+      $('#formAddTodo').hide()
+      $('#formEditTodo').show()
+      $("#edit-todo").append(`
+        <div>
+          <label>Title</label>
+          <input id="todo-title" type="text" value="${result.title}">
+        </div>
+        <div>
+          <label>Description</label>
+          <textarea id="todo-description" type="text">${result.description}</textarea>
+        </div>
+        <br>
+        Due Date:
+        <br>
+        <input id="todo-dueDate" type="date" value="${result.due_date.slice(0, 10)}">
+        <br><br>
+        <button onclick="editTodo('${id}')"> Submit </button>
+      `)
+    })
+    .fail(err => {
+      console.log({ err })
+    })
+
+
+}
+
+function editTodo(id) {
+  let title = $('#todo-title').val()
+  let description = $('#todo-description').val()
+  // let status = $('#todo-status').val(statusTodo)
+  let due_date = $('#todo-dueDate').val()
+  let token = localStorage.getItem('token')
+
+  $.ajax({
+    type: "put",
+    url: SERVER + `/todos/${id}`,
+    data: {
+      title,
+      description,
+      due_date,
+      token
+    },
+    headers: {
+      'Authorization': `${token}`
+    }
+  })
+    .done(result => {
+      getAllTodo()
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+
+function editTodoStatus(status, id) {
+
+  // let status = $('#').val()
+  let token = localStorage.getItem('token')
+  let todoStatus = JSON.parse(status)
+  // console.log("oke", status, !status, id)
+
+  $.ajax({
+    type: "patch",
+    url: SERVER + `/todos/${id}`,
+    data: {
+      id,
+      status: !todoStatus,
+      token
+    },
+    headers: {
+      'Authorization': `${token}`
+    }
+  })
+    .done(result => {
+      getAllTodo()
+
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+function deleteList(id) {
+  let token = localStorage.getItem('token')
+  $.ajax({
+    type: "delete",
+    url: SERVER + `/todos/${id}`,
+    data: {
+      id, token
+    },
+    headers: {
+      'Authorization': `${token}`
+    }
+  })
+    .done(result => {
+      getAllTodo()
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+function clearForm(){
+  $("#login-email").val('')
+  $("#login-password").val('')
+  $("#reg-email").val('');
+  $("#reg-password").val('');
+}

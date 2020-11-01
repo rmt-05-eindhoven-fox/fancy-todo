@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
     },
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       validate: {
         notEmpty: {
@@ -67,18 +67,19 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.DATE,
       validate: {
         isGreaterThanDate(date){
+          console.log({date})
           var pickedDate = new Date(date)
           var todaysDate = new Date()
 
           if (pickedDate < todaysDate === true) {
-            throw new Error("input tanggal error");
+            throw new Error("tanggal tidak boleh sebelum dari hari ini");
           } else {
             return date 
           }
         },
         notEmpty: {
           args: true,
-          msg: 'descrition is a required field'
+          msg: 'due date is a required field'
         },
       }
     }

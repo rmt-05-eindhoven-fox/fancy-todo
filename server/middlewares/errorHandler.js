@@ -1,5 +1,5 @@
 function errorHandler (err, req, res, next){
-    
+    console.log({err})
     let status = 500
     let message = 'internal server error'
     
@@ -29,6 +29,9 @@ function errorHandler (err, req, res, next){
     }else if(err.name === 'JsonWebTokenError') {
       status = 401;
       message = 'User unauthorized'
+    }
+    if(err.msg) {
+      message = err.msg
     }
     res.status(status).json({
         message

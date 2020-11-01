@@ -5,7 +5,7 @@ const { OAuth2Client } = require('google-auth-library')
 
 
 class UserController {
-    static register(req, res){
+    static register(req, res, next){
         const {email, password} = req.body
         User.create({
             email,
@@ -23,6 +23,7 @@ class UserController {
     }
 
     static login(req, res){
+        console.log('MASUK LOGIN');
         const playload = {
             email: req.body.email,
             password: req.body.password
@@ -48,7 +49,8 @@ class UserController {
                     email: user.email
                 })
                 res.status(200).json({
-                    tokenAkses : tokenAkses
+                    tokenAkses : tokenAkses,
+                    email: user.email
                 })
             }
         })
