@@ -5,6 +5,9 @@ function beforeLogin() {
   $("#addTodo").hide()
   $("#listTodo").hide()
   $("#logout").hide()
+  $("#register-name").val(null)
+  $("#register-email").val(null)
+  $("#register-password").val(null)
 }
 
 function afterLogin() {
@@ -21,7 +24,6 @@ function afterLogin() {
 
 $(document).ready(() => {
   const token = localStorage.getItem("token")
-
   if (token) {
     afterLogin()
   } else {
@@ -53,13 +55,14 @@ function onSignIn(googleUser) {
 // Register
 function register(e) {
   e.preventDefault()
+  const name = $("#register-name").val()
   const email = $("#register-email").val()
   const password = $("#register-password").val()
 
   $.ajax({
     method: "POST",
     url: SERVER + "/register",
-    data: { email, password }
+    data: { name, email, password }
   })
     .done(response => {
       swal({
@@ -69,10 +72,11 @@ function register(e) {
         buttons: false,
         timer: 3000,
       });
+      beforeLogin()
     })
     .fail(err => {
       swal({
-        title: "Register Field!",
+        title: "Register Failed!",
         text: err.responseJSON.error,
         icon: "warning",
       });
@@ -91,11 +95,12 @@ function login(e) {
     data: { email, password }
   })
     .done(response => {
+      console.log(response)
       const token = response.access_token
       localStorage.setItem("token", token)
       swal({
         title: "Success",
-        text: "Welcome back!",
+        text: `Welcome back ${response.name}`,
         icon: "success",
         buttons: false,
         timer: 3000,
@@ -106,7 +111,7 @@ function login(e) {
     })
     .fail(err => {
       swal({
-        title: "Failed!",
+        title: "Login Failed!",
         text: err.responseJSON.error,
         icon: "warning",
       });

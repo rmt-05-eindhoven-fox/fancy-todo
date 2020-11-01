@@ -6,6 +6,7 @@ const { OAuth2Client } = require('google-auth-library');
 class UserController {
   static postRegister(req, res, next) {
     const payload = {
+      name: req.body.name,
       email: req.body.email,
       password: req.body.password
     }
@@ -40,7 +41,7 @@ class UserController {
           id: data.id,
           email: data.email
         })
-        res.status(200).json({ access_token })
+        res.status(200).json({ access_token, name: data.name })
       })
       .catch(err => {
         next(err)
