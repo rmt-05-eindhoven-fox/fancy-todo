@@ -3,7 +3,10 @@ const server = "http://localhost:3000"
 $(document).ready(() => {
    const token = localStorage.getItem("token")
    $("#add-discord-username").hide()
+   
+   //Kalau lemot getBackgroundImg di comment aja kak
    getBackgroundImg()
+   
    if (token) {
       $("#homepage").show()
       $("#login").hide()
