@@ -10,7 +10,7 @@
 </head>
 <body>
         <!-- logout -->
-        <button type="submit" id="btn-logout" class="btn btn-primary float-right" style="background-color: red;">Sign Out</button>
+        <button type="submit" id="btn-logout" onclick="logout()" class="btn btn-primary float-right" style="background-color: red;">Sign Out</button>
         <!-- end logout -->
 
          <!-- register -->
@@ -61,7 +61,7 @@
                 </div>
                 <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </form>
-            <a href="#" onclick="signOut();">Sign out</a>
+           
             </div>
             </div>
         </div>
@@ -113,7 +113,7 @@
             
             <div class="form-group">
                 <label >Title</label><br>
-                <input style="visibility: hidden;" id="edit-id">
+                <input style="visibility: hidden;" id="id">
                 <input class="form-control" type="text" id="edit-title" name="title" autocomplete="title"><br>
                 <label for="description">Description</label><br>
                 <input class="form-control" type="text" id="edit-description" name="description" autocomplete="current-description">

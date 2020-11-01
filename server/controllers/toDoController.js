@@ -18,15 +18,17 @@ class TodoController {
     }
 
     static async create(req,res, next) {
-        console.log(req.body)
+        //console.log(req.body)
         // console.log(title, description, status, due_date)
         // console.log(userId, 'ini userid')
         try {
             const userId = req.loggedInUser.id
             const { title, description, status, due_date} = req.body
+            console.log(req.body, 'ini req body')
             const todo = await Todo.create({title, description, status, due_date, userId})
             res.status(201).json({todo})
         } catch (error) {
+            console.log(error, 'ini error create')
             next(error)
         }
     }

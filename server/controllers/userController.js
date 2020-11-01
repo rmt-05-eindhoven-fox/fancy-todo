@@ -2,6 +2,7 @@ const {User} = require('../models');
 
 const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
+const {OAuth2Client} = require('google-auth-library')
 
 class UserController {
     static async register (req,res, next) {
@@ -55,17 +56,21 @@ class UserController {
 
     static googleLogin(req,res, next){
         let { google_access_token } = req.body
+        //console.log(google_access_token, 'ini google acces')
+        //console.log(process.env.CLIENT_ID, 'ini env')
         const client = new OAuth2Client(process.env.CLIENT_ID)
+        
         let email = ''
 
         client.verifyIdToken({
             idToken: google_access_token,
-            audience: process.env.CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+            audience: process.env.CLIENT_ID, 
 
         }).then(ticket => {
+            //console.log(ticket, 'ini ticket')
             const payload = ticket.getPayload();
             email = payload.email
-            console.log(payload, "<<< ini payload dari data google");
+            //console.log(payload);
             return User.findOne({
                 where: { email }
             })
@@ -83,13 +88,15 @@ class UserController {
             }
         })
             .then(dataUser => {
-                let access_token = signToken({ id: dataUser.id, email: dataUser.email })
-                return res.status(200).json(access_token)
+                //console.log(dataUser)
+                let token = signToken({ id: dataUser.id, email: dataUser.email })
+                return res.status(200).json({token})
             })
             .catch(err => {
+                console.log(err)
                 next(err);
-            })
-}   
+            })  
+    }   
 }
 
 module.exports = UserController
