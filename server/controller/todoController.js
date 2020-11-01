@@ -40,6 +40,7 @@ class TodoController {
             res.status(200).json(data)
         })
         .catch(err => {
+            console.log(err, "masuk ke error bro")
             next(err)
         })
     }

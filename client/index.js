@@ -168,6 +168,7 @@ function getTodo(e){
 }
 
 function editTodo(e, id){
+    localStorage.setItem("id", id)
     e.preventDefault()
     $("#home-page").hide()
     $("#sign-in-page").hide()
@@ -176,12 +177,13 @@ function editTodo(e, id){
     $("#edit-todo-form").show()
 }
 
-function editedTodo(e, id){
+function editedTodo(e){
+    const id = localStorage.getItem("id")
     e.preventDefault()
     const token = localStorage.getItem('token');
-    const title = $("#title").val()
-    const description = $("#description").val()
-    const due_date = $("#due-date").val()
+    const title = $("#title-edit").val()
+    const description = $("#description-edit").val()
+    const due_date = $("#due-date-edit").val()
     const status = "belum dikerjakan"
     $.ajax({
         method: "PUT",
@@ -196,13 +198,16 @@ function editedTodo(e, id){
             status
         }
     }).done(response => {
+        localStorage.removeItem("id")
         getTodo(e)
+        console.log(response, "masuk ke response bro")
         $("#home-page").show()
         $("#sign-in-page").hide()
         $("#sign-up-page").hide()
         $("#add-todo-form").hide()
     }).fail(err => {
         console.log(err)
+        console.log("masuk ke error bro")
     })
 }
 
