@@ -17,7 +17,7 @@ class ControllerUser {
   static async postUsers(req, res, next) {
     try {
       const newUser = {
-        userName: req.body.username,
+        userName: req.body.userName,
         email: req.body.email,
         password: req.body.password
       }
@@ -75,6 +75,7 @@ class ControllerUser {
     const google_access_token = req.body.google_access_token
     const client = new OAuth2Client(process.env.CLIENT_ID)
     let email = ""
+    let userName = ""
     let payload;
     // verify google token berdasarkan client id
     client.verifyIdToken({
@@ -83,29 +84,38 @@ class ControllerUser {
     })
       .then(ticket => {
         payload = ticket.getPayload()
+        email = payload.email
+        userName = payload.name
+        // hasil dari payload = email, name, picture,
         return User.findOne({
-          email: payload.email
+          where: {
+            email: payload.email
+          }
         })
       })
       .then(user => {
         if (user) {
           return user
         } else {
-          var userObject = {
+          let newUser = {
+            userName: userName,
             email: email,
             password: 'random'
           }
-          return User.create({ userObject })
+
+          return User.create(newUser)
         }
       })
-      .then(dataUser => {
+      .then(user => {
+
         let accessToken = getToken({
-          id: dataUser.id,
-          email: dataUser.email
+          id: user.id,
+          email: user.email
+
         })
         return res.status(200).json({
           accessToken,
-          userName: payload.name
+          userName: user.userName
         })
       })
       .catch(err => {

@@ -73,7 +73,7 @@ class ControllerTodo {
     try {
       const id = +req.params.id
       const parameter = {
-        status: req.body.status
+        status: "true"
       }
       const result = await Todo.update(parameter, {
         where: {

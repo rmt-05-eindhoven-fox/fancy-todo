@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Username Tidak BOleh Kosong'
+          msg: 'Username Tidak Boleh Kosong !!'
         }
       }
     },
@@ -32,11 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: {
           args: true,
-          msg: "harus format email"
+          msg: "harus format email !!"
         },
         notEmpty: {
           args: true,
-          msg: 'Email Tidak BOleh Kosong'
+          msg: 'Email Tidak Boleh Kosong !!'
         }
       }
     },
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'Password Tidak BOleh Kosong'
+          msg: 'Password Tidak Boleh Kosong !!'
         }
       }
     }

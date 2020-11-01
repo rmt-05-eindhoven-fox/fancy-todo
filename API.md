@@ -1,44 +1,162 @@
-Show User
+# FANCY TODO
 
-Returns json data about a single user.
+## API DOCUMENTATION
 
-URL
 
-/users/:id
+**RESTful ENDPOINT**
+---
+- `POST /users/register`
 
-Method:
+**Show Movie**
+---
+  Returns json data about User name, email, password.
 
-GET
+* **URL**
 
-URL Params
+  `/users/register`
 
-Required:
+* **Method:**
 
-id=[integer]
+  `GET`
 
-Data Params
+* **Header:**
 
-None
+  None
+  
+*  **URL Params**
 
-Success Response:
+   **Required:**
+ 
+  none
 
-Code: 200
-Content: { id : 12, name : "Michael Bloom" }
-Error Response:
+* **Data Params**
 
-Code: 404 NOT FOUND
-Content: { error : "User doesn't exist" }
-OR
+  userName, email, password
 
-Code: 401 UNAUTHORIZED
-Content: { error : "You are unauthorized to make this request." }
-Sample Call:
+* **Success Response:**
 
-  $.ajax({
-    url: "/users/1",
-    dataType: "json",
-    type : "GET",
-    success : function(r) {
-      console.log(r);
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+    {
+      "userName": null,
+      "email": "yuliafirdaus@gmail.com",
+      "password": "$2a$10$AeZ2apK4Wh2x04jqpFGLJu7Rm0nR6Xj2xorsg.pdqllPN7W57nPjS"
     }
-  });
+    
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:**
+    ```json
+    {
+      "message": "NOT FOUND"
+    }
+    ```
+
+
+**RESTful ENDPOINT**
+---
+- `POST /users/login`
+
+**Show Movie**
+---
+  Returns json data about access Token and User name.
+
+* **URL**
+
+  `/users/login`
+
+* **Method:**
+
+  `GET`
+
+* **Header:**
+
+  None
+  
+*  **URL Params**
+
+   **Required:**
+ 
+  none
+
+* **Data Params**
+
+  email, password
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+    {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlck5hbWUiOiJhbmluZGl0YSIsImlhdCI6MTYwNDIxNjYzN30.Qwrl3uho6iVUJIADDxigkMq8rKc24S-6MO5jS4ud-SA",
+    "userName": "anindita"
+}
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:**
+    ```json
+    {
+      "message": "NOT FOUND"
+    }
+    ```
+
+    
+**RESTful ENDPOINT**
+---
+- `POST /users/googleLogin`
+
+**Show Movie**
+---
+  Returns json data about user google.
+
+* **URL**
+
+  `/users/googleLogin`
+
+* **Method:**
+
+  `POST`
+
+* **Header:**
+
+  None
+  
+*  **URL Params**
+
+   **Required:**
+ 
+  none
+
+* **Data Params**
+
+  email
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+    {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlck5hbWUiOiJhbmluZGl0YSIsImlhdCI6MTYwNDIxNjYzN30.Qwrl3uho6iVUJIADDxigkMq8rKc24S-6MO5jS4ud-SA",
+    "userName": "anindita"
+}
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:**
+    ```json
+    {
+      "message": "NOT FOUND"
+    }
+    ```
+
