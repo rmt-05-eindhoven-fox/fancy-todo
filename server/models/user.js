@@ -42,6 +42,16 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Password may not contain space!'
         }
       }
+    },
+    image_url:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isUrl: {
+          args: true,
+          msg: 'Insert a valid URL'
+        }
+      }
     }
   }, {
     hooks: {

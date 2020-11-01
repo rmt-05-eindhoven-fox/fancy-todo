@@ -129,12 +129,15 @@ function register(e) {
   console.log('register');
   const email = $("#register-email").val()
   const password = $("#register-password").val()
+  const image_url = $("#register-image_url").val()
+  console.log(image_url, 'image');
   $.ajax({
     method: "POST",
     url: SERVER + "/register",
     data: {
       email,
-      password
+      password,
+      image_url
     }
   }).done(response => {
     Swal.fire(
@@ -144,7 +147,7 @@ function register(e) {
     )
     showLogin()
   }).fail(err => {
-    console.log(err, err.responseJSON);
+    // console.log(err, err.responseJSON);
     // showError(err.responseJSON.errors)
     Swal.fire(
       'Register Error',
