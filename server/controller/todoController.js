@@ -11,7 +11,7 @@ class TodoController {
         UserId:userId
       }
       const todo = await Todo.create(data,{returning:true})
-
+      console.log(data)
       res.status(201).json(todo)
     }
     catch(error){
@@ -23,7 +23,8 @@ class TodoController {
     try {
       const userId = req.loggedInUser.id
       const todo = await Todo.findAll({
-        where:{UserId:userId}
+        where:{UserId:userId},
+        order:[["status","ASC"]]
       })
 
       res.status(200).json(todo)
@@ -87,10 +88,8 @@ class TodoController {
   static async todoDelete(req,res,next){
     try {
       const id = +req.params.id
-      const todo = await Todo.findByPk(id)
-      todo.destroy()
-      todo.save()
-      res.status(200).json(todo)
+      const todo = await Todo.destroy({where:{id}})
+      res.status(200).json({msg:"success delete todo"})
     } catch (error) {
       next(error)
     }

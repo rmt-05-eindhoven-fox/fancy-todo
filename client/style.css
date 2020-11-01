@@ -1,0 +1,50 @@
+body {
+  font-family: "Lato", sans-serif;
+  background-color: rgb(80, 80, 80);
+  color:#ffffff;
+}
+.sidenav {
+  height: 100%;
+  width: 11%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #1f1f20;
+  overflow-x: hidden;
+  padding: 2%;
+}
+
+.sidenav span {
+  cursor: pointer;
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #ffffff;
+  display: block;
+}
+
+.sidenav span:hover {
+  background-color: rgb(68, 147, 221);
+}
+#content{
+  background-image: url("./assets/background.jpg");
+  height: 100vh;
+  background-position: center;
+  background-size: 100vw 130vh;
+}
+.main {
+  margin-left: 15%; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+  width: 85%;
+}
+#content h1{
+  color:#ffffff;
+}
+#editform{
+  color: #ffffff;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}

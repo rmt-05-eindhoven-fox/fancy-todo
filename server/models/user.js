@@ -13,9 +13,26 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Todo, { foreignKey: "UserId" })
+      User.belongsToMany(models.Project, { through:"ProjectUser",foreignKey:"ProjectId" })
     }
   };
   User.init({
+    first_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "First name required"
+        }
+      }
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "Last name required"
+        }
+      }
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

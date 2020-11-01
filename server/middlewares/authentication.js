@@ -7,6 +7,7 @@ async function authentication(req,res,next){
     if(!token){
       throw { name:"AuthenticationFailed"}
     }else{
+      console.log(token)
       const decoded = verifyToken(token)
       const user = await User.findOne({
         where:{email:decoded.email}
