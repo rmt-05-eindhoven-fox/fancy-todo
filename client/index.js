@@ -34,6 +34,7 @@ $(document).ready(() => {
 
   $("#login-button").on("click", () => {
     showLogin()
+
   })
 
   $("#register-button").on("click", () => {
@@ -49,12 +50,14 @@ function showLogin() {
   $("#home").hide()
   $("#login").show()
   $("#register").hide()
+  $("#errors").hide()
 }
 
 function showRegister() {
   $("#home").hide()
   $("#login").hide()
   $("#register").show()
+  $("#reg-errors").hide()
 }
 
 function showAddTodo() {
@@ -98,6 +101,7 @@ function login(event) {
   const password = $("#login-password").val()
   let errors = []
   $("#errors").empty()
+  $("#errors").hide()
 
   console.log(email, password)
   $.ajax({
@@ -153,6 +157,9 @@ function onSignIn(googleUser) {
     $("#login-email").val("")
     $("#login-password").val("")
     $("#weatherbar").show();
+    $("#add-todo").hide();
+    $("#update-todo").hide()
+    $("#update-status-todo").hide()
     showWeather();
     getTodo()
   }).fail(err => {
@@ -160,12 +167,6 @@ function onSignIn(googleUser) {
   })
 }
 
-// function signOut() {
-//   var auth2 = gapi.auth2.getAuthInstance();
-//   auth2.signOut().then(function () {
-//     console.log('User signed out.');
-//   });
-// }
 
 function logout() {
   $("#home").hide()
@@ -210,7 +211,11 @@ function addTodo(event) {
     $("#todo-errors").hide()
     console.log(response)
   }).fail(err => {
-    errors.push(err.responseJSON.msg)
+    if (err.responseJSON.message) {
+      errors.push(err.responseJSON.message)
+    } else if (err.responseJSON.msg) {
+      errors.push(err.responseJSON.msg)
+    }
     $("#todo-errors").append(
       errors
     )
@@ -284,8 +289,8 @@ function upadateStatusTodo(id) {
   })
 }
 
-function postUpdateTodo() {
-
+function postUpdateTodo(event) {
+  event.preventDefault()
   const token = localStorage.getItem("token")
   const id = $("#edit-todo-id").val()
   const title = $("#edit-todo-title").val()
@@ -311,22 +316,26 @@ function postUpdateTodo() {
   }).done(response => {
     getTodo()
     clearAllForms()
-    $("#add-todo").show()
+    $("#add-todo").hide()
     $("#update-todo").hide()
     $("#edit-todo-errors").hide()
     console.log(response)
   }).fail(err => {
-    errors.push(err.responseJSON.msg)
+    console.log(err)
+    if (err.responseJSON.message) {
+      errors.push(err.responseJSON.message)
+    } else if (err.responseJSON.msg) {
+      errors.push(err.responseJSON.msg)
+    }
     $("#edit-todo-errors").append(
       errors
     )
     $("#edit-todo-errors").show()
-    console.log(err)
   })
 }
 
-function postUpdateStatusTodo() {
-
+function postUpdateStatusTodo(event) {
+  event.preventDefault()
   const token = localStorage.getItem("token")
   const id = $("#update-status-todo-id").val()
   const status= $("#update-status-todo-form").val()
@@ -346,7 +355,7 @@ function postUpdateStatusTodo() {
   }).done(response => {
     getTodo()
     clearAllForms()
-    $("#add-todo").show()
+    $("#add-todo").hide()
     $("#update-todo").hide()
     $("#update-status-todo").hide()
     $("#update-status-todo-errors").hide()
@@ -382,13 +391,13 @@ function getTodo() {
 
       $("#todo").append(`
 
-      <div class="card border-light bg-light mb-3" style="">
+      <div class="card border-light bg-light mb-3">
           <div class="card-body bg-transparent border-light">
-            <h5 class="card-title text-align="center"">${todo.title.capitalize()}</h5>
-            <hr style="color:yellow;">
-            <p class="card-text ">${todo.description}</p>
+            <h5 class="card-title">${todo.title.capitalize()}</h5>
+            <hr>
+            <p class="card-text">${todo.description}</p>
           </div>
-        <div class="card-footer bg-transparent border-light text-weight-light">
+        <div class="card-footer bg-transparent border-light">
           <div>
             <strong>Due Date:</strong>&nbsp;${due_date} <br>
             <strong>Status:</strong>&nbsp;${todo.status}
@@ -427,6 +436,16 @@ function clearAllForms(){
   $('#update-todo-due_date').val('')
 
   $("#update-status-todo-form").val('')
+
+  $("#register-email").val("")
+  $("#register-password").val("")
+  $("#login-email").val("")
+  $("#login-password").val("")
+
+  $("#register-email").empty()
+  $("#register-password").empty()
+  $("#login-email").empty()
+  $("#login-password").empty()
 
 }
 

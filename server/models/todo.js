@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Title is required'
+        },
+        len: {
+          args: [0, 50],
+          msg: `Title cannot consist of more than 50 characters!`
         }
       }
     },
@@ -31,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Description is required'
+        },
+        len: {
+          args: [0, 255],
+          msg: 'Description cannot consist of more than 255 characters!'
         }
       }
     },
@@ -40,10 +48,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Status is required'
-        },
-        allowNull: {
-          args: false,
-          msg: 'Status cannot be empty!'
         }
       }
     },

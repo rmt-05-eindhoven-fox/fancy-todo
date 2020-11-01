@@ -17,18 +17,37 @@
   .todo {
     height: 20px
   }
+
+  .g-signin2{
+    width: 100%;
+  }
+
+  .g-signin2 > div{
+    margin: 0 auto;
+  }
+
+  .card{
+    margin: 10px;
+    float: none;
+  }
+
+
+
 </style>
 <body style="background-color:white;">
   <!-- REGISTER -->
   <section class="container" id="register">
 
     <div style="text-align: left; padding: 20px;">
-      <button class="btn btn-success m-1" id="login-button">Login</button>
+      <!-- <button class="btn btn-success m-1" id="login-button">Login</button> -->
     </div>
 
     <div class="row justify-content-center mt-5">
       <div class="col-4"> 
         <form action="" onsubmit="register(event)"> 
+
+          <h5 style="text-align: center;">Please input your email and password to register</h5><br><br>
+
           <div class="form-group">
             <label for="register-email">Email</label>
             <input 
@@ -47,7 +66,13 @@
           <div class="alert alert-danger" role="alert" id="reg-errors">
           </div>
 
-          <button type="submit" class="btn btn-primary  m-1">Register</button>
+          <div class="border border-light p-2 mb-2">
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary  m-1">Register</button>
+              <p style="text-align: center;"><button class="btn text-primary" id="login-button">return to login</button></p>
+            </div>
+          </div>
+
         </form>
       </div>
     </div>
@@ -56,15 +81,12 @@
 
   <!-- LOGIN -->
   <section class="container" id="login">
-
-    <div style="text-align: right; padding: 20px;">
-      <button class="btn btn-primary m-1" id="register-button">Register</button>
-    </div>
-
     <div class="row justify-content-center mt-5">
       <div class="col-4"> 
         <form action="" onsubmit="login(event)"> 
-          
+
+          <h5 style="text-align: center;">Please login here!</h5><br>
+
           <div class="form-group">
             <label for="login-email">Email</label>
             <input 
@@ -72,6 +94,7 @@
             type="email" 
             id="login-email">
           </div>
+
           <div class="form-group">
             <label for="login-password">Password</label>
             <input 
@@ -80,16 +103,25 @@
             id="login-password">
           </div>
   
-            <div class="alert alert-danger" role="alert" id="errors">
+          <div class="alert alert-danger" role="alert" id="errors"></div>
+
+            <div class="border border-light p-2 mb-2">
+              <div class="text-center">
+                <button type="submit" class="btn btn-success m-1">Login</button>
+              </div>
+            </div>
+            
+            <div class="border border-light p-3 mb-4">
+              <div class="text-center">
+                <p style="text-align: center;">Don't have an account yet? <button class="btn text-primary" id="register-button"><strong>Register here!</strong></button></p>
+                <p style="text-align: center;"><strong>OR</strong></p>
+                <!-- Google Sign in button -->
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+              </div>
             </div>
 
-          <button type="submit" class="btn btn-success m-1">Login</button><br><br>
+          </div>
 
-          <!-- Google Sign in button -->
-          <div class="g-signin2" data-onsuccess="onSignIn"></div>
-
-          <!-- Google Sign Out Button -->
-          <!-- <a href="#" onclick="signOut();">Sign out</a> -->
         </form>
       </div>
     </div>
@@ -98,14 +130,8 @@
 
   <!-- HOME -->
   <section class="container-fluid" id="home">
-    <!-- <div><p>INI HOME</p></div> -->
 
-    <!-- LOGOUT -->
-    <!-- <div style="text-align: right; padding: 20px;"> -->
-      <!-- <button class="btn btn-danger m-1" id="logout">Logout</button> -->
-    <!-- </div> -->
-    <!-- END LOGOUT -->
-
+    <!-- NAVBAR WEATHER -->
     <nav class="navbar navbar-light bg-light">
       <a href="/users/dashboard"></a>
       <button id="kota" class="btn text-secondary"></button>   
@@ -114,23 +140,7 @@
       <button class="btn text-danger" id="logout">Logout</button>
       <a href="/users/dashboard"></a>
     </nav><br><br>
-    
-      <!-- WEATHER -->
-    <!-- <nav class="navbar" id="weatherbar" > -->
-      <!-- <div class="collapse navbar-collapse" id="navbarNav"> -->
-        <!-- <ul class="navbar-nav">
-          <li class="nav-item">
-            <p id="kota" class=" text-black"></p>   
-          </li>
-          <li class="nav-item"> 
-            <p id="temp" class=" text-black ml-3"></p>
-          </li>
-          <li class="nav-item">
-            <p id="weather" class=" text-black ml-3"></p>
-          </li> -->
-      <!-- </div> -->
-    <!-- </nav> -->
-    <!-- END WEATHER -->
+    <!-- END NAVBAR WEATHER -->
 
     <!-- TODO LIST -->
     <div class="container justify-content-center">
@@ -190,7 +200,7 @@
                   <div class="row justify-content-center mt-5">
                     <div class="col-4"> 
                       <p style="text-align: center;"><strong>Edit Task</strong></p>
-                      <form action="" onsubmit="postUpdateTodo()">
+                      <form action="" onsubmit="postUpdateTodo(event)">
           
                         <div class="form-group">
                           <input type="hidden" class="form-control" id="edit-todo-id">
@@ -204,7 +214,6 @@
                         <div class="form-group">
                           <label for="">Status</label>
                           <select class="form-control" id="edit-todo-status">
-                            <option value=""></option>
                             <option value="On progress">On progress</option>
                             <option value="Completed">Completed</option>
                           </select>
@@ -235,7 +244,7 @@
                   <div class="row justify-content-center mt-5">
                     <div class="col-4"> 
                       <p style="text-align: center;"><strong>Edit Status</strong></p>
-                      <form action="" onsubmit="postUpdateStatusTodo()">
+                      <form action="" onsubmit="postUpdateStatusTodo(event)">
                         <div class="form-group">
                           <input type="hidden" class="form-control" id="update-status-todo-id">
           
@@ -260,8 +269,11 @@
                 </section>
               </div><br><br>
               <!-- END POST STATUS UPDATE -->
-      <div id="todo" class="row row-cols-2">
-      
+      <!-- TODO LIST -->
+      <div id="todo" class="row row-cols-3">
+        <div class="card border-light bg-light mb-2 mt-1">
+
+        </div>
       </div><br>
     </div>
     <!-- END TODO LIST -->
