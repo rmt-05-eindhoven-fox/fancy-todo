@@ -78,7 +78,7 @@ summary h1, summary h2{ display: inline-block; }
 </details>
  
 <details>
-<summary><strong><b><h2>2. Get All Todos</h2></b></strong></summary>  
+<summary><strong><b><h4>2. Get All Todos</h4></b></strong></summary>  
 
   Get all todos data.
 
@@ -424,6 +424,142 @@ summary h1, summary h2{ display: inline-block; }
     ```
 </details>
 
+<details><summary>7. Search by Todo Title</summary>  
+
+  Filter todos data by name.
+
+* **URL**
+
+  `/todos/search`
+
+* **Method:**
+
+  `POST`
+
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accesstoken" 
+    }
+  ```
+* **Data Params**
+  
+  *data*
+
+  ```js
+  {
+    title: "todo", 
+  }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    [
+      { 
+        id: 1, 
+        title: "Todo Title", 
+        description: "Todo Description", 
+        status: "pending", 
+        due_date: "2020-10-26T05:29:38.084Z", 
+        createdAt: "2020-10-26T05:17:59.133Z", 
+        updatedAt: "2020-10-26T05:17:59.133Z" 
+      }, 
+      { 
+        id: 2, 
+        title: "Todo Title 2", 
+        description: "Todo Description 2", 
+        status: "pending", 
+        due_date: "2020-10-26T05:29:38.084Z", 
+        createdAt: "2020-10-26T05:17:59.133Z", 
+        updatedAt: "2020-10-26T05:17:59.133Z" 
+      }, 
+      { ... }
+    ]
+    ```
+
+* **Error Response:** 
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    { error : "Something error message from server" }
+    ```
+</details>
+
+<details>
+<summary>8. Filter by Due Date</summary>  
+
+  Filter todos data by due date.
+
+* **URL**
+
+  `/todos/filterdue`
+
+* **Method:**
+
+  `POST`
+
+* **URL Headers**
+  
+  **required**
+  ```js
+    {
+      accesstoken: "accesstoken" 
+    }
+  ```
+* **Data Params**
+  
+  *data*
+
+  ```js
+  {
+    due_date: "2020-10-26", 
+  }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    [
+      { 
+        id: 1, 
+        title: "Todo Title", 
+        description: "Todo Description", 
+        status: "pending", 
+        due_date: "2020-10-26T05:29:38.084Z", 
+        createdAt: "2020-10-26T05:17:59.133Z", 
+        updatedAt: "2020-10-26T05:17:59.133Z" 
+      }, 
+      { 
+        id: 2, 
+        title: "Todo Title 2", 
+        description: "Todo Description 2", 
+        status: "pending", 
+        due_date: "2020-10-26T05:29:38.084Z", 
+        createdAt: "2020-10-26T05:17:59.133Z", 
+        updatedAt: "2020-10-26T05:17:59.133Z" 
+      }, 
+      { ... }
+    ]
+    ```
+
+* **Error Response:** 
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** 
+    ```javascript
+    { error : "Something error message from server" }
+    ```
+</details>
+
+
 <hr>
 <br>
 
@@ -554,7 +690,7 @@ summary h1, summary h2{ display: inline-block; }
 </details>
 
 <details>
-<summary><strong><b><h2>3. Verify Token</h2></b></strong></summary>  
+<summary>3. Verify Token</summary>  
   
   Verify Token User.
 
