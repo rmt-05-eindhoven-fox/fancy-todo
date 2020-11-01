@@ -243,7 +243,7 @@ function addTodo(e) {
   const token = localStorage.getItem("token");
   const title = $("#add-title").val();
   const description = $("#add-description").val();
-  const status = $("#add-status").val();
+  const status = `Not done`;
   const due_date = $("#add-due_date").val();
 
   $.ajax({
