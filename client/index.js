@@ -8,12 +8,14 @@ $(document).ready(function () {
         $("#sign-in-page").hide()
         $("#sign-up-page").hide()
         $("#add-todo-form").hide()
+        $("#edit-todo-form").hide()
     }
     else{
         $("#home-page").hide()
         $("#sign-in-page").show()
         $("#sign-up-page").hide()
         $("#add-todo-form").hide()
+        $("#edit-todo-form").hide()
     }
 })
 
@@ -40,6 +42,7 @@ function signIn(e){
         $("#sign-in-page").hide()
         $("#sign-up-page").hide()
         $("#add-todo-form").hide()
+        $("#edit-todo-form").hide()
         $("#email").val("")
         $("#password").val("")
     }).fail(err => {
@@ -53,6 +56,7 @@ function showSignUp(e){
     $("#home-page").hide()
     $("#sign-in-page").hide()
     $("#add-todo-form").hide()
+    $("#edit-todo-form").hide()
 
 }
 function signUp(e){
@@ -72,6 +76,7 @@ function signUp(e){
         $("#sign-in-page").show()
         $("#sign-up-page").hide()
         $("#add-todo-form").hide()
+        $("#edit-todo-form").hide()
        
     }).fail(err => {
         console.log(err)
@@ -84,6 +89,7 @@ function logOut(e){
     $("#sign-in-page").show()
     $("#sign-up-page").hide()
     $("#add-todo-form").hide()
+    $("#edit-todo-form").hide()
     localStorage.removeItem("token")
     localStorage.clear()
     var auth2 = gapi.auth2.getAuthInstance();
@@ -100,6 +106,7 @@ function addTodo(e){
     $("#sign-in-page").hide()
     $("#sign-up-page").hide()
     $("#add-todo-form").show()
+    $("#edit-todo-form").hide()
 }
 
 function addedTodo(e){
@@ -127,6 +134,7 @@ function addedTodo(e){
         $("#sign-in-page").hide()
         $("#sign-up-page").hide()
         $("#add-todo-form").hide()
+        $("#edit-todo-form").hide()
     }).fail(err => {
         console.log(err)
     })
