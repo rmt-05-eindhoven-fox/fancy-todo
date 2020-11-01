@@ -12,6 +12,9 @@ function afterLogin() {
   $("#addTodo").show()
   $("#listTodo").show()
   $("#logout").show()
+  $("#title").val(null)
+  $("#description").val(null)
+  $("#due_date").val(null)
   listTodo()
   checkBox()
 }
@@ -59,12 +62,20 @@ function register(e) {
     data: { email, password }
   })
     .done(response => {
-      $("#register").hide()
-      $("#login").show()
-      $("#addTodo").hide()
+      swal({
+        title: "Success",
+        text: "Your email has been added!",
+        icon: "success",
+        buttons: false,
+        timer: 3000,
+      });
     })
     .fail(err => {
-      console.log(err.responseJSON)
+      swal({
+        title: "Register Field!",
+        text: err.responseJSON.error,
+        icon: "warning",
+      });
     })
 }
 
@@ -113,10 +124,21 @@ function addTodo(e) {
     data: { title, description, due_date }
   })
     .done(response => {
-      listTodo()
+      swal({
+        title: "Success",
+        text: "Your todo has been added!",
+        icon: "success",
+        buttons: false,
+        timer: 3000,
+      });
+      afterLogin()
     })
     .fail(err => {
-      console.log(err.responseJSON)
+      swal({
+        title: "Check Field!",
+        text: err.responseJSON.error,
+        icon: "warning",
+      });
     })
 }
 
@@ -143,7 +165,11 @@ function listTodo() {
       checkBox()
     })
     .fail(err => {
-      console.log(err.responseJSON)
+      swal({
+        title: "Check Field!",
+        text: err.responseJSON.error,
+        icon: "warning",
+      });
     })
 }
 
@@ -163,7 +189,7 @@ function finishedTodo(id, title, status) {
     <div class="col col-lg-2">
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
-        <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+        <button type="button" class="btn btn-secondary" onclick="willDelete(${id})">Delete</button>
       </div>
     </div>
   </div>
@@ -186,7 +212,7 @@ function unfinishedTodo(id, title, status) {
     <div class="col col-lg-2">
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-success" onclick="editTodoForm(${id})">Edit</button>
-        <button type="button" class="btn btn-secondary" onclick="deleteTodo(${id})">Delete</button>
+        <button type="button" class="btn btn-secondary" onclick="willDelete(${id})">Delete</button>
       </div>
     </div>
   </div>
@@ -221,7 +247,11 @@ function updateStatus(id, status) {
       listTodo()
     })
     .fail(err => {
-      console.log(err.responseJSON)
+      swal({
+        title: "Check Field!",
+        text: err.responseJSON.error,
+        icon: "warning",
+      });
     })
 }
 
@@ -285,6 +315,25 @@ function editTodo(e, id) {
     })
 }
 
+// Sweet alert delete
+function willDelete(id) {
+  swal({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this todo!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your todo has been deleted!", {
+          icon: "success",
+        });
+        deleteTodo(id)
+      }
+    });
+}
+
 // Delete todo
 function deleteTodo(id) {
   const token = localStorage.getItem("token")
@@ -294,7 +343,6 @@ function deleteTodo(id) {
     headers: { token: token },
   })
     .done(response => {
-      console.log(response)
       listTodo()
     })
     .fail(err => {
