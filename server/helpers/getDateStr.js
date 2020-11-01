@@ -5,5 +5,3 @@ function getDateStr() {
 }
 
 module.exports = getDateStr
-
-// console.log(getDateStr())

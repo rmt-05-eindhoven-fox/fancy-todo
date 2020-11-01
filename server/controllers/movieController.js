@@ -9,14 +9,10 @@ class MovieController {
         Authorization: `Bearer ${process.env.TOKEN_TMDB}`
       }
     })
-    // .then(response => {
-    //   res.status(200).json(response.data.results)
-    // })
       .then(({ data }) => {
         res.status(200).json(data.results)
       })
       .catch(error => {
-        // res.status(500).json(error)
         next(error)
       })
   }
