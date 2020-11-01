@@ -64,6 +64,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     UserId: DataTypes.INTEGER
   }, {
+    hooks: {
+      beforeCreate(instance, options){
+        instance.status = false
+      }
+    },
     sequelize,
     modelName: 'Todo',
   });

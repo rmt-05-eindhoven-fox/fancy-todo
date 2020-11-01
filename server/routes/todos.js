@@ -11,6 +11,8 @@ router.post('/', Controller.createTodo)
 
 router.get('/', Controller.readTodo)
 
+router.get('/status', Controller.readTodoByStatus)
+
 router.use('/:id', authorization)
 
 router.get('/:id', Controller.searchTodoByUserId)

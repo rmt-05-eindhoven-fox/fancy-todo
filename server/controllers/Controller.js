@@ -7,7 +7,6 @@ class Controller {
         .create({
             title,
             description,
-            status,
             due_date,
             UserId: +req.isSignedIn.userId
             })
@@ -24,8 +23,10 @@ class Controller {
         console.log(userId)
         Todo
         .findAll({
+            order: [ ['due_date', 'ASC'] ],
             where: {
-                UserId: userId
+                UserId: userId,
+                status: false
             }
         })
         .then(result => {
@@ -55,16 +56,33 @@ class Controller {
         })
     }
 
+    static readTodoByStatus(req, res, next) {
+        const userId = req.isSignedIn.userId
+
+        Todo
+        .findAll({
+            where: {
+                UserId: userId,
+                status: true
+            }
+        })
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch (err => {
+            next(err)   
+        })
+    }
+
     static updateTodo(req, res, next) {
         const index = req.params.id
         const UserId = req.isSignedIn.userId
-        const { title, description, status, due_date } = req.body
+        const { title, description, due_date } = req.body
 
         Todo
         .update({
             title,
             description,
-            status,
             due_date,
             UserId
         }, {
@@ -84,7 +102,8 @@ class Controller {
 
     static changeStatus(req, res, next) {
         const index = req.params.id
-        const { status } = req.body
+        const status = true
+        
         Todo
         .update({
             status
