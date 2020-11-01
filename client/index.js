@@ -1,3 +1,4 @@
+const tempId = null
 const SERVER = "http://localhost:3000"
 
 $(document).ready(function () {
@@ -12,6 +13,7 @@ $(document).ready(function () {
         $("#add-todos").show()
         $("#title-todo").show()
         $("#edit-form").hide()
+        
         showTodos()
         addNewTodos()
     } else {
@@ -159,7 +161,7 @@ function showTodos() {
                     <p class="text-left font-weight-bold">${el.description}</p>
                     <p class="text-left font-weight-bold">${el.status}</p>
                     <p class="text-left font-weight-bold">${el.due_date}</p>
-                    <button type="submit" class="btn btn-primary" style="background-color: blue;" onClick="editTodos(${el.id},"${el.title}","${el.description}","${el.status}","${el.due_date}")">Edit</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: blue;" onclick="editTodos(${el.id},'${el.title}', '${el.description}','${el.status}', '${el.due_date}')">Edit</button>
                     <button type="submit" class="btn btn-primary" style="background-color: red;" onClick="deleteTodos(${el.id})">Delete</button>
                 </div>
             `)
@@ -177,7 +179,7 @@ function edit(e) {
     const description = $("#edit-description").val()
     const status = $("#edit-status").val()
     const due_date = $("#edit-due_date").val()
-
+    const id = $("#edit-id").val()
     $.ajax({
         url: SERVER + "/todos/" + id,
         method: "PUT",
@@ -191,16 +193,17 @@ function edit(e) {
 }
 
 function editTodos(id,title,description,status,due_date) {
-    
+    console.log(id,title,description,status,due_date)
     $("#content").hide()
     $("#edit-form").show()
+    $("#add-todos").hide()
+    $("#title-todo").hide()
     
     $("#edit-title").val(title)
     $("#edit-description").val(description)
     $("#edit-status").val(status)
     $("#edit-due_date").val(due_date)
-    //idTemp = id
-
+    $("#edit-id").val(id)
 }
 
 
@@ -217,6 +220,41 @@ function deleteTodos(id) {
     }).fail(err => {
         console.log(err)
     })
+}
+
+function onSignIn(googleUser) {
+    console.log('masuk');
+    var google_access_token = googleUser.getAuthResponse().id_token;
+    console.log(google_access_token, "<<< google_access_token");
+
+    $.ajax({
+        method: "POST",
+        url: SERVER + "/googleLogin",
+        data: {
+            google_access_token
+        }
+    })
+        .done(response => {
+            localStorage.setItem("token", response.token)
+            console.log(response.token);
+            $("#content").show()
+            $("#login-page").hide()
+            $("#btn-logout").show()
+            $("#register-page").hide()
+            $("#add-todos").show()
+            $("#title-todo").show()
+            $("#edit-form").hide()
+            })
+        .fail(err => {
+            console.log(err);
+        })
+}
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
 }
 
 

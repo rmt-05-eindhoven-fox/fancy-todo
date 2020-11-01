@@ -42,6 +42,7 @@ class TodoController {
 
     static async updateAll(req,res, next) {
         try {
+            //console.log('masuk')
             const {title, description, status, due_date} = req.body
             //console.log(req.body)
             const todo = await Todo.update({title, description,status,due_date}, {
@@ -49,9 +50,10 @@ class TodoController {
                     id: req.params.id
                 }
             })
-            res.status(200).json()
+            res.status(200).json(todo)
             //console.log(edit)
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
