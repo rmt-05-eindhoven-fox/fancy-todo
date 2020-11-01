@@ -38,13 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     status: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: 'status should not be empty'
-        }
-      }
+      type: DataTypes.STRING
     },
     due_date: {
       type: DataTypes.STRING,
@@ -54,9 +48,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'due_date should not be empty'
         },
         isValid(value){
+          const oneday = new Date('2020-11-01') - new Date('2020-11-02')
           const currentTime = new Date()
           const schedule = new Date(value)
-          if((schedule - currentTime) < 0){
+          if((schedule - currentTime) < oneday){
             throw new Error('Should be greater than current time')
           }
         }

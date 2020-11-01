@@ -1,4 +1,4 @@
-const { User, Todo } = require('../models')
+const { User } = require('../models')
 const { validatingPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
 const { OAuth2Client } = require('google-auth-library')
@@ -17,11 +17,9 @@ class UserController {
             returning: true
             })
         .then(result => {
-            console.log('masih masuk sini')
             res.status(201).json({email})
         })
         .catch(err => {
-            console.log('masuk sini')
             next(err)
         })
     }
