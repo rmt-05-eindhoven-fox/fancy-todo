@@ -31,7 +31,7 @@ function verifyToken() {
     .fail(err => {
       let message = checkError(err)
       afterSignOut();
-      console.log(message)
+      // console.log(message)
       // Swal.fire('Access Denied!', message, 'error')
     })
 }
@@ -88,13 +88,13 @@ function clearRegisterValue() {
 }
 
 function checkError(err) {
-  console.log(err.message)
+  // console.log(err.message)
   if (Array.isArray(err.responseJSON)) {
     message = err.responseJSON[0].message;
   } else if (err.responseJSON.hasOwnProperty('message')) {
     message = err.responseJSON.message;
   } else {
-    console.log(err)
+    // console.log(err)
     message = 'Something error while connecting to the server'
   }
 
@@ -213,7 +213,7 @@ function signOut(e) {
 function googleSignOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
-    console.log('User signed out.');
+    // console.log('User signed out.');
     destroyUserInfo();
   });
 }
@@ -250,7 +250,7 @@ function showEditTodo(e, todoId) {
   $('#edit-todo').show()
 
   getTodo(todoId, (todo) => {
-    console.log(todo)
+    // console.log(todo)
     if (todo != 'err') {
       $('#edit-todo-id').val(todoId);
       $('#edit-todo-title').val(todo.title)
@@ -271,7 +271,7 @@ function loadTodo() {
     }
   })
     .done(response => {
-      console.log(response)
+      // console.log(response)
       due_date = $("#todo-filter-date-mobile").val()
       due_date = $("#todo-filter-date-dekstop").val()
       filterTodo(response)
@@ -291,7 +291,7 @@ function getTodo(todoId, callback) {
     }
   })
     .done(response => {
-      console.log(response)
+      // console.log(response)
       callback(response)
     })
     .fail(err => {
@@ -359,7 +359,7 @@ function editTodo(e, todoId) {
     }
   })
     .done(response => {
-      console.log(response)
+      // console.log(response)
       Swal.fire({
         title: 'Succesfully Edit Todo!',
         text: ``,
@@ -401,7 +401,7 @@ function searchTodo(e) {
   const query = $('#todo-search').val()
   $('#search').removeClass('open');
   $('#todo-search').val('');
-  console.log(query)
+  // console.log(query)
   $.ajax({
     method: "POST",
     url: base_url + `/todos/search`,
@@ -412,7 +412,7 @@ function searchTodo(e) {
       title: `%${query}%`
     }
   }).done(response => {
-    console.log(response)
+    // console.log(response)
     filterTodo(response)
   }).fail(err => {
     let message = checkError(err);
@@ -473,7 +473,7 @@ function filterDueDate(e, source) {
       due_date
     }
   }).done(response => {
-    console.log(response)
+    // console.log(response)
     filterTodo(response)
   }).fail(err => {
     let message = checkError(err);
@@ -489,7 +489,7 @@ function loadHoliday() {
       accesstoken
     }
   }).done(response => {
-    console.log(response)
+    // console.log(response)
     appendHolidays(response)
   }).fail(err => {
     let message = checkError(err);
@@ -507,7 +507,7 @@ function filterTodo(todos) {
     if (status == 'finished') {
       appendCompleteTodo(todo);
       complete++;
-      console.log('appendCompleteTodo', todo.id)
+      // console.log('appendCompleteTodo', todo.id)
     }
     switch (dueStatus) {
       case 'willDue':
@@ -515,7 +515,7 @@ function filterTodo(todos) {
           appendWillDue(todo);
           appendActiveTodo(todo);
           active++;
-          console.log('appendWillDue', todo.id)
+          // console.log('appendWillDue', todo.id)
         }
         break;
       case 'active':
