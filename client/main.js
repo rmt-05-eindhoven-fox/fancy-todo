@@ -23,7 +23,7 @@ function register(event) {
     }
   })
   .done(data => {
-    showSuccessToastMessage('Your account has been created')
+    showSuccessToastMessage('Yes! Account has been created!')
     goToLogin()
   })
   .fail(err => {
@@ -192,7 +192,7 @@ function fetchTodo(){
           <br><br>
           <small>Due: ${new Date(todo.due_date).toDateString()}</small>
       <br><br>
-      <button onclick="toEditPage(${todo.id}, '${todo.title}', '${todo.description}', '${todo.status}', '${todo.due_date}')" class="btn btn-primary mr-2"><i class="fas fa-edit"></i> Update</button>
+      <button onclick="editPage(${todo.id}, '${todo.title}', '${todo.description}', '${todo.status}', '${todo.due_date}')" class="btn btn-primary mr-2"><i class="fas fa-edit"></i> Update</button>
       <button onclick="updateStatus(${todo.id}, 'finished')" class="btn btn-success"><i class="fas fa-check-circle"></i> Finished</button>
       </li>`)
 
@@ -209,7 +209,7 @@ function fetchTodo(){
         <br><br>
         <small>Due: ${new Date(todo.due_date).toDateString()}</small>
     <br><br>
-    <button onclick=" "toEditPage(${todo.id}, '${todo.title}', '${todo.description}', '${todo.status}', '${todo.due_date}')" class="btn btn-primary mr-2"><i class="fas fa-edit"></i> Update</button>
+    <button onclick=" "editPage(${todo.id}, '${todo.title}', '${todo.description}', '${todo.status}', '${todo.due_date}')" class="btn btn-primary mr-2"><i class="fas fa-edit"></i> Update</button>
     <button onclick="updateStatus(${todo.id}, 'not finished')" class="btn btn-success"><i class="fas fa-check-circle"></i> Finished</button>
     </li>`)
     }
@@ -230,7 +230,8 @@ function fetchTodo(){
 function toAddPage() {
   $('#add-page').show()
   $('#home-page').hide()
-  hideEditForm()
+
+  
 
 }
 
@@ -272,6 +273,82 @@ function addTask(event){
   })
 }
 
+// Update Status
+
+function updateStatus(id, status) {
+  $.ajax({
+    url: `${baseUrl}/todos/${id}`,
+    method: "patch",
+    headers: {
+      token: localStorage.token 
+    },
+    data: {
+      status
+    }
+  })
+  .done(data => {
+    showSuccessMessage('Successfully Updated!')
+    fetchTodo()
+  })
+  .fail(err => {
+    showErrorToastMessage(err.responseJSON.errors.join('\n'))
+  })
+}
+
+//Edit Form
+
+function editPage(id, title, description, status, due_date) {
+  $('#home-page').hide()
+  $('#edit-page').show()
+  globalTodoId = id
+  $('#edit-title').val(title)
+  $('#edit-description').val(description)
+  $('#edit-due').val(new Date(due_date).toISOString().slice(0,10))
+  $('#edit-status').val(status) 
+}
+
+
+
+// Update
+function editTask(event) {
+  event.preventDefault()
+  const title = $('#edit-title').val()
+  const description = $('#edit-description').val()
+  const due_date = $('#edit-due').val()
+  const status = $('#edit-status').val()
+  $.ajax({
+    url: `${baseUrl}/todos/${globalTodoId}`,
+    method: "PUT",
+    headers: {
+      token: localStorage.token 
+    },
+    data: {
+      title,
+      description,
+      due_date,
+      status
+    }
+  })
+  .done(data => {
+    $('#edit-title').val('')
+    $('#edit-description').val('')
+    $('#edit-due').val('')
+    $('#edt-status').val('')
+    showSuccessMessage('Woohoo! Successfully Updated!')
+    hideEditForm()
+    fetchTodo()
+  })
+  .fail(err => {
+    showErrorToastMessage(err.responseJSON.errors.join('\n'))
+  })
+}
+
+function hideEditForm(event) {
+  if (event) event.preventDefault()
+  $('#edit-page').hide()
+  $('#add-page').show()
+}
+
 //DELETE To Do
 
 function deleteToDo(id) {
@@ -310,89 +387,6 @@ function deleteToDo(id) {
     }
   })  
 }
-
-// Update Status
-
-function updateStatus(id, status) {
-  $.ajax({
-    url: `${baseUrl}/todos/${id}`,
-    method: "patch",
-    headers: {
-      token: localStorage.token 
-    },
-    data: {
-      status
-    }
-  })
-  .done(data => {
-    showSuccessMessage('Successfully Updated!')
-    fetchTodo()
-  })
-  .fail(err => {
-    showErrorToastMessage(err.responseJSON.errors.join('\n'))
-  })
-}
-
-//Edit Form
-
-function toEditPage(id, title, description, status, due_date) {
-  globalTodoId = id
-  $('#edit-title').val(title)
-  $('#edit-description').val(description)
-  $('#edit-due').val(new Date(due_date).toISOString().slice(0,10))
-  $('#edit-status').val(status)
-  $('#home-page').hide()
-  $('#edit-page').show()
-  
-  
-}
-
-function hideEditForm(event) {
-  if (event) event.preventDefault()
-  $('#edit-page').hide()
-  $('#add-page').show()
-}
-
-// Update
-function updateTodo(event) {
-  event.preventDefault()
-  const title = $('#edit-title').val()
-  const description = $('#edit-description').val()
-  const due_date = $('#edit-due').val()
-  const status = $('#edit-status').val()
-  $.ajax({
-    url: `${baseUrl}/todos/${id}`,
-    method: "put",
-    headers: {
-      token: localStorage.token 
-    },
-    data: {
-      title,
-      description,
-      due_date,
-      status
-    }
-  })
-  .done(data => {
-    $('#edit-title').val('')
-    $('#edit-description').val('')
-    $('#edit-due').val('')
-    $('#edt-status').val('')
-    showSuccessMessage('Woohoo! Successfully Updated!')
-    hideEditForm()
-    fetchTodo()
-  })
-  .fail(err => {
-    showErrorToastMessage(err.responseJSON.errors.join('\n'))
-  })
-}
-
-
-
-
-
-
-
 
 
 function getWeather() {
