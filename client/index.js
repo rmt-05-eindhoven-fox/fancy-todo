@@ -272,6 +272,7 @@ function createTodo(e) {
 }
 
 function editTodo(id, title, description, status, due_date) {
+  $('#add-box-todo').hide();
   $('#edit-box-todo').empty();
   $('#edit-box-todo').append(`
     <div class="container-fluid">
@@ -326,6 +327,7 @@ function editTodo(id, title, description, status, due_date) {
 }
 
 function cancelEdit() {
+  $('#add-box-todo').show();
   $('#edit-box-todo').empty();
 }
 
@@ -358,6 +360,7 @@ function editTodoSubmit(id, e) {
       'Your todo has been edited.',
       'success'
     );
+    $('#add-box-todo').show();
     $('#edit-box-todo').empty();
     readTodo();
   })
