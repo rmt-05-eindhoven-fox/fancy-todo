@@ -3,6 +3,7 @@ const { User } = require('../models/');
 
 async function authentication(req,res,next) {
     const { token } = req.headers;
+    // console.log("ASUPPP  DI AUT AUT AUT AUT")
     try{
         if (!token) {
             throw {msg: 'authentication failed', status:401}
@@ -14,12 +15,13 @@ async function authentication(req,res,next) {
                     email: decoded.email
                 }
             })
-            // console.log(user)
+            console.log(user)
             if (!user) {
                 throw { msg : 'authentication failed', status: 401 }
             }else{
                 // console.log(req.loggedInUser, 'req.loggedInUser')
                 req.loggedInUser = decoded;
+                console.log("authentication berhasil")
                 next();
                 // console.log(req.loggedInUser, 'setelah di buat');
             }

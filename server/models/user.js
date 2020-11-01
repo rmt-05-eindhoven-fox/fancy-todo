@@ -27,11 +27,14 @@ module.exports = (sequelize, DataTypes) => {
 						msg:
 							"The email you entered is invalid or is already in our system.",
 					},
+					notEmpty: true
 				},
+				unique:true
 			},
 
 			password: {
 				type: DataTypes.STRING,
+				allowNull:false,
 				validate: {
 					len: {
 						args: [5, 10],

@@ -13,14 +13,44 @@ module.exports = (sequelize, DataTypes) => {
       Todo.belongsTo(models.User)
 		}
 	}
-	Todo.init(
-		{
-			title: DataTypes.STRING,
-			description: DataTypes.STRING,
-			status: DataTypes.BOOLEAN,
-			due_date: DataTypes.DATE,
-		},
-		{
+	Todo.init({
+    title: {
+      type:DataTypes.STRING,
+      validate:{
+				notEmpty:{
+					args:true,
+					msg:`Input your todo title please!`
+				}
+      }
+    },
+			description: {
+        type: DataTypes.STRING,
+			      validate: {
+        		notEmpty: {
+          		args: true,
+          		msg: `Please input your todo description!`
+        		}
+          }
+        },
+			status: DataTypes.STRING,
+			due_date:  {
+      type: DataTypes.DATE,
+      validate: {
+        isDate(values) {
+          if (values < new Date()) {
+            throw new Error(`Invalid date input`)
+          }
+        }
+      }
+    },
+    UserId: DataTypes.INTEGER
+  },
+		{    
+    //   hooks: {
+    //   beforeCreate: (todos, options) => {
+    //     todos.status = 'undone'
+    //   }
+    // },
 			sequelize,
 			modelName: "Todo",
 		}

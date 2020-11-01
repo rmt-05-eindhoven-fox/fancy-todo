@@ -1,6 +1,7 @@
 const { User } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
+const {OAuth2Client} = require('google-auth-library');
 
 class UserController {
 	static async register(req, res) {
@@ -53,6 +54,48 @@ class UserController {
 			res.status(500).json(err);
 		}
 	}
+
+	static googleLogin(req,res,next){
+		//verviy token
+		let {google_access_token} = req.body
+		const client = new OAuth2Client(process.env.CLIENT_ID);
+		let email = ''
+		//vverivy google token berdasarkan client id
+	client.verifyIdToken({
+       idToken: google_access_token,
+       audience: process.env.CLIENT_ID
+    })
+    .then(ticket =>{
+	   let payload = ticket.getPayload()
+	   email = payload.email
+	   return User.findOne({ 
+		   where: 
+		{email: payload.email }
+		})
+	 })
+	 .then(user => {
+		 if (user) {
+			//generate token
+			 return user
+		 }else{
+			 var userObj = {
+				 email:email,
+				 password: 'randomaja'
+			 }
+			 return User.create( userObj ) 
+		 }
+	 })
+	 .then(dataUser => {
+		 console.log(dataUser, "di line 89 nih ")
+		 let access_token = signToken({id: dataUser.id, email: dataUser.email})
+		 return res.status(200).json({access_token})
+	 })
+ 	 .catch(err => {
+	  console.log(err)
+  })
 }
 
-module.exports = UserController;
+ 
+}
+
+module.exports = UserController

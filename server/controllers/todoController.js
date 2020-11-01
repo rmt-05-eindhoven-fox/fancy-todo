@@ -2,17 +2,17 @@ const { Todo } = require("../models");
 const todo = require("../models/todo");
 
 class TodoController {
-	static async showTodo(req, res) {
+	static async showTodo(req, res, next) {
 		const UserId = req.loggedInUser.id;
 		try {
 			const todos = await Todo.findAll({
 				where: {
 					UserId,
 				},
-			});
+			}); 
 			res.status(200).json(todos);
 		} catch (error) {
-			res.status(500).json.error;
+			next(err) 
 		}
 	}
 
@@ -33,6 +33,7 @@ class TodoController {
 	}
 
 	static addTodo(req, res) {
+		console.log("asupashuppppp")
 		const newTodo = {
 			title: req.body.title,
 			description: req.body.description,

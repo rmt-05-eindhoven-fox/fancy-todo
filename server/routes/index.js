@@ -1,4 +1,5 @@
 const express = require("express");
+const MovieController = require("../controllers/movieController");
 const router = express.Router();
 const todoController = require("../controllers/todoController");
 const userController = require("../controllers/userController");
@@ -6,7 +7,11 @@ const authentication = require("../middlewares/authentication");
 const authorization = require('../middlewares/authorization')
 
 
+
 // router.use(authentication);
+
+//moviedb
+router.use('/movies/trending', MovieController.findTrendingMovies)
 
 //create
 router.post("/todos",authentication, todoController.addTodo);
@@ -22,5 +27,7 @@ router.delete("/todos/:id", authentication,authorization, todoController.delete)
 //register & login
 router.post("/user/register", userController.register);
 router.post("/user/login", userController.login);
+// google login
+router.post("/user/googleLogin", userController.googleLogin);
 
 module.exports = router;
