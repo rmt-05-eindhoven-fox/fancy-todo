@@ -21,7 +21,7 @@ class Controller {
     static async todoList(req, res, next) {
         const userId = req.loggedInUser.id
         try {
-            const todoList = await Todo.findAll({where: {userId: userId}})
+            const todoList = await Todo.findAll({where: {userId: userId}, order: [['createdAt', 'DESC']]})
 
             res.status(200).json(todoList)
         } catch (error) {

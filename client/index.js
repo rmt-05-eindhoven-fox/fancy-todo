@@ -19,21 +19,24 @@ $(document).ready(function() {
 })
 
 
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
 function login(event) {
     event.preventDefault()
     console.log('login! clicked')
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
+
       
   
     const email = $('#login-email').val()
@@ -76,23 +79,7 @@ function login(event) {
 }
 
 function onSignIn(googleUser) {
-    // var profile = googleUser.getBasicProfile();
-    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    // console.log('Name: ' + profile.getName());
-    // console.log('Image URL: ' + profile.getImageUrl());
-    // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
 
     let access_token = googleUser.getAuthResponse().id_token;
     // console.log(access_token)
@@ -129,6 +116,16 @@ function onSignIn(googleUser) {
         })
   }
 
+function loginForm(event) {
+    event.preventDefault()
+    console.log('loginForm! clicked')
+
+    $('#login').show()
+    $('#content').hide()
+    $('#register').hide()
+    $('#edit-content').hide()
+    }   
+
 function registerForm(event) {
     event.preventDefault()
     console.log('registerForm! clicked')
@@ -162,6 +159,11 @@ function register(event) {
             $('#content').hide()
             $('#register').hide()
             $('#edit-content').hide()
+
+            Toast.fire({
+                icon: 'success',
+                title: 'your account has been registered'
+              })
         })
         .fail(err => {
             console.log(err.responseJSON.msg)
@@ -185,17 +187,6 @@ function logout() {
       console.log('User signed out.');
     });
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
 
       Toast.fire({
         icon: 'success',
@@ -214,6 +205,7 @@ function signOut() {
 
 function fetchTodo() {
     const access_token = localStorage.getItem('access_token')
+
     $.ajax({
         method: "GET",
         url: SERVER + '/todos',
@@ -225,20 +217,32 @@ function fetchTodo() {
             // console.log(res)
             $('#todoList').empty()
             res.forEach(el => {
+
                 $('#todoList').append(`
-                <tr>
-                    <td>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" onclick='updateStatus(${el.status}, ${el.id})' id="status" ${el.status ? 'checked' : 'unchecked'}>
-                    </div>
-                    </td>
-                    <td>${el.title}</td>
-                    <td>${el.description}</td>
-                    <td>${el.due_date}</td>
-                    <td><button type="submit" class="btn btn-primary" onclick='editTodoForm(event, ${el.id}, ${el.status})'>Edit</button></td>
-                    <td><button type="submit" onclick='remove(event, ${el.id})' class="btn btn-danger" >Delete</button></td>
-                </tr>
+                <a href="#">
+                <div class="card-body a">
+                        <h5 class="card-title ">${el.title}</h5>
+                        
+                        <h6 class="card-subtitle mb-2 " style="font-size: .9rem;">${el.due_date}</h6>
+                        <p class="card-text">${el.description}</p>
+
+
+
+                        <div id="check" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-${el.status ? 'success' : 'secondary'} active">
+                                <input type="checkbox" onclick='updateStatus(${el.status}, ${el.id})' id="status" ${el.status ? 'checked' : 'unchecked'} autocomplete="off">${el.status ? 'Done' : 'On Progress'}
+                            </label>
+                        </div>
+
+                        
+                        <button type="submit" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit-content" onclick='editTodoForm(event, ${el.id}, ${el.status})'>Edit</button>
+                        <button  type="submit" onclick='remove(event, ${el.id})' class="btn btn-outline-danger btn-sm test" >Delete</button>
+                        
+                </div>
+                
+                </a>
                 `)
+                
             })
           
         })
@@ -308,7 +312,10 @@ function updateStatus(status, id) {
         }
     })
         .done(res => {
+          
+
             fetchTodo()
+  
         })
         .fail(err => {
             console.log(err.responseJSON.msg)
@@ -323,11 +330,13 @@ function updateStatus(status, id) {
 function editTodoForm(event, id, status) {
     event.preventDefault()
     console.log('editForm clicked!')
+    
 
     $('#edit-content').show()
-    $('#content').hide()
-    $('#login').hide()
-    $('#register').hide()
+    // $('#content').hide()
+    // $('#login').hide()
+    // $('#register').hide()
+    
 
     const access_token = localStorage.getItem('access_token')
     $.ajax({
@@ -339,41 +348,56 @@ function editTodoForm(event, id, status) {
     })
         .done(res => {
             console.log(res)
+            $('.modal-backdrop').show();
             $('#edit-content').empty()
             $('#edit-content').append(`
-                <h1>Todo Edit</h1>
-                    <!-- Todo Edit -->
-                    <form onsubmit="editTodo(event, ${res.id}, ${res.status})">
-                        <label for="title-edit">
-                            Title
-                        </label><br>
-                        <input 
-                            type="text"
-                            id="title-edit"
-                            value="${res.title}"
-                        ><br>
-                
-                        <label for="description-edit">
-                            Description
-                        </label><br>
-                        <input 
-                            type="text"
-                            id="description-edit"
-                            value="${res.description}"
-                        ><br>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" style="color: #38d39f">Todo Edit</h1>
+                    </div> 
+                    
+                        <!-- Todo Edit -->
+                        <div class="modal-body">
+                            <form class="form-group" onsubmit="editTodo(event, ${res.id}, ${res.status})">
+                                <label for="title-edit">
+                                    Title
+                                </label><br>
+                                <input 
+                                    class="form-control text-success"
+                                    type="text"
+                                    id="title-edit"
+                                    value="${res.title}"
+                                ><br>
+                        
+                                <label for="description-edit">
+                                    Description
+                                </label><br>
+                                <input 
+                                    class="form-control text-success"
+                                    type="text"
+                                    id="description-edit"
+                                    value="${res.description}"
+                                ><br>
 
-                        <label for="due-date-edit">
-                            Due date
-                        </label><br>
-                        <input 
-                            type="date"
-                            id="due-date-edit"
-                            value="${res.due_date}"
-                        ><br>
-                
-                        <button type="submit" class="btn btn-primary">Edit Todo</button>
-                        <button type="submit" class="btn btn-danger" onclick="cancel(event)">Cancel</button>
-                    </form>
+                                <label for="due-date-edit">
+                                    Due date
+                                </label><br>
+                                <input 
+                                    class="form-control text-success"
+                                    type="date"
+                                    id="due-date-edit"
+                                    value="${res.due_date}"
+                                ><br>
+
+                                
+                                <button type="submit" class="btn btn-success" data-backdrop="false">Edit Todo</button>
+                                <button type="submit" class="btn btn-outline-danger" data-dismiss="modal" data-backdrop="false" onclick="cancel(event)">Cancel</button>
+                                
+                            </form>
+                        </div>
+                </div>
+            </div>
             `)
             
         })
@@ -392,12 +416,14 @@ function editTodo(event, id, status) {
     event.preventDefault()
     console.log('edit clicked!')
 
-
     const title = $('#title-edit').val()
     const description = $('#description-edit').val()
     const due_date = $('#due-date-edit').val()
    
     console.log(id, title, description, due_date, status)
+
+
+
     
     const access_token = localStorage.getItem('access_token')
     $.ajax({
@@ -420,12 +446,11 @@ function editTodo(event, id, status) {
             $('#register').hide()
             fetchTodo()
 
-            Swal.fire({
-                position: 'top-end',
+            $('.modal-backdrop').hide();
+
+            Toast.fire({
                 icon: 'success',
-                title: 'Edit has been saved',
-                showConfirmButton: false,
-                timer: 1500
+                title: 'Edit has been saved'
               })
         })
         .fail(err => {
@@ -445,6 +470,8 @@ function cancel(event) {
     $('#edit-content').hide()
     $('#login').hide()
     $('#register').hide()
+
+    $('.modal-backdrop').hide();
 }
 
 function remove(event, id) {
@@ -457,7 +484,7 @@ function remove(event, id) {
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#38d39f',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
