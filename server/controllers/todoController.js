@@ -1,4 +1,4 @@
-const { Todo } = require('../models')
+const { Todo, Project } = require('../models')
 
 class TodoController {
   static async showAll(req, res, next) {
@@ -21,22 +21,27 @@ class TodoController {
       description: req.body.description,
       status: req.body.status,
       due_date: req.body.due_date,
-      UserId: req.loggedInUser.id
+      UserId: req.loggedInUser.id,
+      ProjectId: req.body.ProjectId
     }
-
+    console.log(payload)
     try {
       const newData = await Todo.create(payload)
       res.status(201).json(newData)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
 
   static async find(req, res, next) {
-    const id = +req.params.id
-
+    const option = {
+      where: {
+        id: req.params.id
+      }
+    }
     try {
-      const result = await Todo.findByPk(id)
+      const result = await Todo.findOne(option)
       res.status(200).json(result)
     } catch (error) {
       next(error)
@@ -48,11 +53,13 @@ class TodoController {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      ProjectId: req.body.ProjectId
     }
     const option = {
       where: { id: +req.params.id },
-      returning: true
+      returning: true,
+      include: Project
     }
 
     try {
@@ -81,15 +88,27 @@ class TodoController {
   }
 
   static async delete(req, res, next) {
-    console.log(req.params)
     const option = {
       where: { id: req.params.id }
     }
     try {
       const deleted = await Todo.destroy(option)
       res.status(200).json({
-        "message": "todo success to delete"
+        "msg": "todo success to delete"
       })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async getTodoProject(req, res, next) {
+    const option = {
+      where: { ProjectId: req.params.id },
+      include: Project
+    }
+    try {
+      const todos = await Todo.findAll(option)
+      res.status(200).json(todos)
     } catch (error) {
       next(error)
     }

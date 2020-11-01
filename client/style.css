@@ -1,0 +1,290 @@
+/* GLOBAL */
+body {
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.swal2-confirm {
+  background-color: #f5dd29 !important;
+  color: black !important;
+}
+
+.datepicker.dropdown-menu table  {
+  background-color: #f5dd29;
+}
+
+.form-control:focus {
+  border-color: #f5dd29;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #f5dd29;
+}
+
+/* LOGIN - REGISTER */
+.login {
+  min-height: 100vh;
+}
+
+.login-title {
+  margin-bottom: 16px;
+}
+
+.login-illustration {
+  width: 40vh;
+  margin-bottom: 28px;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: #f5dd29;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+
+.login-btn:hover {
+  background-color: #d9b51c;
+}
+
+.to-login {
+  color: #d9b51c;
+}
+
+.to-login:hover {
+  cursor: pointer;
+}
+
+.slideshow {
+  min-height: 100vh;
+  background-color: #f5dd29;
+}
+
+.logo {
+  width: 100vh;
+}
+
+/* SIDE BAR */
+.sidebar {
+  height: 100vh;
+  background-color: #f5dd29;
+}
+
+.title {
+  margin-top: 16px;
+  margin-bottom: 32px;
+}
+
+.add-button {
+  background-color: #f5dd29;
+  width: 100%;
+  margin-top: 28px;
+  border-radius: 5px;
+}
+
+.add-button:hover {
+  background-color: #d9b51c;
+  cursor: pointer;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 5px solid rgba(0, 0, 0, 0.1);
+}
+
+.berita-title {
+  margin-top: 16px;
+}
+
+.news-body-sidebar {
+  overflow-y: auto;
+}
+
+/* MAIN-CONTENT */
+.main-content {
+  padding-left: 24px;
+}
+
+.head-nav {
+  margin: 24px 0;
+}
+
+.project-button {
+  background-color:  #f5dd29;
+}
+
+.project-button:hover {
+  background-color:  #d9b51c;
+}
+
+.dropdown-project:hover {
+  background-color: #f5dd2980;
+  cursor: pointer;
+}
+
+.btn-project {
+  margin-right: 8px;
+  margin-top: 8px;
+  background-color:  #f5dd29
+}
+
+.btn-project:hover {
+  background-color: #d9b51c;
+  cursor: pointer;
+}
+
+.nav-icon {
+  font-size:24px;
+  color:#d9b51c;
+  padding-right: 8px;
+}
+
+.nav-icon:hover {
+  cursor: pointer;
+  color: #f5dd29;
+}
+
+#edit-project {
+  margin-left: 8px;
+}
+
+.notification {
+  width: 30vh;
+}
+
+#notification_count {
+	padding: 3px 7px 3px 7px;
+	background: #cc0000;
+	color: #ffffff;
+	border-radius: 9px;
+	-moz-border-radius: 9px; 
+	-webkit-border-radius: 9px;
+	position: absolute;
+	margin-top: -14px;
+	font-size: 12px;
+}
+
+.notification-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.notification-body {
+  overflow-wrap: break-word;
+  padding: 12px 0;
+}
+
+#email-notif {
+  color: #d9b51c;
+}
+
+#project-notif {
+  color: #d9b51c;
+}
+
+.notification-button {
+  margin: 0 8px;
+  border: 0;
+}
+
+.btn-cancel {
+  background-color: red;
+  color: white;
+  padding: 8px;
+  width: 100%;
+}
+
+.btn-cancel:hover {
+  background-color: rgb(187, 4, 4);
+}
+
+.btn-confirm {
+  background-color: #f5dd29;
+  padding: 8px;
+  width: 100%;
+}
+
+.btn-confirm:hover {
+  background-color: #d9b51c;
+}
+
+.status {
+  background-color: #fdfae5;
+  border-radius: 15px;
+  max-height: 85vh;
+  margin-top: 16px;
+}
+
+.badge-count {
+  background-color: #f5dd29;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.status-body {
+  max-height: 68vh;
+  overflow-y: auto;
+}
+
+.todo-card {
+  border-radius: 5px;
+  margin-top: 12px;
+  padding-bottom: 0px;
+}
+
+.todo-title {
+  margin-bottom: 16px;
+}
+
+.todo-body {
+  max-height: 10vh;
+  overflow-y: auto;
+}
+
+.todo-description {
+  margin-bottom: 16px;
+}
+
+.todo-footer {
+  margin-top: 8px;
+  margin-bottom: 0px;
+}
+
+.todo-icon {
+  color: black;
+  margin-right: 12px;
+}
+
+a .todo-icon:hover {
+  color: rgb(95, 94, 94);
+  cursor: pointer;
+}
+
+/* MODAL */
+.modal-header {
+  padding:9px 15px;
+  border-bottom:1px solid #eee;
+  background-color: #f5dd29;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+}
+
+.modal-footer {
+  padding:9px 15px;
+  border-top:1px solid #eee;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+}
+
+.btn-form-row {
+  margin-top: 32px;
+}

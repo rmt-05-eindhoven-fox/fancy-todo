@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Todo)
+      User.hasMany(models.User_Project)
+      User.hasMany(models.Notification)
     }
   };
   User.init({
@@ -22,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'email is required'
+          msg: 'Email is required'
         },
         isEmail: {
           args: true,
-          msg: 'email format is not valid'
+          msg: 'Email format is not valid'
         }
       }
     },
@@ -36,10 +38,15 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'email is required'
+          msg: 'Password is required'
+        },
+        len: {
+          args: [6],
+          msg: "Password should be minimum 6 characters"
         }
       }
-    }
+    },
+    username: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

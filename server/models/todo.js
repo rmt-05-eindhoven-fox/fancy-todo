@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const getToday = require('../helpers/getToday')
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -11,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Todo.belongsTo(models.User)
+      Todo.belongsTo(models.Project)
     }
   };
   Todo.init({
@@ -20,27 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: "title is required"
+          msg: "Title is required"
         }
       }
     },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: "description is required"
-        }
-      }
-    },
+    description: DataTypes.STRING,
     status: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: {
           args: true,
-          msg: "status is required"
+          msg: "Status is required"
         }
       }
     },
@@ -50,18 +43,32 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: "due date is required"
+          msg: "Due date is required"
         },
         isDate: {
           args: true,
-          msh: "plase fill due date with date format"
+          msg: "Please fill due date with date format"
+        },
+        isAfter: {
+          args: getToday(),
+          msg: 'Please fill due date after today'
         }
       }
     },
-    UserId: DataTypes.STRING
+    UserId: DataTypes.INTEGER,
+    ProjectId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "Project is required"
+        }
+      }
+    }
   }, {
     sequelize,
-    modelName: 'Todo',
+    modelName: 'Todo'
   });
   return Todo;
 };

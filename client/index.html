@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id"
+    content="871000054021-bpjcklsm254uo0rnf2mpsa2k2rnuiit5.apps.googleusercontent.com">
+  <title>To Do List</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <!-- Toaster -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+    crossorigin="anonymous" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <!-- Font Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;1,500&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Register page -->
+  <section id="register-page">
+    <div class="row">
+      <div class="col d-flex justify-content-center login">
+        <div class="align-self-center">
+          <h1 class="text-center login-title">Register</h1>
+          <img src="img/login-illustration.png" alt="login-illustration" class="login-illustration">
+          <!-- register form -->
+          <form id="register-form" onsubmit="register(event)">
+            <div class="form-group">
+              <label for="register-email">Email address</label>
+              <input type="email" class="form-control" id="register-email">
+            </div>
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input type="password" class="form-control" id="register-password">
+            </div>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <button type="submit" class="btn login-btn">Register</button>
+            <div class="form-group">
+              <small class="form-text text-muted text-center">Already have an account? <span class="to-login"
+                  onclick="showLogin(event)">Login</span></small>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col d-flex justify-content-center slideshow">
+        <div class="align-self-center">
+          <img src="img/logo-fancytodo.png" alt="logo" class="logo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login page -->
+  <section id="login-page">
+    <div class="row">
+      <div class="col d-flex justify-content-center login">
+        <div class="align-self-center">
+          <h1 class="text-center login-title">Login</h1>
+          <img src="img/login-illustration.png" alt="login-illustration" class="login-illustration">
+          <!-- login form -->
+          <form id="login-form" onsubmit="login(event)">
+            <div class="form-group">
+              <label for="login-email">Email address</label>
+              <input type="email" class="form-control" id="login-email">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" class="form-control" id="login-password">
+            </div>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <button type="submit" class="btn login-btn">Login</button>
+            <small class="form-text text-muted text-center">Don't have account yet? <span class="to-login"
+                onclick="showRegister(event)">Register</span></small>
+          </form>
+        </div>
+      </div>
+      <div class="col d-flex justify-content-center slideshow">
+        <div class="align-self-center">
+          <img src="img/logo-fancytodo.png" alt="logo" class="logo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <section id="main-content" class="container-fluid">
+    <div class="row">
+      <div class="col-3 sidebar">
+        <h1 class="text-center title">Fancy Todo</h1>
+        <hr />
+        <h2 class="text-center berita-title">Berita Terkini</h2>
+        <div id="covid-news" class="scrollable news-body-sidebar">
+
+        </div>
+      </div>
+      <div class="col-9 main-content">
+        <div class="row head-nav align-self-center">
+          <div class="col">
+            <div class="btn-group">
+              <button id="project-selected" type="button" class="btn project-button dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+              </button>
+              <div id="project-dropdown" class="dropdown-menu">
+
+              </div>
+              <div id="edit-project">
+
+              </div>
+            </div>
+          </div>
+          <div class="col-1 d-flex justify-content-between">
+            <i class="fa fa-bell nav-icon dropdown-toggle" data-toggle="dropdown"><span id="notification_count"
+                class="notification-alert"></span></i>
+            <div id="notification-content" class="dropdown-menu dropdown-menu-right">
+
+            </div>
+            <i class="fa fa-sign-out nav-icon" onclick="logout()"></i>
+          </div>
+        </div>
+
+        <div class=" row">
+          <div class="col">
+            <div class="card status">
+              <div class="card-body">
+                <div class="card-title">
+                  <h5>To do <span id="todo-count" class="badge badge-count"></span></h5>
+                  <a id="To do" class="btn add-button" onclick="showAddTodo(id)">Add Todo</a>
+                </div>
+                <div class="scrollable status-body" id="todo-content">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" col">
+            <div class="card status">
+              <div class="card-body">
+                <div class="card-title">
+                  <h5>Doing <span id="doing-count" class="badge badge-count"></span></h5>
+                  <a id="Doing" class="btn add-button" onclick="showAddTodo(id)">Add Todo</a>
+                </div>
+                <div class="scrollable status-body" id="doing-content">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" col">
+            <div class="card status">
+              <div class="card-body">
+                <div class="card-title">
+                  <h5>Done <span id="done-count" class="badge badge-count"></span></h5>
+                  <a id="Done" class="btn add-button" onclick="showAddTodo(id)">Add Todo</a>
+                </div>
+                <div class="scrollable status-body" id="done-content">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- MODAL ADD FORM -->
+  <div id="todoform-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="form-title" class="modal-title">Add Todo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="addTodo(event)">
+            <div class="form-group">
+              <label for="addtodo-title">Title</label>
+              <input id="addtodo-title" type="text" class="form-control" placeholder="Enter title">
+            </div>
+            <div class="form-group">
+              <label for="addtodo-description">Description</label>
+              <textarea id="addtodo-description" class="form-control" rows="5" aria-describedby="descHelp"
+                placeholder="Description..."></textarea>
+              <small id="descHelp" class="form-text text-muted">*optional</small>
+            </div>
+            <div class="form-group">
+              <label for="addtodo-status">Status</label>
+              <select class="form-control" id="addtodo-status">
+                <option>To do</option>
+                <option>Doing</option>
+                <option>Done</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="addtodo-project">Project</label>
+              <select class="form-control" id="addtodo-project">
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="addtodo-due_date">Due Date</label>
+              <input id="addtodo-due_date" class="form-control" autocomplete="off" type="text" placeholder="YYYY-MM-DD">
+            </div>
+            <div class="row btn-form-row">
+              <div class="col">
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+              </div>
+              <div class="col">
+                <button type="submit" class="btn btn-confirm">Add todo</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDIT FORM -->
+  <div id="todo-edit-form-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Todo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-todo-form" onsubmit="editTodo(event)">
+            <div class="form-group">
+              <label for="edit-todo-title">Title</label>
+              <input id="edit-todo-title" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="edit-todo-description">Description</label>
+              <textarea id="edit-todo-description" class="form-control" rows="5" aria-describedby="descHelp"></textarea>
+              <small id="descHelp" class="form-text text-muted">*optional</small>
+            </div>
+            <div class="form-group">
+              <label for="edit-todo-status">Status</label>
+              <select id="edit-todo-status" class="form-control">
+                <option>To do</option>
+                <option>Doing</option>
+                <option>Done</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-todo-project">Project</label>
+              <select id="edit-todo-project" class="form-control">
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-todo-due_date">Due Date</label>
+              <input id="edit-todo-due_date" class="form-control" autocomplete="off" type="text">
+            </div>
+          </form>
+          <div class="row btn-form-row">
+            <div class="col">
+              <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+            <div id="edit-btn" class="col">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Add FORM -->
+  <div id="project-add-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="form-title" class="modal-title">Add Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="addProject(event)">
+            <div class="form-group">
+              <label for="project-add-name">Project Name</label>
+              <input id="project-add-name" type="text" class="form-control" placeholder="Enter project name">
+            </div>
+            <div class="form-group">
+              <label for="project-add-description">Description</label>
+              <textarea id="project-add-description" class="form-control" rows="5" aria-describedby="descHelp2"
+                placeholder="Description..."></textarea>
+              <small id="descHelp2" class="form-text text-muted">*optional</small>
+            </div>
+            <div class="row btn-form-row">
+              <div class="col">
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+              </div>
+              <div class="col">
+                <button type="submit" class="btn btn-confirm">Add Project</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Edit FORM -->
+  <div id="project-edit-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="form-title" class="modal-title">Edit Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="project-edit-name">Project Name</label>
+              <input id="project-edit-name" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="project-edit-description">Description</label>
+              <textarea id="project-edit-description" class="form-control" rows="5"
+                aria-describedby="descHelp2"></textarea>
+              <small id="descHelp2" class="form-text text-muted">*optional</small>
+            </div>
+          </form>
+          <div class="row btn-form-row">
+            <div id="btn-delete-project" class="col">
+
+            </div>
+            <div id="btn-edit-project" class="col">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Invite FORM -->
+  <div id="project-invite-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="form-title" class="modal-title">Invite user to project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <input id="project-invite-name" type="text" class="form-control" placeholder="Enter username/email">
+            </div>
+          </form>
+          <div class="row btn-form-row">
+            <div class="col">
+              <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+            <div id="invite-project-btn" class="col">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery and JS bundle w/ Popper.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+    integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+    crossorigin="anonymous"></script>
+  <!-- Sweet alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <!-- Google API -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- Toastr -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

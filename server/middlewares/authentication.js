@@ -17,6 +17,7 @@ async function authentication(req, res, next) {
         throw { msg: 'Authentication failed', status: 401 }
       } else {
         req.loggedInUser = decoded;
+        console.log(req.loggedInUser)
         next()
       }
     }
