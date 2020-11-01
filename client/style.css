@@ -8,6 +8,12 @@ body {
 
 }
 
+/* Todo list Scroll */
+.scrollable {
+  height: 300px;
+  overflow: scroll
+}
+
 /* Landing */
 .containerLanding {
   width: 100%;
