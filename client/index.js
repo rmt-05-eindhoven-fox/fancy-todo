@@ -1,37 +1,44 @@
 const SERVER = 'http://localhost:3000/'
 
 $("document").ready(() => {
-  hideAll()
-  $("#login").show()
+  if(!localStorage.getItem('token')) {
+    hideAll()
+    $("#login").show()
+  } else {
+    hideAll()
+    userTodos()
+    $("#addTodo").show()
+    $("#logout").show()
+  }
 })
 
 // Event Listeners Collections
 
+// Login
 $("#submitLogin").on('click', (event) => {
   event.preventDefault()
-  let email =  $('#email').val()
-  let password =  $('#password').val()
-  $('#email').val("")
-  $('#password').val("")
-  console.log(email, password)  
-  $.ajax({
-    method: 'POST',
-    url: SERVER + 'users/login/',
-    data: {
-      email, password
-    }
-  }).done(hasil => {
-    console.log(hasil, "dari success");
-    $("#login").hide()
-    localStorage.setItem('token', hasil.token)
-    userTodos()
-    $("#todo").show()
-    $("#addTodo").show()
-  }).fail(err => {
-    console.log(err.responseJSON, "dari fail");
-  })
+  if(!localStorage.getItem('token')) {
+    let email =  $('#email').val()
+    let password =  $('#password').val()
+    $('#email').val("")
+    $('#password').val("")
+    console.log(email, password)  
+    $.ajax({
+      method: 'POST',
+      url: SERVER + 'users/login/',
+      data: { email, password }
+    }).done(hasil => {
+      localStorage.setItem('token', hasil.token)
+      hideAll()
+    }).fail(err => {
+      console.log(err.responseJSON, "dari fail");
+    })
+  } else {
+    alert('you have to log out first')
+  }
 })
 
+// Add User Todo
 $("#addTodoForm").submit((event) => {
   event.preventDefault()
   const token = localStorage.getItem('token')
@@ -50,6 +57,7 @@ $("#addTodoForm").submit((event) => {
   .fail(err => console.log(err.responseJSON))
 })
 
+// Edit User Todo
 $("#editTodo").submit(event => {
   event.preventDefault()
   hideAll()
@@ -70,12 +78,14 @@ $("#editTodo").submit(event => {
   }).fail(err => console.log(err.responseJSON))
 })
 
+// Link Register Now!
 $("#redirectRegister").on('click', e=> {
   e.preventDefault()
   hideAll()
   $("#register").show()
 })
 
+// Register User
 $("#registerForm").submit(e => {
   e.preventDefault()
   let data = {}
@@ -93,9 +103,17 @@ $("#registerForm").submit(e => {
   })
 })
 
+// Log Out User
+$("#logout").on('click', _=> {
+  localStorage.removeItem('token')
+  signOut()
+  hideAll()
+  $("#login").show()
+})
 
 // Functions Collections
 
+// List user todo, and automatically clear user todo before
 const userTodos = () => {
   const token = localStorage.getItem('token')
 
@@ -125,6 +143,7 @@ const userTodos = () => {
   })
 }
 
+// Mark as done a User Todo
 function done(id) {
   const token = localStorage.getItem('token')
   $.ajax({
@@ -136,6 +155,7 @@ function done(id) {
   })
 }
 
+// Edit user Todo with Populated data from DB
 async function edit(id) {
   try {    
     const token = localStorage.getItem('token')
@@ -167,6 +187,7 @@ async function edit(id) {
   }
 }
 
+// Delete user Todo
 function hapus(id) {
   const token = localStorage.getItem('token')
 
@@ -185,5 +206,43 @@ function hideAll() {
   $("#todo").hide()
   $("#addTodo").hide()
   $("#editTodo").hide() 
+  $("#logout").hide() 
 }
 
+// Google Signin
+// <script>
+// var googleUser = {};
+// var startApp = function() {
+//   gapi.load('auth2', function(){
+//     // Retrieve the singleton for the GoogleAuth library and set up the client.
+//     auth2 = gapi.auth2.init({
+//       client_id: '390207241181-48b99jgbdiscpqticbdpoo6hvcfkcvvr.apps.googleusercontent.com',
+//       cookiepolicy: 'single_host_origin',
+//       // Request scopes in addition to 'profile' and 'email'
+//       //scope: 'additional_scope'
+//     });
+//     attachSignin(document.getElementById('customBtn'));
+//   });
+// };
+
+// function attachSignin(element) {
+//   console.log(element.id);
+//   auth2.attachClickHandler(element, {},
+//       function(googleUser) {
+//         document.getElementById('name').innerText = "Signed in: " +
+//             googleUser.getBasicProfile().getName();
+//       }, function(error) {
+//         alert(JSON.stringify(error, undefined, 2));
+//       });
+// }
+// </script>
+startApp()
+
+
+// Google sign out
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+}
