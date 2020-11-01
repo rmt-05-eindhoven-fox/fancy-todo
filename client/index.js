@@ -1,39 +1,48 @@
 const SERVER = 'http://localhost:3000'
+const sign_in_btn = document.querySelector("#sign-in-btn");
+const sign_up_btn = document.querySelector("#sign-up-btn");
+const container = document.querySelector(".container-fluid");
+const form = document.getElementById("todo_create");
+
+sign_up_btn.addEventListener("click", () => {
+  container.classList.add("sign-up-mode");
+});
+
+sign_in_btn.addEventListener("click", () => {
+  container.classList.remove("sign-up-mode");
+});
 
 $(document).ready(() => {
 	const token = localStorage.getItem('token')
-	console.log(token);
+	
 	if (token) {
-		$('#landing-page').hide()
-		$('#home-page').show()
-		showTodo()
+		goToHomepage()
 	} else {
-		$('.register-form').hide()
-		$('.login-cover').hide()
+		$('#profile-page').hide()
+		$('#login-signup-form').show()
 	}
 })
 
-function login_form() {
-	$('.login-cover').fadeOut("slow", "linear", () => {
-		$('.login-form').fadeIn("slow")
-	})
-	$('.register-form').fadeOut("slow", "linear", () => {
-		$('.register-cover').fadeIn("slow")
+function emptyTodo() {
+	$('#pending #list_todo').empty()
+	$('#on_progress #list_todo').empty()
+	$('#done #list_todo').empty()
+}
+
+function registerSuccess() {
+	container.classList.remove("sign-up-mode");
+}
+
+function goToHomepage() {
+	$('#login-signup-form').fadeOut("slow", "linear", () => {
+		$('#profile-page').fadeIn()
+		showTodo()
 	})
 }
 
-function register_form() {
-	$('.login-form').fadeOut("slow", "linear", () => {
-		$('.login-cover').fadeIn("slow")
-	})
-	$('.register-cover').fadeOut("slow", "linear", () => {
-		$('.register-form').fadeIn("slow")
-	})
-}
-
-function landingPage() {
-	$('#home-page').fadeOut("slow", "linear", () => {
-		$('#landing-page').show()
+function logoutSuccess() {
+	$('#profile-page').fadeOut("slow", "linear", () => {
+		$('#login-signup-form').fadeIn()
 	})
 }
 
@@ -42,7 +51,7 @@ function register(e) {
 
 	const email = $("#register-email").val()
 	const password = $("#register-password").val()
-
+	
 	$.ajax({
 		url: SERVER + '/users/register',
 		method: 'POST',
@@ -52,7 +61,6 @@ function register(e) {
 	})
 		.done((result) => {
 			console.log(`register success`);
-			login_form()
 		})
 		.fail((err) => {
 			console.log(err)
@@ -73,12 +81,10 @@ function login(e) {
 		}
 	})
 		.done((result) => {
+			console.log(`login success`);
 			const token = result.access_token
 			localStorage.setItem('token', token)
-			$('#landing-page').fadeOut("slow", "linear", () => {
-				$('#home-page').fadeIn("slow")
-			})
-			showTodo()
+			goToHomepage()
 		}) 
 		.fail((err) => {
 			console.log(err)
@@ -98,13 +104,20 @@ function onSignIn(googleUser) {
 		.done((response) => {
 			const token = response.access_token
 			localStorage.setItem('token', token)
-			$('#landing-page').fadeOut("slow", "linear", () => {
-				$('#home-page').fadeIn("slow")
-			})
-			showTodo()
+			console.log(`login success`);
+			goToHomepage()
 		}) .fail((err) => {
 			console.log(err);
 		})
+}
+  
+function signOut() {
+	const auth2 = gapi.auth2.getAuthInstance();
+	localStorage.clear()
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+	});
+	logoutSuccess()
 }
 
 function create(e) {
@@ -115,8 +128,7 @@ function create(e) {
 	const description = $("#description").val()
 	const status = $("input[name='status']:checked").val()
 	const due_date = $("#due_date").val()
-
-	console.log(title, description, status, due_date);
+	
 	$.ajax({
 		url: SERVER + '/todos',
 		method: 'POST',
@@ -129,11 +141,8 @@ function create(e) {
 	})
 		.done((result) => {
 			console.log(`create success`);
-			$("#list_todo").empty()
-			// $("#home-page").fadeOut("fast", "linear", () => {
-			// 	$("#home-page").fadeIn("fast")
-			// })
-			// showTodo()
+			form.reset();
+			showTodo()
 		})
 		.fail((err) => {
 			console.log(err.responseJSON);
@@ -142,6 +151,7 @@ function create(e) {
 
 function showTodo() {
 	const token = localStorage.getItem('token')
+	
 	$.ajax({
 		url: SERVER + '/todos',
 		method: 'GET',
@@ -150,47 +160,121 @@ function showTodo() {
 		}
 	})
 		.done((result) => {
+			emptyTodo()
+
 			result.forEach(el => {
 				if (el.status === 'pending') {
-					$('#pending').append(`
-						<div id="list_todo">
-							<p>${el.title}</p>
-							<p>${el.description}</p>
-							<p>${el.due_date.split('T')[0]}</p>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  						Edit
-							</button>
-							<button onclick='deleteTodo(${el.id})'>Delete</button>
-						</div><br>
+					$('#pending #list_todo').append(`
+						<p>${el.title}</p>
+						<p>${el.description}</p>
+						<p>${el.due_date.split('T')[0]}</p>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
+  					Edit
+						</button>
+						<button onclick='deleteTodo(${el.id})'>Delete</button>
 					`)
 				} else if (el.status === 'on progress') {
-					$('#on_progress').append(`
-						<div id="list_todo">
-							<p>${el.title}</p>
-							<p>${el.description}</p>
-							<p>${el.due_date.split('T')[0]}</p>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  						Edit
-							</button>
-							<button onclick='deleteTodo(${el.id})'>Delete</button>
-						</div><br>
+					$('#on_progress #list_todo').append(`
+						<p>${el.title}</p>
+						<p>${el.description}</p>
+						<p>${el.due_date.split('T')[0]}</p>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
+  					Edit
+						</button>
+						<button onclick='deleteTodo(${el.id})'>Delete</button>
 					`)
 				} else if (el.status === 'done') {
-					$('#done').append(`
-						<div id="list_todo">
-							<p>${el.title}</p>
-							<p>${el.description}</p>
-							<p>${el.due_date.split('T')[0]}</p>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  						Edit
-							</button>
-							<button onclick='deleteTodo(${el.id})'>Delete</button>
-						</div><br>
+					$('#done #list_todo').append(`
+						<p>${el.title}</p>
+						<p>${el.description}</p>
+						<p>${el.due_date.split('T')[0]}</p>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
+  					Edit
+						</button>
+						<button onclick='deleteTodo(${el.id})'>Delete</button>
 					`)
 				}
 			})
 		})
 		.catch((err) => {
+			console.log(err);
+		})
+}
+
+function findOneTodo(id) {
+	const token = localStorage.getItem('token')
+
+	$.ajax({
+		url: SERVER + `/todos/${id}`,
+		method: 'GET',
+		headers: {
+			token
+		}
+	})
+		.done((response) => {
+			$('.modal-body').empty()
+			$('.modal-body').append(`
+				<form id="todo_edit">
+					<div class="form-group">
+						<label for="title">Title</label>
+						<input type="text" id="edit_title" class="form-control" autocomplete="title">
+					</div>
+					<div class="form-group">
+						<label for="description">Description</label>
+						<input type="text" id="edit_description" class="form-control">
+					</div>
+					<div class="form-group">
+						<input type="radio" name="edit_status" value="pending">
+						<label for="pending">Pending</label><br>
+						<input type="radio" name="edit_status" value="on progress">
+						<label for="on_progress">On progress</label><br>
+						<input type="radio" name="edit_status" value="done">
+						<label for="done">Done</label>
+					</div>
+					<div class="form-group">
+						<label for="due_date">Due Date</label>
+						<input type="date" id="edit_due_date" name="due_date" class="form-control">
+					</div> 
+					<button type="submit" value="Edit" onclick="editTodo(event, ${id})" class="btn btn-primary" data-dismiss="modal">Edit</button>
+				</form>
+			`)
+			$('.form-group #edit_title').val(response.title)
+			$('.form-group #edit_description').val(response.description)
+			$('.form-group #edit_due_date').val(response.due_date.split('T')[0])
+			console.log(title);
+			
+		})
+		.fail((err) => {
+			console.log(err);
+		})
+}
+
+function editTodo(e, id) {
+	e.preventDefault()
+	const token = localStorage.getItem('token')
+
+	const title = $("#edit_title").val()
+	const description = $("#edit_description").val()
+	const status = $("input[name='edit_status']:checked").val()
+	const due_date = $("#edit_due_date").val()
+
+	console.log(title)
+	$.ajax({
+		url: SERVER + `/todos/${id}`,
+		method: 'PUT',
+		headers: {
+			token
+		},
+		data: {
+			title, description, status, due_date
+		}
+	})
+		.done((response) => {
+			console.log(response);
+			console.log(`edit success`);
+			showTodo()
+		})
+		.fail((err) => {
 			console.log(err);
 		})
 }
@@ -207,25 +291,9 @@ function deleteTodo(id) {
 	})
 		.done((result) => {
 			console.log(`delete successful`);
-			// $("#home-page").fadeOut("fast", "linear", () => {
-				$("#list_todo").empty()
-			// })
+			showTodo()
 		})
 		.catch((err) => {
 			console.log(err);
 		})
-}
-
-function logout() {
-	localStorage.clear()
-	landingPage()
-}
-
-function signOut() {
-  const auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-	});
-	localStorage.clear()
-	landingPage()
 }
