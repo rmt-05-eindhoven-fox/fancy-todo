@@ -139,9 +139,19 @@ function fetchFavQ() {
     }
   })
     .done(res => {
-      console.log(res)
       $('#favQ').empty()
-      $('#favQ').append(res)
+      $('#favQ').append(`
+      <div class="card">
+        <div class="card-header">
+          Quote of the Day
+        </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <p>${res}</p>
+          <footer class="blockquote-footer">Someone famous in <cite title="Source Title">FavQ</cite></footer>
+        </blockquote>
+      </div>
+    </div>`)
     })
     .fail(err => {
       console.log(err)
@@ -159,35 +169,44 @@ function fetchAllContent() {
     .done(res => {
       $('#show').empty()
       $('#show').append(`
-        <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Due Date</th>
-        <th>Action</th>
-      </tr> `)
+        <thead class="table table-hover">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>`)
       res.forEach(el => {
         if (el.status == false) {
           $('#show').append(`
-        <tr>
-          <td>${el.id}</td>
-          <td>${el.title}</td>
-          <td>${el.description}</td>
-          <td>Not Done</td>
-          <td>${el.due_date}</td>
-          <td><button id="done" onclick="editStatusContent(${el.id})">Done</button> <button id="delete" onclick="deleteContent(${el.id})">Delete</button> <button id="editAll" onclick="editFormContent(${el.id}, '${el.title}', '${el.description}', ${el.status}, '${el.due_date}')">Edit</button></td>
-        </tr> `)
+          <tbody class="table table-hover">
+            <tr>
+              <th scope="row">${el.id}</th>
+              <td>${el.title}</td>
+              <td>${el.description}</td>
+              <td>Not Done</td>
+              <td>${el.due_date}</td>
+              <td><button type="button" class="btn btn-success" id="done" onclick="editStatusContent(${el.id})">Done</button>
+                <button type="button" class="btn btn-danger" id="delete" onclick="deleteContent(${el.id})">Delete</button>
+                <button type="button" class="btn btn-secondary" id="editAll" onclick="editFormContent(${el.id}, '${el.title}', '${el.description}', ${el.status}, '${el.due_date}')">Edit</button>
+              </td>
+            </tr>`)
         } else {
           $('#show').append(`
-        <tr>
-          <td>${el.id}</td>
-          <td>${el.title}</td>
-          <td>${el.description}</td>
-          <td>Done</td>
-          <td>${el.due_date}</td>
-          <td><button id="delete" onclick="deleteContent(${el.id})">Delete</button> <button id="editAll" onclick="editFormContent(${el.id}, '${el.title}', '${el.description}', ${el.status}, '${el.due_date}')">Edit</button></td>
-        </tr> `)
+          <tbody class="table table-hover">
+            <tr>
+              <th scope="row">${el.id}</th>
+              <td>${el.title}</td>
+              <td>${el.description}</td>
+              <td>Done</td>
+              <td>${el.due_date}</td>
+              <td><button type="button" class="btn btn-danger" id="delete" onclick="deleteContent(${el.id})">Delete</button>
+                <button type="button" class="btn btn-secondary" id="editAll" onclick="editFormContent(${el.id}, '${el.title}', '${el.description}', ${el.status}, '${el.due_date}')">Edit</button>
+              </td>
+            </tr>`)
         }
       })
     })
@@ -248,9 +267,9 @@ function fetchOneContent() {
           <td>${res.description}</td>
           <td>Not Done</td>
           <td>${res.due_date}</td>
-          <td><button id="done" onclick="editStatusContent(${res.id})">Done</button></td>
-          <td><button id="delete" onclick="deleteContent(${res.id})">Delete</button></td>
-          <td><button id="editAll" onclick="editFormContent(${res.id}, '${res.title}', '${res.description}', ${res.status}, '${res.due_date}')">Edit</button></td>
+          <td><button type="button" class="btn btn-success" id="done" onclick="editStatusContent(${res.id})">Done</button></td>
+          <td><button type="button" class="btn btn-danger" id="delete" onclick="deleteContent(${res.id})">Delete</button></td>
+          <td><button type="button" class="btn btn-secondary" id="editAll" onclick="editFormContent(${res.id}, '${res.title}', '${res.description}', ${res.status}, '${res.due_date}')">Edit</button></td>
         </tr> `)
         } else {
           $('#show').append(`
@@ -260,21 +279,21 @@ function fetchOneContent() {
           <td>${res.description}</td>
           <td>Done</td>
           <td>${res.due_date}</td>
-          <td><button id="delete" onclick="deleteContent(${res.id})">Delete</button></td>
-          <td><button id="editAll" onclick="editFormContent(${res.id}, '${res.title}', '${res.description}', ${res.status}, '${res.due_date}')">Edit</button></td>
+          <td><button type="button" class="btn btn-danger" id="delete" onclick="deleteContent(${res.id})">Delete</button></td>
+          <td><button type="button" class="btn btn-secondary" id="editAll" onclick="editFormContent(${res.id}, '${res.title}', '${res.description}', ${res.status}, '${res.due_date}')">Edit</button></td>
         </tr> `)
         }
       })
       .fail(err => {
         $('#findOne').val('')
         $('#find-error').empty()
-        $('#find-error').append(`< p > Please Insert Valid Id`)
+        $('#find-error').append(`<p>Please Insert Valid Id</p>`)
         fetchAllContent()
         console.log(err)
       })
   } else {
     $('#find-error').empty()
-    $('#find-error').append(`< p > Please Insert Valid Id`)
+    $('#find-error').append(`<p>Please Insert Valid Id</p>`)
     fetchAllContent()
   }
 }
@@ -312,7 +331,10 @@ function addContent(e) {
       $('#add-error').empty()
       error = err.responseJSON.error.split(', ')
       error.forEach(el => {
-        $('#add-error').append(`< p > ${el}</ > `)
+        $('#add-error').append(`
+        <div class="col">
+          <p>${el}</p>
+        </div>`)
       })
     })
 }
@@ -355,6 +377,7 @@ function editOneContent(e) {
   })
     .done(res => {
       console.log(res)
+      $('#edit-error').empty()
       $('#edit-title').val('')
       $('#edit-description').val('')
       $('input[type="radio"]').prop('checked', false)
@@ -365,7 +388,15 @@ function editOneContent(e) {
       localStorage.removeItem('editId')
     })
     .fail(err => {
-      console.log(err)
+      console.log(err.responseJSON.error)
+      $('#edit-error').empty()
+      error = err.responseJSON.error.split(', ')
+      error.forEach(el => {
+        $('#edit-error').append(`
+        <div class="col">
+          <p>${el}</p>
+        </div>`)
+      })
     })
 }
 

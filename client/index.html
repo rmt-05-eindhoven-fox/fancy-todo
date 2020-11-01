@@ -13,76 +13,164 @@
 
   <body>
     <section id="register">
-      <div class="container row h-100 justify-content-md-center align-item center">
-        <h1>REGISTER PAGE</h1>
-        <div class="container row h-100 justify-content-md-center ">
+      <div class="container pt-5">
+        <div class="row h-100 justify-content-md-center">
           <form onsubmit="register(event)">
-            <div class="col col-lg-2">
-              <label for="register-email">email</label>
-              <input type="email" name="email" id="register-email">
+            <div class="form-group row">
+              <div class="col-sm-20">
+                <h1>REGISTER PAGE</h1>
+              </div>
             </div>
-            <div class="col col-lg-2">
-              <label for="register-password">password</label>
-              <input type="password" name="password" id="register-password"><br>
+            <div class="form-group row">
+              <label for="register-email" class="col col-form-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="register-email">
+              </div>
             </div>
-            <div class="col col-md">
-              <button type="submit" class="btn btn-primary">register</button>
+            <div class="form-group row">
+              <label for="register-password" class="col col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="register-password"><br>
+              </div>
             </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">register</button>
+              </div>
+            </div>
+            <div id="register-error"></div>
           </form>
         </div>
       </div>
-      <div id="register-error"></div>
     </section>
     <section id="login">
-      <div style="width: 100%;padding: 15%;margin: 0 auto;">
-        <h1>LOGIN PAGE</h1>
-        <form onsubmit="login(event)">
-          <label for="login-email">Email</label>
-          <input type="email" name="email" id="login-email"><br>
-          <label for="login-email">Password</label>
-          <input type="password" name="password" id="login-password"><br>
-          <button type="submit">login</button>
-          <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        </form>
-        <button id="btn-register" onclick="registerForm()">Register</button>
-        <div id="login-error"></div>
+      <div class="container pt-5">
+        <div class="row h-100 justify-content-md-center">
+          <form onsubmit="login(event)">
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <h1>LOGIN PAGE</h1>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="login-email" class="col col-form-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="login-email">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="login-password" class="col col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="login-password">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">login</button>
+                <button id="btn-register" type="button" class="btn btn-warning"
+                  onclick="registerForm(event)">Register</button>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+              </div>
+            </div>
+            <div id="login-error"></div>
+          </form>
+        </div>
       </div>
     </section>
     <section id="content">
-      <button id="btn-add">Add Todo</button>
-      <button id="logout" onclick="logout()">Logout</button>
+      <button type="button" class="btn btn-primary" id="btn-add">Add Todo</button>
+      <button type="button" class="btn btn-dark" id="logout" onclick="logout()">Logout</button>
       <input type="text" placeholder="ToDo's Id" id="findOne">
-      <button onclick="fetchOneContent()">Search</button>
+      <button type="button" class="btn btn-outline-info" onclick="fetchOneContent()">Search</button>
       <div id="find-error"></div>
       <div id="favQ"></div>
-      <div id="show"></div>
+      <div class="container-fluid">
+        <div id="show"></div>
+      </div>
     </section>
     <section id="add">
-      <div id="add-error"></div>
       <form onsubmit="addContent(event)">
-        <label for="add-title">Title</label>
-        <input type="text" name="title" id="add-title">
-        <label for="add-description">Description</label>
-        <input type="text" name="description" id="add-description">
-        <label for="add-date">Date</label>
-        <input type="date" name="date" id="add-date">
-        <button type="submit">Add</button>
+        <div class="container">
+          <h1 class="row h-100 justify-content-md-center">ADD TODO</h1>
+          <div class="form-group row">
+            <label for="add-title" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="add-title" placeholder="Coding">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="add-description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="add-description" placeholder="Learning Jquery and Ajax">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="add-date" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" name="date" id="add-date">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">Add ToDo</button>
+            </div>
+          </div>
+          <div id="add-error" class="h-50 justify-content-center"></div>
+        </div>
       </form>
     </section>
     <section id="edit">
       <form onsubmit="editOneContent(event)">
-        <label for="edit-title">Title</label>
-        <input type="text" name="title" id="edit-title">
-        <label for="edit-description">Description</label>
-        <input type="text" name="description" id="edit-description">
-        <div id="status-radio">
-          <p>Status</p>
-          <input type="radio" name="status" id="not-done" value="false">Not Done
-          <input type="radio" name="status" id="done" value="true">Done
+        <div class="container">
+          <h1 class="row h-100 justify-content-md-center">EDIT TODO</h1>
+          <div class="form-group row">
+            <label for="edit-title" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="edit-title" placeholder="Coding">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="edit-description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="edit-description" placeholder="Learning Jquery and Ajax">
+            </div>
+          </div>
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+              <div class="col-sm-10">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="status" id="not-done" value="false">
+                  <label class="form-check-label" for="not-done">
+                    Not Done
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="status" id="done" value="true">
+                  <label class="form-check-label" for="done">
+                    Done
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group row">
+            <label for="edit-date" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" name="date" id="edit-date">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">Edit ToDo</button>
+            </div>
+          </div>
+          <div id="edit-error" class="h-50 justify-content-center"></div>
         </div>
-        <label for="edit-date">Date</label>
-        <input type="date" name="date" id="edit-date">
-        <button type="submit">edit</button>
       </form>
     </section>
     <script src="https://apis.google.com/js/platform.js" async defer></script>

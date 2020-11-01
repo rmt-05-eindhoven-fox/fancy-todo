@@ -37,16 +37,16 @@
 
       * **Code:** `400 BAD REQUEST` <br />
         **Content:** 
-        ```
-        { error : "Invalid Input" }
+        ```json
+        { error : "Validation Error" }
         ```
 
       OR
 
       * **Code:** `500 INTERNAL SERVER ERROR` <br />
         **Content:** 
-        ```
-        { error : "Server Error" }
+        ```json
+        { error : "Internal Server Error" }
         ```
 
 2. **LIST TODOS**
@@ -84,7 +84,7 @@
       * **Code:** `404 NOT FOUND` <br />
         **Content:** 
         ```json
-        { "error" : "Error Not Found" }
+        { "error" : "ToDo Not Found" }
         ```
 
       OR
@@ -92,7 +92,7 @@
       * **Code:** `500 INTERNAL SERVER ERROR` <br />
         **Content:** 
         ```json
-        { "error" : "Server Error" }
+        { "error" : "Internal Server Error" }
         ```
 
 3. **LIST TODOS (ID)**
@@ -130,7 +130,7 @@
       * **Code:** `404 NOT FOUND` <br />
         **Content:** 
         ```json
-        { "error" : "Error Not Found" }
+        { "error" : "ToDo Not Found" }
         ```
 
       OR
@@ -138,7 +138,7 @@
       * **Code:** `500 INTERNAL SERVER ERROR` <br />
         **Content:** 
         ```json
-        { "error" : "Server Error" }
+        { "error" : "Internal Server Error" }
         ```
 
 4. **UPDATE TODOS**
@@ -193,7 +193,7 @@
       * **Code:** `404 NOT FOUND` <br />
         **Content:** 
         ```json
-        { "error" : "Error Not Found" }
+        { "error" : "ToDo Not Found" }
         ```
 
       OR
@@ -201,7 +201,7 @@
       * **Code:** `500 INTERNAL SERVER ERROR` <br />
         **Content:** 
         ```json
-        { "error" : "Server Error" }
+        { "error" : "Internal Server Error" }
         ```
 
 5. **UPDATE TODOS (STATUS)**
@@ -253,7 +253,7 @@
       * **Code:** `404 NOT FOUND` <br />
         **Content:** 
         ```json
-        { "error" : "Error Not Found" }
+        { "error" : "ToDo Not Found" }
         ```
 
       OR
@@ -261,7 +261,7 @@
       * **Code:** `500 INTERNAL SERVER ERROR` <br />
         **Content:** 
         ```json
-        { "error" : "Server Error" }
+        { "error" : "Internal Server Error" }
         ```
 
 6. **DELETE TODOS**
@@ -293,7 +293,7 @@
       * **Code:** `404 NOT FOUND` <br />
         **Content:** 
         ```json
-        { "error" : "Error Not Found" }
+        { "error" : "ToDo Not Found" }
         ```
 
       OR
@@ -301,5 +301,5 @@
       * **Code:** `500 INTERNAL SERVER ERROR` <br />
         **Content:** 
         ```json
-        { "error" : "Server Error" }
+        { "error" : "Internal Server Error" }
         ```
