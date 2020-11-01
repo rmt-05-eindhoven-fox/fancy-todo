@@ -41,12 +41,12 @@
                     <form action="" onsubmit="login(event)">
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" name="email" class="form-control" id="login-email">
                         </div>
                         
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" name="password" class="form-control">
+                            <input type="password" name="password" class="form-control" id="login-password" >
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" name="checkbox" class="form-check-input" id="checkbox">
@@ -57,7 +57,7 @@
                         <button type="submit" class="btn class-btn">LOG IN</button>
                     </form>
                 </div>
-
+                <button onclick="UserRegister()" class="btn btn-link mt-3">Register here</button>
             </div>
         </div>
     </section>
@@ -81,16 +81,25 @@
                             <label for="password">Password</label>
                             <input type="password" name="password" class="form-control">
                         </div>
-                        <!-- Button Google -->
-                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                        <button type="submit" class="btn class-btn">SUBMIT</button>
+                        <button type="submit" class="btn class-btn">Create Account</button>
                     </form>
                 </div>
+                <button onclick="UserLogin()" class="btn btn-link mt-3">Already have Account</button>
 
             </div>
         </div>
     </section>
 
+
+    <section id="navbar">
+    <!--Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top justify-content-between">
+        <h1>Fancy-ToDo</h1>
+    </section>
+    
+    <section id="landing-page">
+
+    </section>
 
 <footer>
 	<p>
