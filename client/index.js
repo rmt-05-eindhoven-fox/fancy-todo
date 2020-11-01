@@ -165,33 +165,48 @@ function showTodo() {
 			result.forEach(el => {
 				if (el.status === 'pending') {
 					$('#pending #list_todo').append(`
-						<p>${el.title}</p>
-						<p>${el.description}</p>
-						<p>${el.due_date.split('T')[0]}</p>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
-  					Edit
-						</button>
-						<button onclick='deleteTodo(${el.id})'>Delete</button>
+						<div class="card" style="width: 16rem;">
+							<div class="card-body">
+								<h5 class="card-title">${el.title}</h5>
+								
+								<p class="card-text">${el.description}</p>
+								<p class="card-text">${el.due_date}</p>
+								<button type="button" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
+								Edit
+								</button>
+								<button onclick='deleteTodo(${el.id})'>Delete</button>		
+							</div>
+						</div>
 					`)
 				} else if (el.status === 'on progress') {
 					$('#on_progress #list_todo').append(`
-						<p>${el.title}</p>
-						<p>${el.description}</p>
-						<p>${el.due_date.split('T')[0]}</p>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
-  					Edit
-						</button>
-						<button onclick='deleteTodo(${el.id})'>Delete</button>
+					<div class="card" style="width: 16rem;">
+						<div class="card-body">
+							<h5 class="card-title">${el.title}</h5>
+
+							<p class="card-text">${el.description}</p>
+							<p class="card-text">${el.due_date}</p>
+							<button type="button" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
+							Edit
+							</button>
+							<button onclick='deleteTodo(${el.id})' >Delete</button>		
+						</div>
+					</div>
 					`)
 				} else if (el.status === 'done') {
 					$('#done #list_todo').append(`
-						<p>${el.title}</p>
-						<p>${el.description}</p>
-						<p>${el.due_date.split('T')[0]}</p>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
-  					Edit
-						</button>
-						<button onclick='deleteTodo(${el.id})'>Delete</button>
+					<div class="card" style="width: 16rem;">
+						<div class="card-body">
+							<h5 class="card-title">${el.title}</h5>
+						
+							<p class="card-text">${el.description}</p>
+							<p class="card-text">${el.due_date}</p>
+							<button type="button" data-toggle="modal" data-target="#exampleModal" onclick="findOneTodo(${el.id})">
+							Edit
+							</button>
+							<button onclick='deleteTodo(${el.id})'>Delete</button>		
+						</div>
+					</div>
 					`)
 				}
 			})
@@ -217,11 +232,11 @@ function findOneTodo(id) {
 				<form id="todo_edit">
 					<div class="form-group">
 						<label for="title">Title</label>
-						<input type="text" id="edit_title" class="form-control" autocomplete="title">
+						<input type="text" id="edit_title" class="form-control" value="" autocomplete="title">
 					</div>
 					<div class="form-group">
 						<label for="description">Description</label>
-						<input type="text" id="edit_description" class="form-control">
+						<textarea id="edit_description" class="form-control" cols="20" rows="3"></textarea>
 					</div>
 					<div class="form-group">
 						<input type="radio" name="edit_status" value="pending">
@@ -241,8 +256,6 @@ function findOneTodo(id) {
 			$('.form-group #edit_title').val(response.title)
 			$('.form-group #edit_description').val(response.description)
 			$('.form-group #edit_due_date').val(response.due_date.split('T')[0])
-			console.log(title);
-			
 		})
 		.fail((err) => {
 			console.log(err);
