@@ -365,7 +365,7 @@ function signout() {
     let signout = false
     Swal.fire({
         title: 'Are you sureeee?',
-        text: "How can you achieve your dream if you keep deleting!",
+        text: "You dare to leave me aloneee?",
         imageUrl: "./cry.png",
         imageWidth: 400,
         imageHeight: 300,
@@ -377,8 +377,8 @@ function signout() {
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire(
-                'Deleted!',
-                'Your plan has been deleted.',
+                'Okay fine!',
+                'Youve been signed out',
                 'success'
             )
             signout = true
