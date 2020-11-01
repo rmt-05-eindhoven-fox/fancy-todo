@@ -6,6 +6,7 @@ $(document).ready(function(){
         $("#home-page").show()
         $("#login-page").hide()
         $("#signup-page").hide()
+        getQuotes()
         getTodo()
     } else{
         $("#home-page").hide()
@@ -74,6 +75,7 @@ function login(e) {
         $("#login-page").hide()
         $("#signup-page").hide()
         $("#home-page").show()
+        getQuotes()
         getTodo()
     }).fail(err => {
         console.log(err)
@@ -139,7 +141,7 @@ function addTodo(e) {
     const title = $('#title').val()
     const description = $('#description').val()
     const due_date = $('#due_date').val()
-    const status = $('#status').val()
+    // const status = $('#status').val()
 
     $.ajax({
         method:"POST",
@@ -158,6 +160,7 @@ function addTodo(e) {
         }
     }).done(res => {
         console.log(res)
+        res.status="false"
         $("#login-page").hide()
         $("#signup-page").hide()
         $("#myModal").modal('hide')
@@ -270,28 +273,25 @@ function updateStatus(id, status) {
     })
 }
 
-//>>>>>>>>>> GET QUOTES <<<<<<<<<<<<<<<<<<
-// function updateStatus() {
-//     const token = localStorage.getItem("token")
+// >>>>>>>>>> GET QUOTES <<<<<<<<<<<<<<<<<<
+function getQuotes() {
+    const token = localStorage.getItem("token")
 
-//     $.ajax({
-//         method:"GET",
-//         url: SERVER + `/quotes`,
-//         headers: {
-//             token
-//         }
-//     }).done(res => {
-//         console.log(res)
-//        $("#listQuotes").empty();
-//         res.forEach((data) => {
-//             console.log(data)
-//            $("#listQuotes").append(`
-//                 <h2>" ${data.quoteText} - ${data.quoteAuthor} "</h2>
-//             `)
-//         })
-//     }).fail(err => {
-//         console.log(err)
-//     })
-// }
+    $.ajax({
+        method:"GET",
+        url: SERVER + `/quotes`,
+        headers: {
+            token
+        }
+    }).done(res => {
+        console.log(res)
+       $("#listQuotes").empty();
+           $("#listQuotes").append(`
+                <h2>"${res.quoteText}" <br>- ${res.quoteAuthor} - </h2>
+            `)
+    }).fail(err => {
+        console.log(err)
+    })
+}
 
 

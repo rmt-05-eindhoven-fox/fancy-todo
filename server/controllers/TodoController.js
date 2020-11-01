@@ -20,7 +20,7 @@ class TodoController {
         let { title, description, status, due_date } = req.body;
         
         const newTodo = {
-            title, description, status, due_date, UserId: req.loggedInUser.id
+            title, description, status:false, due_date, UserId: req.loggedInUser.id
         }
         try { 
             const data = await Todo.create(newTodo)
