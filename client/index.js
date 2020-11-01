@@ -105,6 +105,7 @@ function signUp(e) {
       setTimeout(() => {
         $('#exampleModal2').modal('toggle');
       }, 1000);
+      $('#sign-up-form').trigger('reset');
     })
     .fail(err => {
       errorHandler(err.responseJSON.error);
