@@ -52,6 +52,7 @@ function create(e) {
     }).done( response => {
         //console(response)
         showTodos()
+        $("#add-todos").trigger('reset')
     }).fail(err => {
         console.log(err)
     })
@@ -193,6 +194,7 @@ function edit(e) {
         $("#title-todo").show()
         $("#edit-form").hide()
         showTodos()
+        $("edit-form").trigger('reset')
 
 
     }).fail(err => {
@@ -232,7 +234,7 @@ function deleteTodos(id) {
 
 function onSignIn(googleUser) {
     var google_access_token = googleUser.getAuthResponse().id_token;
-    console.log(google_access_token);
+    //console.log(google_access_token);
 
     $.ajax({
         method: "POST",

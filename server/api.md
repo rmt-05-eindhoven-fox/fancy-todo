@@ -31,11 +31,234 @@ Error responses
 { "message": "Interval Server Error" }
 
 ---
-* POST /register
+## POST /register
 > Create a new user account
-
+_Request Header_
+```
+  no need
+```
+_Request Body_
+```
 { 
   email: <email input>,
   password: <password input>
 }
-
+```
+_Response (201)_
+```
+{
+    "id": <created id>,
+    "email": <created email>,
+    "password": <hashed password>,
+    "updatedAt": "2020-05-05T08:39:37.867Z",
+    "createdAt": "2020-05-05T08:39:37.867Z"
+}
+```
+_Response (400 - Bad Request)_
+```
+{ 
+    "message": "Input the right email/ password can't be empty"
+}
+```
+---
+## POST /login
+> Login for Existing User
+_Request Header_
+```
+  no need
+```
+_Request Body_
+```
+{ 
+  email: <input email>,
+  password: <input password>
+}
+```
+_Response (200)_
+```
+{   
+    "email": <listed email>
+    "token": <created token>
+}
+```
+_Response (400 - Bad request)_
+```
+{ 
+    "message": "Invalid email/password"
+}
+```
+---
+## POST /google-signin
+> Google sign in 
+_Request Header_
+```
+  no need
+```
+_Request Body_
+```
+{
+  id_token: <given id_token>
+}
+```
+_Response (200)_
+```
+{   
+    "email": <listed email>
+    "token": <created token>
+}
+```
+---
+## GET /todos
+> Show All Todos
+_Request Header_
+```
+{
+    "access_token": <token>
+}
+```
+_Request Body_
+```
+  no need
+```
+_Response (200)_
+```
+[
+  {
+    "id": 6,
+    "title": "makan",
+    "description": "indomie",
+    "status": "done",
+    "due_date": "2020-06-06T00:00:00.000Z",
+    "createdAt": "2020-06-13T08:32:40.126Z",
+    "updatedAt": "2020-06-13T08:32:40.126Z"
+  },
+  {
+    "id": 1,
+    "title": "fsafs",
+    "description": "fsafsaf",
+    "status": "not yet",
+    "due_date": "2020-06-27T00:00:00.000Z",
+    "createdAt": "2020-06-13T08:28:47.664Z",
+    "updatedAt": "2020-06-13T08:28:47.664Z"
+  }
+]
+```
+---
+## POST /todos
+> Create Todo List
+_Request Header_
+```
+{
+    "access_token": <token>
+}
+```
+_Request Body_
+```
+{
+    "title": "fsafs",
+    "description": "fsafsaf",
+    "status": "not yet",
+    "due_date": "2020-06-27T00:00:00.000Z",
+}
+```
+_Response (201)_
+```
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
+```
+---
+## DELETE /todos/:id
+> Delete Todo List
+_Request Header_
+```
+{
+    "access_token": <token>
+}
+```
+_Request Params_
+```
+{
+    "id": <id todo>
+}
+```
+_Response (200)_
+```
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "not yet",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
+```
+---
+## GET /todos/:id
+> Get data from selected id
+_Request Header_
+```
+{
+    "access_token": <token>
+}
+```
+_Request Params_
+```
+{
+    "id":<id token>
+}
+```
+_Response (200)_
+```
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "done",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
+```
+---
+## PUT /todos/:id
+> To submit Form Edit Todos
+_Request Header_
+```
+{
+    "access_token": <token>
+}
+```
+_Request Params_
+```
+{
+    "id":<id token>
+}
+```
+_Request Body_
+```
+{
+    "title": "fsafs",
+    "description": "fsafsaf",
+    "status": "on progress",
+    "due_date": "2020-06-27T00:00:00.000Z",
+}
+```
+_Response (200)_
+```
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "done",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
+```
