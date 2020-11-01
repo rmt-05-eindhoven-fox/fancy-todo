@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       validate: {
         customDate() {
-          if (this.due_date < new Date(' +UTC')) {
+          if (this.due_date < new Date()) {
             throw new Error("Due date should not in the past time")
           }
         }

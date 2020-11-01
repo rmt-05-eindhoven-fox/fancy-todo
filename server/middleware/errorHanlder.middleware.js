@@ -4,10 +4,12 @@ function errorHanlder(err, req, res, next) {
 
     let status = 500
     let message = err.name
+    console.log(message, "<<< message");
     let error; 
     switch (message) {
         case "SequelizeValidationError":
             error = err.errors.map(error => {
+                console.log();
                 return error.message
             }).join(", ")
             status = 400
@@ -29,7 +31,7 @@ function errorHanlder(err, req, res, next) {
             status = 404
             break;
         default:
-            name = "internal server error"
+            error = "internal server error"
             status = 500
             break;
 

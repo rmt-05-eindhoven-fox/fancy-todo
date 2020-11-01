@@ -4,6 +4,7 @@ const { User } = require("../models/index")
 async function authenctication(req, res, next) {
     try {
         const { token } = req.headers
+        console.log(token);
         if (!token) {
             throw { name: "Authentication failed"}
         } else {

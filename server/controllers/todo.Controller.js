@@ -4,6 +4,7 @@ class TodoController {
     static async create(req, res, next) {
         try {
             const { title, description, status, due_date } = req.body
+            console.log(req.body, "<<< ini req body controller");
             const id = req.loggedInUser.id
             let todo = await ToDo.create({ title, description, status, due_date, UserId: id })
             res.status(201).json(todo)
@@ -30,7 +31,9 @@ class TodoController {
     static async findById(req, res, next) {
         try {
             const { id } = req.params
+            console.log(req.params.id, "<<< ini id dari params ");
             let todo = await ToDo.findByPk(id)
+            console.log(todo, "<<< todo findByPk");
             res.status(200).json(todo)
         } catch (err) {
             console.log(err, ">>> ERROR FIND BY ID");
@@ -40,6 +43,7 @@ class TodoController {
 
     static async updateAll(req, res, next) {
         try {
+           console.log(req.params.id, "req.params.id");
             let { title, description, status, due_date } = req.body
             console.log(req.body, ">>> req body")
             let todo = await ToDo.update({ title, description, status, due_date }, {
@@ -73,8 +77,9 @@ class TodoController {
     static async delete(req, res, next) {
         try {
             const { id } = req.params
+            console.log(id, "<<< id controller");
             let todo = await ToDo.destroy({
-                where: { id }, returning : true
+                where: { id : id }, returning : true
             })
             res.status(200).json({msg: "todo success to delete"})
         } catch (err) {
