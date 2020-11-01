@@ -2,6 +2,7 @@ const { Todo } = require('../models/')
 const {Op} = require('sequelize')
 const {verifyToken} = require('../helpers/jwt')
 const { convertFromDate, convertToDate, convertToWords } = require('../helpers/dates')
+const { Project } = require('../models/')
 
 
 class Controller{
@@ -19,22 +20,25 @@ class Controller{
                 where : {
                     UserId : id
                 },
+                include : [ Project ],
                 order : [
                     ['due_date', 'ASC'],
                     ['status', 'DESC']
                     
                 ]
             })
+            // console.log(todos)
             // Todo is in array. due_date needs to be converted
             let returnedTodo = []
             if( todos.length > 0 ) {
                 todos.forEach(todo => {
-                    const { id, title, description, status, due_date, UserId } = todo
+                    const { id, title, description, status, due_date, UserId, Project } = todo
                     returnedTodo.push({
                         id, title, description, status, 
                         due_date : convertFromDate(due_date), 
                         due_date_words : convertToWords(due_date),
-                        UserId 
+                        UserId,
+                        Project
                     })
                 })
 
@@ -84,7 +88,9 @@ class Controller{
     static async postNewTodo(req, res, next) {
 
         const { id } = verifyToken(req.headers.token)
-        let { title, description, due_date } = req.body
+        let { title, description, due_date, ProjectId } = req.body
+
+        if(ProjectId === "none") ProjectId = null
 
         let status = "Not Done"
 
@@ -94,10 +100,9 @@ class Controller{
                 description, 
                 status, 
                 due_date, 
-                UserId : id
+                UserId : id,
+                ProjectId
             })
-
-  
 
             res.status(201).json(newTodo)
 
@@ -111,16 +116,17 @@ class Controller{
 
     static async putUpdatedTodo(req, res, next) {
         // const id = +req.params.id
-        let { id, title, description, due_date } = req.body
+        let { id, title, description, due_date, ProjectId } = req.body
 
+        if(ProjectId === "none") ProjectId = null
         due_date = convertToDate(due_date)
 
         try {
             const newTodo = await Todo.update({
-                title, description, due_date
+                title, description, due_date, ProjectId
             },{
                 where : { id },
-                returning : ['id', 'title', 'description', 'status', 'due_date']
+                returning : ['id', 'title', 'description', 'ProjectId', 'status', 'due_date']
             })
             
             res.status(200).json(newTodo[1][0])

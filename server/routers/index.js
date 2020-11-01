@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const projectRoutes = require('./projectsRoute')
 const Controller = require('../controllers/Controller')
 const UserController = require('../controllers/UserController')
 const WeatherController = require('../controllers/WeatherController')
@@ -14,6 +15,8 @@ router.post('/login', UserController.postUserLogin)
 router.post('/googleLogin', UserController.postGoogleLogin)
 
 router.use(authentication) // produce req.loggedInUser where we can access downwards
+
+router.use('/projects', projectRoutes)
 
 router.get('/todos', Controller.getTodos)
 router.post('/todos', Controller.postNewTodo)

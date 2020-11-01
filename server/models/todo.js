@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Todo.belongsTo( models.User )
+      Todo.belongsTo( models.Project )
     }
   };
   Todo.init({
@@ -40,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     status: DataTypes.STRING,
+    ProjectId: DataTypes.INTEGER,
 
     due_date: {
       type : DataTypes.DATE,

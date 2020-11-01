@@ -259,20 +259,29 @@ function getAllTodo() {
       
 
       response.forEach(todo => {
-      
+      let projectName = '';
+
+      if(todo.Project){
+        projectName = todo.Project.name
+      }
       if(todo.status !== "Done"){
         notDoneCounter ++
 
         $('#content-todo').append(`
-        <div class="card mb-1 mr-2 todo-card">
-        <div class="card-body">
-        <h5 class="card-title">${todo.title}</h5>
+        `)
+        
+        $('#content-todo').append(`
+          <div class="card mb-2 mr-2 todo-card">
+          <div class="card-body">
+          <h5 class="card-title">${todo.title}</h5>
+          <span class="badge badge-pill badge-info">${projectName}</span>
+
         <hr>
           <p class="card-text">${todo.description}</p>
           <p class="card-text"><b>Due on :</b> ${todo.due_date_words}</p>
           </div>
           <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-light" onclick="editTodo(${todo.id})">Edit</button>
+          <button type="button" class="btn btn-light" onclick="editTodo(${todo.id}); getAllProjects('#formEditTodo_project')">Edit</button>
           <button type="button" class="btn btn-outline-success" onclick="markAsDone(${todo.id}, 'Done')">Done</button>
           </div>
           </div>
@@ -284,8 +293,10 @@ function getAllTodo() {
         $('#content-todo-done').append(`
         <div class="card mb-1 mr-2 todo-card todo-card-done">
         <div class="card-body">
-        <h5 class="card-title">${todo.title}</h5>
-          </div>
+        <h5 class="card-title">${todo.title}</h5> 
+        
+        </div>
+        
           <div class="btn-group" role="group" aria-label="Basic example">
           <button type="button" class="btn btn-danger" onclick="deleteToDo(${todo.id})">Delete</button>
           <button type="button" class="btn btn-light" onclick="markAsDone(${todo.id}, 'Not Done')">Not Done</button>
@@ -318,6 +329,112 @@ function getAllTodo() {
   })
 }
 
+// function testAppend(formName) {
+
+//   $(formName).append(`
+//   <option>Hello</option>
+//   `)
+// }
+
+function deleteProject(){
+  let projectId = $('#formDelete_project').val()
+  let token = localStorage.getItem('token')
+
+  if(projectId === "none") projectId = -1
+
+  $.ajax({
+    method : 'DELETE',
+    url : SERVER + `/projects/${projectId}`,
+    headers : {
+      token
+    }
+  })
+  .done(_=> {
+    showSuccess('Project Successfully deleted')
+    getAllTodo()
+  })
+  .fail(error => {
+    showError(error.responseJSON.message)
+  })
+  .always(_=> {
+    $('#modal_deleteProject').modal('toggle')
+
+  })
+}
+
+function getAllProjects(formName) {
+
+  const token = localStorage.getItem('token')
+  console.log(formName)
+  $.ajax({
+    method : 'GET',
+    url : SERVER + `/projects`,
+    headers : {
+      token
+    }
+  })
+  .done(response => {
+    const data = response.data
+
+    if(!formName){
+
+      console.log (data)
+    } else {
+  
+      $(formName).empty()
+      $(formName).append(`
+      <option selected value="none">-- Select Project --</option>
+      `)
+
+      data.forEach(datum => {
+
+        console.log(datum.name)
+
+        $(formName).append(`
+        <option value = ${datum.id}>${datum.name}</option>
+        `)
+      
+      })
+      // <option value="${datum.id}">${datum.name}</option>
+
+    }
+
+  })
+  .fail(error => {
+    showError(error.responseJSON.message)
+  })
+}
+
+function postNewProject() {
+  
+  let name = $('#formProject_name').val()
+  const token = localStorage.getItem('token')
+
+  $.ajax({
+    method : 'POST',
+    url : SERVER + `/projects`,
+    headers : {
+      token
+    },
+    data : {
+      name
+    }
+  })
+  .done(_ => {
+    console.log("success")
+    $('#modal_addProject').modal('toggle')
+    getAllTodo()
+  })
+  .fail(error => {
+
+    $('#modal_addProject').modal('toggle')
+    showError(error.responseJSON.message)
+  })
+  .always(_=> {
+    emptyAllForms()
+
+  })
+}
 
 function postNewTodo() {
   $('#error').hide()
@@ -325,6 +442,7 @@ function postNewTodo() {
   let title = $('#formTodo_title').val()
   let description = $('#formTodo_description').val()
   let due_date = new Date($('#formTodo_due_date').val())
+  let ProjectId = $('#formTodo_project').val()
   const token = localStorage.getItem('token')
 
   $.ajax({
@@ -336,7 +454,8 @@ function postNewTodo() {
     data : {
       title,
       description,
-      due_date
+      due_date,
+      ProjectId
     }
   })
   .done(_ => {
@@ -355,11 +474,13 @@ function postNewTodo() {
   })
 }
 
+
 function postEditTodo() {
   
   let id = $('#formEditTodo_id').val()
   let title = $('#formEditTodo_title').val()
   let description = $('#formEditTodo_description').val()
+  let ProjectId = $('#formEditTodo_project').val()
   let due_date = $('#formEditTodo_due_date').val()
 
   let token = localStorage.getItem('token')
@@ -371,7 +492,7 @@ function postEditTodo() {
       token
     },
     data : {
-      id, title, description, due_date
+      id, title, description, due_date, ProjectId
     }
   })
   .done(_=> {
@@ -497,6 +618,8 @@ function emptyAllForms(){
   $('#formEditTodo_title').val('')
   $('#formEditTodo_description').val('')
   $('#formEditTodo_due_date').val('')
+
+  $('#formProject_name').val('')
 
 }
 
