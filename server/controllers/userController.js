@@ -3,6 +3,7 @@ const { User } = require('../models')
 const {comparePassword} = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 const {OAuth2Client} = require('google-auth-library');
+require("dotenv").config()
 
 class UserController {
 

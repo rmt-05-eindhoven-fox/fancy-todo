@@ -44,7 +44,19 @@ $(document).ready(() => {
   $("#add-todo-button").on("click", () => {
     showAddTodo()
   })
+
+  $("#cancel-button").on("click", () => {
+    cancelForm()
+  })
 })
+
+function cancelForm(event) {
+  event.preventDefault()
+  // $("#add-todo").show();
+  $("#add-todo").hide();
+  $("#update-todo").hide()
+  $("#update-status-todo").hide()
+}
 
 function showLogin() {
   $("#home").hide()
