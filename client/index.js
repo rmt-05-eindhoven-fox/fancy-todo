@@ -10,18 +10,20 @@ $(document).ready(function () {
     $("#error").hide()
     $(".navbar").hide()
 
-    $("#btn-register").on("click", function () {
-      $("#login").hide()
-      $("#register").show()
-      $("#content").hide()
-      $("#error").hide()
-    })
+    
   }
   else {
     $("#form_add").empty()
     $("#form_edit").empty()
     afterLogin()
   }
+
+  $("#btn-register").on("click", function () {
+    $("#login").hide()
+    $("#register").show()
+    $("#content").hide()
+    $("#error").hide()
+  })
 })
 
 function login(event) {

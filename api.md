@@ -10,6 +10,14 @@
 
 `GET`
 
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
+
 **Success Response:**
 
   Code: 200
@@ -44,6 +52,14 @@
 **Method:**
 
 `POST`
+
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
 
 **Data Params**
 
@@ -87,7 +103,15 @@
 
 `GET`
 
-**RL Params**
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
+
+**URL Params**
 
 Required:
 
@@ -127,6 +151,14 @@ Required:
 **Method:**
 
 `PUT`
+
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
 
 **URL Params**
 
@@ -176,6 +208,14 @@ Required:
 
 `PATCH`
 
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
+
 **URL Params**
 
 Required:
@@ -221,6 +261,14 @@ Required:
 
 `DELETE`
 
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
+
 **URL Params**
 
 Required:
@@ -240,6 +288,7 @@ Required:
   { error : "Internal Server Error" }
   ```
 
+
 ## Show Movies
 
 `Show Popular Movies data from The Movie Database (3rd party API`
@@ -251,6 +300,14 @@ Required:
 **Method:**
 
 `GET`
+
+**Headers:**
+
+```json
+{
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXNAbWFpbC5jb20iLCJpYXQiOjE2MDM3ODQ3MTV9.Jp3TQazB8fnEl8k5qtcoyoSbTtBbHu9fIvmDMPrBX-E'
+}
+```
 
 **Success Response:**
 
