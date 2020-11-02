@@ -65,11 +65,12 @@ client.on('message', (msg) => {
 })
 
 // send a reminder everyday at 7am
+let botName = client.user.tag
 const channelId = "772878233439830066"
 let dailyMessage = new bot.MessageEmbed()
       .setColor('#403b3b')
       .setTitle('This is automated daily reminder')
-      .setDescription(`Sent by ${client.user.tag}`)
+      .setDescription(`Sent by ${botName}`)
       .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
       .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
       .setTimestamp()
@@ -82,13 +83,3 @@ cron.schedule('* * * * *', function () {
 
 // Bot login using token
 client.login(process.env.DISCORD_BOT_TOKEN)
-
-/* NOTE
-Jadi kak ternyata discord bot nggak bisa auto kirim welcomeMsg di luar scope server discordnya
-Contoh:
-pake command !help baru bisa welcomeMsg 
-atau member join server nanti bisa auto welcomeMsg
-
-jadi nanti untuk process connect to discordnya mau nggak mau user harus join dulu ke server nanti 
-baru bisa saling DM sama botnya
-*/
