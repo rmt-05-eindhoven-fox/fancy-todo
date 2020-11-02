@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="google-signin-client_id"
+      content="806307208459-0j4n1em9rtpqp0b3froaddqlg8dpfi8a.apps.googleusercontent.com"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="images/favicon-96x96.png"
+    />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <style></style>
+    <title>Todo App</title>
+  </head>
+  <body class="bg-secondary text-center">
+    <!-- HOME STARTING POINT -->
+    <section id="head">
+      <div class="container">
+        <div class="banner-text">
+          <div class="text-area">
+            <span>T</span>
+            <span>O</span>
+            <span>O</span>&nbsp;
+            <span>D</span>
+            <span>O</span>
+            <span>O</span>
+            <span>S</span>
+          </div>
+          <p>Accomplish. Repeat.</p>
+          <p class="banner-btn">
+            <a onclick="toLogin()">login</a>
+            <a onclick="toRegister()">register</a>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- HOME END POINT -->
+
+    <!-- LANDING STARTING POINT -->
+    <section
+      id="login"
+      class="fixed-top"
+      style="
+        background: rgb(62, 62, 82);
+        background: linear-gradient(
+          180deg,
+          rgba(62, 62, 82, 1) 0%,
+          rgba(237, 138, 51, 1) 0%,
+          rgba(204, 199, 199, 1) 100%
+        );
+      "
+    >
+      <div class="form my-4 mx-5 mt-5">
+        <div class="container">
+          <div class="row no-gutters">
+            <div class="col-lg-6">
+              <img
+                id="todologo"
+                src="images/man-sitting-pile-of-books.jpg"
+                class="img-fluid"
+                alt=""
+              />
+            </div>
+            <div class="col-lg-6 px-5">
+              <img
+                class="font-weight-bold"
+                src="images/TooDoos.png"
+                style="width: 180px; height: 180px; margin-right: 190px"
+              />
+              <h4 style="text-align: left">Sign Into Your Account</h4>
+              <form onsubmit="login(event)">
+                <div class="form-row">
+                  <div class="col-lg-7">
+                    <input
+                      type="email"
+                      class="form-control my-2 p-4"
+                      placeholder="Email-Address"
+                      name="email"
+                      id="getEmail"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col-lg-7">
+                    <input
+                      class="form-control my-2 p-4"
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      name="password"
+                      id="getPassword"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col-lg-7 mt-3">
+                    <button type="submit" class="pencetan">Login</button>
+                  </div>
+                </div>
+              </form>
+              <div class="g-signin2 mt-3" data-onsuccess="onSignIn"></div>
+              <p style="text-align: left" class="mt-2">
+                If you are not a member,
+                <a href="#" onclick="toRegister()">Join here</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- LANDING END POINT -->
+
+    <section
+      id="register"
+      class="fixed-top"
+      style="
+        background: rgb(32, 152, 175);
+        background: linear-gradient(
+          180deg,
+          rgba(32, 152, 175, 1) 0%,
+          rgba(204, 199, 199, 1) 0%,
+          rgba(242, 161, 89, 1) 100%
+        );
+      "
+    >
+      <div class="form my-4 mx-5 mt-5">
+        <div class="container">
+          <div class="row no-gutters">
+            <div class="col-lg-6">
+              <img
+                id="todologo"
+                src="images/man-sitting-pile-of-books.jpg"
+                class="img-fluid"
+                alt=""
+              />
+            </div>
+            <div class="col-lg-6 px-5">
+              <img
+                class="font-weight-bold"
+                src="images/TooDoos.png"
+                style="width: 180px; height: 180px; margin-right: 190px"
+              />
+              <h4 style="text-align: left; margin-left: 45px">
+                Sign Yourself Up
+              </h4>
+              <form onsubmit="register(event)">
+                <div class="form-row">
+                  <div class="col-lg-7">
+                    <input
+                      type="email"
+                      class="form-control my-2 p-4"
+                      placeholder="Email-Address"
+                      id="regEmail"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col-lg-7">
+                    <input
+                      class="form-control my-2 p-4"
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      id="regPassword"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col-lg-7 mt-3">
+                    <button type="submit" class="pencetan">Sign Up</button>
+                  </div>
+                </div>
+              </form>
+              <div class="g-signin2 mt-3" data-onsuccess="onSignIn"></div>
+              <p style="text-align: left" class="mt-2">
+                If you already a member,
+                <a href="#" onclick="toLogin()">Sign in here</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOME STARTING POINT -->
+    <section id="content">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">TooDoos</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Weather and News</a>
+            </li>
+          </ul>
+        </div>
+       
+        <button id="addTodo" onclick="toAdd()" class="btn btn-primary">Add Todo</button>
+        <button id="logout" onclick="logout()" class="btn btn-danger">Logout</button>
+      </nav>
+
+      <div class="bg-light row justify-content-center text-light">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="allTodo"></tbody>
+        </table>
+      </div>
+    </section>
+    <!-- HOME END POINT -->
+
+
+    <section class="container-fluid" id="bg-todoform">
+      <section
+        class="row justify-content-center"
+        style="background-color: rgba(0, 0, 0, 0)"
+      >
+        <section class="col-12 col-sm-6 col-md-3" style="margin-top: 100px">
+          <form class="form-addtodo bg-light" onsubmit="addTodo(event)">
+            <div class="form-group">
+              <label for="addTitle">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Your todo title"
+                id="addTitle"
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <div class="form-group">
+              <label for="addDescription">Description</label>
+              <input
+                type="text"
+                class="form-control"
+                id="addDescription"
+                placeholder="Your todo description"
+              />
+            </div>
+            <div class="form-group">
+              <label for="addStatus">Status</label>
+              <select id="addStatus" class="custom-select custom-select-sm">
+                <option selected>What's your todo status?</option>
+                <option value="NOT COMPLETED">NOT COMPLETED</option>
+                <option value="COMPLETED">COMPLETED</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="addDate">Due Date</label>
+              <br>
+              <input type="date" class="form-control" id="addDate">
+            </div>
+            
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+              Submit
+            </button>
+            <!-- <button type="button" onclick="showContent()" class="btn btn-danger btn-block">
+              Go Back
+            </button> -->
+          </form>
+        </section>
+      </section>
+    </section>
+
+
+    <section class="container-fluid" id="bg-edittodo">
+      
+    </section>
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+    <script src="index.js"></script>
+  </body>
+</html>
