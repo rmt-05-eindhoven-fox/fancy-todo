@@ -32,6 +32,8 @@ module.exports = {
       // let ping = `${Date.now() - msg.createdTimestamp} ms`
       // msg.channel.send('Pong.');
       msg.channel.send(`${messageEmbed}`)
+
+      console.log(messageEmbed);
 	}, 
 };
 
