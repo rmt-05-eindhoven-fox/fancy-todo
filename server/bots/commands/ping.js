@@ -31,7 +31,7 @@ module.exports = {
          .setFooter(`Requested by ${msg.author}`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
       // let ping = `${Date.now() - msg.createdTimestamp} ms`
       // msg.channel.send('Pong.');
-      msg.channel.send(`${messageEmbed}`)
+      msg.channel.send(messageEmbed)
 
       console.log(messageEmbed);
 	}, 
