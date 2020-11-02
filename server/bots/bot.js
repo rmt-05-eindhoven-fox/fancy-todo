@@ -1,8 +1,8 @@
 require('dotenv').config()
 
-const {
-   dailyReminder
-} = require('../../helper/bot')
+// const {
+//    dailyReminder
+// } = require('../../helper/bot')
 // const {daily} = require('./commands/daily')
 
 const fs = require('fs');
