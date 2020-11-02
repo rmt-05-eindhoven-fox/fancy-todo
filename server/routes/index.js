@@ -8,7 +8,8 @@ const authorization = require('../middlewares/authorization')
 
 
 
-// router.use(authentication);
+// router
+router.get('/', (req,res) => res.status(200).json({ msg: 'hello world'}))
 
 //moviedb
 router.use('/movies/trending', MovieController.findTrendingMovies)
