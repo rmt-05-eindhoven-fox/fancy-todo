@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="289368020557-0detd5v015b4bsc62tch14qd4c5045uv.apps.googleusercontent.com">
+  <title>Welcome to my To-Do apps</title>
+  <!-- Bootstrap CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+  <!-- My CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- REGISTER PAGE -->
+  <div id="register-page">
+    <div class="d-flex justify-content-center mb-5">
+      <img src="asset/img/logo-yellow.png" alt="" srcset="">
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="col-4">
+        <h3 class="display-5 mb-3">Create your account</h3>
+        <div id="error-register">
+          <div class="alert alert-danger" role="alert">
+            Must be email format and minimum 6 character! Try again.
+          </div>
+        </div>
+        <form onsubmit="register(event)">
+          <div class="form-group">
+            <input id="register-email" class="form-control" type="text" placeholder="Email">
+          </div>
+
+          <div class="form-group">
+            <input id="register-password" class="form-control" type="password" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-warning btn-block mb-2">Register</button>
+          <div class="btn btn-link mr-2" id="login-page-btn">Already have account? Login to your account</div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <!-- END REGISTER PAGE -->
+
+
+
+  <!-- LOGIN PAGE -->
+  <div id="login-page">
+    <div class="d-flex justify-content-center mb-5">
+      <img src="asset/img/logo-dark.png" alt="" srcset="">
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="col-4">
+        <h3 class="display-5 mb-3">Login to your account!</h3>
+        <div id="error-login">
+          <div class="alert alert-danger" role="alert">
+            Username or Password Wrong, Try again!
+          </div>
+        </div>
+        <form onsubmit="login(event)">
+          <div class="form-group">
+            <input id="login-email" class="form-control" type="text" placeholder="Email">
+          </div>
+
+          <div class="form-group">
+            <input id="login-password" class="form-control" type="password" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-dark btn-block mb-2">Login</button>
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+          <div class="btn btn-link text-center" id="register-page-btn">Create your own account</div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <!-- END LOGIN PAGE -->
+
+
+  <!-- HOMEPAGE -->
+  <div id="homepage" class="container-fluid homepage">
+    <nav class="navbar navbar-dark navbar-expand-lg fluid">
+      <!-- Navbar-->
+      <a class="navbar-brand" href="#"><img src="asset/img/logo-yellow.png" width="100px" srcset=""></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#todo">Features</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-danger" onclick="logout(); signOut();">Logout</button>
+          </li>
+          <li class="nav-item">
+            <a href="#" onclick="signOut();" hidden>Sign out</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <!-- QUOTE SECTION -->
+    <div class=" jumbotron jumbotron-fluid">
+      <div class="container" id="favq-quote">
+
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+      <button class="btn btn btn-outline-warning" onclick="getQuote()">Random Quote</button>
+    </div>
+    <!-- END QUOTE SECTION -->
+
+    <!-- TODO SECTION -->
+    <div class="section-todo container" id="todo">
+      <div class="row">
+        <h1 class="col-10">Your To-Do List</h1>
+        <button type="button" class="btn btn-outline-warning ml-3" data-toggle="modal" data-target="#addModal">+ Add New To-Do</button>
+      </div>
+
+      <div id="alert-add">
+        <div class="row mt-5">
+          <div class="col">
+            <div class="alert alert-success" role="alert">
+              <strong>Congratulation!</strong> Todo added successfully!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="alert-error">
+        <div class="row mt-5">
+          <div class="col">
+            <div class="alert alert-danger" role="alert">
+              Check your entry, please fill all field!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="alert-delete">
+        <div class="row mt-5">
+          <div class="col">
+            <div class="alert alert-warning" role="alert">
+              <strong>Congratulation!</strong> Todo deleted successfully!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="alert-update">
+        <div class="row mt-5">
+          <div class="col">
+            <div class="alert alert-info" role="alert">
+              <strong>Updated!</strong> Todo updated successfully!
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal Add -->
+      <div class="section-add">
+        <div class="modal fade my-auto" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create New To-Do</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title">
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="status">Status</label>
+                    <select class="form-control" id="status">
+                      <option value="Unfinished">Unfinished</option>
+                      <option value="Finished">Finished</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="due_date">Due Date</label><br>
+                    <input type="date" class="form-control" name="due_date" id="due_date">
+                  </div>
+                  <button type="button" onclick="postTodo()" class="btn btn-success btn-block" data-dismiss="modal">Create Task</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal Edit -->
+      <div class="section-update">
+        <div class="modal fade my-auto" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update To-Do</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="">
+                  <div class="form-group">
+                    <label for="edit-id">ID</label>
+                    <input type="text" class="form-control" id="edit-id" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" class="form-control" id="edit-title">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea class="form-control" id="edit-description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-status">Status</label>
+                    <input type="text" class="form-control" id="edit-status" placeholder="Finish Or Unfinished">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit_due_date">Due Date</label><br>
+                    <input type="date" class="form-control" id="edit_due_date" name="edit_due_date">
+                  </div>
+                  <button type="button" onclick="postUpdate()" class="btn btn-success btn-block" data-dismiss="modal">Update Task</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="user-todo">
+        <!-- card todo content-->
+        <!-- <div class="col-lg-4 col-sm-6">
+          <div class="card bg-warning mb-3 mt-3 pb-3 pr-3">
+            <div class="card-header">Finished</div>
+            <div class="card-body">
+              <h5 class="card-title">Title</h5>
+              <p class="card-text text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, reiciendis. Iusto a rem tempora id temporibus quis asperiores debitis illo.</p>
+              <p class="text-monospace"><cite>Due Date:<cite>2020-11-01</p>
+            </div>
+            <div class="d-flex justify-content-end mr-1">
+              <button class="btn btn-info mr-2">Update</button>
+              <button class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="d-flex justify-content-center" id="todo-null">
+      <!-- if user haven't todo -->
+    </div>
+  </div>
+
+  <!-- END SECTION TODO SECTION -->
+  </div>
+  <!-- END HOMEPAGE -->
+
+
+  <footer class="d-flex justify-content-center py-5">
+    <small>Simple Fancy To-Do &copy; Dicky Andeyan, Hacktiv8 2020</small>
+  </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

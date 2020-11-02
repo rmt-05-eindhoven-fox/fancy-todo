@@ -1,0 +1,4 @@
+SECRET=Dedsec
+PORT=3000
+SALT=10
+GOOGLE_KEY=289368020557-0detd5v015b4bsc62tch14qd4c5045uv.apps.googleusercontent.com

@@ -1,0 +1,82 @@
+#register-page {
+  min-height: 220px;
+  padding: 70px 0;
+  background-color: #383838;
+  color: #f5c21c;
+}
+
+#register-page-btn {
+  color: #383838;
+}
+
+#login-page {
+  min-height: 100px;
+  padding: 70px 0;
+  background-color: #f5c21c;
+}
+
+#login-page-btn {
+  color: #f5c21c;
+}
+
+.homepage {
+  background-color: #383838 !important;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.jumbotron {
+  font-family: 'Playfair Display', serif;
+  color: #383838;
+  text-align: center;
+  min-height: 50vh;
+
+  overflow: auto;
+  font-weight: bold;
+}
+
+.section-todo {
+  margin-bottom: 50px;
+}
+
+.section-todo .card {
+  color: #383838;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.section-add,
+.section-update {
+  color: #383838;
+}
+
+
+li {
+  margin-left: 50px;
+}
+
+#todo-null {
+  color: #5c5c5c;
+}
+
+footer {
+  font-family: monospace;
+  font-size: large;
+  margin-top: auto;
+  margin-bottom: 0;
+  min-height: 80px;
+  background-color: #383838;
+  color: #f5c21c;
+}
+
+.finished {
+  background-color: #15b100;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.unfinished {
+  background-color: #ce0000;
+  color: #ffffff;
+  font-weight: bold;
+}
