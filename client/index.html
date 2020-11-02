@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <meta name="google-signin-client_id" content="137983705995-j657u4aton25inf16dbrcsn0rq1hr1n5.apps.googleusercontent.com">
+  </head>
+
+  <body>
+    <header>
+        <nav class="navbar navbar-light flex-row-reverse">
+            <section id="logout">
+                <button onclick="logout()" class="btn btn-danger">Logout</button>
+            </section>
+
+            <section id="signupButton">
+            <button onclick="showSignup()" class="btn btn-primary">Sign Up</button>
+            </section>
+
+            <section id="signinButton">
+            <button onclick="cancelSignup()" class="btn btn-primary">Sign In</button>
+            </section>
+        </nav>
+    </header>
+
+    <!--Sign In-->
+    <section class="container" id="signin">        
+    <div class="row justify-content-center mt-5">
+        <div>
+        <form onsubmit="signin(event)">
+            <h1>Sign In</h1>
+            <div class="form-group" id="signinError">
+                <p>Invalid Email/Password</p>
+            </div>
+            <div class="form-group">
+                <label for="signin-email">Email</label>
+                <input type="text" id="signin-email" class="form-control" autocomplete="username" />
+            </div>
+            <div class="form-group">
+                <label for="signin-password">Password</label>
+                <input type="password" id="signin-password" class="form-control" autocomplete="current-password" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Sign In</button>   
+            </div>
+            <div class="form-group">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+        </form>
+        </div>
+        <div>
+            
+        </div>
+    </div>
+    
+    </section>
+    <!--End Sign In-->
+
+    <!--Sign Up-->
+    <section class="container" id="signup">
+    <div class="row justify-content-center mt-5">
+        <form onsubmit="signup(event)">
+            <h1>Sign Up</h1>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="text" id="signup-email" class="form-control" autocomplete="username" />
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" class="form-control" autocomplete="current-password" />
+            </div>
+            <!-- <div class="form-group">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" class="form-control" />
+            </div> -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Sign Up</button>    
+            </div>
+        </form>
+    </div>
+    </section>
+    <!--End Sign Up-->
+
+    <!--Home-->
+    <section class="container-fluid" id="content">
+        <!--Todo List-->
+        <section class="container-fluid" id="todoList">
+            <div class="col justify-content-center mt-5 ">
+                <div>
+                    <h1>Todo list</h1>
+                </div>
+                <div>
+                    <a onclick="showAddTodoForm()" class="btn btn-primary">Add todo</a>
+                </div>
+                <div id="todos" class="col justify-content-center">
+                </div>
+            </div>
+        </section>
+        <!--End Todo List-->
+
+        <!--Manga Recomendation-->
+        <section class="container-fluid" id="mangaRecommend">
+            <div class="col justify-content-center mt-5">
+                <h1>Recommendation  Manga List</h1>
+                <div id="mangaList"></div>
+            </div>
+        </section>
+        <!--End Manga Recommendation-->
+    </section>
+    <!--End Home-->
+
+    <!--Edit Todo Form-->
+    <section class="container-fluid" id="editFormSection">
+        <div class="row justify-content-center">
+            <div>
+            <h1>Edit Todo</h1>
+            <div id="editForm"></div>
+        </div>
+        </div>
+    </section>
+    <!--End Edit Todo Form-->
+
+    <!--Add Todo Form-->
+    <section class="container-fluid" id="addTodoForm">
+        <div class="row justify-content-center">
+            <div>
+                <form onsubmit="addTodo(event)">
+                    <h1>Add Todo</h1>
+                    <div class="form-group" id="addError">
+                        <p>Invalid Email/Password</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-title">Title</label>
+                        <input type="text" id="add-title" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="add-description">Description</label>
+                        <input type="text" id="add-description" class="form-control" />
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="add-status">Status</label>
+                        <input type="text" id="add-status" class="form-control" />
+                    </div> -->
+                    <div class="form-group">
+                        <label for="add-due_date">Due Date</label>
+                        <input type="date" id="add-due_date" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Add</button>  
+                        <button onclick="cancelAdd()" class="btn btn-primary">Cancel</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!--End Add Todo Form-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="index.js"></script>
+  </body>
+</html>
