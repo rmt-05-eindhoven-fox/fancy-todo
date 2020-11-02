@@ -6,7 +6,7 @@ module.exports = {
 	execute(msg, args, client) {
       let messageEmbed = new bot.MessageEmbed()
          .setColor('#403b3b')
-         .setTitle(':ping_pong:  Pinging RemindMeBot!')
+         .setTitle(':ping_pong:  RemindMeBot said: "Pong!"')
          .setDescription(`Requested by ${msg.author}`)
          .addFields(
             { name: '**Server**', value: `${Date.now() - msg.createdTimestamp} ms` },
