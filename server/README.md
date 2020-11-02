@@ -18,15 +18,6 @@ npx sequelize db:migrate all
 npx nodemon app.js
 ```
 
-**Env Config**
-```json
-JWT_KEY=secret
-EMAIL=ujioba12345@gmail.com
-PASS=ujicobaferdian
-SMTP=smtp.gmail.com
-CLIENT_ID=790332648718-5ij89p1a3db2kkas7g28833sd2iqo3ku.apps.googleusercontent.com
-```
-
 **Kendala**
 ```
 1. Membuat code yang rapih & bagus agar mudah di pahami
