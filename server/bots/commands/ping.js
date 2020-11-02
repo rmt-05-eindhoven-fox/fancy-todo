@@ -1,20 +1,5 @@
 const bot = require('discord.js');
 
-// module.exports.run = async function(msg, args, client) {
-//    let botMsg = await msg.channel.send(`:ping_pong:`)
-
-//    botMsg.edit({ embed: {
-//       title: "📶 Pinging RemindMeBot",
-//       description: [
-//         "**Server**: `" + (botMsg.createdAt - msg.createdAt) + "ms`",
-//         "**API**: `" + Math.round(client.ping) + "ms`",
-//         "**Uptime**: `" + msToTime(client.uptime) + "`"
-//       ].join("\n"),
-//       footer: { text: "Requested by " + msg.author.tag, icon_url: msg.author.displayAvatarURL },
-//       timestamp: new Date()
-//     }}).catch(() => botMsg.edit("🆘 An unknown error occurred. "));
-// }
-
 module.exports = {
 	name: 'ping',
 	description: 'Ping!',
@@ -28,9 +13,7 @@ module.exports = {
             { name: '**Bot Uptime**', value: `${msToTime(client.uptime)}` },
          )
          .setTimestamp()
-         .setFooter(`Message sent at`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
-      // let ping = `${Date.now() - msg.createdTimestamp} ms`
-      // msg.channel.send('Pong.');
+         .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
       msg.channel.send(messageEmbed)
 	}, 
 };
@@ -52,10 +35,3 @@ function msToTime(ms){
  
    return str;
  }
-// module.exports = {
-// 	name: 'ping',
-// 	description: 'Ping!',
-// 	execute(msg, args) {
-//       msg.channel.send('Pong.');
-// 	},
-// };

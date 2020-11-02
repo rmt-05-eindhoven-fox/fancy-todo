@@ -18,7 +18,7 @@ module.exports = {
                   }
                   else {
                      todos.forEach(el => {
-                        messageTemplate += `**Todo ID**: ${el.dataValues.id}\n**Title**: ${el.dataValues.title}\n**Description**: ${el.dataValues.description}\n**Status**: ${el.dataValues.status}\n**Deadline**: ${el.dataValues.due_date}\n\n`
+                        messageTemplate += `**Todo ID**: ${el.dataValues.id}\n**Title**: ${el.dataValues.title}\n**Description**: ${el.dataValues.description}\n**Status**: ${el.dataValues.status}\n**Deadline**: ${formatDate(el.dataValues.due_date)}\n\n`
                      });
    
                      msg.reply(`${messageTemplate}\n**P.S.** Discord only support maximum of 2000 characters each message.`)
@@ -26,7 +26,28 @@ module.exports = {
                })
          })
          .catch(err => {
-            console.log(err);
+            let messageEmbed = new bot.MessageEmbed()
+               .setColor('#403b3b')
+               .setTitle('Register your Discord Username')
+               .setURL('https://fancy-todo-12af6.web.app/') 
+               .setDescription(`It seems that you haven't register your Discord Username to our server.\nPlease register using the link above.`)
+               .setTimestamp()
+               .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
+            msg.channel.send(messageEmbed);
          })
 	},
 };
+
+formatDate = (date) => {
+   var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+   if (month.length < 2)
+      month = '0' + month;
+   if (day.length < 2)
+      day = '0' + day;
+
+   return [year, month, day].join('-');
+}

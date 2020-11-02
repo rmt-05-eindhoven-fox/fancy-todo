@@ -2,7 +2,7 @@ const bot = require('discord.js');
 const {markDone} = require('../../helper/bot')
 
 module.exports = {
-	name: 'done',
+	name: 'mark',
 	description: 'Mark todo as done',
 	execute(msg, args) {
       let messageEmbed = new bot.MessageEmbed()
@@ -10,7 +10,7 @@ module.exports = {
          .setTitle('Reminder')
          .setDescription(`You didn't provide any arguments, ${msg.author}!`)
          .addFields(
-            { name: '`!done <argument>`', value: 'where argument is your Todo id.' },
+            { name: '`!mark <argument>`', value: 'where argument is your Todo id.' },
             { name: 'Run `!list`', value: 'to view your currently active Todo(s) then re-run the command again.' },
          )
       if (!args.length) {
