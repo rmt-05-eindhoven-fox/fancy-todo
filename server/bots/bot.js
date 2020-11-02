@@ -65,12 +65,11 @@ client.on('message', (msg) => {
 })
 
 // send a reminder everyday at 7am
-let botName = client.user
 const channelId = "772878233439830066"
 let dailyMessage = new bot.MessageEmbed()
       .setColor('#403b3b')
       .setTitle('This is automated daily reminder')
-      .setDescription(`Sent by ${botName}`)
+      .setDescription(`A bot's gotta botting!`)
       .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
       .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
       .setTimestamp()
@@ -78,7 +77,14 @@ let dailyMessage = new bot.MessageEmbed()
 
 cron.schedule('* * * * *', function () {
    let channel = client.channels.cache.get(channelId)
-   channel.send(dailyMessage)   
+   channel.send(dailyMessage)
+   dailyReminder()
+      .then(todos => {
+         console.log(todos);
+      })
+      .catch(err => {
+         console.log(err);
+      })
 });
 
 // Bot login using token
