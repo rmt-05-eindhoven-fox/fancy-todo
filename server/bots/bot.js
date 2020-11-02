@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const {
    dailyReminder
-} = require('../../helper/bot')
+} = require('../helper/bot')
 // const {daily} = require('./commands/daily')
 
 const fs = require('fs');
@@ -69,7 +69,7 @@ const channelId = "772878233439830066"
 let dailyMessage = new bot.MessageEmbed()
       .setColor('#403b3b')
       .setTitle('This is automated daily reminder')
-      .setDescription(`Sent by ${msg.author}`)
+      .setDescription(`Sent by ${client.user.tag}`)
       .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
       .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
       .setTimestamp()
