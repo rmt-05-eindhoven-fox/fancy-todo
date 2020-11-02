@@ -220,6 +220,7 @@ function addTodo(event) {
   }).done(response => {
     getTodo()
     clearAllForms()
+    $("#add-todo").hide()
     $("#todo-errors").hide()
     console.log(response)
   }).fail(err => {
@@ -403,7 +404,7 @@ function getTodo() {
 
       $("#todo").append(`
 
-      <div class="card border-light bg-light mb-3">
+      <div class="card border-primary mb-3 bg-light">
           <div class="card-body bg-transparent border-light">
             <h5 class="card-title">${todo.title.capitalize()}</h5>
             <hr>
@@ -418,8 +419,8 @@ function getTodo() {
         </div>
         <div class="card-footer bg-transparent border-light ">
           <div class="d-flex justify-content-center">
+          <button class="btn text-primary m-1" onclick="updateTodo(${todo.id})">Edit task</button>
             <button class="btn text-danger m-1 " onclick="confirmDelete(${todo.id})">Delete task</button>
-            <button class="btn text-primary m-1" onclick="updateTodo(${todo.id})">Edit task</button>
           </div>
         </div>
       </div>
