@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {daily} = require('./commands/daily')
+const daily = require('./commands/daily')
 
 const fs = require('fs');
 const bot = require('discord.js')

@@ -10,4 +10,4 @@ daily = () => {
    channel.send('HELLO INI DI IMPORT')
 }
 
-module.exports = {daily}
+module.exports = daily
