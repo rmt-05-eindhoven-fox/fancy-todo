@@ -1,5 +1,5 @@
-const SERVER = 'http://localhost:3000';
-// const SERVER = `https://bobfancytodo.herokuapp.com`;
+// const SERVER = 'http://localhost:3000';
+const SERVER = `https://bobfancytodo.herokuapp.com`;
 
 // Login & Logout Alert
 const Toast = Swal.mixin({
@@ -22,7 +22,7 @@ function onSignIn(googleUser) {
 
   $.ajax({
     method: 'POST',
-    url: "http://localhost:3000/loginGoogle",
+    url: `${SERVER}/loginGoogle`,
     data: {
       google_access_token
     }
