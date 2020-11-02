@@ -14,11 +14,13 @@ class TodoController {
         }
     }
 
-
-
     static async findAll(req, res, next) {
         try {
-            let todo = await ToDo.findAll()
+            const id = req.loggedInUser.id
+            let todo = await ToDo.findAll({
+                where : { 
+                    UserId: id }
+                })
             res.status(200).json(todo)
         } catch (err) {
             console.log(err, '>>> ERROR FIND ALL')
@@ -59,7 +61,8 @@ class TodoController {
     static async updateStatus(req, res, next) {
         try {
             // let { status } = req.body
-            let todo = await ToDo.update({status : true}, { where: { id: req.params.id } , returning : true})
+            let todo = await ToDo.update({status : true}, 
+                { where: { id: req.params.id } , returning : true})
             console.log(todo, ">>> ini dari update status")
             res.status(200).json(todo)
             // if (todo) {

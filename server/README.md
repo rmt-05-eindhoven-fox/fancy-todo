@@ -11,7 +11,6 @@ List of available endpoints:
 * DELETE /tudos/:id
 
 ----
-
 **REGISTER**
 ----
   Register into the web app

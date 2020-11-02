@@ -26,8 +26,7 @@ async function authenctication(req, res, next) {
         }
     } catch (err) {
         next(err)
-        // console.log(err, "<<<< ERROR AUTHENTICATION")
-        // res.status(err.status).json({err : err.msg})
+
     }
 }
 

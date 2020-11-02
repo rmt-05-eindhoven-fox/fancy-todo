@@ -9,8 +9,7 @@ $(document).ready(function () {
         $("#register").hide()
         $("#listTodo").show()
         $("#todoAdd").hide()
-        // fetchAllTodo()  // nge fatch api pada saat dia bawa token
-        todoList() // nge fatch api dari get all todo
+        todoList()
         todoAdd()
     } else {
         $("#home").hide()
@@ -55,9 +54,9 @@ function getQuote() {
 }
 
 function login(e) {
-    e.preventDefault()  // ini untuk membuat browser tidak ter-refresh
-    const email = $("#login-email").val()    // ini untuk ambil email nya
-    const password = $("#login-password").val()  // ini untuk ambil password nya
+    e.preventDefault()  
+    const email = $("#login-email").val()
+    const password = $("#login-password").val()  
 
     const Toast = Swal.mixin({
         toast: true,
@@ -70,21 +69,17 @@ function login(e) {
           toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
-    // $("#login").hide()
-    // $("#home").show()
-    $.ajax({                    // ajax membaca dari status sehingga setiap error akan 
-        method: "POST",         // melempar langsung ke fail
+    $.ajax({                   
+        method: "POST",        
         url: SERVER + "/users/login",
         data: {
             email,
             password
         }
     }).done(response => {
-        // console.log(response)     // respons berhasil
         const token = response.access_token
         localStorage.setItem("token", token)
         $("#home").show()
-        // $("#listTodo").show()
         $("#login").hide()
         $("#login-email").val("");
         $("#login-password").val("");
@@ -93,7 +88,6 @@ function login(e) {
             icon: "success",
             title: `Log in successfully`,
           });
-        // todoAdd()
     }).fail(err => {
         console.log(err.responseJSON.msg);
         Swal.fire({
@@ -102,11 +96,10 @@ function login(e) {
           text: err.responseJSON.msg,
         });
     })
-    // menyimpan token di lokel storage
 }
 
 function toRegister(event) {
-    event.preventDefault() // untuk mencegah browser ter represh
+    event.preventDefault() 
     $("#login").hide();
     $("#home").hide();
     $("#register").show()
@@ -153,7 +146,6 @@ function register(e) {
 
 
 function logout(e) {
-    // console.log(e);             // dia udah nge event listener ketika sudah dirender
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         console.log('User signed out.');
@@ -162,12 +154,9 @@ function logout(e) {
     $("#home").hide()
     $("#listTodo").hide()
     $("#todoAdd").hide()
-    // localStorage.removeItem("token")
-
     localStorage.clear()
 }
 
-// google signin
 function onSignIn(googleUser) {
     const Toast = Swal.mixin({
         toast: true,
@@ -184,9 +173,6 @@ function onSignIn(googleUser) {
     var google_access_token = googleUser.getAuthResponse().id_token;
     console.log(google_access_token, "<<< google_access_token");
 
-    // verify di backend minta tolong sama google
-    // kita akses pakai ajax
-    // method, url, data kalau ada
     $.ajax({
         method: "POST",
         url: SERVER + "/users/googleLogin",
@@ -244,7 +230,6 @@ function todoList() {
     })
 }
 
-
 function markDone(id) { 
     console.log(id, "<<< ini id dari markDone");
     const token = localStorage.getItem("token")
@@ -286,7 +271,7 @@ function update(id) {
 }
 
 function postData() { 
-    const id = $("#id-edit").val()  // cara ambil data dari body client
+    const id = $("#id-edit").val()  
     const title = $("#title-edit").val()
     const description = $("#description-edit").val()
     const status = $("#status-edit").val()
@@ -325,6 +310,9 @@ function postTodoAdd() {
     const status = $("#status").val()
     const due_date = $("#due_date").val()
     $("#title").val("")
+    $("#description").val("")
+    $("#status").val("")
+    $("#due_date").val("")
     console.log(title, description, status, due_date);
     const token = localStorage.getItem("token");
     console.log(token, "<<< ini token");
@@ -357,7 +345,6 @@ function deleteTodo(id, event) {
         url : SERVER + `/todos/${id}`,
         headers : { token : token}
     }).done(res => {
-        // $("#listTodo").empty();
         todoList()
     }).fail(err => { 
         console.log(err);
