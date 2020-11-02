@@ -18,7 +18,7 @@ module.exports = {
             { name: ' [title] ', value: 'Your Todo title' },
             { name: ' [description] ', value: 'Your Todo description' },
             { name: ' [due_date] ', value: 'Your Todo due date, format: YYYY-MM-DD' },
-            { name: ' **REMAINDER** ', value: 'Use square brackets `[value here]` for each arguments' },
+            { name: ' **REMINDER** ', value: 'Use square brackets `[value here]` for each arguments' },
          )
       if (args.length === 1) {
          msg.channel.send(noArgsMsg)

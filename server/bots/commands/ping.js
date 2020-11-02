@@ -21,19 +21,17 @@ module.exports = {
 	execute(msg, args, client) {
       let messageEmbed = new bot.MessageEmbed()
          .setColor('#403b3b')
-         .setTitle(':ping_pong: Pinging RemindMeBot')
+         .setTitle(':ping_pong:  Pinging RemindMeBot!')
+         .setDescription(`Requested by ${msg.author}`)
          .addFields(
             { name: '**Server**', value: `${Date.now() - msg.createdTimestamp} ms` },
-            { name: '**API**', value: `${Math.round(client.ping)}` },
-            { name: '**Uptime**', value: `${msToTime(client.uptime)}` },
+            { name: '**Bot Uptime**', value: `${msToTime(client.uptime)}` },
          )
          .setTimestamp()
-         .setFooter(`Requested by ${msg.author}`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
+         .setFooter(`Message sent at`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
       // let ping = `${Date.now() - msg.createdTimestamp} ms`
       // msg.channel.send('Pong.');
       msg.channel.send(messageEmbed)
-
-      console.log(messageEmbed);
 	}, 
 };
 

@@ -21,7 +21,7 @@ module.exports = {
                         messageTemplate += `**Todo ID**: ${el.dataValues.id}\n**Title**: ${el.dataValues.title}\n**Description**: ${el.dataValues.description}\n**Status**: ${el.dataValues.status}\n**Deadline**: ${el.dataValues.due_date}\n\n`
                      });
    
-                     msg.reply(`${messageTemplate}\nP.S. Discord only support maximum of 2000 characters each message.`)
+                     msg.reply(`${messageTemplate}\n**P.S.** Discord only support maximum of 2000 characters each message.`)
                   }
                })
          })
