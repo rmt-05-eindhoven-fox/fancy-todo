@@ -38,7 +38,7 @@ app.use(compression({
 app.use('/', router)
 app.use(errorHandler)
 
-cron.schedule('*/2 * * * *', function () {
+cron.schedule('0 */2 * * *', function () {
    getPhotos()
 });
 

@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const fs = require('fs');
 const bot = require('discord.js')
-
+const cron = require('node-cron');
 // const privateMsg = require('./commands/welcome')
 // const welcomeMsg = require('./commands/dm')
 
@@ -22,16 +22,17 @@ client.on('ready', () => {
 })
 
 // send a DM everytime a user join the server <<< masih error 
-const channelId = '770647381728952320'
+// const channelId = '770647381728952320'
 
-client.on('guildMemberAdd', member => {
-   console.log(member);
-   const message = `<${member.id} has joined the server!`
+// client.on('guildMemberAdd', member => {
+//    console.log(member);
+//    const message = `<${member.id} has joined the server!`
 
-   const channel = member.guild.channels.cache.get(channelId)
-   channel.send(message)
-})
+//    const channel = member.guild.channels.cache.get(channelId)
+//    channel.send(message)
+// })
 
+// Command list
 const commandFiles = fs.readdirSync('./bots/commands').filter(file => file.endsWith('.js'))
 
 for (const file of commandFiles) {
@@ -55,6 +56,14 @@ client.on('message', (msg) => {
       msg.reply('there was an error trying to execute that command!');
    }
 })
+
+// send a reminder everyday at 7am
+const channelId = "772878233439830066"
+cron.schedule('* * * * *', function () {
+   let channel = client.channels.get(channelId);
+
+   channel.send("TEST")
+});
 
 // Bot login using token
 client.login(process.env.DISCORD_BOT_TOKEN)

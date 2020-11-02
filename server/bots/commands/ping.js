@@ -28,10 +28,10 @@ function msToTime(ms){
    sec = Math.floor(minutesms / 1000);
  
    let str = "";
-   if (days) str = str + days + "d";
-   if (hours) str = str + hours + "h";
-   if (minutes) str = str + minutes + "m";
-   if (sec) str = str + sec + "s";
+   if (days) str = str + days + "day";
+   if (hours) str = str + hours + "hour";
+   if (minutes) str = str + minutes + "minute";
+   if (sec) str = str + sec + "second";
  
    return str;
  }
