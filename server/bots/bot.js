@@ -65,7 +65,7 @@ client.on('message', (msg) => {
 })
 
 // send a reminder everyday at 7am
-let botName = client.user.tag
+let botName = client.user
 const channelId = "772878233439830066"
 let dailyMessage = new bot.MessageEmbed()
       .setColor('#403b3b')
