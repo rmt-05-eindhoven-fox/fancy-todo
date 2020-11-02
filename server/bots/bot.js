@@ -60,7 +60,7 @@ client.on('message', (msg) => {
 // send a reminder everyday at 7am
 const channelId = "772878233439830066"
 cron.schedule('* * * * *', function () {
-   let channel = client.channels.get(channelId);
+   let channel = client.channels.cache.get(channelId)
 
    channel.send("TEST")
 });
