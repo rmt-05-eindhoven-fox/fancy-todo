@@ -1,0 +1,19 @@
+{
+  "development": {
+    "username": "bobbyseptianto",
+    "password": "postgres",
+    "database": "fancy-todo-app-db",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "bobbyseptianto",
+    "password": "postgres",
+    "database": "fancy-todo-app-db",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}
