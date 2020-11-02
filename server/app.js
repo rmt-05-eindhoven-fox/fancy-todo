@@ -16,7 +16,9 @@ app.use(errorHandler)
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.status(201).json({
+    msg: 'Hello World!'
+  })
 })
 
 app.listen(port, () => {
