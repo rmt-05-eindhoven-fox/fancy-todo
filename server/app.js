@@ -14,6 +14,11 @@ app.use(express.json())
 app.use('/', router)
 app.use(errorHandler)
 
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 app.listen(port, () => {
   console.log(`http://localhost:${port}`)
 })
