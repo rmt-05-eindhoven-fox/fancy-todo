@@ -11,7 +11,6 @@ class TodoController {
         due_date,
         UserId
       });
-      // console.log(create);
       res.status(201).json(create);
     } catch (error) {
       next(error);
@@ -72,8 +71,8 @@ class TodoController {
         returning: true,
         individualHooks: true
       });
-      console.log(updateAllKey);
       if (updateAllKey[1].length > 0) {
+        console.log(updateAllKey[1][0]);
         res.status(200).json(updateAllKey[1][0]);
       } else {
         // TODO handle case when req.body has same data as database

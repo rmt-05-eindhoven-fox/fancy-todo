@@ -45,7 +45,7 @@ _Request Body_
 {
     "title": "Makan",
     "description": "makan ayam goreng",
-    "due_date": "2020-10-26"
+    "due_date": "2020-10-26",
 }
 ```
 
@@ -56,7 +56,8 @@ _Response (201 - Created)_
   "title": "Makan",
   "description": "makan ayam goreng",
   "status": false,
-  "due_date": "2020-10-26"
+  "due_date": "2020-10-26",
+  "UserId": 1
 }
 ```
 ---
@@ -89,14 +90,16 @@ _Response (200)_
     "title": "Makan",
     "description": "makan ayam goreng",
     "status": false,
-    "due_date": "2020-10-26"
+    "due_date": "2020-10-26",
+    "UserId": 1
   },
   {
     "id": 2,
     "title": "Tidur",
     "description": "tidur di kasur",
     "status": false,
-    "due_date": "2020-10-26"
+    "due_date": "2020-10-26",
+    "UserId": 1
   },
   { ... },
   { ... }
@@ -133,7 +136,8 @@ _Response (200)_
   "title": "Makan",
   "description": "makan ayam goreng",
   "status": false,
-  "due_date": "2020-10-26"
+  "due_date": "2020-10-26",
+  "UserId": 1
 }
 ```
 ### PUT /todos/:id
@@ -160,7 +164,7 @@ _Request Body_
   "title": "Minum",
   "description": "minum air putih",
   "status": true,
-  "due_date": "2020-10-25"
+  "due_date": "2020-10-25",
 }
 ```
 
@@ -171,7 +175,8 @@ _Response (200)_
   "title": "Minum",
   "description": "minum air putih",
   "status": true,
-  "due_date": "2020-10-25"
+  "due_date": "2020-10-25",
+  "UserId": 1
 }
 ```
 
@@ -207,7 +212,8 @@ _Response (200)_
   "title": "Makan",
   "description": "makan ayam goreng",
   "status": true,
-  "due_date": "2020-10-26"
+  "due_date": "2020-10-26",
+  "UserId": 1
 }
 ```
 
@@ -332,4 +338,40 @@ _Response (200)_
   { ... },
   { ... }
 ]
+```
+
+### POST /login/google
+
+_Request Headers_
+```
+{
+  "google_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlCEW22FTU"
+}
+```
+
+_Parameters_
+```
+not needed
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```
+{
+  "accessToken": "eyajsdiwjUHdiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzYW1wbGVAbWFpbC5jb20iLCJpYXQiOjE2MDM3NzMyNjR9.Gfzf2lF0FRKHaEc9DrE4CrwJp_avuWbdrnlqwdiuqhw",
+  "name": "John Doe"
+}
+```
+OR
+
+```
+{
+  "message": "createPassword",
+  "email": "sample@mail.com",
+  "name": "John Doe",  
+}
 ```

@@ -9,7 +9,6 @@ $('.btn').click(e => {
 $(document).ready(() => {
   const token = localStorage.getItem('token');
   const name = localStorage.getItem('name')
-  // console.log(token);
   if(token) {
     $('#home-page').hide()
     $('#user-page').show()
@@ -47,6 +46,21 @@ function todo (message) {
     title: message,
     showConfirmButton: false,
     timer: 1500
+  })
+}
+
+function confirmSignOut(e) {
+  Swal.fire({
+    title: 'Are you sure?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      signOut(e);
+    }
   })
 }
 
@@ -88,6 +102,7 @@ const Toast = Swal.mixin({
 
 function signUp(e) {
   e.preventDefault();
+  Swal.showLoading();
   const name = $('#signUpName').val();
   const email = $('#signUpEmail').val();
   const password = $('#signUpPassword').val();
@@ -101,22 +116,22 @@ function signUp(e) {
     }
   })
     .done(response => {
+      Swal.close();
       $('#exampleModal').modal('toggle');
       setTimeout(() => {
         $('#exampleModal2').modal('toggle');
       }, 1000);
     })
     .fail(err => {
+      Swal.close(); 
       errorHandler(err.responseJSON.error);
     })
-  // console.log(name, email);
 }
 
 
 // ! ALL SIGN IN RESPONSE
 
 function completeSignIn (token, name) {
-  // console.log(token);
   Swal.hideLoading(); 
   Toast.fire({
     icon: 'success',
@@ -136,12 +151,19 @@ function completeSignIn (token, name) {
 
 // ! SIGN IN FUNCTION
 
-function signIn(e) {
-  e.preventDefault();
-  Swal.showLoading();
+function signIn(e, password) {
+  let email;
+  if(e) {
+    e.preventDefault();
+    Swal.showLoading();
+    email = $('#signInEmail').val();
+    password = $('#signInPassword').val();
+  } else {
+    email = localStorage.email;
+    localStorage.clear();
+  }
 
-  const email = $('#signInEmail').val();
-  const password = $('#signInPassword').val();
+
 
   $.ajax({
     method: "post",
@@ -165,9 +187,9 @@ function signIn(e) {
 // ! GOOGLE SIGN IN
 
 function onSignIn(googleUser) {
-  let profile = googleUser.getBasicProfile();
-  const name = profile.getName();
-  const email = profile.getEmail();
+  // let profile = googleUser.getBasicProfile();
+  // const name = profile.getName();
+  // const email = profile.getEmail();
   // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
   // console.log('Name: ' + profile.getName());
   // console.log('Image URL: ' + profile.getImageUrl());
@@ -175,12 +197,20 @@ function onSignIn(googleUser) {
   let google_access_token = googleUser.getAuthResponse().id_token;
   $.ajax({
     method: 'post',
-    url: server + '/register',
+    url: server + '/login/google',
     headers: {
       google_access_token
     }
   })
     .done(response => {
+      if(response.accessToken) {
+        if($('#exampleModal').attr('aria-hidden') == 'true') {
+          $('#exampleModal2').modal('toggle');
+        } else if ($('#exampleModal2').attr('aria-hidden') == 'true') {
+          $('#exampleModal').modal('toggle');
+        }
+        completeSignIn(response.accessToken, response.name);
+      } else {
         if($('#exampleModal').attr('aria-hidden') == 'true') {
           $('#exampleModal2').modal('toggle');
         } else if ($('#exampleModal2').attr('aria-hidden') == 'true') {
@@ -189,9 +219,11 @@ function onSignIn(googleUser) {
         setTimeout(() => {
           $('#modal-password').click();
         }, 1000)
+        
+        localStorage.setItem('name', response.name);
+        localStorage.setItem('email', response.email);
+      }
 
-        localStorage.setItem('name', name);
-        localStorage.setItem('email', email);
 
         function signOut() {
           var auth2 = gapi.auth2.getAuthInstance();
@@ -199,13 +231,12 @@ function onSignIn(googleUser) {
             console.log('User signed out.');
           });
         }
-        signOut()
+        signOut();
     })
     .fail(err => {
       errorHandler(err.responseJSON.error);
     })
 }
-
 
 // ! THIRD PARTY SIGN IN AFTER INPUT PASSWORD
 
@@ -216,7 +247,7 @@ function tryRegister(e) {
   Swal.showLoading();
   const name = localStorage.getItem('name');
   const email = localStorage.getItem('email');
-  localStorage.clear();
+  // localStorage.clear();
   const password = $('#thirdPartyPassword').val();
   $('#thirdPartyPassword').val('');
   
@@ -226,39 +257,17 @@ function tryRegister(e) {
     data: {
       name,
       email,
-      password,
-      thirdPartyLogin: true
+      password
     },
-    success: loginThirdParty(email, password)
   })
+    .done(response => {
+      signIn(null, password);
+    })
     .fail(err => {
       console.log(err);
       errorHandler(err.responseJSON.error);
     });
 
-}
-
-function loginThirdParty(email, password) {
-  // console.log(password);
-  setTimeout(() => {
-    $.ajax({
-      method: 'post',
-      url: server + '/login',
-      data: {
-        email,
-        password
-      }
-  })
-  .done(response => {
-    // console.log(response);
-    completeSignIn(response.accessToken, response.name);
-  })
-  .fail(err => {
-    console.log(err)
-    errorHandler(err.responseJSON.error);
-  });
-
-  }, 10000);
 }
 
 // ! SIGN OUT FUNCTION
@@ -270,7 +279,7 @@ function signOut(e) {
   $('#fullname').empty();
   $('#home-page').show();
   $('#user-page').hide();
-  $(':input').val();    
+  $('input').val('');    
 }
 
 // ! GET TODOS
@@ -290,7 +299,6 @@ function getTodos(e) {
     } 
   })
     .done(response => {
-      // console.log(response)
       $('#accordion').empty();
       response.sort(function (a, b) {
         if (a.status || b.status) {
@@ -369,10 +377,14 @@ function createTodo(e) {
   })
     .done(response => {
       // console.log(response);
+      $('input').val('');
+      $('textarea').val('');
       todo('Your todo has been created');
       getTodos(e);
     })
     .fail(err => {
+      $('input').val('');
+      $('textarea').val('');
       errorHandler(err.responseJSON.error);
     });
 }
@@ -383,7 +395,6 @@ $(window).on('click', e => {
   if ($('#user-todo').is(':visible') && e.target.id === 'todos') {
     getTodos(e);
   }
-  // console.log(a);
 })
 
 // ! REPLACE CONTENT WITH FORM
