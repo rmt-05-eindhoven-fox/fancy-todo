@@ -47,7 +47,7 @@ client.on('message', (msg) => {
    
    // Dynamically executing commands
    if (!client.commands.has(command)) return;   
-
+   
    try {
       client.commands.get(command).execute(msg, args);
    } catch (error) {

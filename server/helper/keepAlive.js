@@ -2,7 +2,7 @@ const axios = require('axios')
 
 keepAlive = () => {
    axios({
-      url: "http://localhost:3000/ping",
+      url: "http://murmuring-taiga-32090.herokuapp.com/ping",
       method: 'GET',
    })
    .then(res => {
