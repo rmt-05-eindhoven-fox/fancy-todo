@@ -90,7 +90,13 @@
                             <label for="description">Description</label><br>
                             <input class="form-control" type="text" id="description" name="description" autocomplete="current-description">
                             <label  for="status">Status</label><br>
-                            <input class="form-control" type="text" id="status" name="status" autocomplete="status"><br>
+                            <select id="status">
+                                <option selected disabled>--Please Select</option>
+                                <option>Just thinking about it</option>
+                                <option>On Progress</option>
+                                <option>Done</option>
+                            </select>
+                            <br>
                             <label  for="due_date">Due Date</label><br>
                             <input class="form-control" type="date" id="due_date" name="due_date" autocomplete="due_date"><br>
                             <br>
@@ -117,8 +123,15 @@
                 <input class="form-control" type="text" id="edit-title" name="title" autocomplete="title"><br>
                 <label for="description">Description</label><br>
                 <input class="form-control" type="text" id="edit-description" name="description" autocomplete="current-description">
-                <label  for="status">Status</label><br>
-                <input class="form-control" type="text" id="edit-status" name="status" autocomplete="status"><br>
+                <label  for="status">Status</label>
+                <br>
+                <select id="edit-status">
+                    <option selected disabled>--Please Select--</option>
+                    <option>Just thinking about it</option>
+                    <option>On progress</option>
+                    <option>Done</option>
+                </select>
+                <br>
                 <label  for="due_date">Due Date</label><br>
                 <input class="form-control" type="date" id="edit-due_date" name="due_date" autocomplete="due_date"><br>
                 <br>

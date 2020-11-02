@@ -3,7 +3,7 @@ const { User } = require('../models');
 
 async function authentication(req, res, next) {
     const { token } = req.headers;
-    console.log(token, 'ini token')
+    //console.log(token, 'ini token')
     try {
         if(!token) {
             throw {msg: 'Authentication error', status: 401}

@@ -184,7 +184,7 @@ function edit(e) {
     const description = $("#edit-description").val()
     const status = $("#edit-status").val()
     const due_date = $("#edit-due_date").val()
-    const id = $("#edit-id").val()
+    const id = $("#id").val()
     $.ajax({
         url: SERVER + "/todos/" + id,
         method: "PUT",
@@ -218,7 +218,7 @@ function editTodos(id,title,description,status,due_date) {
     $("#edit-description").val(description)
     $("#edit-status").val(status)
     $("#edit-due_date").val(new Date(due_date).toISOString().slice(0,10))
-    $("#edit-id").val(id)
+    $("#id").val(id)
 }
 
 
@@ -266,8 +266,6 @@ function onSignIn(googleUser) {
         })
 }
 
-function signOut() {
-    
-}
+
 
 
