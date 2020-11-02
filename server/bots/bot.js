@@ -55,7 +55,7 @@ client.on('message', (msg) => {
 
    // Dynamically executing commands
    if (!client.commands.has(command)) return;
-
+   
    try {
       client.commands.get(command).execute(msg, args, client);
    } catch (error) {
@@ -65,22 +65,31 @@ client.on('message', (msg) => {
 })
 
 // send a reminder everyday at 7am
-const channelId = "772878233439830066"
-let dailyMessage = new bot.MessageEmbed()
-      .setColor('#403b3b')
-      .setTitle('This is automated daily reminder')
-      .setDescription(`A bot's gotta botting!`)
-      .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
-      .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
-      .setTimestamp()
-      .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
+const channelId = "772939817834250263"
 
-cron.schedule('* * * * *', function () {
+cron.schedule('0 7 * * *', function () {
    let channel = client.channels.cache.get(channelId)
-   channel.send(dailyMessage)
+   channel.send('@everyone')
    dailyReminder()
       .then(todos => {
-         console.log(todos);
+         todos.forEach(todo => {
+            if(todo.dataValues.Todos.length > 0) {
+               let userMessage = new bot.MessageEmbed()
+                  .setColor('#403b3b')
+                  .setTitle(`This is an automatic daily reminder for @${todo.dataValues.username}`)
+                  .setDescription(`A bot's gotta botting!`)
+                  .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
+                  .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
+                  .setTimestamp()
+                  .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
+                  todo.dataValues.Todos.forEach(el => {
+                     if(el.title !== '' || el.description !== '') {
+                        userMessage.addField(`'${el.title}'`, `'${el.description}'`)
+                     }
+                  })
+               channel.send(userMessage)
+            }
+         });
       })
       .catch(err => {
          console.log(err);

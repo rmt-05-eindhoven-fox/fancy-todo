@@ -16,7 +16,6 @@ module.exports = {
             { name: 'mark', value: 'Mark your Todo as done. Example: `!mark 1`' },
             { name: 'create', value: '[title] [description] [due_date]'}, 
             { name: 'remindMe', value: 'Automatically remind you 1 day before your Todo deadline. Currently in development.' },
-
          )
          .setTimestamp()
          .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');

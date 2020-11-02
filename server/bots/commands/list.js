@@ -31,8 +31,7 @@ module.exports = {
                .setColor('#403b3b')
                .setTitle('Register your Discord Username')
                .setURL('https://fancy-todo-12af6.web.app/') 
-               .setDescription(`Ooops! It seems that username ${msg.author} is not associated with any account.\n
-                  Please integrate your account with our Discord Bot by using the link above.`)
+               .setDescription(`Ooops! It seems that username ${msg.author} is not associated with any account.\nPlease integrate your account with our Discord Bot by using the link above.`)
                .setTimestamp()
                .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
             msg.channel.send(messageEmbed);
