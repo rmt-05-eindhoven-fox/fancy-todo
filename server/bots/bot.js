@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+const {daily} = require('./commands/daily')
+
 const fs = require('fs');
 const bot = require('discord.js')
 const cron = require('node-cron');
@@ -60,9 +62,10 @@ client.on('message', (msg) => {
 // send a reminder everyday at 7am
 const channelId = "772878233439830066"
 cron.schedule('* * * * *', function () {
-   let channel = client.channels.cache.get(channelId)
-
-   channel.send("TEST")
+   // let channel = client.channels.cache.get(channelId)
+   // console.log(('cron daily jalan'));
+   // channel.send("TEST")
+   daily()
 });
 
 // Bot login using token
