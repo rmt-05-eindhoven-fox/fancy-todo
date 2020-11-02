@@ -8,9 +8,12 @@ const router = require('./routers')
 const app = express()
 const port = process.env.PORT || 8080
 const errorHandler = require('./middlewares/errorHandler')
-
-// TEST CRON 
 const cron = require('node-cron');
+
+// Keep the server from sleeping by pinging every 29 minutes
+const {keepAlive} = require('./helper/keepAlive')
+
+// Background job to get background photos from Unsplash every 2 minutes
 const {getPhotos} = require('./helper/get_photos')
 
 app.use(cors())
@@ -37,6 +40,10 @@ app.use(errorHandler)
 
 cron.schedule('*/2 * * * *', function () {
    getPhotos()
+});
+
+cron.schedule('*/29 * * * *', function () {
+   keepAlive()
 });
 
 app.listen(port, () => {

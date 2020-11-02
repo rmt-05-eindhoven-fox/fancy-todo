@@ -1,4 +1,5 @@
-const server = "http://localhost:3000"
+// const server = "http://localhost:3000"
+const server = "https://murmuring-taiga-32090.herokuapp.com"
 
 $(document).ready(() => {
    const token = localStorage.getItem("token")
@@ -8,6 +9,7 @@ $(document).ready(() => {
    getBackgroundImg()
    
    if (token) {
+      $("#todo-list").empty()
       $("#homepage").show()
       $("#login").hide()
       $("#register").hide()
@@ -18,6 +20,7 @@ $(document).ready(() => {
       $("#login").show()
       $("#register").hide()
       $("#nav-bar").hide()
+      $("#todo-list").empty()
    }
 
    $("#btn-add-discord").on("click", function () {
@@ -210,6 +213,7 @@ logout = () => {
 }
 
 getAllTodos = () => {
+   $("#todo-list").empty()
    $("#btn-logout-normal").show()
    $("#todos").show()
    $("#discord").hide()
@@ -225,6 +229,7 @@ getAllTodos = () => {
             token
          },
       }).done(todos => {
+         $("#todo-list").empty()
          if (todos.length === 0) {
             $("#todo-list").append(`
             <div class="alert alert-success alert-dismissible">
