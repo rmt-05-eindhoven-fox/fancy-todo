@@ -1,6 +1,9 @@
 require('dotenv').config()
 
-const daily = require('./commands/daily')
+const {
+   dailyReminder
+} = require('../../helper/bot')
+// const {daily} = require('./commands/daily')
 
 const fs = require('fs');
 const bot = require('discord.js')
@@ -9,7 +12,9 @@ const cron = require('node-cron');
 // const welcomeMsg = require('./commands/dm')
 
 // Import prefix config
-const {prefix} = require('../bot_config.json')
+const {
+   prefix
+} = require('../bot_config.json')
 
 // Bot initialization
 const client = new bot.Client()
@@ -45,12 +50,12 @@ for (const file of commandFiles) {
 client.on('message', (msg) => {
    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
-	let args = msg.content.slice(prefix.length).trim().split(/ +/)
-	const command = args.shift().toLowerCase();
-   
+   let args = msg.content.slice(prefix.length).trim().split(/ +/)
+   const command = args.shift().toLowerCase();
+
    // Dynamically executing commands
-   if (!client.commands.has(command)) return;   
-   
+   if (!client.commands.has(command)) return;
+
    try {
       client.commands.get(command).execute(msg, args, client);
    } catch (error) {
@@ -62,10 +67,30 @@ client.on('message', (msg) => {
 // send a reminder everyday at 7am
 const channelId = "772878233439830066"
 cron.schedule('* * * * *', function () {
-   // let channel = client.channels.cache.get(channelId)
+   let channel = client.channels.cache.get(channelId)
+   let messageEmbed = new bot.MessageEmbed()
+      .setColor('#403b3b')
+      .setTitle('**This is automated daily reminder')
+      .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
+      .setDescription('You can do `!<command>` to run a command, or `!help` to view all available commands.')
+      .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
+      .addFields({
+         name: 'list',
+         value: 'View all your not completed Todos.'
+      }, {
+         name: 'mark',
+         value: 'Mark your Todo as done. Example: `!mark 1`'
+      }, {
+         name: 'create',
+         value: '[title] [description] [due_date]'
+      }, {
+         name: 'remindMe',
+         value: 'Automatically remind you 1 day before your Todo deadline. Currently in development.'
+      }, )
+      .setTimestamp()
+      .setFooter(`You're amazing!`, 'https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png');
    // console.log(('cron daily jalan'));
-   // channel.send("TEST")
-   daily()
+   channel.send(messageEmbed)
 });
 
 // Bot login using token
