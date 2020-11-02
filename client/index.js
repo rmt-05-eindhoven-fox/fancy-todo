@@ -1,4 +1,4 @@
-const SERVER = "http://localhost:3000"
+const SERVER = "https://fancytodo-delvia.herokuapp.com"
 
 $(document).ready(function () {
     const token = localStorage.getItem("token")
