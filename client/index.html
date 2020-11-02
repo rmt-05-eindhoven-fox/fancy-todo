@@ -48,8 +48,7 @@
                     <li><button id="go-to-listtodo" type="button" class="btn btn-success btn-lg">To-Do-list</button> </li>
 					<li><button id="go-to-movielist" type="button" class="btn btn-success btn-lg">trending movies</button> </li>
 					<li><button id="go-to-addtodo" type="button" class="btn btn-light btn-lg">new Todo</button> </li>
-					<li><button id="logout-button" onclick="logout()" type="button" class="btn btn-danger btn-lg">logout</button></li>
-					<li><a href="#" onclick="signOut();">Sign out</a></li>
+					<li><button id="logout-button" onclick="logout(),signOut()" type="button" class="btn btn-danger btn-lg">logout</button></li>
                 </ul>
             </nav>
         
@@ -298,26 +297,28 @@
 		<!----------------------------------------------------------------------------------------->
 
 
-        <!---------------------------------LET SHOW THE TODO--------------------------------------->
-
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <section id="content">
-                        <div>
-                            <div class="row">
-                                <div class="col">
-                                    <h1>MY TODO</h1>
-                                    <div id="showtodo">
-
-									</div>
-                                </div>
-                            </div>
+        <!---------------------------------LET SHOW THE (undone) TODO--------------------------------------->
+		<br>
+		<br>
+        <div class="container" id="content-undone">
+						<h1>undone todo :</h1>
+                    <section >
+                <div id="showtodo" class="row container">
                     </section>
                 </div>
 		<!-----------------------------END OF THE SHOW TODO----------------------------------------->
 
-        <!---------------------------------LET SHOW THE TODO--------------------------------------->
+		<!---------------------------------LET SHOW THE (undone) TODO--------------------------------------->
+
+        <div class="container" id="content-done">
+			<h1>done todo :</h1>
+                    <section>
+                <div id="showdonetodo" class="row container"></div>
+                    </section>
+                </div>
+		<!-----------------------------END OF THE SHOW TODO----------------------------------------->
+
+        <!---------------------------------LET SHOW THE TODO---------------------------------------->
 
         <div class="container-fluid">
             <div class="row">
@@ -388,7 +389,6 @@
 										<option value="">---Status----</option>
 										<option value="done">done</option>
 										<option value="undone">undone</option>
-										<option value="progress">on progress</option>
 									</select>
 									<label>Due Date :</label>
 									<input type="date" id="due_date-edit" />

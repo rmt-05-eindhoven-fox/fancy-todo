@@ -8,6 +8,7 @@ $(document).ready(function() {
     if (token) {
         afterLogin();
         fetchTodo();
+        fetchdoneTodo()
     } else {
         beforeLogin();
     }
@@ -16,7 +17,7 @@ $(document).ready(function() {
 function beforeLogin(event) {
     $("#login-form").hide();
     $("#logout-button").hide()
-    $("#go-to-addtodo").hide()
+    $("#go-to-movielist").hide()
     $("#content").hide()
     $("#header").show();
     $("#hero").show();
@@ -58,8 +59,10 @@ function afterRegister(event) {
 
 function afterLogin(event) {
     fetchTodo()
+    fetchdoneTodo()
     trendingMovie()
-    $("#content").show()
+    $("#content-done").show()
+    $("#content-undone").show()
     $("#content-movies").hide()
     $("#hero").hide();
     $("#main").hide();
@@ -69,23 +72,32 @@ function afterLogin(event) {
     $("#add-form-todo").hide();
     $("#edit-form-todo").hide();
     $("#logout-button").show();
+    $("#logout-button").on("click", () => {
+        signOut()
+
+    })
+
      $("#go-to-addtodo").show()
         $("#go-to-addtodo").on("click", function(event) {
         $("#add-form-todo").show();
-        $("#content").hide()
+        $("#content-done").hide()
+        $("#content-undone").hide()
         $("#content-movies").hide();
     });
      $("#go-to-movielist").show();
         $("#go-to-movielist").on("click", function(event) {
         $("#content-movies").show();
         // $("#trendingmovies").show();
-        $("#content").hide()
+        $("#content-done").hide()
+        $("#content-undone").hide()
          $("#add-form-todo").hide();
     });
         $("#go-to-listtodo").show();
         $("#go-to-listtodo").on("click", function(event) {
        $("#content-movies").hide();
-        $("#content").show()
+        $("#content-done").show()
+        $("#content-undone").show()
+        $("#add-form-todo").hide();
         });
     
 
@@ -94,7 +106,6 @@ function afterLogin(event) {
 function logout() {
     localStorage.clear();
     beforeLogin()
-    signOut()
 }
 
 function login(event) {
@@ -149,6 +160,7 @@ function onSignIn(googleUser) {
 const token = response.access_token;
             localStorage.setItem("token", token);
             fetchTodo();
+            fetchdoneTodo()
             afterLogin()
   })
   .fail(err => {
@@ -165,6 +177,8 @@ const token = response.access_token;
     auth2.signOut().then(function () {
       console.log('User signed out.');
     });
+    localStorage.clear();
+    beforeLogin()
   }
 
 
@@ -207,8 +221,9 @@ function addForm(event) {
         })
         .done((response) => {
             console.log(response);
-            
             afterLogin()
+            fetchTodo()
+            fetchdoneTodo()
         })
         .fail((err) => {
             console.log(err);
@@ -272,19 +287,57 @@ function fetchTodo() {
             const todos = response;
             $("#showtodo").empty();
             todos.forEach((i) => {
-                $("#showtodo").append(`
-			<li class="media bg-white rounded p-2 shadow mt-3">
-			<div>
+                if (i.status === 'undone') {
+                    $("#showtodo").append(`
+            <li class="media bg-white rounded p-2 shadow mt-3">
+			<div class="col">
 				<h5 class="mt-0 mb-0 text-primary">${i.title}</h5>
 				<p>${i.description}</p>
 				<p>${i.status}</p>
 				<p>${i.due_date.split("T")[0]}</p>
 				
-				<button onclick="statusupTodo(${i.id})" type="button" class="btn btn-success">done</button>
+				<button onclick="statustodo(${i.id})" type="button" class="btn btn-success">done</button>
 				<button onclick="toEditTodo(${i.id},'${i.title}','${i.description}','${i.status}','${i.due_date.split("T")[0]}')" class="btn btn-warning"> edit </button>
 				<button onclick="deleteTodo(${i.id})" type="button" class="btn btn-danger">delete</button>
 				</div>
 				</li>`);
+                } 
+            });
+        })
+        .fail((err) => {
+            console.log(err);
+        });
+}
+
+
+function fetchdoneTodo() {
+    const token = localStorage.getItem("token");
+    $.ajax({
+            method: "GET",
+            url: SERVER + "/todos",
+            headers: {
+                token: token,
+            },
+        })
+        .done((response) => {
+            const todos = response;
+            $("#showdonetodo").empty();
+            todos.forEach((i) => {
+                 if (i.status === 'done') {
+                    $("#showdonetodo").append(`
+            <li class="media bg-white rounded p-2 shadow mt-3">
+			<div class="col">
+				<h5 class="mt-0 mb-0 text-primary">${i.title}</h5>
+				<p>${i.description}</p>
+				<p>${i.status}</p>
+				<p>${i.due_date.split("T")[0]}</p>
+				<button onclick="toEditTodo(${i.id},'${i.title}','${i.description}','${i.status}','${i.due_date.split("T")[0]}')" class="btn btn-warning"> edit </button>
+				<button onclick="deleteTodo(${i.id})" type="button" class="btn btn-danger">delete</button>
+				</div>
+				</li>`);
+                    
+                }
+                
             });
         })
         .fail((err) => {
@@ -295,7 +348,9 @@ function fetchTodo() {
 function toEditTodo(id, title, description, status, due_date) {
     console.log(id, title, description, status, due_date, "<<< edit");
     $("#edit-form-todo").show();
-    $("#content").hide();
+    $("#add-form-todo").hide();
+    $("#content-undone").hide();
+    $("#content-done").hide();
             $("#title-edit").val(title),
             $("#description-edit").val(description),
             $("#status-edit").val(status),
@@ -305,6 +360,9 @@ function toEditTodo(id, title, description, status, due_date) {
 
 function editTodo(event){
     event.preventDefault()
+    $("#add-form-todo").hide();
+    $("#content-undone").hide();
+    $("#content-done").hide();
     const token = localStorage.getItem("token");
                 let title= $("#title-edit").val()
                 let description= $("#description-edit").val()
@@ -325,9 +383,9 @@ function editTodo(event){
         }
     })
         .done((response) => {
+            $("#edit-form-todo").hide
             fetchTodo()
-            $("#content").show
-           $("#edit-form-todo").hide
+            fetchdoneTodo()
            afterLogin()
         })
         .fail((err) => {
@@ -337,18 +395,24 @@ function editTodo(event){
 
 }
 
-function statusUpTodo(id) {
+function statustodo(id) {
+    // e.preventDefault()
      const token = localStorage.getItem("token");
      $.ajax({
          method: "PATCH",
-         url: SERVER + `todos/${id}`,
+         url: SERVER + `/todos/${id}`,
          headers: {
              token:token
-         }
+         },
+         data: {status: 'done'},
      })
      .done(response => {
          fetchTodo()
+         fetchdoneTodo()
      })
+             .fail((err) => {
+            console.log(err, "<<<<<<<<<<<<<<< error gan");
+        });
 }
 
 
@@ -360,13 +424,14 @@ function deleteTodo(id) {
         method: "DELETE",
         url: `${SERVER}/todos/${id}`,
         headers: {
-            token,
-        },
+            token
+        }
     })
 
     .done((response) => {
             console.log(response);
             fetchTodo();
+            fetchdoneTodo()
         })
         .fail((err) => {
             console.log(err);
