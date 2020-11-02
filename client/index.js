@@ -1,11 +1,7 @@
-const server = 'http://localhost:3000';
+const server = 'https://my-fancy-todos.herokuapp.com';
+
 
 // ! SETUP ON REFRESH
-
-$('.btn').click(e => {
-  e.preventDefault();
-})
-
 $(document).ready(() => {
   const token = localStorage.getItem('token');
   const name = localStorage.getItem('name')
@@ -18,11 +14,16 @@ $(document).ready(() => {
     getTodos();
     getCalendar();            
   } else {
-    $('#home-page').show()
     $('#user-page').hide()
     $('#signOut').hide()    
+    $('#home-page').show()
   }
 });
+
+$('.btn').click(e => {
+  e.preventDefault();
+})
+
 
 
 $('#list-calendar-list').click(e => {
@@ -187,13 +188,7 @@ function signIn(e, password) {
 // ! GOOGLE SIGN IN
 
 function onSignIn(googleUser) {
-  // let profile = googleUser.getBasicProfile();
-  // const name = profile.getName();
-  // const email = profile.getEmail();
-  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  // console.log('Name: ' + profile.getName());
-  // console.log('Image URL: ' + profile.getImageUrl());
-  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  Swal.showLoading();
   let google_access_token = googleUser.getAuthResponse().id_token;
   $.ajax({
     method: 'post',
@@ -203,6 +198,7 @@ function onSignIn(googleUser) {
     }
   })
     .done(response => {
+      Swal.close();
       if(response.accessToken) {
         if($('#exampleModal').attr('aria-hidden') == 'true') {
           $('#exampleModal2').modal('toggle');
@@ -234,6 +230,7 @@ function onSignIn(googleUser) {
         signOut();
     })
     .fail(err => {
+      Swal.close();
       errorHandler(err.responseJSON.error);
     })
 }
