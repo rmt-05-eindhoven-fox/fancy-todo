@@ -1,4 +1,6 @@
-const SERVER = "http://localhost:3000"
+// const SERVER = "http://localhost:3000"
+const SERVER = "https://app-fancy-todo.herokuapp.com"
+
 
 $(document).ready(() => {
   var date = new Date().toISOString().slice(0,10);
@@ -95,6 +97,7 @@ function register(event) {
   }).done(response => {
     $("#register").hide()
     $("#login").show()
+    $("#errors").hide()
     console.log(response)
   }).fail(err => {
     errors.push(err.responseJSON.msg)
@@ -140,7 +143,11 @@ function login(event) {
     getTodo()
 
   }).fail(err => {
-    errors.push(err.responseJSON.message)
+    if (err.responseJSON.message) {
+      errors.push(err.responseJSON.message)
+    } else if (err.responseJSON.msg) {
+      errors.push(err.responseJSON.msg)
+    }
     $("#errors").append(
       errors
     )
