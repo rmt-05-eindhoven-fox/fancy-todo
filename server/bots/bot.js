@@ -76,7 +76,7 @@ cron.schedule('0 7 * * *', function () {
             if(todo.dataValues.Todos.length > 0) {
                let userMessage = new bot.MessageEmbed()
                   .setColor('#403b3b')
-                  .setTitle(`This is an automatic daily reminder for @${todo.dataValues.username}`)
+                  .setTitle(`This is an automatic daily reminder for ${todo.dataValues.username}`)
                   .setDescription(`A bot's gotta botting!`)
                   .setAuthor('RemindMeBot by 0x67', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd2wriHCNJBK_7BBKzlJc6wQtVxR92SSASHQ&usqp=CAU')
                   .setThumbnail('https://cdn.iconscout.com/icon/free/png-256/reminder-19-461743.png')
