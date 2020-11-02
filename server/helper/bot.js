@@ -73,7 +73,7 @@ const createTodo = (newTodo) => {
 // }
 
 // DAILY REMINDER
-dailyReminder = () => {
+const dailyReminder = () => {
    return User.findAll({
       where: {
          username: {
