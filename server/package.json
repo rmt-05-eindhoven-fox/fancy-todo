@@ -13,7 +13,7 @@
    },
    "keywords": [],
    "author": "0x67 <gabri.putra@gmail.com>",
-   "license": "ISC",
+   "license": "ISC", 
    "dependencies": {
       "axios": "^0.21.0",
       "bcryptjs": "^2.4.3",
