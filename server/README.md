@@ -18,22 +18,6 @@ npx sequelize db:migrate all
 npx nodemon app.js
 ```
 
-**Kendala**
-```
-1. Membuat code yang rapih & bagus agar mudah di pahami
-2. Membuat tampilan UI, masih berantakan tampilannya, karna masih belum terlalu menguasai css sehingga masih buka tutorial dan dokumentasi
-3. Membuat authorization untuk multiple kondisi
-4. Membuat sending email, sempet gagal ga kekirim terus emailnya ini karna config di gmailnya
-5. Menghubungkan relasi antar table
-6. Deploy aplikasi ke heroku dan 000webhost, saat deploy error terus web dan apinya
-7. Oauth gagal terus saat config
-```
-
-**Dokumentasi Postman**
-* [api-postman](../dokumentasi/FancyTodo.postman_collection.json) : `FancyTodo.postman_collection.json`
-* [api-heroku](https://fancy-todo-apps.herokuapp.com/)
-* [Web-fancy-todo](https://fancy-tod-appss.000webhostapp.com/)
-
 # Login
 
 
