@@ -189,6 +189,11 @@ function signIn(e, password) {
 // ! GOOGLE SIGN IN
 
 function onSignIn(googleUser) {
+  if($('#exampleModal').attr('aria-hidden') == 'true') {
+    $('#exampleModal2').modal('toggle');
+  } else if ($('#exampleModal2').attr('aria-hidden') == 'true') {
+    $('#exampleModal').modal('toggle');
+  }
   Swal.showLoading();
   let google_access_token = googleUser.getAuthResponse().id_token;
   $.ajax({
@@ -201,18 +206,8 @@ function onSignIn(googleUser) {
     .done(response => {
       Swal.close();
       if(response.accessToken) {
-        if($('#exampleModal').attr('aria-hidden') == 'true') {
-          $('#exampleModal2').modal('toggle');
-        } else if ($('#exampleModal2').attr('aria-hidden') == 'true') {
-          $('#exampleModal').modal('toggle');
-        }
         completeSignIn(response.accessToken, response.name);
       } else {
-        if($('#exampleModal').attr('aria-hidden') == 'true') {
-          $('#exampleModal2').modal('toggle');
-        } else if ($('#exampleModal2').attr('aria-hidden') == 'true') {
-          $('#exampleModal').modal('toggle');
-        }
         setTimeout(() => {
           $('#modal-password').click();
         }, 1000)
