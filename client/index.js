@@ -394,39 +394,50 @@ $(window).on('click', e => {
 
 function replaceContent(e, id) {
   e.preventDefault();
-  
-  const token = localStorage.getItem('token');
 
-  $.ajax({
-    method: 'get',
-    url: server + `/todos/${id}`,
-    headers: {
-      access_token: token
-    } 
-  })
-    .done(todo => {
-      $(`#title${todo.id}`).trigger('click');
-      $(`#title${todo.id}`).removeAttr('data-toggle');      
-      $(`#title${todo.id}`).html(
-        `<input type="text" class="form-control" id="update-title${todo.id}" value="${todo.title}">`
-      );
-      $(`#due_date${todo.id}`).html(
-        `<input class="form-control" type="date" id="update-date${todo.id}" value="${todo.due_date}">`
-      );
-      $(`#description${todo.id}`).html(
-        `<textarea class="form-control" rows="8" id="update-desc${todo.id}">${todo.description}</textarea>`
-      );
-      $(`#description${todo.id}`).append(
-        `
-        <div class="my-2 float-right">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="getTodos(event)">Cancel</button>
-          <button type="button" class="btn btn-primary btn-sm" onclick="updateTodo(event,${todo.id})">Save Changes</button>
-        </div>`
-      )
+  let status = $(`#status${id}`).val();
+
+  if(status == 'true') {
+    Swal.fire({
+      icon: 'info',
+      title: 'Please undone your todo first'
     })
-    .fail(err => {
-      errorHandler(err.responseJSON.error);
+  } else {
+
+    const token = localStorage.getItem('token');
+  
+    $.ajax({
+      method: 'get',
+      url: server + `/todos/${id}`,
+      headers: {
+        access_token: token
+      } 
     })
+      .done(todo => {
+        $(`#title${todo.id}`).trigger('click');
+        $(`#title${todo.id}`).removeAttr('data-toggle');      
+        $(`#title${todo.id}`).html(
+          `<input type="text" class="form-control" id="update-title${todo.id}" value="${todo.title}">`
+        );
+        $(`#due_date${todo.id}`).html(
+          `<input class="form-control" type="date" id="update-date${todo.id}" value="${todo.due_date}">`
+        );
+        $(`#description${todo.id}`).html(
+          `<textarea class="form-control" rows="8" id="update-desc${todo.id}">${todo.description}</textarea>`
+        );
+        $(`#description${todo.id}`).append(
+          `
+          <div class="my-2 float-right">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="getTodos(event)">Cancel</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="updateTodo(event,${todo.id})">Save Changes</button>
+          </div>`
+        )
+      })
+      .fail(err => {
+        errorHandler(err.responseJSON.error);
+      });
+  }
+  
 
 }
 
