@@ -1,4 +1,5 @@
-const SERVER = "http://localhost:3000";
+const SERVER = "https://fancytodobyrisyad.herokuapp.com";
+// const SERVER = "http://localhost:3000";
 let idTemp = null;
 
 $(document).ready(function() {
@@ -15,10 +16,12 @@ $(document).ready(function() {
 });
 
 function beforeLogin(event) {
+    $("#content-undone").hide()
+    $("#content-done").hide()
     $("#login-form").hide();
     $("#logout-button").hide()
     $("#go-to-movielist").hide()
-    $("#content").hide()
+    $("#trendingmovies").hide()
     $("#header").show();
     $("#hero").show();
     $("#main").show();
