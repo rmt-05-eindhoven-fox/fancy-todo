@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="google-signin-client_id"
+      content="933746465589-1v5obi1emqmsol5qs88eq5srjcvk0hkf.apps.googleusercontent.com">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+      integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+      crossorigin="anonymous" />
+
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <style id="style">
+      * {
+         box-sizing: border-box;
+      }
+
+      /* Create two equal columns that floats next to each other */
+      .column {
+         float: left;
+         width: 50%;
+         padding: 10px;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+         content: "";
+         display: table;
+         clear: both;
+      }
+   </style>
+
+   <link rel="icon"
+      href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOahDkEr6yk14Y6FY7amiOyyWPc97zF-kyxw&usqp=CAU"
+      type="image/icon type">
+   <title>Fancy Todo</title>
+</head>
+
+<body>
+   <div class="body">
+      <section id="login" class="container">
+
+         <div class=" h-100 d-flex justify-content-center align-items-center" style="padding-top: 150px;">
+            <div>
+               <div class="card card-body ">
+                  <div id="sucessful-register">
+   
+                  </div>
+                  <div class="center-text">
+                     <h1>Login</h1>
+                  </div>
+   
+                  <div id="alert-message">
+   
+                  </div>
+   
+                  <form onsubmit="login(event)">
+                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" id="login-email" name="email" class="form-control" placeholder="Enter email"
+                           autocomplete="username" />
+                     </div>
+   
+                     <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="login-password" name="password" class="form-control"
+                           placeholder="Enter your password" autocomplete="current-password" />
+                     </div>
+   
+                     <button type="submit" class="btn btn-primary btn-block" style="width: auto;">
+                        Login
+                     </button>
+   
+                  </form>
+                  <p class="lead mt-4">Don't have an account?<a id="btn-register" href="#"> Register Here</a></p>
+   
+                  <div class="g-signin2" data-onsuccess="onSignIn"></div>
+               </div>
+            </div>
+         </div>
+      </section>
+   
+      <section id="register" class="container">
+         <div class=" h-100 d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+            <div>
+               <div class="card card-body ">
+                  <div class="center-text">
+                     <h1>Register</h1>
+                  </div>
+                  <div id="alert-message-register">
+   
+                  </div>
+                  <form onsubmit="register(event)">
+                     <div class="form-group">
+                        <label for="username">Discrod Username</label>
+                        <input type="text" id="register-username" name="email" class="form-control" placeholder="John#1234"
+                           autocomplete="username" aria-describedby="helpUsername" />
+                        <small id="helpUsername" class="form-text text-muted">
+                           Valid Discord username is 4 characters followed by a "#" and 4 digits of number.
+                        </small>
+                     </div>
+   
+                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" id="register-email" name="email" class="form-control"
+                           placeholder="john@gmail.com" autocomplete="username" />
+   
+                     </div>
+   
+                     <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="register-password" name="password" class="form-control"
+                           placeholder="Enter your password" autocomplete="current-password"
+                           aria-describedby="passwordHelpBlock" />
+   
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                           Your password must be 8-20 characters long, contains only alphabets and/or numbers.
+                        </small>
+                     </div>
+   
+                     <button type="submit" class="btn btn-primary btn-block" style="width: auto;">
+                        Register
+                     </button>
+   
+                  </form>
+                  <p class="lead mt-4">Already have an account?<a id="btn-login" href="#"> Login Here</a></p>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- TODO HOMEPAGE -->
+      <section id="homepage" class="container">
+         <nav id="nav-bar" class="navbar navbar-expand-lg navbar-light bg-light">
+   
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+               aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+   
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+               <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+   
+               </ul>
+               <!-- <div id="edit-user">
+                  <button id="btn-edit-user" type="button" class="btn btn-outline-sucess">Edit User Account</button>
+               </div> -->
+               <button id="btn-add-discord" type="button" class="btn btn-outline-info" style="margin-right: 10px;">Integrate Discord</button>
+               <button id="btn-logout" type="button" class="btn btn-outline-danger">Logout</button>
+            </div>
+         </nav>
+         <div id="todos" class="row">
+            <div class="column">
+               <div id="todo-list">
+   
+               </div>
+            </div>
+   
+   
+   
+            <div class="column">
+               <div class=" h-100 justify-content-center align-items-center">
+                  <div>
+                     <div class="card card-body">
+                        <h1 style="text-align: center;">Create Todo</h1>
+   
+                        <form id="create-todo-form" onsubmit="createTodo(event)">
+                           <div id="alert-message-create-todo">
+   
+                           </div>
+                           <div class="form-group">
+                              <label for="todo-title">Todo Title</label>
+                              <input type="text" id="todo-title" name="title" class="form-control"
+                                 placeholder="Todo Title" />
+                           </div>
+   
+                           <div class="form-group">
+                              <label for="todo-description">Todo Description</label>
+                              <input type="text" id="todo-description" name="description" class="form-control"
+                                 placeholder="Todo Description" />
+                           </div>
+   
+                           <div class="form-group">
+                              <label for="todo-due_date">Todo Title</label>
+                              <input type="date" id="todo-due_date" name="due_date" class="form-control" />
+                           </div>
+   
+   
+                           <button type="submit" class="btn btn-primary btn-block" style="width: auto;">
+                              Create Todo
+                           </button>
+   
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+   
+         <div id="edit-todo-form">
+            <div class=" h-100 justify-content-center align-items-center">
+               <div>
+   
+               </div>
+            </div>
+         </div>
+      </section>
+   
+      <section id="add-discord-username" class="container">
+         <div class=" h-100 d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+            <div id="discord-add-form">
+               <div class="card card-body ">
+                  <div class="center-text">
+                     <h1>Integrate Discord To Your Account</h1>
+                  </div>
+                  <div id="alert-message-discord">
+   
+                  </div>
+                  <form onsubmit="addDiscordUsername(event)">
+                     <div class="alert alert-info ">
+                        <strong>A Friendly Reminder</strong>
+                        <br>Make sure you provide your active Discord username, since our bot will use it 
+                        <br>to check your todo-list in the database.
+                        <br>But then again, if you didn't provide correct username, you can just reset it again,
+                        <br>and then our bot will be able to manage your todo list.
+                     </div>
+                     <div class="form-group">
+                        <label for="username">Discord Username</label>
+                        <input type="text" id="discord-username" class="form-control" placeholder="John#1234"
+                           autocomplete="username" aria-describedby="helpUsername" />
+                        <small id="helpUsername" class="form-text text-muted">
+                           Valid Discord username is 4 characters followed by a "#" and 4 digits of number.
+                        </small>
+                     </div>
+   
+                     <button type="submit" class="btn btn-outline-success">
+                        Integrate
+                     </button>
+   
+                     <button id="discord-back" type="button" class="btn btn-outline-info" onclick="backToHome()">
+                        Cancel
+                     </button>
+                  </form>
+               </div>
+            </div>
+   
+            <div id="discord-add-success">
+               <div class="card card-body ">
+                  <div class="center-text">
+                     <h1>Integrate Discord To Your Account</h1>
+                  </div>
+                  <div id="alert-message-discord-sucess">
+                  </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+   
+   <!-- LOGIN SECTION -->
+   
+   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+      integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+      crossorigin="anonymous"></script>
+   <script src="https://apis.google.com/js/platform.js" async defer></script>
+   <script src="index.js"></script>
+</body>
+
+</html>
