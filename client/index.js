@@ -1,4 +1,4 @@
-let baseUrl = "http://localhost:3050"
+let baseUrl = "https://fancy-todo-joanne.herokuapp.com"
 let idTodoForEdit
 let idTodoForEditProject
 $(window).on("load", function () {
