@@ -10,7 +10,8 @@ module.exports = class UserController {
       let created = await User.create({email, password}, { returning: true })
       res.status(201).json({ id: created.id, email: created.email })
     } catch (err) {
-      next({ msg: err.errors[0].message, status: 400 })
+      res.status(400).json(err)
+      // next({ msg: err.errors[0].message, status: 400 })
     }
   }
   static async login(req, res, next) {
@@ -18,10 +19,10 @@ module.exports = class UserController {
       let { email, password } = req.body
       email = email.toLowerCase()
       let user = await User.findOne({ where: { email }})
-      if(!user) throw {msg: `Username/Password error email`, status: 400}
+      if(!user) throw {msg: `Username/Password error`, status: 400}
       else if(user) {
         let hasil = Bcrypt.compare(password, user.password)
-        if(!hasil) throw {msg: `Username/Password error password`, status: 400}
+        if(!hasil) throw {msg: `Username/Password error`, status: 400}
         else {
           let token = JWT.create({
             id: user.id,

@@ -1,6 +1,7 @@
 const SERVER = 'http://localhost:3000/'
 
 $("document").ready(() => {
+  $("input[name='due_date']").val(new Date().toISOString().slice(0,10))
   if(!localStorage.getItem('token')) {
     hideAll()
     $("#login").show()
@@ -30,7 +31,10 @@ $("#submitLogin").on('click', (event) => {
     }).done(hasil => {
       localStorage.setItem('token', hasil.token)
       hideAll()
+      $("#userTodo").show()
+      $("#addTodo").show()
     }).fail(err => {
+      error([err.responseJSON])
       console.log(err.responseJSON, "dari fail");
     })
   } else {
@@ -46,7 +50,7 @@ $("#addTodoForm").submit((event) => {
   let temp = $("#addTodoForm").serializeArray()
   let data = {}
   temp.forEach(el => data[el.name] = el.value )
-  console.log(data);
+  alert(JSON.stringify(data));
 
   $.ajax({
     method: "post",
@@ -75,14 +79,22 @@ $("#editTodo").submit(event => {
   }).done(data => {
     $("#addTodo").show()
     userTodos()
+    $("#logout").show()
+
   }).fail(err => console.log(err.responseJSON))
 })
 
 // Link Register Now!
-$("#redirectRegister").on('click', e=> {
-  e.preventDefault()
+$("#redirectRegister").on('click', event => {
+  event.preventDefault()
   hideAll()
   $("#register").show()
+})
+
+$("#redirectLogin").on('click', e => {
+  e.preventDefault()
+  hideAll()
+  $("#login").show()
 })
 
 // Register User
@@ -117,26 +129,49 @@ $("#logout").on('click', _=> {
 const userTodos = () => {
   const token = localStorage.getItem('token')
 
-  $("#todo").empty()
+  $("#todoDone").empty()
+  $("#todoNotYet").empty()
   $.ajax({
     method: 'get',
     url: SERVER + 'todos',
     headers: { token }
   }).done(hasil => {
     hasil.forEach(datum => {
-      let status
-      if(!datum.status) status = `<button onclick="done(${datum.id})">Mark as done</button>`
-      else status = `Done!`
-      $("#todo").append(`
-        ${datum.title}<br>
-        ${datum.description}<br>
-        ${datum.status}<br>
-        ${datum.due_date}<br>
-        ${status}
-        <button onclick="edit(${datum.id})">Edit</button>
-        <button onclick="hapus(${datum.id})">Delete</button>
-        <br><br>
-      `)})
+      let status = `<div class="bg-info rounded p-1">
+        <p style="color: #EEE; margin-bottom: 0; font-size: 15px;" >Done!</p></div>`
+      if(!datum.status) status = `<a style="text-decoration: none;" onclick="done(${datum.id})">
+      <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-check-square-fill" fill="green" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+      </svg></a>`
+      date = new Date(datum.due_date)
+      let todo = `
+        <div class="card shadow bg-white" style="width: 13em;">
+        <div class="card-header h5" style="text-align: center;">${datum.title}</div>
+        <div class="card-body pb-2">
+          <p class="card-text h6">${datum.description}</p>
+          <div class="" style="text-align: center; font-family: 'Helvetica; font-size: 18pt; padding: 5px; border-radius: 20%">
+          <div class="h3">${date.getDate()}</div>
+            <span class="h6">${date.toLocaleString('default', { month: 'long' })}</span>,
+            <span class="h6">${date.getFullYear()}</span>
+          </div>
+        </div>
+        <div class="card-footer d-flex" style="justify-content: space-between;">
+          <a style="text-decoration: none;" onclick="hapus(${datum.id})">
+            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="red" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+            </svg></a>
+          ${status}
+          <a style="text-decoration: none;" onclick="edit(${datum.id})">
+            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="blue" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg></a>
+        </div>
+      </div>
+      `
+      if(!datum.status) $("#todoNotYet").append(todo)
+      else $("#todoDone").append(todo)
+    })
       $("#todo").show()
   }).fail(err => {
     console.log(err);
@@ -230,4 +265,19 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
+}
+
+function error(arr) {
+  arr.forEach(el => {
+    $("#error").append(`
+      <div class="alert alert-danger" role="alert">
+        ${el.errorMessage}
+      </div>
+    `)
+  })
+  $("#error").show()
+  setTimeout(() => {
+    $("#error").hide()
+    $("#error").empty()
+  }, 2500);
 }
