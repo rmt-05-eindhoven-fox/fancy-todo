@@ -1,97 +1,50 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Todo extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Todo.belongsTo(models.User, { foreignKey: "UserId" })
-    }
-  };
+  const Model = sequelize.Sequelize.Model
+  class Todo extends Model { }
+
   Todo.init({
     title: {
-      allowNull: false,
       type: DataTypes.STRING,
       validate: {
-        notNull: {
-          args: true,
-          msg: "Please enter a title!"
-        },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter a title!"
-        }
-      }
+        notNull: { msg: "name is required" },
+        notEmpty: { msg: "name is required" }
+      },
+      allowNull: false
     },
     description: {
-      allowNull: false,
       type: DataTypes.STRING,
       validate: {
-        notNull: {
-          args: true,
-          msg: "Please enter a description!"
-        },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter a description!"
-        }
-      }
+        notNull: { msg: "description is required" },
+        notEmpty: { msg: "description is required" }
+      },
+      allowNull: false
     },
-    status: { 
-      allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        notNull: {
-          args: true,
-          msg: "Please enter a status!"
-        },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter a status!"
-        },
-      }
+    status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
-    due_date: { 
-      allowNull: false,
+    due_date: {
       type: DataTypes.DATE,
       validate: {
-        notNull: {
-          args: true,
-          msg: "Please enter a due_date!"
-        },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter a due_date!"
-        },
-        isAfter: {
-          args: `${new Date(new Date().setDate(new Date().getDate()-1))}`,
-          msg: "Can't enter a date that has passed!"
-        }
-      } 
+        notNull: { msg: "description is required" },
+        notEmpty: { msg: "description is required" }
+      },
+      allowNull: false
     },
     UserId: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-      validate: {
-        notNull: {
-          args: true,
-          msg: "Please enter a UserId!"
-        },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter a UserId!"
-        },
-      }
+      type: DataTypes.INTEGER
+    },
+    ProjectId: {
+      type: DataTypes.INTEGER
     }
-  }, {
-    sequelize,
-    modelName: 'Todo',
-  });
+  }, { sequelize })
+
+  Todo.associate = function (models) {
+    // associations can be defined here
+    Todo.belongsTo(models.User)
+    Todo.belongsTo(models.Project)
+
+  };
   return Todo;
 };

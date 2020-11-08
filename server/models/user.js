@@ -1,69 +1,53 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-const { hashPassword } = require('../helpers/bcrypt');
+const { hashPassword } = require('../helpers/bcrypt')
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      User.hasMany(models.Todo, { foreignKey: "UserId" })
-    }
-  };
+  const Model = sequelize.Sequelize.Model
+  class User extends Model { }
   User.init({
-    email: { 
-      allowNull: false,
+    email: {
       type: DataTypes.STRING,
       validate: {
-        notNull: {
-          args: true,
-          msg: "Please enter email!"
+        isEmail: { msg: "Email is invalid" },
+        isUnique(value) {
+          return User.findAll({ where: { email: value } })
+            .then(userFound => {
+              if (userFound.length > 0) {
+                throw new Error(`email ${value} is already registered`)
+              }
+            })
         },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter email!"
-        },
-        isEmail: {
-          args: true,
-          msg: 'That is an invalid email format!'
-        }
-      },
-      unique: {
-        args: true,
-        msg: 'Oops! Email address already in use!'
-      },
+        notNull: { msg: "Oops! Email is required" },
+        notEmpty: { msg: "Yikes! Email should not be empty" }
+      }, allowNull: false
+    },
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notNull: { msg: "Oops! Username is required" },
+        notEmpty: { msg: "Yikes! Username should not be empty" }
+      }, allowNull: false
     },
     password: {
-      allowNull: false,
       type: DataTypes.STRING,
       validate: {
-        notNull: {
-          args: true,
-          msg: "password is required!"
-        },
-        notEmpty: {
-          arg: true,
-          msg: "Please enter password!"
-        },
-        len: {
-          args: [6, 20],
-          msg: 'Must be between 6 to 20 characters!'
+        notEmpty: { msg: "Oops! Password should not be empty" },
+        notNull: { msg: "Yikes! Password is required" },
+        min: {
+          args: 6,
+          msg: "Oops! Minimum 6 characters!"
         }
-      }
+      }, allowNull: false
     }
   }, {
-    hooks: {
-      beforeCreate(user) {
-        user.password = hashPassword(user.password)
-      }
-    }, 
-    sequelize,
-    modelName: 'User',
-  });
+      hooks: {
+        beforeCreate(user) {
+          user.password = hashPassword(user.password)
+        }
+      }, sequelize
+    })
+  User.associate = function (models) {
+    User.hasMany(models.Todo)
+    User.belongsToMany(models.Project, { through: models.ProjectUser })
+  };
   return User;
 };
