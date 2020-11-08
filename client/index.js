@@ -1,4 +1,4 @@
-const SERVER = "http://localhost:3000"
+const SERVER = "https://todojquery.herokuapp.com"
 const token = localStorage.getItem("token")
 
 $(document).ready(function (){
@@ -87,7 +87,7 @@ function onSignIn(googleUser) {
         $("#todolist").empty()
         read()
     }).fail(err => {
-        showError(err)
+        showError(err.responseJSON.errors)
     })
   }
   function signOut() {
@@ -135,6 +135,8 @@ function register(event){
         showSucces("Berhasil register")
         $("#login").show()
         $("#register").hide()
+        $("#register-email").val("")
+        $("#register-password").val("")
     }).fail(err => {
         showError(err.responseJSON.errors)
     })
@@ -148,7 +150,9 @@ function hideadd(){
     $("#create").hide()
     $("#read").show()
     $("#logout").show()
-    read()
+    $("#title-todo").val("") // biar add todo langsung kosong
+    $("#description-todo").val("")
+    $("#due-date-todo").val("")
 }
 function loginpage(){
     $("#register").hide()
@@ -244,8 +248,11 @@ function editShow(id){
 }
 function hideedit(){
     $("#edit").hide()
-    $("#read").show()
-    $("#logout").show()
+        $("#edit").empty()
+        $("#logout").show()
+        $("#read").show()
+        $("#todolist").empty()
+        read()
 }
 function editPost(event, id){
     event.preventDefault()
@@ -263,9 +270,11 @@ function editPost(event, id){
         }
     }).done(response => {
         $("#edit").hide()
+        $("#edit").empty()
         $("#logout").show()
         $("#read").show()
-        // console.log(response)
+        $("#todolist").empty()
+        read()
         showSucces("Berhasil mengedit todo")
     }).fail(err => {
         showError(err.responseJSON.errors)
