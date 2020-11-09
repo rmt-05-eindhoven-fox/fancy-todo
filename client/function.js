@@ -104,11 +104,11 @@ function getMyTodos() {
                   notDone.push(i)
               }
           }
-          let isianNotedone = generateTable(notDone)
+          let itNotDone = generateTable(notDone)
 
-          $(".bodyNotDone").append(isianNotedone)
-          let isianDone = generateTable(done)
-          $(".bodyDone").append(isianDone)
+          $(".bodyNotDone").append(itNotDone)
+          let itDone = generateTable(done)
+          $(".bodyDone").append(itDone)
       },
       error: function (err) {
           swal('Oops...', 'Something went wrong!', "error")
@@ -116,9 +116,9 @@ function getMyTodos() {
   })
 }
 
-function generateTable(isi) {
+function generateTable(list) {
   let forAppend = ""
-  for (let i of isi) {
+  for (let i of list) {
       let tanggal = new Date(i.due_date).toDateString()
       let project
 
@@ -177,15 +177,11 @@ function createTodo(due_date, title, description, status) {
 }
 
 function getNameProject(id) {
-  // console.log(id, "<<")
   $.ajax(`${baseUrl}/projects/api/name/${id}`, {
       type: "GET",
       success: function (found) {
-          // console.log(found.name, id, "<<")
           if (found) {
-              // console.log("hai")
               $(`#project_${id}`).text(found.name)
-              // $("#project_" + id).text("meong")
           } else {
               $("#project_" + id).text("deleted project")
           }
@@ -214,7 +210,7 @@ function getTodoById(id, statusedit) {
               statusNya = "Not Done"
           }
           if (statusedit == "editVanilla") {
-              $("#modalku").modal("show")
+              $("#editModal").modal("show")
               $("#titleEdit").val(resultGet.title)
               $("#descriptionEdit").val(resultGet.description)
               $("#statusEdit").children(`[value="${statusNya}"]`).attr('selected', true);
@@ -245,7 +241,7 @@ function editTodo(id, title, status, due_date, description) {
       },
       success: function () {
 
-          $("#modalku").modal("hide")
+          $("#editModal").modal("hide")
           getMyTodos()
       },
       error: function (err) {
@@ -298,8 +294,8 @@ function getMyProjects() {
       success: function (gotResponse) {
 
           $("#cardProject").empty()
-          let isianCardProject = generateCardProject(gotResponse)
-          $("#cardProject").append(isianCardProject)
+          let inCardProject = generateCardProject(gotResponse)
+          $("#cardProject").append(inCardProject)
       },
       error: function (err) {
           let errorMessage = ""
@@ -334,7 +330,7 @@ function generateCardProject(responseGetProject) {
               </div>
               </div>
           </div>
-          <div class="card-body cardIsian overflow-auto animated slideInUp">
+          <div class="card-body cardInside overflow-auto animated slideInUp">
               <table class="table">
                   <thead class="thead-dark">
                       <tr>
@@ -394,8 +390,8 @@ function getTodoInProject(id) {
       type: "GET",
       success: function (hasilGet) {
           $(`#bodyProject${id}`).empty()
-          let untukbodyproject = generateTableTodoProject(hasilGet)
-          $(`#bodyProject${id}`).append(untukbodyproject)
+          let bodyProject = generateTableTodoProject(hasilGet)
+          $(`#bodyProject${id}`).append(bodyProject)
       },
       error: function (err) {
           let errorMessage = ""
@@ -412,7 +408,7 @@ function getTodoInProject(id) {
 }
 
 function generateTableTodoProject(hasilGet) {
-  let untukDiAppend = ""
+  let forAppend = ""
   for (let satuan of hasilGet) {
       let statusnya
       if (satuan.status) {
@@ -421,7 +417,7 @@ function generateTableTodoProject(hasilGet) {
           statusnya = "Not Done"
       }
       let tanggal = new Date(satuan.due_date).toDateString()
-      untukDiAppend += `
+     forAppend += `
       <tr id=${satuan.id}>
       <td>${satuan.title}</td>
       <td>${satuan.description}</td>
@@ -437,14 +433,14 @@ function generateTableTodoProject(hasilGet) {
       </tr>
       `
   }
-  return untukDiAppend
+  return forAppend
 }
 
 function getUserById(id) {
   $.ajax(`${baseUrl}/user/${id}`, {
       type: "GET",
-      success: function (hasilnya) {
-          $("#assigned" + id).text(hasilnya.username)
+      success: function (result) {
+          $("#assigned" + id).text(result.username)
       },
       error: function (err) {
           let errorMessage = ""
@@ -659,12 +655,12 @@ function preDeleteProject(id) {
   $("#deleteProjectModal").modal("show")
   $.ajax(`${baseUrl}/projects/${id}`, {
       type: "GET",
-      success: function (hasilnyaAdalah) {
-          let isiiinyaa = appendConfirmationDelete(hasilnyaAdalah)
+      success: function (theResult) {
+          let inside = appendConfirmationDelete(theResult)
           $("#confirmationDeleteProject").empty()
-          $("#confirmationDeleteProject").append(isiiinyaa)
+          $("#confirmationDeleteProject").append(inside)
           $("#deleteThisProject").click(function () {
-              beneranDeleteProject(id, hasilnyaAdalah)
+              sureDeleteProject(id, theResult)
           })
       },
       error: function (err) {
@@ -673,26 +669,26 @@ function preDeleteProject(id) {
   })
 }
 
-function appendConfirmationDelete(isinyaHasil) {
-  untukAppend = `
- <p>Please type in <strong>${isinyaHasil.name}</strong> to continue</p>
+function appendConfirmationDelete(insideResult) {
+  forAppend = `
+ <p>Please type in <strong>${insideResult.name}</strong> to continue</p>
  <form>
- <input type="text" id="beneranYakinDelete">
+ <input type="text" id="sureDelete">
  </form>
  `
-  return untukAppend
+  return forAppend
 }
 
-function beneranDeleteProject(id, dataProject) {
-  let sesuatu = $("#beneranYakinDelete").val()
+function sureDeleteProject(id, dataProject) {
+  let sesuatu = $("#sureDelete").val()
   if (sesuatu == dataProject.name) {
       $.ajax(`${baseUrl}/projects/${id}`, {
           type: "DELETE",
           headers: {
               token: localStorage.getItem("token")
           },
-          success: function (messagenya) {
-              swal("Ok", messagenya.message, "success")
+          success: function (theMessage) {
+              swal("Ok", theMessage.message, "success")
               getMyProjects()
           },
           error: function (err) {

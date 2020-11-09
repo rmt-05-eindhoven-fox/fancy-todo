@@ -32,16 +32,16 @@ class ControlProject {
             method: "GET",
             url: "https://calendarific.com/api/v2/holidays?api_key=f61563882dc999ad8463027c0d1b6db64c082e85&country=ID&year=2020"
         })
-            .then(hasilnya => {
-                let libur = []
-                let holidays = hasilnya.data.response.holidays
+            .then(result => {
+                let holiday = []
+                let holidays = result.data.response.holidays
                 for (let i of holidays) {
                     if (i.date.iso == due_date) {
-                        libur.push(i.name)
+                        holiday.push(i.name)
                     }
                 }
-                if (libur.length > 0) {
-                    next({ code: 400, message: `ada libur ${libur[0]} pada hari due date` })
+                if (holiday.length > 0) {
+                    next({ code: 400, message: `There is a holiday ${holiday[0]} on your due date!` })
                 } else {
                     modelTodo.create({
                         title,
@@ -74,16 +74,16 @@ class ControlProject {
             method: "GET",
             url: "https://calendarific.com/api/v2/holidays?api_key=f61563882dc999ad8463027c0d1b6db64c082e85&country=ID&year=2020"
         })
-            .then(hasilnya => {
-                let holidays = hasilnya.data.response.holidays
-                let libur = []
+            .then(result => {
+                let holidays = result.data.response.holidays
+                let holiday = []
                 for (let j of holidays) {
                     if (j.date.iso == due_date) {
-                        libur.push(j.name)
+                        holiday.push(j.name)
                     }
                 }
-                if (libur.length > 0) {
-                    next({ code: 400, message: `ada libur ${libur[0]} pada hari due date` })
+                if (holiday.length > 0) {
+                    next({ code: 400, message: `There is a holiday ${holiday[0]} on your due date!` })
                 } else {
                     modelTodo.update({
                         title, description, status, due_date, UserId, ProjectId
@@ -128,7 +128,6 @@ class ControlProject {
 
     static addMember(req, res, next) {
         let useridnya
-        // console.log(req.body.email, "<<ini email")
         modelUser.findOne({ where: { email: req.body.email } })
             .then(userFound => {
                 useridnya = userFound.dataValues.id

@@ -28,13 +28,13 @@ function forProject(req, res, next) {
                         }
                     }
                     if (!req.ProjectId) {
-                        next({ code: 401, message: "Unauthorized" })
+                        next({ code: 401, message: "Yikes! No access allowed!" })
                     } else {
                         next()
                     }
 
                 } else {
-                    next({ code: 400, message: "id not found" })
+                    next({ code: 400, message: "Oops! ID is not found" })
                 }
             })
             .catch(err => {
@@ -53,7 +53,7 @@ function forProject(req, res, next) {
                     }
                 }
                 if (!req.ProjectId) {
-                    next({ code: 401, message: "Unauthorized" })
+                    next({ code: 401, message: "Yikes! No access allowed!" })
                 } else {
                     next()
                 }

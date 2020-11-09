@@ -36,7 +36,6 @@ class TodoController {
                 if (todoByIdFound) {
                     res.status(200).json(todoByIdFound)
                 } else {
-                    // console.log("masuk sini kok")
                     next({ code: 404, message: "Oops! ID not found!" })
                 }
             })
@@ -51,7 +50,6 @@ class TodoController {
             { description, title, due_date, status },
             { where: { id: req.params.id }, returning: true })
             .then(updated => {
-                // console.log(updated, "ini updated <<")
                 if (updated.length > 0) {
                     res.status(200).json({ message: 'Successfully updated!' })
                 } else {
