@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- google client id meta -->
+	<meta name="google-signin-client_id" content="623007063824-gks64k29shrmq5he26lf5qbnt163gup0.apps.googleusercontent.com">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="login-form.css" />
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet" />
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet" />
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet" />
+    <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+
+    <title>Fancy Todo</title>
+</head>
+
+<body>
+
+    <!-- ======= Header before login ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo mr-auto"><a href="index.html">Fancy To-Do</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li><button id="go-to-listtodo" type="button" class="btn btn-success btn-lg">To-Do-list</button> </li>
+					<li><button id="go-to-movielist" type="button" class="btn btn-success btn-lg">trending movies</button> </li>
+					<li><button id="go-to-addtodo" type="button" class="btn btn-light btn-lg">new Todo</button> </li>
+					<li><button id="logout-button" onclick="logout(),signOut()" type="button" class="btn btn-danger btn-lg">logout</button></li>
+                </ul>
+            </nav>
+        
+        </div>
+    </header>
+    <!-- End Header before login -->
+	<main id="main"></main>
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="container-fluid">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    <h1>Fancy To-Do</h1>
+                    <h2>for a better life!</h2>
+                    <div class="d-flex">
+						
+							<button href="#" id="go-to-register" class="btn-get-started">Register</button> 
+							<button id="go-to-login" type="button" class="btn btn-lg  btn-primary">login</button> 
+		
+						</div>
+					</div>
+					<div class="col-lg-6 order-1 order-lg-2 hero-img">
+						<img
+							src="image/pixeltrue-newsletter-1.svg"
+							class="img-fluid animated"
+							alt=""
+						/>
+					</div>
+				</div>
+			</div>
+	</section>
+		<!-- End Hero -->
+
+			<!-- ======= About Section ======= -->
+			<section id="about" class="container-fluid">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-6">
+							<img src="image/pixeltrue-plan-1.svg" class="img-fluid" alt="" />
+						</div>
+						<div class="col-lg-6 pt-4 pt-lg-0 content">
+							<h3>Manfaat Mengunakan Fancy To-Do</h3>
+							<p class="font-italic">
+								bosan hidup yang gitu gitu aja? selalu lalai dan melupakan
+								kegiatan yang ingin dilaksanakan? saatnya gunakan fancy To-Do.
+								berikut berbagai manfaatnya:
+							</p>
+							<ul>
+								<li>
+									<i class="icofont-check-circled"></i> selalu ingat kegiatan
+									sehari-hari
+								</li>
+								<li>
+									<i class="icofont-check-circled"></i> Hidup lebih Produktif
+								</li>
+								<li>
+									<i class="icofont-check-circled"></i> tidak ada kegiatan yang
+									terlewat!
+								</li>
+							</ul>
+							<p>
+								tunggu apa lagi? register sekarang dan buat hidupmu lebih
+								berfaedah.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End About Section -->
+	
+		<!-- End #main -->
+
+		<!-- formulir login ---------------------------------------------------------------------->
+		<!-- ------------------------------------------------------------------------------------->
+		<div class="container-fluid" id="login-form">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-10 col-md-12 col-lg-11 col-xl-10">
+					<div class="card d-flex mx-auto my-5">
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12 c1 p-5">
+								<img
+									src="image/pixeltrue-web-design-1.svg"
+									width="300vw"
+									height="250vh"
+									class="mx-auto d-flex"
+									alt="Teacher"
+								/>
+								<div class="row justify-content-center">
+									<div
+										class="w-75 mx-md-5 mx-1 mx-sm-2 mb-5 mt-4 px-sm-5 px-md-2 px-xl-1 px-2"
+									>
+										<h1 class="wlcm">Welcome to your Fancy Todo</h1>
+										<span class="sp1">
+											<span class="px-3 bg-danger rounded-pill"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-7 col-sm-12 col-xs-12 c2 px-5 pt-5">
+								<div class="row"></div>
+								<form action="#" name="myform" onsubmit="login(event)" class="px-5 pb-5">
+									<div class="d-flex">
+										<h3 class="font-weight-bold">Log in</h3>
+									</div>
+									<input id="login-email" type="text" name="email" placeholder="email" />
+									<input id="login-password" type="password" name="password" placeholder="Password" />
+									<button type="submit" class="text-white text-weight-bold bt">
+										Continue
+									</button>
+									<div class="g-signin2" data-onsuccess="onSignIn"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-------------------------------- end of formulir login------------------------------------>
+		<!----------------------------------------------------------------------------------------->
+
+		<!--------------------------------formulir regiister ------------------------------------->
+		<!-- ------------------------------------------------------------------------------------->
+		<div class="container-fluid" id="register-form">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-10 col-md-12 col-lg-11 col-xl-10">
+					<div class="card d-flex mx-auto my-5">
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12 c1 p-5">
+								<img
+									src="image/welcome.svg"
+									width="300vw"
+									height="250vh"
+									class="mx-auto d-flex"
+									alt="Teacher"
+								/>
+								<div class="row justify-content-center">
+									<div
+										class="w-75 mx-md-5 mx-1 mx-sm-2 mb-5 mt-4 px-sm-5 px-md-2 px-xl-1 px-2"
+									>
+										<h1 class="wlcm">come join us!</h1>
+										<span class="sp1">
+											<span class="px-3 bg-danger rounded-pill"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-7 col-sm-12 col-xs-12 c2 px-5 pt-5">
+								<div class="row"></div>
+								<form onsubmit="register(event)" class="px-5 pb-5">
+									<div class="d-flex">
+										<h3 class="font-weight-bold">Register here</h3>
+									</div>
+									<input type="email"  placeholder="email" id="register-email" />
+									<input type="password"  placeholder="Password" id="register-password" />
+									<button type="submit" class="text-white text-weight-bold bt">
+										Register
+									</button>
+									<h5 class="ac">already have account? click for log in</h5>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-------------------------------- end of formulir register------------------------------------>
+		<!--------------------------------------------------------------------------------------------->
+
+		<!-- formulir addTodo ---------------------------------------------------------------------->
+		<!-- ------------------------------------------------------------------------------------->
+		<div class="container-fluid" id="add-form-todo">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-10 col-md-12 col-lg-11 col-xl-10">
+					<div class="card d-flex mx-auto my-5">
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12 c1 p-5">
+								<img
+									src="image/pixeltrue-web-design-1.svg"
+									width="300vw"
+									height="250vh"
+									class="mx-auto d-flex"
+									alt="Teacher"
+								/>
+								<div class="row justify-content-center">
+									<div
+										class="w-75 mx-md-5 mx-1 mx-sm-2 mb-5 mt-4 px-sm-5 px-md-2 px-xl-1 px-2"
+									>
+										<h1 class="wlcm">Welcome to your Fancy Todo</h1>
+										<span class="sp1">
+											<span class="px-3 bg-danger rounded-pill"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-7 col-sm-12 col-xs-12 c2 px-5 pt-5">
+								<div class="row"></div>
+								<form
+									onsubmit="addForm(event)"
+									name="myform"
+									class="px-5 pb-5"
+								>
+									<div class="d-flex">
+										<h3 class="font-weight-bold">Add new todo!</h3>
+									</div>
+									<input
+										type="text"
+										id="title-add"
+										placeholder="Title"
+									/>
+									<br />
+									<input
+										type="text"
+										id="description-add"
+										placeholder="description"
+									/>
+									<br />
+									<select name="status" id="status-add" placeholder="status">
+										<option value="">Status</option>
+										<option value="done">done</option>
+										<option value="undone">undone</option>
+										<option value="progress">on progress</option>
+									</select>
+									<label>Due Date :</label>
+									<input type="date" id="due_date-add" />
+									<br />
+									<br />
+									<button type="submit" class="text-white text-weight-bold bt">
+										Create To-Do
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-------------------------------- end of addTodo Form------------------------------------->
+		<!----------------------------------------------------------------------------------------->
+
+
+        <!---------------------------------LET SHOW THE (undone) TODO--------------------------------------->
+		<br>
+		<br>
+        <div class="container" id="content-undone">
+			<h1>undone todo :</h1>
+			<section >
+                <div id="showtodo" class="row container">
+                    </section>
+                </div>
+		<!-----------------------------END OF THE SHOW TODO----------------------------------------->
+
+		<!---------------------------------LET SHOW THE (undone) TODO--------------------------------------->
+
+        <div class="container" id="content-done">
+			<h1>done todo :</h1>
+                    <section>
+                <div id="showdonetodo" class="row container"></div>
+                    </section>
+                </div>
+		<!-----------------------------END OF THE SHOW TODO----------------------------------------->
+
+        <!---------------------------------LET SHOW THE TODO---------------------------------------->
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <section id="content-movies">
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    
+                                    <div id="trendingmovies">
+										<h1>TRENDING MOVIES RECOMMENDATION</h1>
+									</div>
+                                </div>
+                            </div>
+                    </section>
+                </div>
+		<!-----------------------------END OF THE SHOW TODO----------------------------------------->
+	<!-- formulir EDIT TODO ---------------------------------------------------------------------->
+		<!-- ------------------------------------------------------------------------------------->
+		<div class="container-fluid" id="edit-form-todo">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-10 col-md-12 col-lg-11 col-xl-10">
+					<div class="card d-flex mx-auto my-5">
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12 c1 p-5">
+								<img
+									src="image/pixeltrue-web-design-1.svg"
+									width="300vw"
+									height="250vh"
+									class="mx-auto d-flex"
+									alt="Teacher"
+								/>
+								<div class="row justify-content-center">
+									<div
+										class="w-75 mx-md-5 mx-1 mx-sm-2 mb-5 mt-4 px-sm-5 px-md-2 px-xl-1 px-2"
+									>
+										<h1 class="wlcm">Welcome to your Fancy Todo</h1>
+										<span class="sp1">
+											<span class="px-3 bg-danger rounded-pill"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+											<span class="ml-2 px-1 rounded-circle"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-7 col-sm-12 col-xs-12 c2 px-5 pt-5">
+								<div class="row"></div>
+								<form
+									onsubmit="editTodo(event)"
+									class="px-5 pb-5"
+								>
+									<div class="d-flex">
+										<h3 class="font-weight-bold">edit todo!</h3>
+									</div>
+									<input
+										type="text"
+										id="title-edit"
+										placeholder="Title"
+									/>
+									<br />
+									<input
+										type="text"
+										id="description-edit"
+										placeholder="description"
+									/>
+									<br />
+									<select id="status-edit" placeholder="status">
+										<option value="">---Status----</option>
+										<option value="done">done</option>
+										<option value="undone">undone</option>
+									</select>
+									<label>Due Date :</label>
+									<input type="date" id="due_date-edit" />
+									<br />
+									<br />
+									<button type="submit" class="text-white text-weight-bold bt">
+										edit To-Do
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-------------------------------- end of editTodo Form------------------------------------->
+		<!----------------------------------------------------------------------------------------->
+
+
+
+
+
+
+
+		<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+		<!-- Vendor JS Files -->
+		<script src="assets/vendor/jquery/jquery.min.js"></script>
+		<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+		<script src="assets/vendor/php-email-form/validate.js"></script>
+		<script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+		<script src="assets/vendor/counterup/counterup.min.js"></script>
+		<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+		<script src="assets/vendor/venobox/venobox.min.js"></script>
+		<script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+		<!-- jquery ajax syntax in here -->
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="index.js"></script>
+		<!-- Template Main JS File -->
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
