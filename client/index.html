@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id"
+        content="752137312998-32qn14oqmktc37hllv7hvdb0sntu9nkj.apps.googleusercontent.com">
+    <title>Fancy To Do</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="index.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div id="loginRegPage">
+        <div id="status"></div>
+        <div class="d-flex mx-auto" style="min-height: 100%">
+            <div class="d-flex row animated slideInDown">
+                <img src="https://media.giphy.com/media/xUOwG8l3u3IF5awt9u/giphy.gif" alt="login-page" style="margin:100px; width:400px;height:400px;">
+            </div>
+            <div class="col-5 my-auto right animated slideInDown">
+                <div class="p-5 bg-light shadow" style="width: 90%; height: 90%; border-radius: 40px;">
+                <h2 class="text-center mb-3">Welcome</h2>
+                    <div class="alert alert-danger" role="alert" id="errorMessage">
+                    </div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#Login" role="tab"
+                                aria-controls="Login" aria-selected="true">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="Register-tab" data-toggle="tab" href="#Register" role="tab"
+                                aria-controls="Register" aria-selected="false">Register</a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="Login" role="tabpanel" aria-labelledby="login-tab">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleTodo"><i class="far fa-envelope"></i> Email address</label>
+                                    <input type="email" class="form-control" id="emailLogin"
+                                        aria-describedby="emailHelp" placeholder="Your email">
+                                    <small id="emailHelp" class="form-text text-muted">Ssshh! Your email is safe with us!</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1"><i class="fas fa-lock"></i> Password</label>
+                                    <input type="password" class="form-control" id="passwordLogin" aria-describedby="passwordHelp" placeholder="Your password">
+                                    <small id="passwordHelp" class="form-text text-muted">Ssshh! Your password is our secret!</small>
+                                </div>
+                                <div class="d-flex mx-auto">
+                                    <div class="btn btn-primary w-100" id="login"><i class="fas fa-sign-in-alt"></i> Log In!</div>
+                                </div>
+                                <div class="d-flex mx-auto mt-2 justify-content-between">
+                                    <div class="flex-column">
+                                        <p class="mt-3">You can also try:</p>
+                                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="Register" role="tabpanel" aria-labelledby="register-tab">
+                            <form>
+                                <div class="form-group">
+                                    <label for="usernameRegister"><i class="fas fa-id-badge"></i> Username</label>
+                                    <input type="text" class="form-control" id="usernameRegister">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailRegister"><i class="far fa-envelope"></i> Email address</label>
+                                    <input type="email" class="form-control" id="emailRegister"
+                                        aria-describedby="emailHelp"  placeholder="Your email">
+                                    <small id="emailHelp" class="form-text text-muted">Ssshh! Your email is safe with us!</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="passwordRegister"><i class="fas fa-lock"></i> Password</label>
+                                    <input type="password" class="form-control" id="passwordRegister" aria-describedby="passwordHelp"  placeholder="Your password">
+                                    <small id="passwordHelp" class="form-text text-muted">Ssshh! Your password is our secret!</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword"><i class="fas fa-exclamation-triangle"></i> Confirm password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                                <div class="d-flex mx-auto">
+                                    <div class="btn btn-primary w-100" id="registerButton"><i class="fas fa-sign-in-alt"></i> Submit</div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand"><i class="fas fa-star"></i>Fancy To Do</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link diNavBar" id="backToTodo"><i class="fas fa-home"></i>Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link diNavBar" id="toProjects"><i class="fas fa-tasks"></i>Projects <span class="sr-only">(current)</span></a>
+                    </li>
+
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-secondary ml-2 dropdown-toggle" type="button" id="UsernameButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a id="logout" class="text-align-right"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <img src="./assets/undraw_online_organizer_ofxm.svg" alt="login-page" style="display:block; margin-left: auto; margin-right: auto; width:500px;height:500px;">
+        <div id="vanillaTodo">
+            <div class="d-flex mx-auto mt-3 justify-content-end mr-2 animated slideInUp">
+                <div class="col justify-content-end">
+                    <div class="btn btn-primary" data-toggle="modal" data-toggle="tooltip" data-placement="top"
+                        data-target="#newTodoModal" title="Create New Todo"><i class="fas fa-sticky-note"></i> New To Do</div>
+                </div>
+
+            </div>
+            <div class="modal fade" id="newTodoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-sticky-note"></i> New To Do</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleTodo">Title</label>
+                                    <input type="text" class="form-control" id="titleTodo" aria-describedby="titleTodo" placeholder="Enter a Nice Title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionModal">Description</label>
+                                    <input type="text" class="form-control" id="descriptionModal" placeholder="Enter a Cool Description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDateModal">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDateModal">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="createTodo"><i class="fas fa-save"></i> Save Your New To Do</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex mt-3 mx-auto">
+                <div class="col-6 col-sm-2 col-md-6">
+                    <div class="card animated slideInUp overflow-auto">
+                        <div class="card-header" id="notDone">
+                            Not Done
+                        </div>
+                        <div class="card-body">
+                            <table class="table notDone">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Due Date</th>
+                                        <th>Type</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bodyNotDone"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-2 col-md-6">
+                    <div class="card overflow-auto animated slideInUp">
+                        <div class="card-header text-align-center" id="headerDone">
+                            Done
+                        </div>
+                        <div class="card-body">
+                            <table class="table doneAlready">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Due Date</th>
+                                        <th>Owner</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bodyDone"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalnyaEdit">
+            <div class="modal" tabindex="-1" role="dialog" id="editModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-edit"></i> Edit To Do</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleEdit">Title</label>
+                                    <input type="text" class="form-control" id="titleEdit" aria-describedby="titleTodo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionEdit">Description</label>
+                                    <input type="text" class="form-control" id="descriptionEdit">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDateEdit">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDateEdit">
+                                </div>
+                                <div class="form-group">
+                                    <label for="statusEdit">Status</label>
+                                    <select class="form-control" id="statusEdit">
+                                        <option value="Done">Done</option>
+                                        <option value="Not Done">Not Done</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="editThis"><i class="fas fa-edit"></i> Save changes</button>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modalnyaDelete">
+            <div class="modal" tabindex="-1" role="dialog" id="modalDelete">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete?!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h3>STOP! Are you sure? You won't be able to see it again!</h3>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="deleteTodo"><i class="fas fa-trash"></i> Yes! Delete it!</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Whoops! No! Keep it!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myProjects">
+            <div class="d-flex mx-auto mt-3 justify-content-end mr-2 animated slideInUp">
+                <div class="col justify-content-end">
+                    <div class="btn btn-primary" data-toggle="modal" data-toggle="tooltip" data-placement="top"
+                        data-target="#newProjectModal" title="Create New Project"><i class="fas fa-sticky-note"></i> New Project</div>
+                </div>
+            </div>
+            <div class="modal fade" id="newProjectModal" tabindex="-1" role="dialog" aria-labelledby="modalProoject"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalProoject"><i class="fas fa-sticky-note"></i> New Project</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="projectNameCreate">Name</label>
+                                    <input type="text" class="form-control" id="projectNameCreate"
+                                        aria-describedby="projectNameCreate" placeholder="Enter a Cool Name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="createProject"><i class="fas fa-save"></i> Save Your New Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex mx-auto mt-3">
+                <div class="col">
+                    <div class="card cardProject overflow-auto" id="cardProject">
+                        <!-- buat loop projects -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal modalEditTodoP" tabindex="-1" role="dialog" id="modalEditTodoProject">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-edit"></i> Edit To Do</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleEditTP">Title</label>
+                                    <input type="text" class="form-control" id="titleEditTP"
+                                        aria-describedby="titleTodo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionEditP">Description</label>
+                                    <input type="text" class="form-control" id="descriptionEditP">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDateEditP">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDateEditP">
+                                </div>
+                                <div class="form-group">
+                                    <label for="statusEditP">Status</label>
+                                    <select class="form-control" id="statusEditP">
+                                        <option value="Done">Done</option>
+                                        <option value="Not Done">Not Done</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="saveEditP"><i class="fas fa-edit"></i> Save
+                                changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal modalDeleteTodoProject" tabindex="-1" role="dialog" id="modalDeleteTodoProject">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete?!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h1>STOP! Are you sure? You won't be able to see it again!</h1>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="deleteTodoProject"><i class="fas fa-trash"></i> Yes! Delete it!</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Whoops! No! Keep it!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="newTodoModalProject" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New To Do for This Project</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleTodoProject">Title</label>
+                                    <input type="text" class="form-control" id="titleTodoProject"
+                                        aria-describedby="titleTodoProject" placeholder="Enter a Nice Title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionTodoProject">Description</label>
+                                    <input type="text" class="form-control" id="descriptionTodoProject" placeholder="Enter a Cool Description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDateTodoProject">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDateTodoProject">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                id="createTodoProject"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="inviteMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Invite new member</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="emailMember"><i class="fas fa-envelope"></i>Email</label>
+                                    <input type="text" class="form-control" id="emailMember" placeholder="Enter your friend's email"
+                                        aria-describedby="emailMember">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                id="inviteThisMember"><i class="fas fa-envelope-open-text"></i> Invite Member</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="memberList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Members</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="membersLoop">
+                                <!-- Loop Members Here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Members</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>STOP! Are you sure you want to delete it?! All progress will be lost!</p>
+                            <div id="confirmationDeleteProject"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Whoops! Cancel!</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                id="deleteThisProject"><i class="fas fa-trash"></i> Yes! Delete it!</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/040ee6886e.js" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/js/fontawesome.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <script src="function.js"></script>
+
+    <script>
+    
+    </script>
+</body>
+
+</html>

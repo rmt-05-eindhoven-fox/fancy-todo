@@ -1,0 +1,12 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "nothinglasts123",
+    "database": "fancytodo-dewi",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  } 
+}
