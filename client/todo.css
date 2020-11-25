@@ -1,0 +1,78 @@
+
+  .container-todo {
+    width: 975px;
+    padding-top: 40px;
+    margin: 0 auto;
+    display: flex;
+  }
+  
+  .col {
+    width: 325px;
+    margin-right: 10px;
+  }
+  
+  .title {
+    margin: 0;
+    padding-bottom: 10px;
+    font-size: 14px;
+    border-bottom: 2px solid #c6c6c6;
+  }
+  
+  .cards {
+    margin: 0;
+    padding: 10px;
+    min-height: 500px;
+    height: 100%;
+    list-style-type: none;
+    background-color: #f1f1f1;
+  }
+  .cards ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul .card {
+    margin-bottom: 10px;
+  }
+  
+  .loadMore {
+    opacity: 1 !important;
+    background-color: transparent;
+    border: none;
+    padding: 8px 6px;
+  }
+  .loadMore a {
+    color: #006FCD;
+  }
+  
+  .hover {
+    background-color: #d4e5f5;
+  }
+  
+  .highlight {
+    min-height: 18px;
+    border: 1px dashed #9E9E9E !important;
+    background-color: transparent !important;
+  }
+  
+  @-webkit-keyframes animateLoadMore {
+    0% {
+      opacity: 0.5;
+    }
+    33% {
+      opacity: 0;
+    }
+    66% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .animateLoadMore {
+    background-color: #d4e5f5;
+    -webkit-animation: animateLoadMore 0.3s infinite;
+    -moz-animation: animateLoadMore 0.3s infinite;
+    -o-animation: animateLoadMore 0.3s infinite;
+    animation: animateLoadMore 0.3s infinite;
+  }
